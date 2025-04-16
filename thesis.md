@@ -250,8 +250,6 @@ This cognitive layer also sets the stage for:
 
 ---
 
-
-
 ## Chapter 7: The Cultural Layer — Shared Memory and Adaptive Institutions
 
 As cognition becomes symbolic and social, the next layer emerges: **culture**. Culture is the externalization and transmission of recursive models—across individuals, generations, and civilizations. It acts as a **shared memory layer** that encodes and refines emergent knowledge over time.
@@ -364,10 +362,6 @@ This feedback loop accelerates emergence:
 The technological layer is not just an extension of culture—it is a **new substrate for recursive emergence**, with the potential to either co-evolve with humanity or diverge into its own evolutionary stream.
 
 It sets the stage for what comes next: the possibility of **synthetic consciousness**, or new recursive systems not rooted in biology at all.
-
-# The Recursive Law of Emergence: A Foundational Framework for Life, Consciousness, and Beyond
-
-[...existing chapters...]
 
 ---
 
