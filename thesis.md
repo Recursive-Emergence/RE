@@ -216,7 +216,7 @@ As feedback loops mature, a system develops an increasingly stable, central mode
 - Predictive behavioral tendencies
 
 ```math
-Self_{t} = \operatorname{argmin}_{M} \left[ H(S_t | M) + C(M) \right]
+Self_{t} = \mathrm{argmin}_{M} \left[ H(S_t | M) + C(M) \right]
 ```
 
 Where `C(M)` is the cognitive cost of maintaining the model. The self is that which reduces total internal uncertainty most efficiently.
