@@ -23,7 +23,7 @@ Each time such a structure survives and repeats, it reduces entropy **locally** 
 We call this feedback loop the **recursive law of emergence**, and it rests on three core ideas:
 
 1. **Structure through interaction**: Emergent systems form when entities interact in ways that reduce entropy.
-2. **Reuse through memory**: Structures that persist become part of a system’s memory—genetic, neural, cultural... And most importantly, they are instantly reusable.f
+2. **Reuse through memory**: Structures that persist become part of a system’s memory—genetic, neural, cultural... And most importantly, they are instantly reusable.
 3. **Emergence through recursion**: These memories influence future interactions, enabling new structures to form on top of the old.
 
 ## Chapter 2: Mathematical Foundations of Recursive Emergence
