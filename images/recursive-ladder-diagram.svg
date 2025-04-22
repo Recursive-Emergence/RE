@@ -1,0 +1,40 @@
+<svg viewBox="0 0 540 620" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="270" y="40" text-anchor="middle" font-size="22" fill="#0f3554">Recursive Ladder of Emergence</text>
+  
+  <!-- Axis labels -->
+  <text x="510" y="310" text-anchor="middle" transform="rotate(90 510 310)" font-size="16" fill="#0f3554">Complexity &amp; Abstraction ↑</text>
+  <text x="30" y="310" text-anchor="middle" transform="rotate(-90 30 310)" font-size="16" fill="#0f3554">Entropy per Unit ↓</text>
+  
+  <!-- Boxes -->
+  <g font-size="18" fill="#e3f0f8" stroke="#0f3554" stroke-width="1.5">
+    <rect x="140" y="80"  width="260" height="45" rx="6"/>
+    <rect x="140" y="150" width="260" height="45" rx="6"/>
+    <rect x="140" y="220" width="260" height="45" rx="6"/>
+    <rect x="140" y="290" width="260" height="45" rx="6"/>
+    <rect x="140" y="360" width="260" height="45" rx="6"/>
+    <rect x="140" y="430" width="260" height="45" rx="6"/>
+    <rect x="140" y="500" width="260" height="45" rx="6"/>
+  </g>
+  
+  <!-- Box labels -->
+  <g font-size="18" fill="#0f3554">
+    <text x="270" y="110" text-anchor="middle">Synthetic</text>
+    <text x="270" y="180" text-anchor="middle">Technological</text>
+    <text x="270" y="250" text-anchor="middle">Cultural</text>
+    <text x="270" y="320" text-anchor="middle">Cognitive</text>
+    <text x="270" y="390" text-anchor="middle">Neural</text>
+    <text x="270" y="460" text-anchor="middle">Biological</text>
+    <text x="270" y="530" text-anchor="middle">Chemical</text>
+  </g>
+  
+  <!-- Connection arrows -->
+  <g fill="none" stroke="#6997b6" stroke-width="2" stroke-dasharray="4 4">
+    <path d="M400 102 q40 30 0 60"/>
+    <path d="M400 172 q40 30 0 60"/>
+    <path d="M400 242 q40 30 0 60"/>
+    <path d="M400 312 q40 30 0 60"/>
+    <path d="M400 382 q40 30 0 60"/>
+    <path d="M400 452 q40 30 0 60"/>
+  </g>
+</svg>

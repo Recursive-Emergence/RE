@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 560 360"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="computational-complexity-diagram.svg"
+   inkscape:version="1.4 (e7c3feb, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.7928571"
+     inkscape:cx="280"
+     inkscape:cy="179.88048"
+     inkscape:window-width="1982"
+     inkscape:window-height="1083"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <polygon
+     points="520,100 460,100 460,140 80,140 520,60 "
+     fill="#dbe5ed"
+     stroke="none"
+     id="polygon4"
+     transform="matrix(1,0,0,2.75,0,-105)"
+     style="stroke-width:0.603023" />
+  <!-- Title -->
+  <text
+     x="280"
+     y="26"
+     text-anchor="middle"
+     font-size="22"
+     fill="#0f3554"
+     id="text1">Computational Complexity Across Emergent Layers</text>
+  <!-- Axes -->
+  <line
+     x1="80"
+     y1="300"
+     x2="520"
+     y2="300"
+     stroke="#0f3554"
+     stroke-width="1.5"
+     id="line1" />
+  <line
+     x1="80"
+     y1="60"
+     x2="80"
+     y2="300"
+     stroke="#0f3554"
+     stroke-width="1.5"
+     id="line2" />
+  <!-- Axis labels -->
+  <text
+     x="525"
+     y="315"
+     text-anchor="end"
+     font-size="16"
+     fill="#0f3554"
+     id="text2">Emergent Layer →</text>
+  <text
+     x="-162.03188"
+     y="60.677292"
+     text-anchor="middle"
+     transform="rotate(-90)"
+     font-size="16px"
+     fill="#0f3554"
+     id="text3">Algorithmic Complexity →</text>
+  <!-- Stair-step area -->
+  <polygon
+     points="80,280 140,280 140,260 220,260 220,220 300,220 300,180 380,180 380,140 460,140 460,100 520,100 520,300 80,300"
+     fill="#a9c9e2"
+     stroke="none"
+     id="polygon3" />
+  <!-- Irreducible zone -->
+  <!-- Label for irreducible zone -->
+  <text
+     x="300"
+     y="90"
+     text-anchor="middle"
+     font-size="16"
+     fill="#0f3554"
+     id="text4">Computationally Irreducible</text>
+</svg>
