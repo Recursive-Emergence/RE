@@ -1,0 +1,79 @@
+/* Main styles for simulation visualization */
+
+.threshold-card {
+    margin-bottom: 10px;
+    height: 100%;
+}
+
+.threshold-indicator {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+}
+
+#negentropy-indicator.threshold-reached,
+#feedback-indicator.threshold-reached,
+#resilience-indicator.threshold-reached,
+#p-compartment.threshold-reached {
+    color: #28a745;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.transition-detected {
+    border: 2px solid #28a745;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+canvas {
+    max-width: 100%;
+}
+
+#status-message {
+    font-weight: bold;
+}
+
+.simulation-control-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Custom tooltip for charts */
+.chartjs-tooltip {
+    opacity: 1;
+    position: absolute;
+    background: rgba(0, 0, 0, .7);
+    color: white;
+    border-radius: 3px;
+    pointer-events: none;
+    padding: 5px;
+}
+
+/* Feature markers on charts */
+.feature-marker {
+    position: absolute;
+    border-left: 2px dashed rgba(255, 0, 0, 0.7);
+    height: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.feature-marker-label {
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}

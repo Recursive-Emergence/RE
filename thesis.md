@@ -442,3 +442,5 @@ Each layer is a lens. Each pattern a memory. And each emergence a question—wai
 
 The journey continues.
 
+-------------- 
+*Note: "In this theory, we distinguish between different notions of entropy. While Shannon's information entropy measures the uncertainty or randomness in a data set, it does not capture the structural complexity or order inherent in systems. To address this, we use the concept of 'order' or 'negentropy' to describe the degree of organization and emergent complexity within a system. This distinction is crucial for understanding how structural order and complexity emerge over time, beyond the traditional definitions of entropy."*
