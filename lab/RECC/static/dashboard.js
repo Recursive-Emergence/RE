@@ -128,27 +128,9 @@ function updateConceptNetwork(data) {
     // Store the data
     // Only update if we have new data to prevent unnecessary redraws
     if (data.nodes && data.edges) {
-        // Limit the number of nodes we visualize to prevent browser slowdown
-        const maxNodesToShow = 75; // Match the backend limit
-        
-        // Sort by importance (use reuse_count or activation as a proxy for importance)
-        const sortedNodes = [...data.nodes].sort((a, b) => (b.reuse_count || 0) - (a.reuse_count || 0));
-        
-        // Only take the top nodes
-        const limitedNodes = sortedNodes.slice(0, maxNodesToShow);
-        
-        // Create a set of node IDs that we're keeping
-        const nodeIdSet = new Set(limitedNodes.map(n => n.id));
-        
-        // Only keep edges that connect nodes we're showing
-        const limitedEdges = data.edges.filter(e => 
-            nodeIdSet.has(e.source) || typeof e.source === 'object' && nodeIdSet.has(e.source.id) &&
-            nodeIdSet.has(e.target) || typeof e.target === 'object' && nodeIdSet.has(e.target.id)
-        );
-        
-        // Store the reduced data for later use
-        networkNodes = limitedNodes;
-        networkLinks = limitedEdges;
+        // Use the already filtered data from the server
+        networkNodes = data.nodes;
+        networkLinks = data.edges;
     }
     
     // Don't proceed if we don't have any nodes
@@ -165,15 +147,15 @@ function updateConceptNetwork(data) {
     
     // Create a force simulation with optimized settings
     networkSimulation = d3.forceSimulation(networkNodes)
-        // Use logarithmic scale for distance based on network size
+        // Use force link with moderate distance to avoid crowding
         .force('link', d3.forceLink(networkLinks).id(d => d.id)
-               .distance(() => Math.min(100, 50 + 50 * Math.log10(networkNodes.length))))
-        // Adjust repulsion force based on network size
+               .distance(() => 80))
+        // Use moderate charge strength to prevent overlapping
         .force('charge', d3.forceManyBody()
-               .strength(() => -300 / Math.log10(Math.max(10, networkNodes.length))))
+               .strength(-150))
         .force('center', d3.forceCenter(width / 2, height / 2))
         // Add collision detection to prevent node overlap
-        .force('collision', d3.forceCollide().radius(d => 8 + (d.reuse_count || 0)));
+        .force('collision', d3.forceCollide().radius(d => 10 + (d.reuse_count || 0)));
     
     // Create arrow markers for directed edges
     svg.append('defs').selectAll('marker')
@@ -213,33 +195,46 @@ function updateConceptNetwork(data) {
         .join('g')
         .call(drag(networkSimulation));
     
-    // Add circles to each node group with optimized size
+    // Add circles to each node group with optimized size and highlight recent concepts
     node.append('circle')
-        .attr('r', d => Math.min(5 + (d.reuse_count || 0), 12)) // Cap node size
-        .attr('fill', d => colorScale(d.activation || 0.5));
+        .attr('r', d => {
+            // Base size on reuse count, but larger for recent concepts
+            const baseSize = Math.min(5 + (d.reuse_count || 0), 12);
+            return d.isRecent ? baseSize + 3 : baseSize;
+        })
+        .attr('fill', d => d.isRecent ? highlightColorScale(d.activation || 0.5) : colorScale(d.activation || 0.5))
+        .attr('stroke', d => d.isRecent ? '#ff3333' : 'none')  // Add red stroke for recent concepts
+        .attr('stroke-width', d => d.isRecent ? 2 : 0);
     
-    // Add hover tooltip
+    // Add hover tooltip with more detailed information
     node.append('title')
-        .text(d => `${d.name}\nActivation: ${d.activation?.toFixed(2) || 0}\nReuse Count: ${d.reuse_count || 0}`);
+        .text(d => {
+            let tooltipText = `${d.name}\n`;
+            tooltipText += `Activation: ${d.activation?.toFixed(2) || 0}\n`;
+            tooltipText += `Reuse Count: ${d.reuse_count || 0}\n`;
+            if (d.isRecent) tooltipText += '(Used in recent conversation)';
+            return tooltipText;
+        });
     
-    // Only add labels for important nodes to reduce rendering overhead
-    const importantNodes = networkNodes.filter(d => (d.reuse_count || 0) > 2 || (d.activation || 0) > 0.7);
-    
+    // Show labels for all nodes since we're now dealing with a smaller, more focused set
     nodeGroup.selectAll('text')
-        .data(importantNodes)
+        .data(networkNodes)
         .join('text')
         .attr('x', 8)
         .attr('y', '0.31em')
-        .attr('font-size', '9px')
+        .attr('font-size', d => d.isRecent ? '10px' : '9px')  // Slightly larger for recent concepts
+        .attr('font-weight', d => d.isRecent ? 'bold' : 'normal')  // Bold for recent concepts
         .text(d => d.name);
     
     // Status info about visualization
-    const totalNodes = data.nodes?.length || networkNodes.length;
+    const totalNodes = data.metadata?.total_concepts || networkNodes.length;
     const displayedNodes = networkNodes.length;
+    const focusType = data.metadata?.focus_type || 'general';
+    
     d3.select('#conceptNetworkViz')
         .append('div')
         .attr('class', 'network-stats')
-        .html(`<small>Showing ${displayedNodes}/${totalNodes} concepts</small>`)
+        .html(`<small>Showing ${displayedNodes}/${totalNodes} concepts - Focus: ${focusType === 'conversation_relevant' ? 'Recent Conversation' : 'General'}</small>`)
         .style('position', 'absolute')
         .style('bottom', '5px')
         .style('left', '5px')
@@ -349,6 +344,12 @@ function colorScale(value) {
     return d3.interpolateRgb('#4575b4', '#d73027')(value);
 }
 
+// Highlight color scale for recent concepts
+function highlightColorScale(value) {
+    // From inactive (light blue) to highly active (orange)
+    return d3.interpolateRgb('#91bfdb', '#fc8d59')(value);
+}
+
 // Update emotion gauges
 function updateEmotionGauges(emotionalState) {
     const container = document.getElementById('emotionGauges');
@@ -453,7 +454,7 @@ function appendInteraction(prompt, response, userGenerated = false) {
     // Response
     const responseEl = document.createElement('div');
     responseEl.className = 'interaction-response';
-    responseEl.textContent = `🧠 ${response}`; // Changed from 🤖 to 🧠 to represent the baby agent's brain
+    responseEl.textContent = `🧠 ${response}`; // Use brain emoji for baby agent's responses
     
     // Append to box
     box.appendChild(promptEl);

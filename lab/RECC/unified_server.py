@@ -517,34 +517,48 @@ class UnifiedRECCServer:
         }
         
     def _extract_concept_network(self):
-        """Extract concept network data for visualization"""
+        """Extract concept network data for visualization, focusing on concepts relevant to the current conversation"""
         network = self.recc.memory.concept_network
-        
-        # Performance optimization: pre-filter concepts and relations here
-        # rather than sending the entire network to the client
         
         # Get total counts for metrics
         total_concepts = len(network.concepts)
         total_relations = len(network.relations)
         
-        # If network is smaller than threshold, send everything
-        # Otherwise, filter to most important nodes
-        MAX_NODES_TO_SEND = 150  # Limit nodes to prevent UI freezing
+        # Define a reasonable limit for nodes to visualize effectively
+        MAX_NODES_TO_SEND = 50  # Reduced from 150 to prevent UI freezing
         
-        if total_concepts <= MAX_NODES_TO_SEND:
-            # For small networks, send everything
-            concept_ids = list(network.concepts.keys())
-        else:
-            # For large networks, get the most important concepts
-            # First try to get central concepts by betweenness or activation
-            try:
-                # Combine centrality and activation for importance
-                importance_dict = {}
-                
-                # Get central concepts (up to 75)
-                central_concepts = network.get_central_concepts(n=75)
-                
-                # Also include frequently reused concepts
+        # Get concepts relevant to the current conversation
+        relevant_concepts = []
+        
+        # 1. First try to get concepts active in the most recent conversations
+        try:
+            # Get the most recent entries from memory (last 3 interactions)
+            recent_entries = self.recc.memory.get_recent(3)
+            recent_concepts = set()
+            
+            # Extract concepts from these recent interactions
+            for entry in recent_entries:
+                if 'concepts' in entry:
+                    recent_concepts.update(entry['concepts'])
+            
+            # Add these recent concepts to our relevant concepts list
+            relevant_concepts.extend(list(recent_concepts))
+            
+            # 2. Add currently active concepts 
+            active_concepts = network.get_active_concepts(threshold=0.6)  # Higher threshold to be more selective
+            for concept_id in active_concepts:
+                if concept_id not in relevant_concepts:
+                    relevant_concepts.append(concept_id)
+                    
+            # 3. If we don't have enough relevant concepts, add some central ones
+            if len(relevant_concepts) < 10:
+                central_concepts = network.get_central_concepts(n=10)
+                for concept_id in central_concepts:
+                    if concept_id not in relevant_concepts:
+                        relevant_concepts.append(concept_id)
+                        
+            # 4. If we still need more, add frequently reused concepts
+            if len(relevant_concepts) < 15:
                 reused_concepts = []
                 for concept_id, concept in network.concepts.items():
                     reuse_count = concept.get('reuse_count', 0)
@@ -553,31 +567,53 @@ class UnifiedRECCServer:
                 
                 # Sort and get top reused concepts
                 reused_concepts.sort(key=lambda x: x[1], reverse=True)
-                top_reused = [c[0] for c in reused_concepts[:75]]
+                for concept_id, _ in reused_concepts[:15]:
+                    if concept_id not in relevant_concepts:
+                        relevant_concepts.append(concept_id)
+        except Exception as e:
+            print(f"Error selecting relevant concepts: {e}")
+            # Fallback to basic approach
+            relevant_concepts = []
+        
+        # If we still don't have any relevant concepts, use standard approach
+        if not relevant_concepts:
+            if total_concepts <= MAX_NODES_TO_SEND:
+                # For small networks, send everything
+                concept_ids = list(network.concepts.keys())
+            else:
+                # Get central concepts only as fallback
+                try:
+                    concept_ids = network.get_central_concepts(n=MAX_NODES_TO_SEND)
+                except Exception as e:
+                    # Last resort: just take the first few concepts
+                    print(f"Error getting central concepts: {e}")
+                    concept_ids = list(network.concepts.keys())[:MAX_NODES_TO_SEND]
+        else:
+            # Gather the focused set of concept IDs
+            concept_ids = relevant_concepts[:MAX_NODES_TO_SEND]
+            
+            # 5. Now expand to include immediate neighbors for context
+            if len(concept_ids) < MAX_NODES_TO_SEND:
+                # Create a set for faster lookups
+                concept_id_set = set(concept_ids)
+                neighbors = []
                 
-                # Get active concepts
-                active_concepts = network.get_active_concepts(threshold=0.5)
-                
-                # Combine all important concepts, prioritizing diversity
-                combined_concepts = []
-                for concept_id in central_concepts:
-                    if concept_id not in combined_concepts:
-                        combined_concepts.append(concept_id)
+                # For each selected concept, find its immediate neighbors
+                for concept_id in concept_ids:
+                    for relation in network.relations:
+                        source = relation.get('source', '')
+                        target = relation.get('target', '')
                         
-                for concept_id in top_reused:
-                    if concept_id not in combined_concepts:
-                        combined_concepts.append(concept_id)
+                        # If this concept is in the relation, add the other one
+                        if source == concept_id and target not in concept_id_set:
+                            neighbors.append(target)
+                        elif target == concept_id and source not in concept_id_set:
+                            neighbors.append(source)
                 
-                for concept_id in active_concepts:
-                    if concept_id not in combined_concepts:
-                        combined_concepts.append(concept_id)
-                
-                # Cap at MAX_NODES_TO_SEND
-                concept_ids = combined_concepts[:MAX_NODES_TO_SEND]
-            except Exception as e:
-                # Fallback: just take the first MAX_NODES_TO_SEND concepts
-                print(f"Error selecting important concepts: {e}")
-                concept_ids = list(network.concepts.keys())[:MAX_NODES_TO_SEND]
+                # Add neighbors until we hit our size limit
+                remaining_spots = MAX_NODES_TO_SEND - len(concept_ids)
+                for neighbor in neighbors[:remaining_spots]:
+                    concept_ids.append(neighbor)
         
         # Create a set for faster lookups
         concept_id_set = set(concept_ids)
@@ -592,7 +628,8 @@ class UnifiedRECCServer:
                     'name': concept['name'],
                     'activation': concept.get('activation', 0.5),
                     'reuse_count': concept.get('reuse_count', 0),
-                    'created': concept.get('created', '')
+                    'created': concept.get('created', ''),
+                    'isRecent': concept_id in (recent_concepts if 'recent_concepts' in locals() else set())
                 })
             
         # Extract only edges that connect the selected concepts
@@ -617,7 +654,8 @@ class UnifiedRECCServer:
                 'total_concepts': total_concepts,
                 'total_relations': total_relations,
                 'filtered_concepts': len(nodes),
-                'filtered_relations': len(edges)
+                'filtered_relations': len(edges),
+                'focus_type': 'conversation_relevant'
             }
         }
         
