@@ -11,6 +11,8 @@ let simulationActive = false;
 let networkSimulation = null;
 let networkNodes = [];
 let networkLinks = [];
+let learningMode = false;
+let learningPaused = false;
 
 // Connect to server
 socket.on('connect', () => {
@@ -42,6 +44,65 @@ function updateStatus(message, type = 'info') {
     }
 }
 
+// Update mode indicator
+function updateModeIndicator() {
+    const indicator = document.getElementById('currentModeIndicator');
+    
+    if (learningMode) {
+        if (learningPaused) {
+            indicator.className = 'mode-indicator mode-paused';
+            indicator.textContent = 'Learning Paused';
+        } else {
+            indicator.className = 'mode-indicator mode-learning';
+            indicator.textContent = 'Learning Mode';
+        }
+    } else {
+        indicator.className = 'mode-indicator mode-interactive';
+        indicator.textContent = 'Interactive Mode';
+    }
+}
+
+// Update button states based on current mode
+function updateButtonStates() {
+    const toggleLearningBtn = document.getElementById('toggleLearningModeBtn');
+    const pauseLearningBtn = document.getElementById('pauseLearningBtn');
+    const sendPromptBtn = document.getElementById('sendPromptBtn');
+    const promptInput = document.getElementById('promptInput');
+    
+    if (learningMode) {
+        toggleLearningBtn.textContent = 'Stop Learning';
+        toggleLearningBtn.className = 'btn btn-danger control-btn';
+        pauseLearningBtn.disabled = false;
+        
+        // Update pause button text based on paused state
+        if (learningPaused) {
+            pauseLearningBtn.textContent = 'Resume';
+            pauseLearningBtn.className = 'btn btn-success control-btn';
+            // Enable prompt input when paused
+            promptInput.disabled = false;
+            sendPromptBtn.disabled = false;
+        } else {
+            pauseLearningBtn.textContent = 'Pause';
+            pauseLearningBtn.className = 'btn btn-warning control-btn';
+            // Disable prompt input during active learning
+            promptInput.disabled = true;
+            sendPromptBtn.disabled = true;
+            promptInput.placeholder = "Pause learning to interact...";
+        }
+    } else {
+        // Interactive mode
+        toggleLearningBtn.textContent = 'Start Learning';
+        toggleLearningBtn.className = 'btn btn-success control-btn';
+        pauseLearningBtn.disabled = true;
+        pauseLearningBtn.textContent = 'Pause';
+        pauseLearningBtn.className = 'btn btn-warning control-btn';
+        // Enable prompt input in interactive mode
+        promptInput.disabled = false;
+        sendPromptBtn.disabled = false;
+        promptInput.placeholder = "Enter your prompt...";
+    }
+}
+
 // Initialize the concept network visualization
 function initConceptNetwork() {
     const container = document.getElementById('conceptNetworkViz');
@@ -65,8 +126,35 @@ function initConceptNetwork() {
 // Update concept network visualization
 function updateConceptNetwork(data) {
     // Store the data
-    networkNodes = data.nodes;
-    networkLinks = data.edges;
+    // Only update if we have new data to prevent unnecessary redraws
+    if (data.nodes && data.edges) {
+        // Limit the number of nodes we visualize to prevent browser slowdown
+        const maxNodesToShow = 75; // Match the backend limit
+        
+        // Sort by importance (use reuse_count or activation as a proxy for importance)
+        const sortedNodes = [...data.nodes].sort((a, b) => (b.reuse_count || 0) - (a.reuse_count || 0));
+        
+        // Only take the top nodes
+        const limitedNodes = sortedNodes.slice(0, maxNodesToShow);
+        
+        // Create a set of node IDs that we're keeping
+        const nodeIdSet = new Set(limitedNodes.map(n => n.id));
+        
+        // Only keep edges that connect nodes we're showing
+        const limitedEdges = data.edges.filter(e => 
+            nodeIdSet.has(e.source) || typeof e.source === 'object' && nodeIdSet.has(e.source.id) &&
+            nodeIdSet.has(e.target) || typeof e.target === 'object' && nodeIdSet.has(e.target.id)
+        );
+        
+        // Store the reduced data for later use
+        networkNodes = limitedNodes;
+        networkLinks = limitedEdges;
+    }
+    
+    // Don't proceed if we don't have any nodes
+    if (!networkNodes.length) {
+        return;
+    }
     
     const container = document.getElementById('conceptNetworkViz');
     const width = container.clientWidth;
@@ -75,11 +163,17 @@ function updateConceptNetwork(data) {
     // Clear previous SVG and initialize
     const svg = initConceptNetwork();
     
-    // Create a force simulation
+    // Create a force simulation with optimized settings
     networkSimulation = d3.forceSimulation(networkNodes)
-        .force('link', d3.forceLink(networkLinks).id(d => d.id).distance(100))
-        .force('charge', d3.forceManyBody().strength(-300))
-        .force('center', d3.forceCenter(width / 2, height / 2));
+        // Use logarithmic scale for distance based on network size
+        .force('link', d3.forceLink(networkLinks).id(d => d.id)
+               .distance(() => Math.min(100, 50 + 50 * Math.log10(networkNodes.length))))
+        // Adjust repulsion force based on network size
+        .force('charge', d3.forceManyBody()
+               .strength(() => -300 / Math.log10(Math.max(10, networkNodes.length))))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        // Add collision detection to prevent node overlap
+        .force('collision', d3.forceCollide().radius(d => 8 + (d.reuse_count || 0)));
     
     // Create arrow markers for directed edges
     svg.append('defs').selectAll('marker')
@@ -95,51 +189,133 @@ function updateConceptNetwork(data) {
         .append('path')
         .attr('fill', '#999')
         .attr('d', 'M0,-5L10,0L0,5');
+    
+    // Create container for links
+    const linkGroup = svg.append('g')
+        .attr('class', 'links');
         
-    // Create links
-    const link = svg.append('g')
-        .selectAll('line')
+    // Create container for nodes    
+    const nodeGroup = svg.append('g')
+        .attr('class', 'nodes');
+    
+    // Create links with optimized rendering
+    const link = linkGroup.selectAll('line')
         .data(networkLinks)
         .join('line')
         .attr('stroke', '#999')
         .attr('stroke-opacity', 0.6)
-        .attr('stroke-width', d => Math.sqrt(d.weight) * 2)
+        .attr('stroke-width', d => Math.min(Math.sqrt(d.weight) * 2, 3)) // Cap line width
         .attr('marker-end', 'url(#arrow-end)');
     
     // Create a group for each node
-    const node = svg.append('g')
-        .selectAll('g')
+    const node = nodeGroup.selectAll('g')
         .data(networkNodes)
         .join('g')
         .call(drag(networkSimulation));
     
-    // Add circles to each node group
+    // Add circles to each node group with optimized size
     node.append('circle')
-        .attr('r', d => 5 + (d.reuse_count || 0))
+        .attr('r', d => Math.min(5 + (d.reuse_count || 0), 12)) // Cap node size
         .attr('fill', d => colorScale(d.activation || 0.5));
     
-    // Add labels to each node group
-    node.append('text')
-        .text(d => d.name)
+    // Add hover tooltip
+    node.append('title')
+        .text(d => `${d.name}\nActivation: ${d.activation?.toFixed(2) || 0}\nReuse Count: ${d.reuse_count || 0}`);
+    
+    // Only add labels for important nodes to reduce rendering overhead
+    const importantNodes = networkNodes.filter(d => (d.reuse_count || 0) > 2 || (d.activation || 0) > 0.7);
+    
+    nodeGroup.selectAll('text')
+        .data(importantNodes)
+        .join('text')
         .attr('x', 8)
         .attr('y', '0.31em')
-        .attr('font-size', '10px');
+        .attr('font-size', '9px')
+        .text(d => d.name);
     
-    // Create hover tooltip
-    node.append('title')
-        .text(d => `${d.name}\nActivation: ${d.activation?.toFixed(2)}\nReuse Count: ${d.reuse_count || 0}`);
+    // Status info about visualization
+    const totalNodes = data.nodes?.length || networkNodes.length;
+    const displayedNodes = networkNodes.length;
+    d3.select('#conceptNetworkViz')
+        .append('div')
+        .attr('class', 'network-stats')
+        .html(`<small>Showing ${displayedNodes}/${totalNodes} concepts</small>`)
+        .style('position', 'absolute')
+        .style('bottom', '5px')
+        .style('left', '5px')
+        .style('background-color', 'rgba(255,255,255,0.7)')
+        .style('padding', '2px 5px')
+        .style('border-radius', '3px');
     
-    // Update the position on simulation tick
+    // Use requestAnimationFrame for more efficient simulation
+    let animationFrameId;
+    
+    // Update the position on simulation tick with throttling
     networkSimulation.on('tick', () => {
-        link
-            .attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
+        // Cancel any existing animation frame
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
         
-        node
-            .attr('transform', d => `translate(${d.x},${d.y})`);
+        // Schedule the next update
+        animationFrameId = requestAnimationFrame(() => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+            
+            node
+                .attr('transform', d => `translate(${d.x},${d.y})`);
+                
+            // Update text positions separately
+            nodeGroup.selectAll('text')
+                .attr('x', d => d.x + 8)
+                .attr('y', d => d.y + 3);
+        });
     });
+    
+    // Stop simulation after 300 iterations to save CPU
+    networkSimulation.alphaDecay(0.03);
+    
+    // Add zoom capability
+    const zoom = d3.zoom()
+        .scaleExtent([0.25, 3])
+        .on('zoom', (event) => {
+            nodeGroup.attr('transform', event.transform);
+            linkGroup.attr('transform', event.transform);
+        });
+        
+    svg.call(zoom);
+    
+    // Add zoom controls
+    const zoomControls = d3.select('#conceptNetworkViz')
+        .append('div')
+        .attr('class', 'zoom-controls')
+        .style('position', 'absolute')
+        .style('top', '10px')
+        .style('right', '10px');
+        
+    zoomControls.append('button')
+        .attr('class', 'btn btn-sm btn-outline-secondary')
+        .text('+')
+        .on('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 1.3);
+        });
+        
+    zoomControls.append('button')
+        .attr('class', 'btn btn-sm btn-outline-secondary mx-1')
+        .text('Reset')
+        .on('click', () => {
+            svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+        });
+        
+    zoomControls.append('button')
+        .attr('class', 'btn btn-sm btn-outline-secondary')
+        .text('-')
+        .on('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 0.7);
+        });
 }
 
 // Utility function for node dragging
@@ -259,22 +435,25 @@ function updateMetrics(metrics) {
 }
 
 // Append interaction to history
-function appendInteraction(prompt, response) {
+function appendInteraction(prompt, response, userGenerated = false) {
     const container = document.getElementById('interactionHistory');
     
     // Create interaction box
     const box = document.createElement('div');
     box.className = 'interaction-box';
+    if (userGenerated) {
+        box.style.borderLeft = '3px solid #28a745'; // Green for user-initiated
+    }
     
     // Prompt
     const promptEl = document.createElement('div');
     promptEl.className = 'interaction-prompt';
-    promptEl.textContent = `👤 ${prompt}`;
+    promptEl.textContent = userGenerated ? `👤 ${prompt}` : `🧠 ${prompt}`;
     
     // Response
     const responseEl = document.createElement('div');
     responseEl.className = 'interaction-response';
-    responseEl.textContent = `🤖 ${response}`;
+    responseEl.textContent = `🧠 ${response}`; // Changed from 🤖 to 🧠 to represent the baby agent's brain
     
     // Append to box
     box.appendChild(promptEl);
@@ -335,36 +514,89 @@ function showThresholdAlerts(thresholds) {
     });
 }
 
-// Handle RECC updates
-socket.on('recc_update', (data) => {
+// Handle RECC state updates
+socket.on('recc_state_update', (data) => {
     // Update all visualizations and displays
-    updateConceptNetwork(data.concept_network);
-    updateEmotionGauges(data.emotional_state);
-    updateMetrics(data.metrics);
-    appendInteraction(data.prompt, data.response);
-    
-    // Synchronize UI controls with RECC state
-    document.getElementById('curiositySlider').value = data.emotional_state.curiosity;
-    document.getElementById('frustrationSlider').value = data.emotional_state.frustration;
-    document.getElementById('satisfactionSlider').value = data.emotional_state.satisfaction;
-    document.getElementById('uncertaintySlider').value = data.emotional_state.uncertainty;
-    
-    // Show any threshold alerts
-    if (data.thresholds && data.thresholds.length > 0) {
-        showThresholdAlerts(data.thresholds);
+    if (data.concept_network) {
+        updateConceptNetwork(data.concept_network);
     }
     
-    updateStatus(`Cycle ${data.cycle} complete`, 'success');
+    if (data.emotional_state) {
+        updateEmotionGauges(data.emotional_state);
+        
+        // Synchronize UI controls with RECC state
+        document.getElementById('curiositySlider').value = data.emotional_state.curiosity || 0.5;
+        document.getElementById('frustrationSlider').value = data.emotional_state.frustration || 0;
+        document.getElementById('satisfactionSlider').value = data.emotional_state.satisfaction || 0.3;
+        document.getElementById('uncertaintySlider').value = data.emotional_state.uncertainty || 0.7;
+    }
+    
+    if (data.metrics) {
+        updateMetrics(data.metrics);
+    }
+    
+    // Update mode controls
+    learningMode = data.learning_mode || false;
+    learningPaused = data.learning_paused || false;
+    updateModeIndicator();
+    updateButtonStates();
+    
+    updateStatus(`Updated state at ${new Date(data.timestamp).toLocaleTimeString()}`);
 });
 
-// Handle generated prompts in autonomous mode
+// Handle RECC responses
+socket.on('recc_response', (data) => {
+    appendInteraction(data.prompt, data.response, data.user_generated);
+    updateStatus(`Response received for cycle ${data.cycle}`, 'success');
+});
+
+// Handle learning mode toggle
+socket.on('learning_mode_update', (data) => {
+    learningMode = data.active;
+    learningPaused = data.paused;
+    
+    // Update UI to reflect the changes
+    updateModeIndicator();
+    updateButtonStates();
+    
+    if (learningMode) {
+        if (learningPaused) {
+            updateStatus('Learning mode paused', 'warning');
+        } else {
+            updateStatus('Learning mode active', 'success');
+        }
+    } else {
+        updateStatus('Interactive mode active', 'info');
+    }
+});
+
+// Handle cycle completion events
+socket.on('cycle_complete', (data) => {
+    updateStatus(`Learning cycle ${data.step+1}/${data.total_steps} complete`, 'success');
+});
+
+// Handle threshold crossing events
+socket.on('threshold_crossed', (data) => {
+    showThresholdAlerts([{
+        type: data.type,
+        description: data.description,
+        severity: data.severity
+    }]);
+});
+
+// Handle emotional change events
+socket.on('emotional_change', (data) => {
+    showThresholdAlerts([{
+        type: 'emotional',
+        emotion: data.emotion,
+        description: `${data.emotion} changed from ${data.previous.toFixed(2)} to ${data.current.toFixed(2)}`,
+        severity: Math.abs(data.delta) > 0.5 ? 'high' : (Math.abs(data.delta) > 0.3 ? 'medium' : 'low')
+    }]);
+});
+
+// Handle prompt generation events
 socket.on('prompt_generated', (data) => {
     updateStatus(`Generated prompt: ${data.prompt}`);
-});
-
-// Handle waiting for prompt in interactive mode
-socket.on('waiting_for_prompt', (data) => {
-    updateStatus('Waiting for your prompt...', 'warning');
 });
 
 // Handle errors
@@ -377,26 +609,48 @@ socket.on('status', (data) => {
     updateStatus(data.status);
 });
 
-// -------- UI Event Handlers --------
-
-// Start simulation button
-document.getElementById('startSimulationBtn').addEventListener('click', () => {
-    const steps = parseInt(document.getElementById('stepsInput').value) || 20;
-    const mode = document.querySelector('input[name="mode"]:checked').value;
-    
-    socket.emit('start_simulation', {
-        steps: steps,
-        mode: mode
-    });
-    
-    simulationActive = true;
-    updateStatus('Starting simulation...', 'info');
+// Handle visualization saves
+socket.on('visualization_saved', (data) => {
+    updateStatus('New visualizations saved', 'info');
 });
 
-// Stop simulation button
-document.getElementById('stopSimulationBtn').addEventListener('click', () => {
-    socket.emit('stop_simulation');
-    simulationActive = false;
+// Handle state saving/loading
+socket.on('state_saved', (data) => {
+    updateStatus(`State saved to ${data.filepath}`, 'success');
+});
+
+socket.on('state_loaded', (data) => {
+    updateStatus(`State loaded successfully`, 'success');
+});
+
+// -------- UI Event Handlers --------
+
+// Toggle learning mode button
+document.getElementById('toggleLearningModeBtn').addEventListener('click', () => {
+    if (learningMode) {
+        // Currently active, so turn it off
+        socket.emit('toggle_learning_mode', {
+            enable: false
+        });
+    } else {
+        // Currently inactive, so turn it on
+        const steps = parseInt(document.getElementById('stepsInput').value) || 100;
+        const delay = parseInt(document.getElementById('delayInput').value) || 3;
+        
+        socket.emit('toggle_learning_mode', {
+            enable: true,
+            steps: steps,
+            delay: delay
+        });
+    }
+});
+
+// Pause learning button
+document.getElementById('pauseLearningBtn').addEventListener('click', () => {
+    // Toggle pause state
+    socket.emit('pause_learning', {
+        pause: !learningPaused
+    });
 });
 
 // Send prompt button
@@ -465,13 +719,29 @@ document.getElementById('devAgeSlider').addEventListener('change', (e) => {
     updateStatus(`Adjusting developmental age to ${value.toFixed(1)}`, 'info');
 });
 
+// State management buttons
+document.getElementById('saveStateBtn').addEventListener('click', () => {
+    socket.emit('save_state');
+    updateStatus('Saving state...', 'info');
+});
+
+document.getElementById('loadStateBtn').addEventListener('click', () => {
+    // This could be extended to show a modal with available state files
+    const sessionId = prompt('Enter session ID to load:');
+    if (sessionId) {
+        socket.emit('load_state', { session_id: sessionId });
+        updateStatus('Loading state...', 'info');
+    }
+});
+
 // Initialize when document is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize concept network with empty data
     initConceptNetwork();
     
     // Initialize controls
-    document.getElementById('stopSimulationBtn').disabled = true;
+    updateModeIndicator();
+    updateButtonStates();
     
     // Update status
     updateStatus('Dashboard ready. Connect to start visualization.');

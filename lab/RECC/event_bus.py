@@ -75,6 +75,7 @@ class EventTypes:
     CONCEPT_CREATED = "concept_created"
     RELATION_CREATED = "relation_created"
     THEORY_FORMED = "theory_formed"
+    DIALOGUE_CONTEXT_RESET = "dialogue_context_reset"
     
     # Emotional events
     EMOTIONAL_CHANGE = "emotional_change"
@@ -92,4 +93,5 @@ class EventTypes:
     
     # User interaction events
     USER_PROMPT = "user_prompt"
+    USER_INTERACTION_PROCESSED = "user_interaction_processed"
     PARAMETER_ADJUSTED = "parameter_adjusted"

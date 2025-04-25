@@ -18,7 +18,10 @@ def draw_concept_map(symbols=None, links=None, emotions=None, concept_network=No
     
     if (concept_network and hasattr(concept_network, 'graph') and len(concept_network.graph) > 0):
         # Use concept network for visualization
-        G = concept_network.graph
+        
+        # Get a visualization-friendly subgraph instead of the full graph
+        # This limits the number of nodes to prevent memory issues
+        G = concept_network.get_visualization_subgraph(max_nodes=75)
         
         plt.figure(figsize=(12, 10))
         
@@ -31,7 +34,7 @@ def draw_concept_map(symbols=None, links=None, emotions=None, concept_network=No
         
         # Get node colors based on reuse count
         reuse_counts = [G.nodes[n].get('reuse_count', 0) + 1 for n in G.nodes()]
-        max_reuse = max(reuse_counts)
+        max_reuse = max(reuse_counts) if reuse_counts else 1
         node_colors = [(0.2, 0.4, 0.8, min(1.0, c/max_reuse)) for c in reuse_counts]
         
         # Draw nodes
@@ -44,21 +47,37 @@ def draw_concept_map(symbols=None, links=None, emotions=None, concept_network=No
         edge_weights = [G.edges[e].get('weight', 0.1) * 2 for e in G.edges()]
         nx.draw_networkx_edges(G, pos, width=edge_weights, alpha=0.6, edge_color='gray')
         
-        # Draw labels
-        labels = {n: concept_network.concepts[n]['name'] for n in G.nodes()}
+        # Draw labels - only for the most important nodes
+        # For smaller networks, show all labels
+        labels = {}
+        if len(G.nodes()) > 30:
+            # For larger networks, only show labels for more important nodes
+            central = nx.betweenness_centrality(G)
+            important = sorted(central.items(), key=lambda x: x[1], reverse=True)[:25]
+            for node, _ in important:
+                if node in concept_network.concepts:
+                    labels[node] = concept_network.concepts[node]['name']
+        else:
+            # For smaller networks, show all labels
+            labels = {n: concept_network.concepts[n]['name'] for n in G.nodes() if n in concept_network.concepts}
+            
         nx.draw_networkx_labels(G, pos, labels=labels, font_size=10, font_weight='bold')
         
-        plt.title('RECC Concept Network')
+        # Add information about size reduction
+        total_concepts = len(concept_network.concepts)
+        displayed_concepts = len(G.nodes())
+        plt.title(f'RECC Concept Network (Showing {displayed_concepts}/{total_concepts} concepts)')
         plt.axis('off')
         
         # Ensure the visualization directory exists
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         
-        # Save figure
-        plt.savefig(save_path)
+        # Save figure with reduced DPI to decrease file size
+        plt.savefig(save_path, dpi=80)
         print(f"📊 Concept network visualization saved to: {save_path}")
         
-        plt.close()  # Close the figure to free memory
+        # Close the figure immediately to free memory
+        plt.close('all')
         
         return save_path
         

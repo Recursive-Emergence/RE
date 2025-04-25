@@ -114,6 +114,24 @@
             margin-bottom: 10px;
             font-size: 0.9rem;
         }
+        .mode-indicator {
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .mode-learning {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .mode-interactive {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .mode-paused {
+            background-color: #fff3cd;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -167,14 +185,8 @@
                         <input type="text" id="promptInput" class="prompt-input" placeholder="Enter your prompt...">
                         <div class="d-flex justify-content-between">
                             <button id="sendPromptBtn" class="btn btn-primary">Send Prompt</button>
-                            <div>
-                                <span class="me-2">Mode:</span>
-                                <div class="btn-group" role="group">
-                                    <input type="radio" class="btn-check" name="mode" id="autonomousMode" value="autonomous" checked>
-                                    <label class="btn btn-outline-primary" for="autonomousMode">Autonomous</label>
-                                    <input type="radio" class="btn-check" name="mode" id="interactiveMode" value="interactive">
-                                    <label class="btn btn-outline-primary" for="interactiveMode">Interactive</label>
-                                </div>
+                            <div id="currentModeIndicator" class="mode-indicator mode-interactive">
+                                Interactive Mode
                             </div>
                         </div>
                     </div>
@@ -189,15 +201,27 @@
                 </div>
                 <div class="panel" id="controlPanel">
                     <div class="panel-title">Control Panel</div>
-                    <div class="mb-3">
-                        <label for="stepsInput" class="form-label">Steps to run:</label>
-                        <input type="number" class="form-control form-control-sm" id="stepsInput" value="20" min="1" max="100">
+                    
+                    <!-- Learning Mode Controls -->
+                    <div class="mb-3 p-3 border rounded">
+                        <h6>Learning Mode</h6>
+                        <div class="mb-2">
+                            <label for="stepsInput" class="form-label">Steps to run:</label>
+                            <input type="number" class="form-control form-control-sm" id="stepsInput" value="100" min="10" max="1000">
+                        </div>
+                        <div class="mb-2">
+                            <label for="delayInput" class="form-label">Delay between steps (seconds):</label>
+                            <input type="number" class="form-control form-control-sm" id="delayInput" value="3" min="1" max="10">
+                        </div>
+                        <div class="mb-3">
+                            <button id="toggleLearningModeBtn" class="btn btn-success control-btn">Start Learning</button>
+                            <button id="pauseLearningBtn" class="btn btn-warning control-btn" disabled>Pause</button>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <button id="startSimulationBtn" class="btn btn-success control-btn">Start Simulation</button>
-                        <button id="stopSimulationBtn" class="btn btn-danger control-btn">Stop</button>
-                    </div>
+                    
                     <hr>
+                    
+                    <!-- Emotional State Adjustment -->
                     <div class="mb-3">
                         <h6>Emotional State Adjustment</h6>
                         <div class="mb-2">
@@ -217,12 +241,23 @@
                             <input type="range" class="form-range parameter-slider" id="uncertaintySlider" min="0" max="1" step="0.05" value="0.7">
                         </div>
                     </div>
+                    
+                    <!-- Development Age -->
                     <div class="mb-3">
                         <h6>Development Age</h6>
                         <div class="mb-2">
                             <label for="devAgeSlider" class="form-label">Development Age (1-6)</label>
                             <input type="range" class="form-range parameter-slider" id="devAgeSlider" min="1" max="6" step="0.1" value="2">
                             <span id="devAgeValue">2.0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- State Management -->
+                    <div class="mb-3">
+                        <h6>State Management</h6>
+                        <div class="d-flex gap-2">
+                            <button id="saveStateBtn" class="btn btn-sm btn-outline-primary">Save State</button>
+                            <button id="loadStateBtn" class="btn btn-sm btn-outline-secondary">Load State</button>
                         </div>
                     </div>
                 </div>

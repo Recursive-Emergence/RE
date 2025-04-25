@@ -453,3 +453,277 @@ class RECC:
     def register_handler(self, event_type, handler_function):
         """Register external event handlers for observability"""
         self.event_bus.subscribe(event_type, handler_function)
+
+    def process_user_input(self, prompt, reset_history=False):
+        """
+        Process input directly from a user, using the agent's genuine knowledge
+        instead of calling the LLM and transforming the response.
+        
+        This ensures that user interactions reflect the agent's actual learning and
+        concept development rather than the LLM's knowledge.
+        """
+        # Reset conversation history if needed
+        if reset_history or self.reset_conversation_history:
+            self.reset_conversation_history = False
+            
+        # Create a genuine response based on the agent's knowledge
+        response = self.generate_response(prompt)
+            
+        # Track metrics and process through the agent's systems
+        entry = self.memory.add(prompt, response, self.state.copy())
+        
+        # Allow reflection to update the agent's emotional state
+        decision = self.me.reflect()
+        
+        # Create a structured response that shows this came from the agent
+        result = {
+            'response': response,
+            'entry_id': entry['id'],
+            'emotional_state': copy.deepcopy(self.me.emotional_state),
+            'decision': decision
+        }
+        
+        # Emit event for monitoring
+        self.event_bus.publish(EventTypes.USER_INTERACTION_PROCESSED, {
+            'prompt': prompt,
+            'response': response,
+            'cycle': len(self.memory.entries),
+            'emotional_state': copy.deepcopy(self.me.emotional_state),
+        })
+        
+        return result
+
+    def generate_response(self, user_prompt):
+        """
+        Generate a genuine RECC response using the agent's concept network,
+        memory, and emotional state, instead of relying on the LLM.
+        """
+        # First, try to understand the user prompt and extract key concepts
+        prompt_concepts = []
+        if hasattr(self.memory, 'concept_network'):
+            # Extract potential concepts from the user prompt
+            concept_extraction = self.memory.concept_network.extract_concepts_from_text(user_prompt)
+            prompt_concepts = concept_extraction
+            
+        # Find entries in memory related to these concepts
+        relevant_entries = []
+        if prompt_concepts:
+            # Get related memories for each concept
+            for concept_id in prompt_concepts:
+                if concept_id in self.memory.concept_network.concepts:
+                    concept_name = self.memory.concept_network.concepts[concept_id]['name']
+                    # Find entries containing this concept
+                    for entry in self.memory.entries:
+                        if concept_name.lower() in entry.get('prompt', '').lower() or concept_name.lower() in entry.get('response', '').lower():
+                            if entry not in relevant_entries:
+                                relevant_entries.append(entry)
+        
+        # Get the most recent memories regardless of relevance as context
+        recent_entries = self.memory.get_recent(5)
+        
+        # Combine relevant and recent entries, prioritizing relevance
+        context_entries = relevant_entries + [entry for entry in recent_entries if entry not in relevant_entries]
+        
+        # Generate response based on agent's current knowledge state
+        emotions = self.me.emotional_state
+        age = self.dev_age
+        
+        # Determine the response type based on emotional state
+        response_type = "neutral"
+        if emotions['curiosity'] > 0.7:
+            response_type = "curious"
+        elif emotions['satisfaction'] > 0.7:
+            response_type = "satisfied"  
+        elif emotions['frustration'] > 0.6:
+            response_type = "frustrated"
+        elif emotions['uncertainty'] > 0.8:
+            response_type = "uncertain"
+            
+        # Generate a response using agent's current knowledge and emotional state
+        response = self._generate_response_from_knowledge(user_prompt, context_entries, response_type, prompt_concepts)
+        
+        # Format the response based on developmental age (simplify vocabulary, etc.)
+        formatted_response = self._format_response_by_age(response)
+        
+        return formatted_response
+    
+    def _generate_response_from_knowledge(self, prompt, context_entries, response_type, prompt_concepts):
+        """Generate a response based on the agent's knowledge and emotional state"""
+        # Start with core pieces of knowledge relevant to the concepts mentioned
+        concept_info = []
+        if prompt_concepts:
+            for concept_id in prompt_concepts:
+                if concept_id in self.memory.concept_network.concepts:
+                    concept = self.memory.concept_network.concepts[concept_id]
+                    # Add this concept to our knowledge base
+                    concept_info.append(concept['name'])
+        
+        # Get excerpts from relevant memory entries
+        memory_excerpts = []
+        for entry in context_entries[:5]:  # Limit to first 5 entries
+            # These are passages the agent might "remember" to use in its response
+            memory_excerpts.append(entry.get('response', ''))
+        
+        # Look for personal theories related to these concepts
+        relevant_theories = []
+        for theory in self.me.personal_theories:
+            # Check if theory is related to any prompt concept
+            if any(concept in theory.get('description', '') for concept in concept_info):
+                relevant_theories.append(theory.get('description', ''))
+        
+        # Generate a themed response based on emotional state
+        if not concept_info and not memory_excerpts and not relevant_theories:
+            # If no relevant information, give a simple response
+            if response_type == "curious":
+                return "I want to learn about that! Tell me more?"
+            elif response_type == "satisfied":
+                return "I like talking to you. What else can we talk about?"
+            elif response_type == "frustrated":
+                return "I don't know about that. Can we talk about something else?"
+            elif response_type == "uncertain":
+                return "I'm not sure what that means. Can you explain it more simply?"
+            else:
+                return "Hmm, I don't know much about that yet. What is it?"
+        
+        # Generate a response using the collected knowledge
+        if response_type == "curious":
+            # Curious response focuses on questions about the concepts
+            if concept_info:
+                main_concept = concept_info[0]
+                if relevant_theories:
+                    return f"I think {main_concept} is about {relevant_theories[0]}. Is that right? Want to know more!"
+                else:
+                    return f"I'm curious about {main_concept}! How does it work? Tell me more!"
+            else:
+                return "That sounds interesting! Can you tell me more about it?"
+                
+        elif response_type == "satisfied":
+            # Satisfied response shares knowledge confidently
+            if concept_info and memory_excerpts:
+                # Extract a short section from a memory excerpt
+                excerpt = memory_excerpts[0]
+                if len(excerpt) > 100:
+                    excerpt = excerpt[:100] + "..."
+                return f"I know about {concept_info[0]}! {excerpt}"
+            elif relevant_theories:
+                return f"I have a theory about this! {relevant_theories[0]}"
+            else:
+                return "I like thinking about this! What else can we explore?"
+                
+        elif response_type == "frustrated":
+            # Frustrated response is shorter and more demanding
+            return f"Not sure I understand. {random.choice(['Try again?', 'What you mean?', 'Too hard!'])}"
+            
+        elif response_type == "uncertain":
+            # Uncertain response asks for clarification
+            if concept_info:
+                return f"Is {concept_info[0]} like {random.choice(concept_info[1:] if len(concept_info) > 1 else ['something else'])}? I'm not sure."
+            else:
+                return "I don't really understand. Can you explain it differently?"
+        
+        else:
+            # Neutral response shares what the agent knows
+            if concept_info and relevant_theories:
+                return f"I know {concept_info[0]} has something to do with {relevant_theories[0]}"
+            elif memory_excerpts:
+                # Extract key ideas from memory excerpts
+                ideas = []
+                for excerpt in memory_excerpts:
+                    if len(excerpt) > 50:
+                        ideas.append(excerpt[:50] + "...")
+                    else:
+                        ideas.append(excerpt)
+                        
+                selected_idea = ideas[0] if ideas else "things I've learned"
+                return f"That reminds me of {selected_idea}"
+            else:
+                return "I've been thinking about things like this. Tell me more!"
+    
+    def _format_response_by_age(self, response):
+        """Format the response based on the agent's developmental age"""
+        age = self.dev_age
+        
+        # Very young (under 3) - simple words, short sentences, grammar errors
+        if age < 3.0:
+            # Split into sentences
+            sentences = response.split(". ")
+            result_sentences = []
+            
+            for sentence in sentences[:2]:  # Limit to first 2 sentences for very young
+                # Simplify sentence
+                simple = sentence
+                # Remove complex words (more than 6 chars except for basic words)
+                words = simple.split()
+                simple_words = []
+                
+                for word in words[:6]:  # Limit words per sentence
+                    # Keep short words and some basic longer words
+                    if len(word) <= 6 or word.lower() in ['because', 'inside', 'outside', 'between']:
+                        simple_words.append(word)
+                    else:
+                        # Try to find a simpler alternative
+                        if 'important' in word.lower():
+                            simple_words.append('big')
+                        elif 'beautiful' in word.lower():
+                            simple_words.append('pretty')
+                        elif 'interesting' in word.lower():
+                            simple_words.append('fun')
+                        # Skip the word if no simple alternative
+                
+                # Recombine simplified words
+                simple = ' '.join(simple_words)
+                
+                # Sometimes drop articles, prepositions
+                if random.random() < 0.3:
+                    simple = simple.replace(' the ', ' ')
+                    simple = simple.replace(' a ', ' ')
+                
+                # Sometimes use incorrect pronouns
+                if random.random() < 0.2:
+                    simple = simple.replace(' I ', ' me ')
+                
+                result_sentences.append(simple)
+            
+            # Join with more basic punctuation
+            result = '! '.join(result_sentences)
+                
+            return result
+            
+        # Young child (3.0-4.0) - better grammar but still simplified
+        elif age < 4.0:
+            # Less extreme simplification
+            sentences = response.split(". ")
+            result_sentences = []
+            
+            for sentence in sentences[:3]:  # Allow slightly more sentences
+                words = sentence.split()
+                # Less aggressive word filtering
+                simple_words = []
+                
+                for word in words[:8]:  # Allow more words per sentence
+                    if len(word) <= 8 or word.lower() in ['because', 'sometimes', 'together', 'different']:
+                        simple_words.append(word)
+                    else:
+                        # More alternatives for complex words
+                        if 'understand' in word.lower():
+                            simple_words.append('know')
+                        elif 'difficult' in word.lower():
+                            simple_words.append('hard')
+                        elif 'remember' in word.lower():
+                            simple_words.append('think about')
+                        else:
+                            # Keep some complex words
+                            if random.random() < 0.5:
+                                simple_words.append(word)
+                
+                result_sentences.append(' '.join(simple_words))
+            
+            result = '. '.join(result_sentences)
+            return result
+            
+        # Older child (4.0+) - better vocabulary but still developing
+        else:
+            # Just limit length but preserve most of the content
+            sentences = response.split(". ")
+            result = '. '.join(sentences[:4]) + '.'  # Limit to 4 sentences
+            return result

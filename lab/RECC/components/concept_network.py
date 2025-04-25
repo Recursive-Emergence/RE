@@ -19,6 +19,11 @@ class ConceptNetwork:
         
         # Store reference to event bus (or use global)
         self.event_bus = event_bus or global_event_bus
+        
+        # Config for network size management
+        self.max_concepts = 300  # Maximum number of concepts to keep
+        self.max_relations = 1000  # Maximum number of relations to keep
+        self.inactive_threshold = 0.2  # Concepts with activation below this are candidates for pruning
     
     def add_concept(self, name, source="dialogue", properties=None):
         """Add a new concept to the network"""
@@ -222,10 +227,19 @@ class ConceptNetwork:
                 self.add_relation(p_concept, r_concept, "prompt_response", 0.6)
         
         self.last_updated = datetime.now()
+        
+        # Perform network pruning if needed
+        pruned_concepts, pruned_relations = 0, 0
+        if len(self.concepts) > self.max_concepts or len(self.relations) > self.max_relations:
+            pruned_concepts, pruned_relations = self.prune_concept_network()
+        
         return {
             'prompt_concepts': prompt_concepts,
             'response_concepts': response_concepts,
-            'relations': relations
+            'relations': relations,
+            'pruned_concepts': pruned_concepts,
+            'pruned_relations': pruned_relations,
+            'new_concepts': len(response_concepts)
         }
     
     def update_activation(self, decay_factor=0.9):
@@ -287,3 +301,89 @@ class ConceptNetwork:
             'density': nx.density(self.graph) if len(self.graph) > 1 else 0,
             'connected_components': nx.number_connected_components(self.graph.to_undirected()) if len(self.graph) > 0 else 0
         }
+    
+    def prune_concept_network(self):
+        """Prune the concept network when it grows too large"""
+        if len(self.concepts) <= self.max_concepts and len(self.relations) <= self.max_relations:
+            return 0, 0  # No pruning needed
+            
+        # Identify concepts to prune based on activation, recency and reuse
+        pruned_concepts = 0
+        candidates = []
+        for concept_id, concept in self.concepts.items():
+            # Skip core concepts we want to keep
+            if concept['name'].lower() in ['recursion', 'emergence', 'complexity', 'pattern', 'self', 'consciousness']:
+                continue
+                
+            # Calculate a "keep score" combining activation and usage
+            activation = concept.get('activation', 0)
+            reuse_count = concept.get('reuse_count', 0)
+            
+            # Higher score = more likely to be kept
+            keep_score = (activation * 2) + (min(reuse_count, 10) / 10)
+            candidates.append((concept_id, keep_score))
+            
+        # Sort by keep score (ascending - lower scores pruned first)
+        candidates.sort(key=lambda x: x[1])
+        
+        # Determine how many concepts to remove
+        to_remove_count = max(0, len(self.concepts) - self.max_concepts + 10)  # +10 for buffer
+        
+        # Remove the lowest-scored concepts
+        for i in range(min(to_remove_count, len(candidates))):
+            concept_id = candidates[i][0]
+            # Remove this concept
+            if concept_id in self.concepts:
+                del self.concepts[concept_id]
+                pruned_concepts += 1
+                
+                # Also remove from graph
+                if self.graph.has_node(concept_id):
+                    self.graph.remove_node(concept_id)
+        
+        # Now prune relations if needed
+        pruned_relations = 0
+        if len(self.relations) > self.max_relations:
+            # Sort relations by weight (ascending - lower weights pruned first)
+            self.relations.sort(key=lambda r: r.get('weight', 0))
+            
+            # Remove enough to get below limit
+            to_remove = len(self.relations) - self.max_relations + 50  # +50 for buffer
+            removed_relations = self.relations[:to_remove]
+            self.relations = self.relations[to_remove:]
+            pruned_relations = len(removed_relations)
+            
+            # Also remove from graph
+            for relation in removed_relations:
+                if self.graph.has_edge(relation.get('source'), relation.get('target')):
+                    self.graph.remove_edge(relation.get('source'), relation.get('target'))
+        
+        # Clean up any dangling relations (those referencing removed concepts)
+        valid_concepts = set(self.concepts.keys())
+        cleaned_relations = []
+        
+        for relation in self.relations:
+            if relation.get('source') in valid_concepts and relation.get('target') in valid_concepts:
+                cleaned_relations.append(relation)
+                
+        self.relations = cleaned_relations
+        
+        print(f"🧹 Pruned {pruned_concepts} concepts and {pruned_relations} relations from network")
+        return pruned_concepts, pruned_relations
+        
+    def get_visualization_subgraph(self, max_nodes=100):
+        """Get a subgraph suitable for visualization - limiting to most important nodes"""
+        if len(self.concepts) <= max_nodes:
+            return self.graph
+        
+        # Get important concepts through multiple methods
+        central = set(self.get_central_concepts(n=max_nodes // 3))
+        connected = set(self.get_most_connected_concepts(n=max_nodes // 3))
+        active = set(self.get_active_concepts(threshold=0.4))
+        recent = set(sorted(self.concepts.items(), key=lambda x: x[1].get('reuse_count', 0), reverse=True)[:max_nodes // 3])
+        
+        # Combine all methods (with duplicates removed)
+        important_concepts = list(central | connected | active | recent)[:max_nodes]
+        
+        # Create and return visualization subgraph
+        return self.get_concept_subgraph(important_concepts)
