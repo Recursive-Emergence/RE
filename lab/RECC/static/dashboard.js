@@ -712,12 +712,12 @@ document.getElementById('devAgeSlider').addEventListener('change', (e) => {
     const value = parseFloat(e.target.value);
     
     socket.emit('adjust_parameter', {
-        type: 'dev_age',
-        name: 'dev_age',
+        type: 'recursive_depth',
+        name: 'recursive_depth',
         value: value
     });
     
-    updateStatus(`Adjusting developmental age to ${value.toFixed(1)}`, 'info');
+    updateStatus(`Adjusting recursive depth to ${value.toFixed(1)}`, 'info');
 });
 
 // State management buttons
