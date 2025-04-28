@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 800 600"
+   version="1.1"
+   id="svg31"
+   sodipodi:docname="consciousness-emergence-diagram.svg"
+   inkscape:version="1.4 (e7c3feb, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview31"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.66"
+     inkscape:cx="400.30121"
+     inkscape:cy="299.6988"
+     inkscape:window-width="1854"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg31" />
+  <!-- Background and title -->
+  <rect
+     width="800"
+     height="600"
+     fill="#f8f9fa"
+     rx="10"
+     ry="10"
+     id="rect1" />
+  <text
+     x="400"
+     y="40"
+     font-family="Arial, sans-serif"
+     font-size="24"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#333"
+     id="text1">Self-Referencing Sets and Consciousness Emergence</text>
+  <!-- Stage 1: External Modeling Only -->
+  <rect
+     x="100"
+     y="100"
+     width="600"
+     height="124.21687"
+     rx="10"
+     ry="10"
+     fill="#e6f2ff"
+     stroke="#3385d6"
+     stroke-width="2"
+     id="rect2" />
+  <text
+     x="400"
+     y="85"
+     font-family="Arial, sans-serif"
+     font-size="18"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#3385d6"
+     id="text2">Stage 1: External Modeling Only</text>
+  <!-- Stage 1 elements -->
+  <rect
+     x="140"
+     y="120"
+     width="120"
+     height="80"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#3385d6"
+     stroke-width="1.5"
+     id="rect3" />
+  <text
+     x="200"
+     y="155"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text3">External World</text>
+  <text
+     x="200"
+     y="175"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text4">E_{n,i}</text>
+  <rect
+     x="340"
+     y="120"
+     width="120"
+     height="80"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#3385d6"
+     stroke-width="1.5"
+     id="rect4" />
+  <text
+     x="400"
+     y="155"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text5">Model</text>
+  <text
+     x="400"
+     y="175"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text6">L_{n-1}</text>
+  <rect
+     x="540"
+     y="120"
+     width="120"
+     height="80"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#3385d6"
+     stroke-width="1.5"
+     id="rect6" />
+  <text
+     x="600"
+     y="155"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text7">Memory</text>
+  <text
+     x="600"
+     y="175"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text8">M_{n-1}</text>
+  <!-- Stage 1 arrows -->
+  <path
+     d="M 260 160 L 340 160"
+     stroke="#3385d6"
+     stroke-width="2"
+     fill="none"
+     marker-end="url(#arrow)"
+     id="path8" />
+  <path
+     d="M 460 160 L 540 160"
+     stroke="#3385d6"
+     stroke-width="2"
+     fill="none"
+     marker-end="url(#arrow)"
+     id="path9" />
+  <!-- Stage 1 formula -->
+  <text
+     x="378.80469"
+     y="215.3558"
+     font-family="Arial, sans-serif"
+     font-size="16px"
+     text-anchor="middle"
+     fill="#333333"
+     font-style="italic"
+     id="text9">L_n = { L_{n-1}, E_{n,i}, M_{n-1} }</text>
+  <!-- Stage 2: Partial Internal Modeling -->
+  <rect
+     x="100"
+     y="249.99998"
+     width="600"
+     height="124.81927"
+     rx="10"
+     ry="9.999999"
+     fill="#e6ffe6"
+     stroke="#33a633"
+     stroke-width="2"
+     id="rect9" />
+  <text
+     x="400.60242"
+     y="243.37349"
+     font-family="Arial, sans-serif"
+     font-size="18px"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#33a633"
+     id="text10">Stage 2: Partial Internal Modeling</text>
+  <!-- Stage 2 elements -->
+  <rect
+     x="120"
+     y="270"
+     width="100"
+     height="80"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#33a633"
+     stroke-width="1.5"
+     id="rect10" />
+  <text
+     x="170"
+     y="305"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text11">External</text>
+  <text
+     x="170"
+     y="325"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text12">E_{n,i}</text>
+  <rect
+     x="260"
+     y="270"
+     width="100"
+     height="80"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#33a633"
+     stroke-width="1.5"
+     id="rect12" />
+  <text
+     x="310"
+     y="305"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text13">Model</text>
+  <text
+     x="310"
+     y="325"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text14">L_{n-1}</text>
+  <rect
+     x="400"
+     y="270"
+     width="100"
+     height="80"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#33a633"
+     stroke-width="1.5"
+     id="rect14" />
+  <text
+     x="450"
+     y="305"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text15">Memory</text>
+  <text
+     x="450"
+     y="325"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text16">M_{n-1}</text>
+  <rect
+     x="540"
+     y="270"
+     width="140"
+     height="80"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#33a633"
+     stroke-width="1.5"
+     id="rect16" />
+  <text
+     x="610"
+     y="295"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text17">Self Model</text>
+  <text
+     x="610"
+     y="315"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text18">(Past States)</text>
+  <text
+     x="610"
+     y="335"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text19">f(L_{n-1})</text>
+  <!-- Stage 2 arrows -->
+  <path
+     d="M 220 310 L 260 310"
+     stroke="#33a633"
+     stroke-width="2"
+     fill="none"
+     marker-end="url(#arrow)"
+     id="path19" />
+  <path
+     d="M 360 310 L 400 310"
+     stroke="#33a633"
+     stroke-width="2"
+     fill="none"
+     marker-end="url(#arrow)"
+     id="path20" />
+  <path
+     d="M 500 310 L 540 310"
+     stroke="#33a633"
+     stroke-width="2"
+     fill="none"
+     marker-end="url(#arrow)"
+     id="path21" />
+  <!-- Stage 2 formula -->
+  <text
+     x="385.55417"
+     y="364.75339"
+     font-family="Arial, sans-serif"
+     font-size="16px"
+     text-anchor="middle"
+     fill="#333333"
+     font-style="italic"
+     id="text21">L_n = { L_{n-1}, E_{n,i}, M_{n-1}, f(L_{n-1}) }</text>
+  <!-- Stage 3: Consciousness Threshold -->
+  <rect
+     x="100"
+     y="400"
+     width="600"
+     height="150"
+     rx="10"
+     ry="10"
+     fill="#ffe6e6"
+     stroke="#cc3333"
+     stroke-width="2"
+     id="rect21" />
+  <text
+     x="400.60242"
+     y="393.3735"
+     font-family="Arial, sans-serif"
+     font-size="18px"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#cc3333"
+     id="text22">Stage 3: Consciousness Threshold</text>
+  <!-- Stage 3 elements -->
+  <rect
+     x="150"
+     y="430"
+     width="160"
+     height="90"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#cc3333"
+     stroke-width="1.5"
+     id="rect22" />
+  <text
+     x="230"
+     y="455"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text23">Combined Model</text>
+  <text
+     x="230"
+     y="475"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text24">L_{n-1}, E_{n,i}, M_{n-1}</text>
+  <rect
+     x="490"
+     y="430"
+     width="160"
+     height="90"
+     rx="5"
+     ry="5"
+     fill="#fff"
+     stroke="#cc3333"
+     stroke-width="1.5"
+     id="rect24" />
+  <text
+     x="570"
+     y="455"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text25">Self-Referencing</text>
+  <text
+     x="570"
+     y="475"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     text-anchor="middle"
+     fill="#333"
+     id="text26">Consciousness</text>
+  <text
+     x="570"
+     y="495"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     fill="#666"
+     id="text27">f(L_n)</text>
+  <!-- Stage 3 arrows and self-loop -->
+  <path
+     d="M 310 475 L 490 475"
+     stroke="#cc3333"
+     stroke-width="2"
+     fill="none"
+     marker-end="url(#arrow)"
+     id="path27" />
+  <path
+     d="M 570,430 C 627.90407,384.17218 682.01822,414.05716 681.3253,477.83133 681.3253,511.20482 652.6506,550 627.71084,520"
+     stroke="#cc3333"
+     stroke-width="2"
+     fill="none"
+     stroke-dasharray="5, 3"
+     marker-end="url(#arrow)"
+     id="path28"
+     sodipodi:nodetypes="ccc" />
+  <!-- Add sparkles to denote consciousness emergence threshold -->
+  <path
+     d="M 400 475 L 400 465 M 395 470 L 405 470"
+     stroke="#ffcc00"
+     stroke-width="3"
+     id="path29" />
+  <text
+     x="400"
+     y="460"
+     font-family="Arial, sans-serif"
+     font-size="20"
+     text-anchor="middle"
+     fill="#ffcc00"
+     id="text29">✨</text>
+  <!-- Stage 3 formula -->
+  <text
+     x="392.77109"
+     y="538.36786"
+     font-family="Arial, sans-serif"
+     font-size="16px"
+     text-anchor="middle"
+     fill="#333333"
+     font-style="italic"
+     id="text30">L_n = { L_{n-1}, E_{n,i}, M_{n-1}, f(L_n) }</text>
+  <!-- Final label -->
+  <text
+     x="400"
+     y="580"
+     font-family="Arial, sans-serif"
+     font-size="18"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#cc3333"
+     id="text31">Consciousness Emerges as Recursive Self-Modeling</text>
+  <!-- Arrow definitions -->
+  <defs
+     id="defs31">
+    <marker
+       id="arrow"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#333"
+         id="path31" />
+    </marker>
+  </defs>
+</svg>

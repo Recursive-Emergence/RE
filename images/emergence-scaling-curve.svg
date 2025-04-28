@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 800 500"
+   version="1.1"
+   id="svg38"
+   sodipodi:docname="emergence-scaling-curve.svg"
+   inkscape:version="1.4 (e7c3feb, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview38"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.9125"
+     inkscape:cx="400"
+     inkscape:cy="250.41096"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg38" />
+  <!-- Background and grid -->
+  <rect
+     x="0"
+     y="0"
+     width="800"
+     height="500"
+     fill="#fafafa"
+     id="rect1" />
+  <!-- Axes -->
+  <line
+     x1="100"
+     y1="400"
+     x2="700"
+     y2="400"
+     stroke="#333"
+     stroke-width="2"
+     id="line1" />
+  <line
+     x1="100"
+     y1="400"
+     x2="100"
+     y2="100"
+     stroke="#333"
+     stroke-width="2"
+     id="line2" />
+  <!-- X-axis labels (Recursive Depth) -->
+  <text
+     x="400"
+     y="450"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="20"
+     font-weight="bold"
+     id="text2">Recursive Depth (n)</text>
+  <text
+     x="100"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text3">0</text>
+  <text
+     x="185"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text4">1</text>
+  <text
+     x="270"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text5">2</text>
+  <text
+     x="355"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text6">3</text>
+  <text
+     x="440"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text7">4</text>
+  <text
+     x="525"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text8">5</text>
+  <text
+     x="610"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text9">6</text>
+  <text
+     x="695"
+     y="430"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     id="text10">7</text>
+  <!-- Y-axis labels (Emergence Potential) -->
+  <text
+     x="50"
+     y="250"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="20"
+     font-weight="bold"
+     transform="rotate(-90, 50, 250)"
+     id="text11">Emergence Potential (P)</text>
+  <text
+     x="80"
+     y="405"
+     text-anchor="end"
+     font-family="Arial"
+     font-size="16"
+     id="text12">0</text>
+  <text
+     x="80"
+     y="325"
+     text-anchor="end"
+     font-family="Arial"
+     font-size="16"
+     id="text13">0.25</text>
+  <text
+     x="80"
+     y="250"
+     text-anchor="end"
+     font-family="Arial"
+     font-size="16"
+     id="text14">0.50</text>
+  <text
+     x="80"
+     y="175"
+     text-anchor="end"
+     font-family="Arial"
+     font-size="16"
+     id="text15">0.75</text>
+  <text
+     x="80"
+     y="100"
+     text-anchor="end"
+     font-family="Arial"
+     font-size="16"
+     id="text16">1.00</text>
+  <!-- Grid lines -->
+  <line
+     x1="100"
+     y1="325"
+     x2="700"
+     y2="325"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line16" />
+  <line
+     x1="100"
+     y1="250"
+     x2="700"
+     y2="250"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line17" />
+  <line
+     x1="100"
+     y1="175"
+     x2="700"
+     y2="175"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line18" />
+  <line
+     x1="185"
+     y1="100"
+     x2="185"
+     y2="400"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line19" />
+  <line
+     x1="270"
+     y1="100"
+     x2="270"
+     y2="400"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line20" />
+  <line
+     x1="355"
+     y1="100"
+     x2="355"
+     y2="400"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line21" />
+  <line
+     x1="440"
+     y1="100"
+     x2="440"
+     y2="400"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line22" />
+  <line
+     x1="525"
+     y1="100"
+     x2="525"
+     y2="400"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line23" />
+  <line
+     x1="610"
+     y1="100"
+     x2="610"
+     y2="400"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line24" />
+  <line
+     x1="695"
+     y1="100"
+     x2="695"
+     y2="400"
+     stroke="#ddd"
+     stroke-width="1"
+     id="line25" />
+  <!-- Curve with gradient -->
+  <defs
+     id="defs27">
+    <linearGradient
+       id="curveGradient"
+       x1="0%"
+       y1="0%"
+       x2="100%">
+      <stop
+         offset="0%"
+         stop-color="#888888"
+         id="stop25" />
+      <stop
+         offset="40%"
+         stop-color="#4a86e8"
+         id="stop26" />
+      <stop
+         offset="80%"
+         stop-color="#f1c232"
+         id="stop27" />
+    </linearGradient>
+  </defs>
+  <!-- The curve path: flat at first, then rising nonlinearly -->
+  <path
+     d="M100,395 C150,393 200,390 270,380 S355,350 400,300 S500,200 570,130 S650,105 700,100"
+     fill="none"
+     stroke="url(#curveGradient)"
+     stroke-width="5"
+     stroke-linecap="round"
+     id="path27" />
+  <!-- Markers for key points -->
+  <circle
+     cx="185"
+     cy="390"
+     r="8"
+     fill="#888888"
+     id="circle27" />
+  <circle
+     cx="355"
+     cy="350"
+     r="8"
+     fill="#4a86e8"
+     id="circle28" />
+  <circle
+     cx="435.61642"
+     cy="262.73972"
+     r="8"
+     fill="#4a86e8"
+     id="circle29" />
+  <circle
+     cx="634.10962"
+     cy="90.794518"
+     r="8"
+     fill="#f1c232"
+     id="circle30" />
+  <!-- Labels for key points -->
+  <text
+     x="185"
+     y="370"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="14"
+     id="text30">Reflexes</text>
+  <text
+     x="355"
+     y="330"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="14"
+     id="text31">Predictive modeling</text>
+  <text
+     x="427.94519"
+     y="243.83562"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="14px"
+     id="text32">Proto-consciousness</text>
+  <text
+     x="634.10962"
+     y="74.794518"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="14px"
+     id="text33">Consciousness</text>
+  <!-- Chart title -->
+  <text
+     x="400"
+     y="50"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="24"
+     font-weight="bold"
+     id="text34">Emergence Scaling Curve</text>
+  <!-- Formula -->
+  <text
+     x="400"
+     y="480"
+     text-anchor="middle"
+     font-family="Arial"
+     font-size="16"
+     font-style="italic"
+     id="text35">P_total ∝ M^α × n^β × CompressionEfficiency^γ</text>
+  <!-- Legend -->
+  <rect
+     x="592.3288"
+     y="287.39725"
+     width="180"
+     height="90"
+     fill="#ffffff"
+     stroke="#dddddd"
+     stroke-width="1"
+     rx="5"
+     id="rect35"
+     ry="5" />
+  <line
+     x1="612.3288"
+     y1="307.39725"
+     x2="642.3288"
+     y2="307.39725"
+     stroke="#888888"
+     stroke-width="3"
+     id="line35" />
+  <text
+     x="647.3288"
+     y="312.39725"
+     font-family="Arial"
+     font-size="14px"
+     id="text36">Unconscious</text>
+  <line
+     x1="612.3288"
+     y1="332.39725"
+     x2="642.3288"
+     y2="332.39725"
+     stroke="#4a86e8"
+     stroke-width="3"
+     id="line36" />
+  <text
+     x="647.3288"
+     y="337.39725"
+     font-family="Arial"
+     font-size="14px"
+     id="text37">Proto-conscious</text>
+  <line
+     x1="612.3288"
+     y1="357.39725"
+     x2="642.3288"
+     y2="357.39725"
+     stroke="#f1c232"
+     stroke-width="3"
+     id="line37" />
+  <text
+     x="647.3288"
+     y="362.39725"
+     font-family="Arial"
+     font-size="14px"
+     id="text38">Conscious</text>
+</svg>
