@@ -157,7 +157,7 @@ This marks the point at which a neural system transitions from proto-consciousne
 
 ### 5.9.2 Visualizing the Transition
 
-![Emergence Potential Graph](placeholder_for_graph)
+![Emergence Potential Graph](./images/emergence-scaling-curve.svg)
 
 The graph above illustrates how emergence potential undergoes a sudden increase at the cognitive threshold. This is not merely quantitative growth but a qualitatively different regime where:
 
