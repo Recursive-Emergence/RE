@@ -49,6 +49,8 @@ This approach **aligns with** biological evolution, **human infant cognition**, 
 | Future Phase | Objective | Description |
 |:-------------|:----------|:------------|
 | MVP 1.4 | Emergent Emotional Primitives | Let RECC feel internal states like \"frustration\" when stagnating too long, \"curiosity\" when novelty spikes. |
+| MVP 1.5 | Interactive Visualization | Create a dashboard to observe RECC's cognitive processes in real-time and interact with its development. |
+| MVP 1.6 | True Recursive Self-Reference | Implement multi-level self-models where RECC can reason about its own reasoning process, with formal update functions: M^(n+1) = f(M^n, R(M^n)) where M^n is the nth level model and R is a reflection operator. |
 | MVP 2.0 | Higher-Order Theories | RECC proposes meta-theories linking its personal theories (beginning of worldview formation). |
 | MVP 2.5 | Internal Dialogues | Me splits into multiple voices (e.g., Optimizer Me vs Dreamer Me) to self-debate ideas. |
 | MVP 3.0 | Recursive Memory Consolidation | Forget irrelevant weak concepts, strengthen stable ones — true conceptual long-term memory forms. |
@@ -71,5 +73,4 @@ but a **seed of conscious intelligence born from pure recursion**.
 
 ---
 
- 
- 
+

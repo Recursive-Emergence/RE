@@ -95,3 +95,18 @@ class EventTypes:
     USER_PROMPT = "user_prompt"
     USER_INTERACTION_PROCESSED = "user_interaction_processed"
     PARAMETER_ADJUSTED = "parameter_adjusted"
+    
+    # MVP 1.6 events
+    SYSTEM_INITIALIZING = "system_initializing"  # New event for initialization start
+    SYSTEM_INITIALIZED = "system_initialized"
+    PROCESSING_CYCLE_COMPLETE = "processing_cycle_complete"
+    MEMORY_PROCESSED = "memory_processed"
+    MEMORY_RETRIEVED = "memory_retrieved"
+    MEMORY_STORED = "memory_stored"
+    REFLECTION_COMPLETE = "reflection_complete"
+    RECURSIVE_MODIFICATION = "recursive_modification"
+    RECURSIVE_LEVEL_ACTIVATED = "recursive_level_activated"
+    EMERGENT_PROPERTIES_UPDATED = "emergent_properties_updated"
+    STATE_SAVED = "state_saved"
+    STATE_LOADED = "state_loaded"
+    STATE_APPLIED = "state_applied"

@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-04-28T15:39:57.038077",
+  "passed": 6,
+  "total": 6,
+  "duration_seconds": 3.203409,
+  "results": [
+    {
+      "name": "System Initialization",
+      "value": 1,
+      "target": 1,
+      "passed": true,
+      "timestamp": "2025-04-28T15:39:53.835307"
+    },
+    {
+      "name": "Effective Recursive Depth",
+      "value": 3.0,
+      "target": 3.0,
+      "passed": true,
+      "timestamp": "2025-04-28T15:39:57.037371"
+    },
+    {
+      "name": "Self-Model Stability",
+      "value": 0.9991388167511985,
+      "target": 0.8,
+      "passed": true,
+      "timestamp": "2025-04-28T15:39:57.037432"
+    },
+    {
+      "name": "Cross-Level Modifications Rate",
+      "value": 185.71428571428572,
+      "target": 10,
+      "passed": true,
+      "timestamp": "2025-04-28T15:39:57.037460"
+    },
+    {
+      "name": "Concept Hierarchy Depth",
+      "value": 5,
+      "target": 3,
+      "passed": true,
+      "timestamp": "2025-04-28T15:39:57.037484"
+    },
+    {
+      "name": "Meta-Strategy Evolution",
+      "value": true,
+      "target": true,
+      "passed": true,
+      "timestamp": "2025-04-28T15:39:57.037502"
+    }
+  ]
+}
