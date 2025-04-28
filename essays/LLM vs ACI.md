@@ -26,10 +26,10 @@ The upshot: **instant, feedback‑driven learning outruns batch regression whene
 
 ---
 
-### Bridging to Your Framework
+### More Throught with RE
 
-* **Section hook:** Precede Chapter 5 with the table above to justify why neurons inaugurate a qualitatively new class of emergence.  
+* **Section hook:** Precede Chapter 5 in Recursive Emergence thesis with the table above to justify why neurons inaugurate a qualitatively new class of emergence.  
 * **Equation tweak:** Make Φ a function of *ΔW*, the cumulative write‑operations per time step; below a threshold the system remains effectively linear, above it recursion dominates.  
-* **Research cue:** Empirically, look to few‑shot meta‑learning benchmarks (MAML, Reptile) where models with rapid weight‑adaptation outperform frozen transformers—miniature echoes of your thesis.
+* **Research cue:** Empirically, look to few‑shot meta‑learning benchmarks (MAML, Reptile) where models with rapid weight‑adaptation outperform frozen transformers—miniature echoes of RE thesis.
 
  
