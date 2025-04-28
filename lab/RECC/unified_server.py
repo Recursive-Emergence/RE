@@ -123,17 +123,19 @@ class UnifiedRECCServer:
         """Register SocketIO events for real-time communication"""
         
         @self.socketio.on('connect')
-        def handle_connect():
+        def handle_connect(auth=None):
             """Handle client connection"""
             print('Client connected to RECC server')
             self.socketio.emit('status', {'status': 'Connected to RECC server'})
             
             # Send initial state if RECC has data
             if (hasattr(self.recc, 'memory') and len(self.recc.memory.entries) > 0) or \
-               (hasattr(self.recc, 'hybrid_memory') and len(self.recc.hybrid_memory.components['reference'].entries) > 0):
+               (hasattr(self.recc, 'hybrid_memory') and \
+                hasattr(self.recc.hybrid_memory.components['reference'], 'concepts') and \
+                len(self.recc.hybrid_memory.components['reference'].concepts) > 0):
                 self.send_current_state()
                 
-                # For MVP 1.6, also send recursive reflection data
+                # For MVP 1.6, also send recursive data
                 if self.is_mvp16 and hasattr(self.recc, 'reflection'):
                     self.send_recursive_data()
         
@@ -297,12 +299,20 @@ class UnifiedRECCServer:
                     entry_id = entry['id']
                     decision = self.recc.me.reflect()
             
+            # Get the cycle count safely - handling both MVP 1.5 and MVP 1.6
+            cycle_count = 0
+            if hasattr(self.recc, 'memory'):
+                cycle_count = len(self.recc.memory.entries)
+            elif hasattr(self.recc, 'hybrid_memory') and hasattr(self.recc.hybrid_memory.components['reference'], 'concepts'):
+                # For MVP 1.6, use the number of concepts as an approximation of cycle count
+                cycle_count = len(self.recc.hybrid_memory.components['reference'].concepts)
+            
             # Create update with core information
             update = {
                 'prompt': prompt,
                 'response': response,
                 'entry_id': entry_id,
-                'cycle': len(self.recc.memory.entries) if hasattr(self.recc, 'memory') else len(self.recc.hybrid_memory.components['reference'].entries) if hasattr(self.recc, 'hybrid_memory') else 0,
+                'cycle': cycle_count,
                 'user_generated': user_generated,
                 'timestamp': datetime.now().isoformat()
             }
@@ -512,6 +522,53 @@ class UnifiedRECCServer:
             print(f"Error extracting MVP 1.6 concept network: {e}")
             return {'nodes': [], 'edges': [], 'metadata': {'error': str(e)}}
 
+    def _register_recc_event_handlers(self):
+        """Register event handlers for RECC events"""
+        # Listen for RECC events and update visualization accordingly
+        def on_memory_updated(event):
+            # When memory is updated, update the visualization
+            self.send_current_state()
+            
+        def on_state_changed(event):
+            # When agent state changes, update the visualization
+            self.send_current_state()
+            
+        def on_reflection_complete(event):
+            # When reflection cycle is complete (MVP 1.6)
+            if self.is_mvp16:
+                self.send_recursive_data()
+            self.send_current_state()
+            
+        def on_agent_decision(event):
+            # When agent makes a decision
+            decision_data = event.get('data', {})
+            self.socketio.emit('agent_decision', decision_data)
+            
+        # Register the event handlers using subscribe method with the correct event types
+        global_event_bus.subscribe(EventTypes.MEMORY_STORED, on_memory_updated)
+        global_event_bus.subscribe(EventTypes.MEMORY_PROCESSED, on_memory_updated)
+        global_event_bus.subscribe(EventTypes.STATE_APPLIED, on_state_changed)
+        global_event_bus.subscribe(EventTypes.REFLECTION_COMPLETE, on_reflection_complete)
+        global_event_bus.subscribe(EventTypes.CYCLE_COMPLETE, on_reflection_complete)
+        # Note: Using THEORY_FORMED as a proxy for agent decisions since there's no direct AGENT_DECISION event
+        global_event_bus.subscribe(EventTypes.THEORY_FORMED, on_agent_decision)
+            
+    def _start_learning_mode(self, steps, delay):
+        """Start autonomous learning mode"""
+        if self.simulation_running:
+            return
+            
+        self.simulation_running = True
+        self.stop_simulation = False
+        
+        # Run the learning loop in a separate thread
+        self.simulation_thread = threading.Thread(
+            target=self._run_learning_loop, 
+            args=(steps, delay)
+        )
+        self.simulation_thread.daemon = True
+        self.simulation_thread.start()
+        
     # ... [keep the rest of the existing methods]
         
     def run(self):

@@ -311,7 +311,10 @@ class RECC_MVP16:
         recommendations = self.hybrid_memory.meta_memory.recommend_adaptations()
         self._apply_recommendations(recommendations)
         
-        # Track this processing cycle
+        # Track this processing cycle - safely initialize cycle_count if it doesn't exist
+        if 'cycle_count' not in self.state:
+            self.state['cycle_count'] = 0
+            
         self.state['cycle_count'] += 1
         self.state['last_processed'] = datetime.now().isoformat()
         self.state['processing_time'] = time.time() - cycle_start_time
@@ -320,7 +323,7 @@ class RECC_MVP16:
         self.event_bus.publish(EventTypes.PROCESSING_CYCLE_COMPLETE, {
             'cycle_id': self.state['cycle_count'],
             'duration': self.state['processing_time'],
-            'meta_cognitive_level': self.state['meta_cognitive_level'],
+            'meta_cognitive_level': self.state.get('meta_cognitive_level', 0),
             'timestamp': datetime.now().isoformat()
         })
         
@@ -445,9 +448,13 @@ class RECC_MVP16:
             "How do you decide what to focus your attention on?"
         ]
         
-        # Select prompt based on state
-        meta_level = self.state['meta_cognitive_level']
-        recursive_depth = self.state['recursive_depth']['current']
+        # Select prompt based on state, using get() with default values to prevent KeyError
+        meta_level = self.state.get('meta_cognitive_level', 0)
+        
+        # Get recursive depth safely, navigating nested dictionary with defaults
+        recursive_depth = 0
+        if 'recursive_depth' in self.state:
+            recursive_depth = self.state['recursive_depth'].get('current', 0)
         
         # For low recursive depth, focus on basic self-modeling
         if recursive_depth < 1:
@@ -462,9 +469,10 @@ class RECC_MVP16:
             prompt = base_prompts[5]  # "How would you improve your own..."
             
         # Add context from current state
+        cycle_count = self.state.get('cycle_count', 0)
         context = f"\nContext: Recursive depth: {recursive_depth}, " + \
                   f"Meta-cognitive level: {meta_level}, " + \
-                  f"Cycle count: {self.state['cycle_count']}\n"
+                  f"Cycle count: {cycle_count}\n"
                   
         return prompt + context
     
@@ -481,6 +489,14 @@ class RECC_MVP16:
         # Extract the highest level of reflection available
         highest_reflection = reflection_results[-1]
         
+        # Ensure emotional_state dictionary exists
+        if 'emotional_state' not in self.state:
+            self.state['emotional_state'] = {
+                'satisfaction': 0.5,
+                'curiosity': 0.7,
+                'confidence': 0.5
+            }
+            
         # Update emotional state based on reflection
         if isinstance(highest_reflection, dict) and 'effectiveness' in highest_reflection:
             self.state['emotional_state']['satisfaction'] = highest_reflection.get('effectiveness', 0.5)
@@ -491,6 +507,14 @@ class RECC_MVP16:
         # Update meta-cognitive awareness
         self.state['meta_cognitive_level'] = len(reflection_results)
         
+        # Ensure recursive_depth exists in state
+        if 'recursive_depth' not in self.state:
+            self.state['recursive_depth'] = {
+                'current': 0,
+                'max': self.reflection.max_depth,
+                'active_levels': 1
+            }
+            
         # Store recursive depth metrics from reflection system
         meta_report = self.reflection.get_meta_cognition_report()
         self.state['recursive_depth'] = {
@@ -564,7 +588,9 @@ class RECC_MVP16:
         
         # 3. Cross-Level Modifications
         cross_level_modifications = self.reflection.metrics.get('cross_level_modifications', 0)
-        modification_rate = cross_level_modifications / max(1, self.state['cycle_count']) * 100
+        # Add default value of 0 in case 'cycle_count' key doesn't exist in self.state
+        cycle_count = self.state.get('cycle_count', 1)  # Default to 1 to avoid division by zero
+        modification_rate = cross_level_modifications / max(1, cycle_count) * 100
         
         # 4. Hierarchical Concepts
         concept_hierarchy_depth = memory_metrics['emergent_properties']['concept_hierarchy_depth']
@@ -581,6 +607,9 @@ class RECC_MVP16:
         # Update the memory system's tracking to be consistent
         self.hybrid_memory.emergent_properties['meta_strategy_evolution'] = strategy_evolution
         
+        # Get cycle count safely with a default value
+        cycle_count = self.state.get('cycle_count', 1)
+        
         return {
             'timestamp': datetime.now().isoformat(),
             'effective_recursive_depth': effective_recursive_depth,
@@ -589,7 +618,7 @@ class RECC_MVP16:
             'modification_rate_per_100_cycles': modification_rate,
             'concept_hierarchy_depth': concept_hierarchy_depth,
             'meta_strategy_evolution': strategy_evolution,
-            'cycle_count': self.state['cycle_count']
+            'cycle_count': cycle_count
         }
     
     def visualize_recursive_depth(self):
