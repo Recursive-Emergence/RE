@@ -550,7 +550,7 @@ class ReflectionEngine:
             return insights
             
         # Get system states
-        recursive_depth = self_reference_system.max_recursion_depth
+        recursive_depth = self_reference_system.max_depth_achieved  # Changed from max_recursion_depth to max_depth_achieved
         concept_count = len(memory_system.concept_graph.get('nodes', {}))
         identity_strength = self_reference_system.self_model.get('identity_strength', 0)
         

@@ -2,6 +2,7 @@ import time
 import sys
 import os
 import random
+import pickle # Added for saving/loading state
 
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -261,3 +262,50 @@ class IndependentMind:
             'self_reference_depth': self.self_reference.max_depth_achieved,
             'autonomy_index': self._calculate_autonomy_index()
         }
+
+    def save_state(self, filepath):
+        """Saves the current state of the mind to a file using pickle."""
+        state = {
+            'entropy': self.entropy,
+            'emotions': self.emotions,
+            'memory': self.memory,
+            'self_reference': self.self_reference,
+            'behaviors': self.behaviors,
+            'reflection': self.reflection,
+            'internal_state': self.internal_state,
+            'cycle_counter': self.cycle_counter
+        }
+        try:
+            with open(filepath, 'wb') as f:
+                pickle.dump(state, f)
+            print(f"Mind state successfully saved to {filepath}")
+        except Exception as e:
+            print(f"Error saving mind state to {filepath}: {e}")
+
+    @classmethod
+    def load_state(cls, filepath):
+        """Loads the mind state from a file using pickle and returns a new instance."""
+        try:
+            with open(filepath, 'rb') as f:
+                state = pickle.load(f)
+            
+            mind = cls() # Create a new instance
+            # Restore the state
+            mind.entropy = state['entropy']
+            mind.emotions = state['emotions']
+            mind.memory = state['memory']
+            mind.self_reference = state['self_reference']
+            mind.behaviors = state['behaviors']
+            mind.reflection = state['reflection']
+            mind.internal_state = state['internal_state']
+            mind.cycle_counter = state['cycle_counter']
+            
+            print(f"Mind state successfully loaded from {filepath}")
+            print(f"Resuming from cycle {mind.cycle_counter}")
+            return mind
+        except FileNotFoundError:
+            print(f"Error: Checkpoint file not found at {filepath}. Starting fresh.")
+            return cls() # Return a fresh instance if file not found
+        except Exception as e:
+            print(f"Error loading mind state from {filepath}: {e}. Starting fresh.")
+            return cls() # Return a fresh instance on other errors
