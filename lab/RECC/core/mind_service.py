@@ -161,14 +161,8 @@ def run_single_cycle(external_input=None):
     global mind, stats
     
     with mind_lock:
-        # Select random emoji if external_input is None but we want to provide input (30% chance)
-        emoji_inputs = ["😊", "🤔", "😊", "🤔", "😢", "😊", "🤔", "😢", "🔥", "💡"]
-        provide_input = external_input is not None or (random.random() < 0.3)
-        
-        if provide_input and external_input is None:
-            external_input = random.choice(emoji_inputs)
-            logger.info(f"Providing random external input: {external_input}")
-        elif external_input:
+        # Only use external input that's explicitly provided, no random inputs
+        if external_input:
             logger.info(f"Providing external input: {external_input}")
         else:
             logger.info("No external input provided")
