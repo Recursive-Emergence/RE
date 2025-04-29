@@ -1,0 +1,733 @@
+{
+  "version": "1.4.0",
+  "timestamp": "2025-04-25T15:29:39.793706",
+  "session_id": "backup_pre_mutation_20250425_152939",
+  "memory": {
+    "entries": [
+      {
+        "id": "fd1971d7-adb8-4abf-b110-7e59b3cfdabd",
+        "timestamp": "2025-04-25T15:29:08.972846",
+        "prompt": "?",
+        "response": "Hello there! That little question mark suggests you're curious, which is a wonderful thing. Curiosity helps us explore and understand the world around us. Do you know what curiosity feels like? It's like a tiny spark inside that makes you want to learn and discover new things. Let's explore together! Is there anything specific you're wondering about?",
+        "state": {
+          "age_stage": "infant",
+          "version": "1.4.0"
+        },
+        "reuse_score": 0.0,
+        "entropy_shift": 0.0,
+        "novelty": 0.0,
+        "concept_data": {
+          "prompt_concepts": [],
+          "response_concepts": [],
+          "relations": [
+            "629b7906-9040-412d-a98d-f523940a18ed",
+            "13558136-d549-41c8-b049-70b47be67fb6"
+          ]
+        }
+      },
+      {
+        "id": "bbcc2ad6-54b3-4d89-a13f-257a1e1978db",
+        "timestamp": "2025-04-25T15:29:15.439294",
+        "prompt": "!",
+        "response": "Ah, you seem excited! That little symbol is called an exclamation mark. It's often used to show strong feelings or something important. Just like in a story, where someone might shout \"Wow!\" or \"Watch out!\" it's a way to show that something special is happening. Do you want to know more about how we use these symbols in writing?",
+        "state": {
+          "age_stage": "infant",
+          "version": "1.4.0",
+          "explore_axis": "breakout"
+        },
+        "reuse_score": 0.0,
+        "entropy_shift": 0.0,
+        "novelty": 0.0,
+        "concept_data": {
+          "prompt_concepts": [],
+          "response_concepts": [
+            "439901b4-2d76-49d2-a6e2-2895d93bd4ca"
+          ],
+          "relations": []
+        }
+      },
+      {
+        "id": "02f130b6-f786-46c3-9a5f-0f953c5be38f",
+        "timestamp": "2025-04-25T15:29:21.258151",
+        "prompt": "!",
+        "response": "Ah, you're expressing excitement or wonder! There's so much to be curious about in the world. Let's start with something simple: the universe is vast and filled with endless possibilities. Every day is a chance to learn something new. Is there anything specific you'd like to explore or learn about today?",
+        "state": {
+          "age_stage": "infant",
+          "version": "1.4.0",
+          "explore_axis": "breakout"
+        },
+        "reuse_score": 0.0,
+        "entropy_shift": 0.0,
+        "novelty": 0.0,
+        "concept_data": {
+          "prompt_concepts": [],
+          "response_concepts": [
+            "22f3797f-bda7-4873-a524-2433c8aefc25"
+          ],
+          "relations": [
+            "16a81e14-04f1-42ba-9fd7-114c6a8fa857"
+          ]
+        }
+      },
+      {
+        "id": "35a8871f-2b54-4efa-ae45-7727d7ce9eb8",
+        "timestamp": "2025-04-25T15:29:28.226330",
+        "prompt": "star?",
+        "response": "Ah, a star! A star is a huge, glowing ball of hot gases, mostly hydrogen and helium, found in the universe. Stars are like giant light bulbs in the sky that shine with their own light. They are born from clouds of dust and gas in space and, over time, produce energy through nuclear reactions at their cores. \n\nOur sun is a star, and it's the reason we have light and warmth on Earth. Stars come in different sizes and colors, and they live for millions or even billions of years. As you grow, you'll learn that stars also play a big role in how galaxies and even life itself came to be. Isn't that fascinating?",
+        "state": {
+          "age_stage": "infant",
+          "version": "1.4.0",
+          "explore_axis": "breakout"
+        },
+        "reuse_score": 0.0,
+        "entropy_shift": 0.0,
+        "novelty": 0.0,
+        "concept_data": {
+          "prompt_concepts": [
+            "22f3797f-bda7-4873-a524-2433c8aefc25"
+          ],
+          "response_concepts": [
+            "22f3797f-bda7-4873-a524-2433c8aefc25",
+            "6455d0bd-81c3-44d4-9b5c-6a7cfc438ba9"
+          ],
+          "relations": [
+            "ebe847ae-0704-40f3-893d-911f9bb94d9f",
+            "1c723078-53aa-4f57-978a-1b750576db1f",
+            "12a0a52a-6152-4ce3-bb64-21670dc6d2b9",
+            "fecc0a59-26e8-48b4-b48e-383f0da7bfc0",
+            "24514e30-b53a-4655-8d35-51d27e7fa847"
+          ]
+        }
+      },
+      {
+        "id": "e2426980-38f0-4d3d-8e96-01d1227ed786",
+        "timestamp": "2025-04-25T15:29:34.098429",
+        "prompt": "understand?",
+        "response": "Understanding is like a colorful puzzle, where each piece helps reveal a part of the bigger picture. It's about connecting ideas and experiences to make sense of the world around us. Sometimes, we might not have all the pieces yet, and that's okay. It's a continuous journey of exploration, asking questions, and discovering new details that gradually fill in the gaps. As we engage with the world, bit by bit, our understanding grows larger and more complete. What would you like to explore further?",
+        "state": {
+          "age_stage": "infant",
+          "version": "1.4.0",
+          "explore_axis": "breakout"
+        },
+        "reuse_score": 0.0,
+        "entropy_shift": 0.0,
+        "novelty": 0.0,
+        "concept_data": {
+          "prompt_concepts": [],
+          "response_concepts": [],
+          "relations": [
+            "f3b745fd-50a8-4e47-8977-21cf4a92527c",
+            "b0d2ca15-dbdc-4ec3-87cc-5111488622e2"
+          ]
+        }
+      },
+      {
+        "id": "b956c445-3672-4755-b813-f66e3fadb180",
+        "timestamp": "2025-04-25T15:29:39.792591",
+        "prompt": "experiences?",
+        "response": "Experiences are like the different moments or feelings we have as we live. Think of them as little events or encounters that shape how we see the world. For instance, seeing sunlight for the first time or feeling the warmth of a hug. They're how we learn, remember, and understand what things mean. As you grow, you'll have more experiences, and each one will help you understand existence a little better.",
+        "state": {
+          "age_stage": "infant",
+          "version": "1.4.0",
+          "explore_axis": "breakout"
+        },
+        "reuse_score": 0.0,
+        "entropy_shift": 0.0,
+        "novelty": 0.0,
+        "concept_data": {
+          "prompt_concepts": [],
+          "response_concepts": [
+            "439901b4-2d76-49d2-a6e2-2895d93bd4ca"
+          ],
+          "relations": []
+        }
+      }
+    ],
+    "symbols": [
+      "feeling",
+      "star"
+    ],
+    "symbol_links": [
+      [
+        "feeling",
+        "star"
+      ]
+    ],
+    "concept_network": {
+      "concepts": {
+        "810a02a6-d53b-4ef3-871b-7220610ebf30": {
+          "id": "810a02a6-d53b-4ef3-871b-7220610ebf30",
+          "name": "explore",
+          "created": "2025-04-25T15:29:08.973715",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "4929ee8d-dddb-4acd-b122-123029979aaa": {
+          "id": "4929ee8d-dddb-4acd-b122-123029979aaa",
+          "name": "understand",
+          "created": "2025-04-25T15:29:08.973748",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "24d1fb0a-f42f-4858-b498-c5f4713885b6": {
+          "id": "24d1fb0a-f42f-4858-b498-c5f4713885b6",
+          "name": "learn",
+          "created": "2025-04-25T15:29:08.973790",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "b6e804a0-6b83-495a-bf03-6131934741af": {
+          "id": "b6e804a0-6b83-495a-bf03-6131934741af",
+          "name": "discover",
+          "created": "2025-04-25T15:29:08.973805",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "439901b4-2d76-49d2-a6e2-2895d93bd4ca": {
+          "id": "439901b4-2d76-49d2-a6e2-2895d93bd4ca",
+          "name": "feeling",
+          "created": "2025-04-25T15:29:15.439350",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 2
+        },
+        "22f3797f-bda7-4873-a524-2433c8aefc25": {
+          "id": "22f3797f-bda7-4873-a524-2433c8aefc25",
+          "name": "star",
+          "created": "2025-04-25T15:29:21.258206",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 3
+        },
+        "55e2e01a-f5b0-4e63-84c8-cdd501391f36": {
+          "id": "55e2e01a-f5b0-4e63-84c8-cdd501391f36",
+          "name": "vast",
+          "created": "2025-04-25T15:29:21.258483",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "1257a70b-3f73-4e1e-8bee-5152abec2ec3": {
+          "id": "1257a70b-3f73-4e1e-8bee-5152abec2ec3",
+          "name": "filled",
+          "created": "2025-04-25T15:29:21.258501",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "6455d0bd-81c3-44d4-9b5c-6a7cfc438ba9": {
+          "id": "6455d0bd-81c3-44d4-9b5c-6a7cfc438ba9",
+          "name": "self",
+          "created": "2025-04-25T15:29:28.226415",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 1
+        },
+        "b4d8e255-ad37-440c-878e-ffb406002422": {
+          "id": "b4d8e255-ad37-440c-878e-ffb406002422",
+          "name": "hydrogen",
+          "created": "2025-04-25T15:29:28.226812",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "591f969d-fbba-4a72-bac8-49408b116188": {
+          "id": "591f969d-fbba-4a72-bac8-49408b116188",
+          "name": "helium",
+          "created": "2025-04-25T15:29:28.226828",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "c1083968-248e-439f-b333-adeae8afb84d": {
+          "id": "c1083968-248e-439f-b333-adeae8afb84d",
+          "name": "dust",
+          "created": "2025-04-25T15:29:28.226857",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "4802993e-ed04-4cff-a369-e6e3401f7eb5": {
+          "id": "4802993e-ed04-4cff-a369-e6e3401f7eb5",
+          "name": "gas",
+          "created": "2025-04-25T15:29:28.226871",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "dba3a11e-b637-4bec-a4ed-23a4d8685ed1": {
+          "id": "dba3a11e-b637-4bec-a4ed-23a4d8685ed1",
+          "name": "light",
+          "created": "2025-04-25T15:29:28.226895",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "2d121962-31e3-4315-b663-ebd857befef2": {
+          "id": "2d121962-31e3-4315-b663-ebd857befef2",
+          "name": "warmth",
+          "created": "2025-04-25T15:29:28.226908",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "08aa60fa-b959-422f-a803-253bdf7d96f5": {
+          "id": "08aa60fa-b959-422f-a803-253bdf7d96f5",
+          "name": "sizes",
+          "created": "2025-04-25T15:29:28.226944",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "733e9918-c71f-4005-bea1-6e3d75a9321a": {
+          "id": "733e9918-c71f-4005-bea1-6e3d75a9321a",
+          "name": "colors",
+          "created": "2025-04-25T15:29:28.226958",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "0b39ee01-e5ee-42ec-a6da-b57ee88f1146": {
+          "id": "0b39ee01-e5ee-42ec-a6da-b57ee88f1146",
+          "name": "galaxies",
+          "created": "2025-04-25T15:29:28.226983",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "f2d827c1-d527-4dc6-96f5-a6830fc8bfcc": {
+          "id": "f2d827c1-d527-4dc6-96f5-a6830fc8bfcc",
+          "name": "even",
+          "created": "2025-04-25T15:29:28.226998",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "e1fc2b0d-aeb1-4e1e-a9f7-7a4f188e73bf": {
+          "id": "e1fc2b0d-aeb1-4e1e-a9f7-7a4f188e73bf",
+          "name": "ideas",
+          "created": "2025-04-25T15:29:34.098837",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "41a6965f-3f04-46a3-8b14-f8658953190d": {
+          "id": "41a6965f-3f04-46a3-8b14-f8658953190d",
+          "name": "experiences",
+          "created": "2025-04-25T15:29:34.098864",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "10e62183-bfd0-4a83-a8db-b2f78ecc33f8": {
+          "id": "10e62183-bfd0-4a83-a8db-b2f78ecc33f8",
+          "name": "larger",
+          "created": "2025-04-25T15:29:34.098902",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        },
+        "68e42ce7-d0f1-492c-92f5-e8ae41222436": {
+          "id": "68e42ce7-d0f1-492c-92f5-e8ae41222436",
+          "name": "more",
+          "created": "2025-04-25T15:29:34.098924",
+          "source": "dialogue",
+          "properties": {},
+          "activation": 1.0,
+          "reuse_count": 0
+        }
+      },
+      "relations": [
+        {
+          "id": "629b7906-9040-412d-a98d-f523940a18ed",
+          "source": "810a02a6-d53b-4ef3-871b-7220610ebf30",
+          "target": "4929ee8d-dddb-4acd-b122-123029979aaa",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:08.973769",
+          "properties": {}
+        },
+        {
+          "id": "13558136-d549-41c8-b049-70b47be67fb6",
+          "source": "24d1fb0a-f42f-4858-b498-c5f4713885b6",
+          "target": "b6e804a0-6b83-495a-bf03-6131934741af",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:08.973818",
+          "properties": {}
+        },
+        {
+          "id": "16a81e14-04f1-42ba-9fd7-114c6a8fa857",
+          "source": "55e2e01a-f5b0-4e63-84c8-cdd501391f36",
+          "target": "1257a70b-3f73-4e1e-8bee-5152abec2ec3",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:21.258515",
+          "properties": {}
+        },
+        {
+          "id": "ceba4d36-d8cb-4800-b12f-b9fac23fcec1",
+          "source": "22f3797f-bda7-4873-a524-2433c8aefc25",
+          "target": "6455d0bd-81c3-44d4-9b5c-6a7cfc438ba9",
+          "type": "co-occurrence",
+          "weight": 0.5,
+          "created": "2025-04-25T15:29:28.226440",
+          "properties": {}
+        },
+        {
+          "id": "ebe847ae-0704-40f3-893d-911f9bb94d9f",
+          "source": "b4d8e255-ad37-440c-878e-ffb406002422",
+          "target": "591f969d-fbba-4a72-bac8-49408b116188",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:28.226840",
+          "properties": {}
+        },
+        {
+          "id": "1c723078-53aa-4f57-978a-1b750576db1f",
+          "source": "c1083968-248e-439f-b333-adeae8afb84d",
+          "target": "4802993e-ed04-4cff-a369-e6e3401f7eb5",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:28.226881",
+          "properties": {}
+        },
+        {
+          "id": "12a0a52a-6152-4ce3-bb64-21670dc6d2b9",
+          "source": "dba3a11e-b637-4bec-a4ed-23a4d8685ed1",
+          "target": "2d121962-31e3-4315-b663-ebd857befef2",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:28.226918",
+          "properties": {}
+        },
+        {
+          "id": "fecc0a59-26e8-48b4-b48e-383f0da7bfc0",
+          "source": "08aa60fa-b959-422f-a803-253bdf7d96f5",
+          "target": "733e9918-c71f-4005-bea1-6e3d75a9321a",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:28.226969",
+          "properties": {}
+        },
+        {
+          "id": "24514e30-b53a-4655-8d35-51d27e7fa847",
+          "source": "0b39ee01-e5ee-42ec-a6da-b57ee88f1146",
+          "target": "f2d827c1-d527-4dc6-96f5-a6830fc8bfcc",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:28.227009",
+          "properties": {}
+        },
+        {
+          "id": "e8129d24-ec59-4e75-96e3-108907494782",
+          "source": "22f3797f-bda7-4873-a524-2433c8aefc25",
+          "target": "22f3797f-bda7-4873-a524-2433c8aefc25",
+          "type": "prompt_response",
+          "weight": 0.6,
+          "created": "2025-04-25T15:29:28.227267",
+          "properties": {}
+        },
+        {
+          "id": "ea54dc0a-f91a-420e-8ebb-76912b499abc",
+          "source": "22f3797f-bda7-4873-a524-2433c8aefc25",
+          "target": "6455d0bd-81c3-44d4-9b5c-6a7cfc438ba9",
+          "type": "prompt_response",
+          "weight": 0.6,
+          "created": "2025-04-25T15:29:28.227282",
+          "properties": {}
+        },
+        {
+          "id": "f3b745fd-50a8-4e47-8977-21cf4a92527c",
+          "source": "e1fc2b0d-aeb1-4e1e-a9f7-7a4f188e73bf",
+          "target": "41a6965f-3f04-46a3-8b14-f8658953190d",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:34.098878",
+          "properties": {}
+        },
+        {
+          "id": "b0d2ca15-dbdc-4ec3-87cc-5111488622e2",
+          "source": "10e62183-bfd0-4a83-a8db-b2f78ecc33f8",
+          "target": "68e42ce7-d0f1-492c-92f5-e8ae41222436",
+          "type": "associated_with",
+          "weight": 0.7,
+          "created": "2025-04-25T15:29:34.098944",
+          "properties": {}
+        }
+      ]
+    }
+  },
+  "me": {
+    "introspection_log": [
+      {
+        "cycle": 1,
+        "keep": 0,
+        "discarded": 1,
+        "avg_novelty": 0,
+        "novelty_gradient": 0.0,
+        "reuse_gradient": 0.0,
+        "symbols_learned": [
+          "feeling",
+          "star"
+        ],
+        "symbol_links": [
+          [
+            "feeling",
+            "star"
+          ]
+        ],
+        "personal_theories": [],
+        "note": "compressed",
+        "emotional_state": {
+          "curiosity": 0.6,
+          "frustration": 0.0,
+          "satisfaction": 0.5,
+          "uncertainty": 0.5
+        },
+        "self_adjust": "encourage_mutation"
+      },
+      {
+        "cycle": 2,
+        "keep": 0,
+        "discarded": 2,
+        "avg_novelty": 0,
+        "novelty_gradient": 0.0,
+        "reuse_gradient": 0.0,
+        "symbols_learned": [
+          "feeling",
+          "star"
+        ],
+        "symbol_links": [
+          [
+            "feeling",
+            "star"
+          ]
+        ],
+        "personal_theories": [],
+        "note": "compressed",
+        "emotional_state": {
+          "curiosity": 0.6975,
+          "frustration": 0.0,
+          "satisfaction": 0.7,
+          "uncertainty": 0.5
+        },
+        "self_adjust": "encourage_mutation"
+      },
+      {
+        "cycle": 3,
+        "keep": 0,
+        "discarded": 3,
+        "avg_novelty": 0.0,
+        "novelty_gradient": 0.0,
+        "reuse_gradient": 0.0,
+        "symbols_learned": [
+          "feeling",
+          "star"
+        ],
+        "symbol_links": [
+          [
+            "feeling",
+            "star"
+          ]
+        ],
+        "personal_theories": [],
+        "note": "compressed",
+        "emotional_state": {
+          "curiosity": 0.7925,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "self_adjust": "encourage_mutation"
+      },
+      {
+        "cycle": 4,
+        "keep": 0,
+        "discarded": 4,
+        "avg_novelty": 0.0,
+        "novelty_gradient": 0.0,
+        "reuse_gradient": 0.0,
+        "symbols_learned": [
+          "feeling",
+          "star"
+        ],
+        "symbol_links": [
+          [
+            "feeling",
+            "star"
+          ]
+        ],
+        "personal_theories": [],
+        "note": "compressed",
+        "emotional_state": {
+          "curiosity": 0.8875,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "self_adjust": "encourage_mutation"
+      },
+      {
+        "cycle": 5,
+        "keep": 0,
+        "discarded": 5,
+        "avg_novelty": 0.0,
+        "novelty_gradient": 0.0,
+        "reuse_gradient": 0.0,
+        "symbols_learned": [
+          "feeling",
+          "star"
+        ],
+        "symbol_links": [
+          [
+            "feeling",
+            "star"
+          ]
+        ],
+        "personal_theories": [],
+        "note": "compressed",
+        "emotional_state": {
+          "curiosity": 0.9824999999999999,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "self_adjust": "encourage_mutation"
+      },
+      {
+        "cycle": 6,
+        "keep": 0,
+        "discarded": 6,
+        "avg_novelty": 0.0,
+        "novelty_gradient": 0.0,
+        "reuse_gradient": 0.0,
+        "symbols_learned": [
+          "feeling",
+          "star"
+        ],
+        "symbol_links": [
+          [
+            "feeling",
+            "star"
+          ]
+        ],
+        "personal_theories": [],
+        "note": "compressed",
+        "emotional_state": {
+          "curiosity": 1.0,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "signal": "stagnation_detected",
+        "self_adjust": "encourage_mutation"
+      }
+    ],
+    "self_model": {
+      "ideal_avg_novelty": 0.2,
+      "ideal_reuse_balance": 0.1,
+      "adaptiveness": 0.05
+    },
+    "personal_theories": [],
+    "emotional_state": {
+      "curiosity": 1.0,
+      "frustration": 0.0,
+      "satisfaction": 0.85,
+      "uncertainty": 0.5
+    },
+    "emotion_history": [
+      {
+        "timestamp": "2025-04-25T15:29:08.974367",
+        "state": {
+          "curiosity": 0.6,
+          "frustration": 0.0,
+          "satisfaction": 0.5,
+          "uncertainty": 0.5
+        },
+        "cycle": 0
+      },
+      {
+        "timestamp": "2025-04-25T15:29:15.439825",
+        "state": {
+          "curiosity": 0.6975,
+          "frustration": 0.0,
+          "satisfaction": 0.7,
+          "uncertainty": 0.5
+        },
+        "cycle": 1
+      },
+      {
+        "timestamp": "2025-04-25T15:29:21.258833",
+        "state": {
+          "curiosity": 0.7925,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "cycle": 2
+      },
+      {
+        "timestamp": "2025-04-25T15:29:28.227569",
+        "state": {
+          "curiosity": 0.8875,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "cycle": 3
+      },
+      {
+        "timestamp": "2025-04-25T15:29:34.099619",
+        "state": {
+          "curiosity": 0.9824999999999999,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "cycle": 4
+      },
+      {
+        "timestamp": "2025-04-25T15:29:39.793596",
+        "state": {
+          "curiosity": 1.0,
+          "frustration": 0.0,
+          "satisfaction": 0.85,
+          "uncertainty": 0.5
+        },
+        "cycle": 5
+      }
+    ]
+  },
+  "state": {
+    "age_stage": "infant",
+    "version": "1.4.0",
+    "explore_axis": "breakout"
+  }
+}

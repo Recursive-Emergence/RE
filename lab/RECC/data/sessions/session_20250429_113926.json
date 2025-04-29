@@ -1,0 +1,39 @@
+{
+  "session_id": "20250429_113926",
+  "cycles": 1,
+  "data": [
+    {
+      "cycle": 1,
+      "timestamp": 1745941166.0010178,
+      "energy": 99.9,
+      "emotions": {
+        "curiosity": 0.49999815702438355,
+        "satisfaction": 0.5099963140487671,
+        "fear": 0.19999815702438356,
+        "pain": 0.0
+      },
+      "results": {
+        "start_energy": 100.0,
+        "start_time": 1745941166.0009794,
+        "emotions_before": {
+          "curiosity": 0.5,
+          "satisfaction": 0.5,
+          "fear": 0.2,
+          "pain": 0.0
+        },
+        "had_input": false,
+        "reflection_occurred": false,
+        "cry_emitted": false,
+        "end_energy": 99.9,
+        "emotions_after": {
+          "curiosity": 0.49999815702438355,
+          "satisfaction": 0.5099963140487671,
+          "fear": 0.19999815702438356,
+          "pain": 0.0
+        },
+        "end_time": 1745941166.0010161,
+        "duration": 3.6716461181640625e-05
+      }
+    }
+  ]
+}
