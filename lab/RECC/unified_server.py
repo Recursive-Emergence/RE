@@ -6,6 +6,7 @@ import os
 import sys
 import json
 import time
+import random
 import threading
 import argparse
 from datetime import datetime
@@ -264,19 +265,83 @@ class UnifiedRECCServer:
         try:
             # Process differently based on MVP version
             if self.is_mvp16:
-                # For MVP 1.6, use the integrated process_input method
-                result = self.recc.process_input({
+                # Create input package for MVP 1.6
+                input_package = {
                     'prompt': prompt,
-                    'user_input': True
-                })
+                    'response': None,  # Will be filled by RECC's processing
+                    'user_input': True,
+                    'state': self.recc.state.copy() if hasattr(self.recc, 'state') else {}
+                }
                 
-                response = result.get('memory_result', {}).get('response', 'No response generated')
+                # For MVP 1.6, use the integrated process_input method
+                result = self.recc.process_input(input_package)
+                
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] Processing prompt: \"{prompt}\"")
+                
+                # Generate a simple baby-brain response rather than using the LLM directly
+                # This allows RECC to express itself at its current cognitive level
+                
+                # First try to extract any basic response from the memory result
+                response = None
+                
+                # Check if we have any memory or reflection results to work with
+                if 'memory_result' in result and isinstance(result['memory_result'], dict):
+                    # Use simple pattern matching or recent memory to generate response
+                    if 'input_data' in result['memory_result']:
+                        # Look for repeated patterns in past responses
+                        if self.recc.hybrid_memory and hasattr(self.recc.hybrid_memory.components['reference'], 'entries'):
+                            # Find simple patterns in recent entries
+                            entries = self.recc.hybrid_memory.components['reference'].entries
+                            if entries and len(entries) > 0:
+                                # Get the most recent entry's response as a simple echo
+                                for entry in reversed(entries):
+                                    if 'response' in entry:
+                                        response = f"👶 {entry['response']}"
+                                        break
+                
+                # If no direct response, check for activated concepts
+                if not response and 'concept_network' in result.get('memory_result', {}):
+                    concepts = result['memory_result']['concept_network'].get('active_concepts', [])
+                    if concepts:
+                        # Use simple baby-like response with activated concepts
+                        concept_list = ', '.join(concepts[:3])  # Limit to first 3 concepts
+                        response = f"👶 {concept_list}!"
+                
+                # If still no response, create a very simple baby-brain response
+                if not response:
+                    # Define baby-brain simple responses based on emotional state
+                    emotional_state = self.recc.state.get('emotional_state', {})
+                    curiosity = emotional_state.get('curiosity', 0.5)
+                    satisfaction = emotional_state.get('satisfaction', 0.5)
+                    
+                    # Generate response based on emotional state
+                    if curiosity > 0.7:
+                        response = f"👶 {'!' * random.randint(1, 3)} {prompt.split()[-1] if len(prompt.split()) > 0 else '?'}"
+                    elif satisfaction > 0.7:
+                        response = "👶 Yes! Good!"
+                    else:
+                        # Simple echo or babble
+                        words = prompt.split()
+                        if words:
+                            # Echo a word from the prompt
+                            echo_word = random.choice(words)
+                            response = f"👶 {echo_word}?"
+                        else:
+                            response = "👶 ?"
+                
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] Baby RECC response: \"{response}\"")
+                
+                # Debug information about the reflection/cognitive state
+                if 'reflection_results' in result and result['reflection_results']:
+                    reflection_level = len(result['reflection_results'])
+                    print(f"[{datetime.now().strftime('%H:%M:%S')}] DEBUG: Processed with {reflection_level} reflection levels")
+                
                 entry_id = result.get('memory_result', {}).get('id', 'unknown')
                 
                 # Send the reflection data update
                 self.send_recursive_data()
             else:
-                # MVP 1.5 processing (existing code)
+                # MVP 1.5 processing - modify to use simpler responses too
                 # If this is the first prompt or if a reset is needed, reset conversation history
                 reset_history = False
                 if (len(self.recc.memory.entries) == 0) or self.recc.reset_conversation_history:

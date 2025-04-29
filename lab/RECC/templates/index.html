@@ -139,7 +139,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h1>RECC Visualization Dashboard</h1>
-                <div class="status-message" id="statusMessage">Waiting for connection...</div>
+                <!-- Removed status-message bar from the top -->
             </div>
         </div>
         
@@ -154,23 +154,6 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="panel" id="emotionalStatePanel">
-                    <div class="panel-title">Emotional State</div>
-                    <div class="emotion-gauge-container" id="emotionGauges">
-                        <!-- Emotion gauges will be added here -->
-                    </div>
-                </div>
-                <div class="panel" id="metricsPanel">
-                    <div class="panel-title">Metrics</div>
-                    <div class="row" id="metricsContainer">
-                        <!-- Metrics will be added here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8">
                 <div class="panel" id="interactionPanel">
                     <div class="panel-title">
                         <span>Interaction</span>
@@ -192,81 +175,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="panel" id="thresholdPanel">
-                    <div class="panel-title">Threshold Events</div>
-                    <div id="thresholdAlerts">
-                        <!-- Threshold alerts will be displayed here -->
-                    </div>
-                </div>
-                <div class="panel" id="controlPanel">
-                    <div class="panel-title">Control Panel</div>
-                    
-                    <!-- Learning Mode Controls -->
-                    <div class="mb-3 p-3 border rounded">
-                        <h6>Learning Mode</h6>
-                        <div class="mb-2">
-                            <label for="stepsInput" class="form-label">Steps to run:</label>
-                            <input type="number" class="form-control form-control-sm" id="stepsInput" value="100" min="10" max="1000">
-                        </div>
-                        <div class="mb-2">
-                            <label for="delayInput" class="form-label">Delay between steps (seconds):</label>
-                            <input type="number" class="form-control form-control-sm" id="delayInput" value="3" min="1" max="10">
-                        </div>
-                        <div class="mb-3">
-                            <button id="toggleLearningModeBtn" class="btn btn-success control-btn">Start Learning</button>
-                            <button id="pauseLearningBtn" class="btn btn-warning control-btn" disabled>Pause</button>
-                        </div>
-                    </div>
-                    
-                    <hr>
-                    
-                    <!-- Emotional State Adjustment -->
-                    <div class="mb-3">
-                        <h6>Emotional State Adjustment</h6>
-                        <div class="mb-2">
-                            <label for="curiositySlider" class="form-label">Curiosity</label>
-                            <input type="range" class="form-range parameter-slider" id="curiositySlider" min="0" max="1" step="0.05" value="0.5">
-                        </div>
-                        <div class="mb-2">
-                            <label for="frustrationSlider" class="form-label">Frustration</label>
-                            <input type="range" class="form-range parameter-slider" id="frustrationSlider" min="0" max="1" step="0.05" value="0">
-                        </div>
-                        <div class="mb-2">
-                            <label for="satisfactionSlider" class="form-label">Satisfaction</label>
-                            <input type="range" class="form-range parameter-slider" id="satisfactionSlider" min="0" max="1" step="0.05" value="0.3">
-                        </div>
-                        <div class="mb-2">
-                            <label for="uncertaintySlider" class="form-label">Uncertainty</label>
-                            <input type="range" class="form-range parameter-slider" id="uncertaintySlider" min="0" max="1" step="0.05" value="0.7">
-                        </div>
-                    </div>
-                    
-                    <!-- Development Age -->
-                    <div class="mb-3">
-                        <h6>Recursive Depth</h6>
-                        <div class="mb-2">
-                            <label for="devAgeSlider" class="form-label">Recursive Depth (1-6)</label>
-                            <input type="range" class="form-range parameter-slider" id="devAgeSlider" min="1" max="6" step="0.1" value="2">
-                            <span id="devAgeValue">2.0</span>
-                            <small class="text-muted d-block">Adjusts the agent's position in the recursive emergence framework:
-                                <ul class="small">
-                                    <li>1-2.5: Chemical/Biological layer (pattern recognition)</li>
-                                    <li>2.5-4: Neural layer (relational knowledge)</li>
-                                    <li>4-6: Cognitive layer (self-referential abstraction)</li>
-                                </ul>
-                            </small>
-                        </div>
-                    </div>
-                    
-                    <!-- State Management -->
-                    <div class="mb-3">
-                        <h6>State Management</h6>
-                        <div class="d-flex gap-2">
-                            <button id="saveStateBtn" class="btn btn-sm btn-outline-primary">Save State</button>
-                            <button id="loadStateBtn" class="btn btn-sm btn-outline-secondary">Load State</button>
-                        </div>
-                    </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="panel" id="processingLogPanel">
+                    <div class="panel-title">Processing Log</div>
+                    <div id="processingLog" style="min-height: 120px; max-height: 250px; overflow-y: auto; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; padding: 10px; font-size: 0.95rem;"></div>
                 </div>
             </div>
         </div>

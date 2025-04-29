@@ -16,91 +16,35 @@ let learningPaused = false;
 
 // Connect to server
 socket.on('connect', () => {
-    updateStatus('Connected to server');
+    appendProcessingLog('Connected to RECC server', 'success');
 });
 
 socket.on('disconnect', () => {
     updateStatus('Disconnected from server', 'danger');
 });
 
-// Update status messages
+// Overwrite updateStatus to only log to Processing Log
 function updateStatus(message, type = 'info') {
-    const statusEl = document.getElementById('statusMessage');
-    statusEl.textContent = message;
-    statusEl.className = 'status-message';
-    
+    appendProcessingLog(message, type);
+}
+
+// --------- Processing Log ---------
+function appendProcessingLog(message, type = 'info') {
+    const logContainer = document.getElementById('processingLog');
+    if (!logContainer) return;
+    const entry = document.createElement('div');
+    entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
     if (type === 'danger') {
-        statusEl.style.backgroundColor = '#f8d7da';
-        statusEl.style.color = '#842029';
+        entry.style.color = '#842029';
     } else if (type === 'success') {
-        statusEl.style.backgroundColor = '#d1e7dd';
-        statusEl.style.color = '#0f5132';
+        entry.style.color = '#0f5132';
     } else if (type === 'warning') {
-        statusEl.style.backgroundColor = '#fff3cd';
-        statusEl.style.color = '#856404';
+        entry.style.color = '#856404';
     } else {
-        statusEl.style.backgroundColor = '#e3f2fd';
-        statusEl.style.color = '#0a58ca';
+        entry.style.color = '#0a58ca';
     }
-}
-
-// Update mode indicator
-function updateModeIndicator() {
-    const indicator = document.getElementById('currentModeIndicator');
-    
-    if (learningMode) {
-        if (learningPaused) {
-            indicator.className = 'mode-indicator mode-paused';
-            indicator.textContent = 'Learning Paused';
-        } else {
-            indicator.className = 'mode-indicator mode-learning';
-            indicator.textContent = 'Learning Mode';
-        }
-    } else {
-        indicator.className = 'mode-indicator mode-interactive';
-        indicator.textContent = 'Interactive Mode';
-    }
-}
-
-// Update button states based on current mode
-function updateButtonStates() {
-    const toggleLearningBtn = document.getElementById('toggleLearningModeBtn');
-    const pauseLearningBtn = document.getElementById('pauseLearningBtn');
-    const sendPromptBtn = document.getElementById('sendPromptBtn');
-    const promptInput = document.getElementById('promptInput');
-    
-    if (learningMode) {
-        toggleLearningBtn.textContent = 'Stop Learning';
-        toggleLearningBtn.className = 'btn btn-danger control-btn';
-        pauseLearningBtn.disabled = false;
-        
-        // Update pause button text based on paused state
-        if (learningPaused) {
-            pauseLearningBtn.textContent = 'Resume';
-            pauseLearningBtn.className = 'btn btn-success control-btn';
-            // Enable prompt input when paused
-            promptInput.disabled = false;
-            sendPromptBtn.disabled = false;
-        } else {
-            pauseLearningBtn.textContent = 'Pause';
-            pauseLearningBtn.className = 'btn btn-warning control-btn';
-            // Disable prompt input during active learning
-            promptInput.disabled = true;
-            sendPromptBtn.disabled = true;
-            promptInput.placeholder = "Pause learning to interact...";
-        }
-    } else {
-        // Interactive mode
-        toggleLearningBtn.textContent = 'Start Learning';
-        toggleLearningBtn.className = 'btn btn-success control-btn';
-        pauseLearningBtn.disabled = true;
-        pauseLearningBtn.textContent = 'Pause';
-        pauseLearningBtn.className = 'btn btn-warning control-btn';
-        // Enable prompt input in interactive mode
-        promptInput.disabled = false;
-        sendPromptBtn.disabled = false;
-        promptInput.placeholder = "Enter your prompt...";
-    }
+    logContainer.appendChild(entry);
+    logContainer.scrollTop = logContainer.scrollHeight;
 }
 
 // Initialize the concept network visualization
@@ -350,91 +294,6 @@ function highlightColorScale(value) {
     return d3.interpolateRgb('#91bfdb', '#fc8d59')(value);
 }
 
-// Update emotion gauges
-function updateEmotionGauges(emotionalState) {
-    const container = document.getElementById('emotionGauges');
-    container.innerHTML = '';
-    
-    Object.entries(emotionalState).forEach(([emotion, value]) => {
-        // Create gauge wrapper
-        const gaugeDiv = document.createElement('div');
-        gaugeDiv.className = 'emotion-gauge';
-        
-        // Create gauge visualization (simple for now)
-        const gaugeValue = document.createElement('div');
-        gaugeValue.className = 'progress';
-        gaugeValue.style.height = '20px';
-        
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-        progressBar.style.width = `${value * 100}%`;
-        progressBar.setAttribute('role', 'progressbar');
-        progressBar.setAttribute('aria-valuenow', value * 100);
-        progressBar.setAttribute('aria-valuemin', '0');
-        progressBar.setAttribute('aria-valuemax', '100');
-        
-        // Set color based on emotion
-        if (emotion === 'curiosity') {
-            progressBar.classList.add('bg-info');
-        } else if (emotion === 'frustration') {
-            progressBar.classList.add('bg-danger');
-        } else if (emotion === 'satisfaction') {
-            progressBar.classList.add('bg-success');
-        } else if (emotion === 'uncertainty') {
-            progressBar.classList.add('bg-warning');
-        }
-        
-        gaugeValue.appendChild(progressBar);
-        
-        // Create label
-        const label = document.createElement('div');
-        label.textContent = `${emotion}: ${(value * 100).toFixed(0)}%`;
-        label.style.marginTop = '5px';
-        label.style.fontSize = '0.9rem';
-        
-        // Add to container
-        gaugeDiv.appendChild(gaugeValue);
-        gaugeDiv.appendChild(label);
-        container.appendChild(gaugeDiv);
-    });
-}
-
-// Update metrics display
-function updateMetrics(metrics) {
-    const container = document.getElementById('metricsContainer');
-    container.innerHTML = '';
-    
-    const createMetric = (label, value, colSize = 6) => {
-        const metricCol = document.createElement('div');
-        metricCol.className = `col-${colSize} mb-2`;
-        
-        const metricCard = document.createElement('div');
-        metricCard.className = 'metric-card';
-        
-        const metricLabel = document.createElement('div');
-        metricLabel.className = 'metric-label';
-        metricLabel.textContent = label;
-        
-        const metricValue = document.createElement('div');
-        metricValue.className = 'metric-value';
-        metricValue.textContent = value;
-        
-        metricCard.appendChild(metricLabel);
-        metricCard.appendChild(metricValue);
-        metricCol.appendChild(metricCard);
-        
-        container.appendChild(metricCol);
-    };
-    
-    // Display key metrics
-    createMetric('Memory Size', metrics.memory_size);
-    createMetric('Concept Count', metrics.concept_count);
-    createMetric('Relation Count', metrics.relation_count);
-    createMetric('Avg. Connections', metrics.avg_connections?.toFixed(2) || '0');
-    createMetric('Theory Count', metrics.theory_count);
-    createMetric('Avg. Novelty', metrics.avg_novelty?.toFixed(2) || '0');
-}
-
 // Append interaction to history
 function appendInteraction(prompt, response, userGenerated = false) {
     const container = document.getElementById('interactionHistory');
@@ -464,83 +323,12 @@ function appendInteraction(prompt, response, userGenerated = false) {
     container.prepend(box);
 }
 
-// Show threshold alerts
-function showThresholdAlerts(thresholds) {
-    const container = document.getElementById('thresholdAlerts');
-    
-    thresholds.forEach(threshold => {
-        const alert = document.createElement('div');
-        alert.className = `threshold-alert ${threshold.type}`;
-        
-        // Create title
-        const title = document.createElement('div');
-        title.style.fontWeight = 'bold';
-        
-        if (threshold.type === 'repetition') {
-            title.textContent = 'Repetition Detected';
-        } else if (threshold.type === 'emotional') {
-            title.textContent = `High ${threshold.emotion}`;
-        } else {
-            title.textContent = threshold.type;
-        }
-        
-        // Create description
-        const desc = document.createElement('div');
-        desc.textContent = threshold.description;
-        
-        // Add severity indicator
-        if (threshold.severity === 'high') {
-            alert.style.borderLeftColor = '#cc0000';
-        } else if (threshold.severity === 'medium') {
-            alert.style.borderLeftColor = '#ff9900';
-        } else {
-            alert.style.borderLeftColor = '#cccc00';
-        }
-        
-        // Append to alert
-        alert.appendChild(title);
-        alert.appendChild(desc);
-        
-        // Add to container
-        container.prepend(alert);
-        
-        // Auto-remove after 10 seconds
-        setTimeout(() => {
-            alert.style.opacity = '0';
-            alert.style.transition = 'opacity 1s ease-out';
-            setTimeout(() => {
-                container.removeChild(alert);
-            }, 1000);
-        }, 10000);
-    });
-}
-
 // Handle RECC state updates
 socket.on('recc_state_update', (data) => {
     // Update all visualizations and displays
     if (data.concept_network) {
         updateConceptNetwork(data.concept_network);
     }
-    
-    if (data.emotional_state) {
-        updateEmotionGauges(data.emotional_state);
-        
-        // Synchronize UI controls with RECC state
-        document.getElementById('curiositySlider').value = data.emotional_state.curiosity || 0.5;
-        document.getElementById('frustrationSlider').value = data.emotional_state.frustration || 0;
-        document.getElementById('satisfactionSlider').value = data.emotional_state.satisfaction || 0.3;
-        document.getElementById('uncertaintySlider').value = data.emotional_state.uncertainty || 0.7;
-    }
-    
-    if (data.metrics) {
-        updateMetrics(data.metrics);
-    }
-    
-    // Update mode controls
-    learningMode = data.learning_mode || false;
-    learningPaused = data.learning_paused || false;
-    updateModeIndicator();
-    updateButtonStates();
     
     updateStatus(`Updated state at ${new Date(data.timestamp).toLocaleTimeString()}`);
 });
@@ -556,10 +344,6 @@ socket.on('learning_mode_update', (data) => {
     learningMode = data.active;
     learningPaused = data.paused;
     
-    // Update UI to reflect the changes
-    updateModeIndicator();
-    updateButtonStates();
-    
     if (learningMode) {
         if (learningPaused) {
             updateStatus('Learning mode paused', 'warning');
@@ -574,30 +358,6 @@ socket.on('learning_mode_update', (data) => {
 // Handle cycle completion events
 socket.on('cycle_complete', (data) => {
     updateStatus(`Learning cycle ${data.step+1}/${data.total_steps} complete`, 'success');
-});
-
-// Handle threshold crossing events
-socket.on('threshold_crossed', (data) => {
-    showThresholdAlerts([{
-        type: data.type,
-        description: data.description,
-        severity: data.severity
-    }]);
-});
-
-// Handle emotional change events
-socket.on('emotional_change', (data) => {
-    showThresholdAlerts([{
-        type: 'emotional',
-        emotion: data.emotion,
-        description: `${data.emotion} changed from ${data.previous.toFixed(2)} to ${data.current.toFixed(2)}`,
-        severity: Math.abs(data.delta) > 0.5 ? 'high' : (Math.abs(data.delta) > 0.3 ? 'medium' : 'low')
-    }]);
-});
-
-// Handle prompt generation events
-socket.on('prompt_generated', (data) => {
-    updateStatus(`Generated prompt: ${data.prompt}`);
 });
 
 // Handle errors
@@ -625,34 +385,6 @@ socket.on('state_loaded', (data) => {
 });
 
 // -------- UI Event Handlers --------
-
-// Toggle learning mode button
-document.getElementById('toggleLearningModeBtn').addEventListener('click', () => {
-    if (learningMode) {
-        // Currently active, so turn it off
-        socket.emit('toggle_learning_mode', {
-            enable: false
-        });
-    } else {
-        // Currently inactive, so turn it on
-        const steps = parseInt(document.getElementById('stepsInput').value) || 100;
-        const delay = parseInt(document.getElementById('delayInput').value) || 3;
-        
-        socket.emit('toggle_learning_mode', {
-            enable: true,
-            steps: steps,
-            delay: delay
-        });
-    }
-});
-
-// Pause learning button
-document.getElementById('pauseLearningBtn').addEventListener('click', () => {
-    // Toggle pause state
-    socket.emit('pause_learning', {
-        pause: !learningPaused
-    });
-});
 
 // Send prompt button
 document.getElementById('sendPromptBtn').addEventListener('click', () => {
@@ -685,64 +417,10 @@ document.getElementById('refreshNetworkBtn').addEventListener('click', () => {
     }
 });
 
-// Parameter adjustment sliders
-const emotionSliders = ['curiositySlider', 'frustrationSlider', 'satisfactionSlider', 'uncertaintySlider'];
-emotionSliders.forEach(sliderId => {
-    document.getElementById(sliderId).addEventListener('change', (e) => {
-        const emotionName = sliderId.replace('Slider', '');
-        const value = parseFloat(e.target.value);
-        
-        socket.emit('adjust_parameter', {
-            type: 'emotional_state',
-            name: emotionName,
-            value: value
-        });
-        
-        updateStatus(`Adjusting ${emotionName} to ${value.toFixed(2)}`, 'info');
-    });
-});
-
-// Development age slider
-document.getElementById('devAgeSlider').addEventListener('input', (e) => {
-    const value = parseFloat(e.target.value);
-    document.getElementById('devAgeValue').textContent = value.toFixed(1);
-});
-
-document.getElementById('devAgeSlider').addEventListener('change', (e) => {
-    const value = parseFloat(e.target.value);
-    
-    socket.emit('adjust_parameter', {
-        type: 'recursive_depth',
-        name: 'recursive_depth',
-        value: value
-    });
-    
-    updateStatus(`Adjusting recursive depth to ${value.toFixed(1)}`, 'info');
-});
-
-// State management buttons
-document.getElementById('saveStateBtn').addEventListener('click', () => {
-    socket.emit('save_state');
-    updateStatus('Saving state...', 'info');
-});
-
-document.getElementById('loadStateBtn').addEventListener('click', () => {
-    // This could be extended to show a modal with available state files
-    const sessionId = prompt('Enter session ID to load:');
-    if (sessionId) {
-        socket.emit('load_state', { session_id: sessionId });
-        updateStatus('Loading state...', 'info');
-    }
-});
-
 // Initialize when document is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize concept network with empty data
     initConceptNetwork();
-    
-    // Initialize controls
-    updateModeIndicator();
-    updateButtonStates();
     
     // Update status
     updateStatus('Dashboard ready. Connect to start visualization.');
