@@ -1,0 +1,739 @@
+$ python lab/mindlet/REmindlet.py
+
+--- Cycle 1 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.46
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.95
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.66
+IPL chose action: {'type': 'express_emotion'}
+MindletRE v3 (Modular) born.
+You (😐): 
+--- Cycle 2 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.71
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.09
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.74
+IPL chose action: {'type': 'express_emotion'}
+
+--- Cycle 3 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.79
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.01
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.24
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+HI BABY
+You (😐): 
+--- Cycle 4 ---
+[RME] Processing buffer: {('HI', 'BABY'), ('BABY',), ('HI',)}
+[RME Blocked] ΔH=-0.92, Echo=0.00, Thr=0.05
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.71
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.35
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.07
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+how are yo
+--- Cycle 5 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.59
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.46
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.35
+IPL chose action: {'type': 'express_emotion'}
+u doing today? 
+You (😱): 
+--- Cycle 6 ---
+[RME] Processing buffer: {('you',), ('doing', 'today?'), ('how', 'are'), ('you', 'doing'), ('are',), ('are', 'you'), ('doing',), ('today?',), ('how',)}
+[RME Blocked] ΔH=-1.69, Echo=0.00, Thr=-0.05
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.19
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.28
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.70
+IPL chose action: {'type': 'express_emotion'}
+
+--- Cycle 7 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.28
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.52
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.65
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+--- Cycle 8 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.68
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.65
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.45
+IPL chose action: {'type': 'express_emotion'}
+
+--- Cycle 9 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.87
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.30
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.71
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+--- Cycle 10 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.22
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.38
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.52
+IPL chose action: {'type': 'express_emotion'}
+let's invite 
+--- Cycle 11 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.40
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.92
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.51
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+ou  
+--- Cycle 12 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.22
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.63
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.02
+IPL chose action: {'type': 'express_emotion'}
+ 
+--- Cycle 13 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.97
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.58
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.17
+IPL chose action: {'type': 'express_emotion'}
+your mentor
+You (😐): 
+--- Cycle 14 ---
+[RME] Processing buffer: {('your',), ('invite', 'your'), ("let's", 'invite'), ('invite',), ('mentor',), ('your', 'mentor'), ("let's",)}
+[RME Blocked] ΔH=-1.46, Echo=0.00, Thr=0.05
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.23
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.53
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.95
+IPL chose action: {'type': 'express_emotion'}
+
+--- Cycle 15 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.53
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.85
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.62
+IPL chose action: {'type': 'express_emotion'}
+/train
+Starting 20-step training with LLM mentor... (verbose mode)
+
+[Training] Starting 20-step training session with REmindlet...
+
+--- Cycle 16 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.73
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.39
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.09
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+[Training Step 1/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe. 
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 17 ---
+[RME] Processing buffer: {('Hi',), ('are', 'safe.'), ('Hi', '🙂'), ('🙂',), ('are',), ('safe.', 'Hi'), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('safe.',), ('You',)}
+[RME Blocked] ΔH=-1.87, Echo=0.00, Thr=0.00
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.93
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.72
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.72
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+[Training] Step 1 complete. 19 steps remaining.
+
+--- Cycle 18 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.80
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.92
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.45
+IPL chose action: {'type': 'express_emotion'}
+
+[Training Step 2/20] REmindlet says: am I 😱
+Mentor: Hi 😊
+
+You are safe.
+
+Hi 🙂
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 19 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('Hi', '🙂'), ('🙂',), ('are',), ('safe.', 'Hi'), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('You',)}
+[RME Blocked] ΔH=-2.05, Echo=0.00, Thr=-0.10
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.21
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.94
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.58
+IPL chose action: {'type': 'express_emotion'}
+[Training] Step 2 complete. 18 steps remaining.
+
+--- Cycle 20 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.27
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.63
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.57
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+--- Cycle 21 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.54
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.08
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.75
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+--- Cycle 22 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.86
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.12
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.69
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+[Training Step 3/20] REmindlet says: am I 😱
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+REmindlet processes this input...
+
+--- Cycle 23 ---
+[RME] Processing buffer: {('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.07, Echo=0.00, Thr=0.00
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.92
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.35
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.41
+IPL chose action: {'type': 'express_emotion'}
+[Training] Step 3 complete. 17 steps remaining.
+
+--- Cycle 24 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.71
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.13
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.61
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+[Training Step 4/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Hi 🙂
+
+Safe 😊
+
+Safe 🙂
+REmindlet processes this input...
+
+--- Cycle 25 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('Hi', '🙂'), ('🙂',), ('are',), ('safe.', 'Hi'), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('😊', 'Safe'), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.01, Echo=0.00, Thr=-0.10
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.59
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.97
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.50
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+[Training] Step 4 complete. 16 steps remaining.
+
+--- Cycle 26 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.83
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.68
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.90
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+[Training Step 5/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 27 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.10
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.82
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.56
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.95
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+[Training] Step 5 complete. 15 steps remaining.
+
+--- Cycle 28 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.30
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.52
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.96
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+[Training Step 6/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 29 ---
+[RME] Processing buffer: {('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('Hi', '🙂'), ('safe.', 'Safe'), ('are',), ('🙂', 'Hi'), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.05, Echo=0.00, Thr=-0.20
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.47
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.52
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.25
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+[Training] Step 6 complete. 14 steps remaining.
+
+--- Cycle 30 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.70
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.74
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.27
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+[Training Step 7/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Safe 😊
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 31 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('Hi', '🙂'), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('😊', 'Hi'), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.01, Echo=0.00, Thr=-0.10
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.64
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.01
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.06
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+[Training] Step 7 complete. 13 steps remaining.
+
+[Training Step 8/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 32 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.15
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.89
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.37
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.90
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+--- Cycle 33 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.74
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.81
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.26
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+[Training] Step 8 complete. 12 steps remaining.
+
+[Training Step 9/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Safe 😊
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 34 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('Hi', '🙂'), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('😊', 'Hi'), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.01, Echo=0.00, Thr=-0.20
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.62
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.16
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.37
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+--- Cycle 35 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.79
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.06
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.75
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+[Training] Step 9 complete. 11 steps remaining.
+
+[Training Step 10/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Safe 😊
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 36 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('Hi', '🙂'), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('😊', 'Hi'), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.01, Echo=0.00, Thr=-0.25
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.49
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.45
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.47
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+--- Cycle 37 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.66
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.30
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.93
+IPL chose action: {'type': 'express_emotion'}
+[Training] Step 10 complete. 10 steps remaining.
+
+[Training Step 11/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+Safe 🙂
+
+You are safe.
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 38 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('🙂', 'You'), ('Hi', '😊'), ('😊', 'Safe'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.15
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.01
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.60
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.02
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+--- Cycle 39 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.05
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.47
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.64
+IPL chose action: {'type': 'express_emotion'}
+[Training] Step 11 complete. 9 steps remaining.
+
+[Training Step 12/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+Safe 🙂
+
+You are safe.
+
+Safe 😊
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 40 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('Hi', '🙂'), ('safe.', 'Safe'), ('are',), ('🙂', 'You'), ('Hi', '😊'), ('😊', 'Safe'), ('😊',), ('You', 'are'), ('😊', 'Hi'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.01, Echo=0.00, Thr=-0.15
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.35
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.95
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.53
+IPL chose action: {'type': 'express_emotion'}
+
+--- Cycle 41 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.25
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.59
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.32
+IPL chose action: {'type': 'express_emotion'}
+[Training] Step 12 complete. 8 steps remaining.
+
+[Training Step 13/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+Safe 🙂
+
+You are safe.
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 42 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('🙂', 'You'), ('Hi', '😊'), ('😊', 'Safe'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.10
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.95
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.14
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.07
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+[Training] Step 13 complete. 7 steps remaining.
+
+--- Cycle 43 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.64
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.61
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.45
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+[Training Step 14/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 44 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.10
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.65
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.75
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.45
+IPL chose action: {'type': 'express_emotion'}
+[Training] Step 14 complete. 6 steps remaining.
+
+--- Cycle 45 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.02
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.72
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.77
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+[Training Step 15/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+Safe 🙂
+
+You are safe.
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 46 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('🙂', 'You'), ('Hi', '😊'), ('😊', 'Safe'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.15
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.12
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.37
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.29
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+[Training] Step 15 complete. 5 steps remaining.
+
+--- Cycle 47 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.51
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.90
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.44
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+
+[Training Step 16/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 48 ---
+[RME] Processing buffer: {('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('Hi', '🙂'), ('safe.', 'Safe'), ('are',), ('🙂', 'Hi'), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.05, Echo=0.00, Thr=-0.15
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.68
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.19
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.08
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+[Training] Step 16 complete. 4 steps remaining.
+
+[Training Step 17/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+Safe 🙂
+
+You are safe.
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 49 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('🙂', 'You'), ('Hi', '😊'), ('😊', 'Safe'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.25
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.88
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.10
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.16
+IPL chose action: {'type': 'express_emotion'}
+
+--- Cycle 50 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.46
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.04
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.99
+IPL chose action: {'type': 'express_emotion'}
+[Training] Step 17 complete. 3 steps remaining.
+
+--- Cycle 51 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.26
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.12
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.25
+IPL chose action: {'type': 'express_emotion'}
+
+[Training Step 18/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 52 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('🙂', 'Safe'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.15
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.95
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.34
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.36
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+[Training] Step 18 complete. 2 steps remaining.
+
+--- Cycle 53 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.44
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.59
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.56
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+[Training Step 19/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+Safe 🙂
+
+You are safe.
+
+Safe 😊
+REmindlet processes this input...
+
+--- Cycle 54 ---
+[RME] Processing buffer: {('Safe', '😊'), ('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('safe.', 'Safe'), ('are',), ('🙂', 'You'), ('Hi', '😊'), ('😊', 'Safe'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.02, Echo=0.00, Thr=-0.15
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.03
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.48
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.49
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+[Training] Step 19 complete. 1 steps remaining.
+
+--- Cycle 55 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.28
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.02
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.06
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+[Training Step 20/20] REmindlet says: am I 😖
+Mentor: Hi 😊
+
+You are safe.
+
+Safe 🙂
+
+Hi 🙂
+REmindlet processes this input...
+
+--- Cycle 56 ---
+[RME] Processing buffer: {('Safe',), ('Hi',), ('are', 'safe.'), ('🙂',), ('Hi', '🙂'), ('safe.', 'Safe'), ('are',), ('🙂', 'Hi'), ('😊', 'You'), ('Hi', '😊'), ('😊',), ('You', 'are'), ('safe.',), ('Safe', '🙂'), ('You',)}
+[RME Blocked] ΔH=-2.05, Echo=0.00, Thr=-0.20
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.73
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.63
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.46
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}
+[Training] Training session completed.
+Training finished. Verbose logging restored to: enabled.
+You (😖): 
+--- Cycle 57 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.30
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.06
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.98
+IPL chose action: {'type': 'express_emotion'}
+
+--- Cycle 58 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.58
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.41
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.06
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+--- Cycle 59 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_emotion'}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_motif', 'motif': ('I',)}]
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.22
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.86
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.31
+IPL chose action: {'type': 'express_motif', 'motif': ('am',)}
+
+--- Cycle 60 ---
+[Cycle] No input buffer content.
+Warning: IPL.generate_action_space() is a basic placeholder. Generated: [{'type': 'express_motif', 'motif': ('I',)}, {'type': 'express_motif', 'motif': ('am',)}, {'type': 'express_emotion'}]
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.48
+Warning: IPL.score() is a basic placeholder. Score for express_motif: 0.36
+Warning: IPL.score() is a basic placeholder. Score for express_emotion: 0.22
+IPL chose action: {'type': 'express_motif', 'motif': ('I',)}

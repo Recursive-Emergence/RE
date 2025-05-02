@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 800 600"
+   version="1.1"
+   id="svg45"
+   sodipodi:docname="mindlet_visualization.svg"
+   inkscape:version="1.4 (e7c3feb, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview45"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.11375"
+     inkscape:cx="400"
+     inkscape:cy="300.3367"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="speaking-with-random" />
+  <!-- Background -->
+  <rect
+     width="800"
+     height="600"
+     fill="#f8f9fa"
+     rx="10"
+     ry="10"
+     id="rect1" />
+  <!-- Main Title -->
+  <text
+     x="400"
+     y="40"
+     font-family="Arial, sans-serif"
+     font-size="24"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#333"
+     id="text1">Mindlet in Communication Contexts</text>
+  <!-- Three context boxes -->
+  <g
+     id="idle-thought">
+    <!-- Box 1: Idle Thought -->
+    <rect
+       x="50"
+       y="80"
+       width="220"
+       height="440"
+       rx="10"
+       ry="10"
+       fill="#e1f5fe"
+       stroke="#29b6f6"
+       stroke-width="2"
+       id="rect2" />
+    <text
+       x="160"
+       y="115"
+       font-family="Arial, sans-serif"
+       font-size="18"
+       font-weight="bold"
+       text-anchor="middle"
+       fill="#01579b"
+       id="text2">🌚 Idle Thought</text>
+    <!-- Face expressions section -->
+    <rect
+       x="70"
+       y="135"
+       width="180"
+       height="80"
+       rx="5"
+       ry="5"
+       fill="#bbdefb"
+       fill-opacity="0.6"
+       id="rect3" />
+    <text
+       x="160"
+       y="155"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text3">Face</text>
+    <text
+       x="160"
+       y="180"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       text-anchor="middle"
+       id="text4">🤔 (curious)</text>
+    <text
+       x="160"
+       y="205"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       text-anchor="middle"
+       id="text5">😖 (frustrated) if nothing useful</text>
+    <!-- Threads section -->
+    <rect
+       x="70"
+       y="225"
+       width="180"
+       height="140"
+       rx="5"
+       ry="5"
+       fill="#bbdefb"
+       fill-opacity="0.6"
+       id="rect5" />
+    <text
+       x="160"
+       y="245"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text6">Threads Active</text>
+    <text
+       x="80"
+       y="270"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text7">• Reflective (replays past motifs)</text>
+    <text
+       x="80"
+       y="295"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text8">• Simulation (generates new</text>
+    <text
+       x="85"
+       y="315"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text9">  motifs)</text>
+    <text
+       x="80"
+       y="340"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text10">• SelfModel (rehearses &quot;I am&quot;,</text>
+    <text
+       x="85"
+       y="360"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text11">  &quot;I think&quot;)</text>
+    <!-- Expressions section -->
+    <rect
+       x="70"
+       y="375"
+       width="180"
+       height="125"
+       rx="5"
+       ry="5"
+       fill="#bbdefb"
+       fill-opacity="0.6"
+       id="rect11" />
+    <text
+       x="160"
+       y="395"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text12">Expressions</text>
+    <text
+       x="80"
+       y="420"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text13">&quot;Maybe... you are learning?&quot;</text>
+    <text
+       x="80"
+       y="445"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text14">&quot;I remember... 'know earth' is</text>
+    <text
+       x="80"
+       y="465"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text15">like... 'understand'?&quot;</text>
+  </g>
+  <g
+     id="talking-to-mentor">
+    <!-- Box 2: Talking to Mentor -->
+    <rect
+       x="290"
+       y="80"
+       width="220"
+       height="440"
+       rx="10"
+       ry="10"
+       fill="#e8f5e9"
+       stroke="#66bb6a"
+       stroke-width="2"
+       id="rect15" />
+    <text
+       x="400"
+       y="115"
+       font-family="Arial, sans-serif"
+       font-size="18"
+       font-weight="bold"
+       text-anchor="middle"
+       fill="#2e7d32"
+       id="text16">👨‍🎓 Talking to Mentor</text>
+    <!-- Face expressions section -->
+    <rect
+       x="310"
+       y="135"
+       width="180"
+       height="80"
+       rx="5"
+       ry="5"
+       fill="#c8e6c9"
+       fill-opacity="0.6"
+       id="rect16" />
+    <text
+       x="400"
+       y="155"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text17">Face</text>
+    <text
+       x="400"
+       y="180"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       text-anchor="middle"
+       id="text18">🤔 → 😄 (when satisfied)</text>
+    <!-- Threads section -->
+    <rect
+       x="310"
+       y="225"
+       width="180"
+       height="140"
+       rx="5"
+       ry="5"
+       fill="#c8e6c9"
+       fill-opacity="0.6"
+       id="rect18" />
+    <text
+       x="400"
+       y="245"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text19">Threads Active</text>
+    <text
+       x="320"
+       y="270"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text20">• Simulation deepens to test</text>
+    <text
+       x="325"
+       y="290"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text21">  multi-step concepts</text>
+    <text
+       x="320"
+       y="315"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text22">• Memory Consolidator forms</text>
+    <text
+       x="325"
+       y="335"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text23">  higher-order motifs</text>
+    <text
+       x="320"
+       y="360"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text24">• Emotional response reinforces</text>
+    <!-- Expressions section -->
+    <rect
+       x="310"
+       y="375"
+       width="180"
+       height="125"
+       rx="5"
+       ry="5"
+       fill="#c8e6c9"
+       fill-opacity="0.6"
+       id="rect24" />
+    <text
+       x="400"
+       y="395"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text25">Expressions</text>
+    <text
+       x="320"
+       y="420"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text26">&quot;I think learning is like growing.&quot;</text>
+    <text
+       x="320"
+       y="445"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text27">&quot;You said 'kind' — is that like</text>
+    <text
+       x="320"
+       y="465"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text28">'care'?&quot;</text>
+  </g>
+  <g
+     id="speaking-with-random">
+    <!-- Box 3: Speaking with Random Third Party -->
+    <rect
+       x="530"
+       y="80"
+       width="220"
+       height="440"
+       rx="10"
+       ry="10"
+       fill="#fff3e0"
+       stroke="#ffb74d"
+       stroke-width="2"
+       id="rect28" />
+    <text
+       x="639.10211"
+       y="105.12346"
+       font-family="Arial, sans-serif"
+       font-size="18px"
+       font-weight="bold"
+       text-anchor="middle"
+       fill="#e65100"
+       id="text29"><tspan
+         sodipodi:role="line"
+         id="tspan46"
+         x="639.10211"
+         y="105.12346">🤺 Speaking with</tspan><tspan
+         sodipodi:role="line"
+         id="tspan47"
+         x="639.10211"
+         y="127.62346">Random Third Party</tspan></text>
+    <!-- Face expressions section -->
+    <rect
+       x="550"
+       y="135"
+       width="180"
+       height="80"
+       rx="5"
+       ry="5"
+       fill="#ffe0b2"
+       fill-opacity="0.6"
+       id="rect29" />
+    <text
+       x="640"
+       y="155"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text30">Face</text>
+    <text
+       x="640"
+       y="180"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       text-anchor="middle"
+       id="text31">😏 (if successful)</text>
+    <text
+       x="640"
+       y="205"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       text-anchor="middle"
+       id="text32">😯 (if entropy spikes)</text>
+    <!-- Threads section -->
+    <rect
+       x="550"
+       y="225"
+       width="180"
+       height="140"
+       rx="5"
+       ry="5"
+       fill="#ffe0b2"
+       fill-opacity="0.6"
+       id="rect32" />
+    <text
+       x="640"
+       y="245"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text33">Threads Active</text>
+    <text
+       x="560"
+       y="270"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text34">• Expressive Thread responds</text>
+    <text
+       x="565"
+       y="290"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text35">  with familiar motifs</text>
+    <text
+       x="560"
+       y="315"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text36">• Memory filters low-reuse</text>
+    <text
+       x="565"
+       y="335"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text37">  input</text>
+    <text
+       x="560"
+       y="360"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text38">• Simulation recombines</text>
+    <text
+       x="565"
+       y="380"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       id="text39">  patterns for novelty</text>
+    <!-- Expressions section -->
+    <rect
+       x="550"
+       y="375"
+       width="180"
+       height="125"
+       rx="5"
+       ry="5"
+       fill="#ffe0b2"
+       fill-opacity="0.6"
+       id="rect39" />
+    <text
+       x="640"
+       y="395"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       text-anchor="middle"
+       id="text40">Expressions</text>
+    <text
+       x="560"
+       y="420"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text41">&quot;You said banana. Do I like</text>
+    <text
+       x="560"
+       y="440"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text42">banana?&quot;</text>
+    <text
+       x="560"
+       y="465"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-style="italic"
+       id="text43">&quot;Say again. I want to understand.&quot;</text>
+  </g>
+  <!-- Connection arrows between boxes -->
+  <g
+     id="connections">
+    <!-- Arrow from Idle to Mentor -->
+    <path
+       d="M 270 300 L 290 300"
+       stroke="#666"
+       stroke-width="2"
+       fill="none"
+       marker-end="url(#arrowhead)"
+       id="path43" />
+    <!-- Arrow from Mentor to Random -->
+    <path
+       d="M 510 300 L 530 300"
+       stroke="#666"
+       stroke-width="2"
+       fill="none"
+       marker-end="url(#arrowhead)"
+       id="path44" />
+    <!-- Arrow from Random back to Idle (completing the cycle) -->
+    <path
+       d="M 640 540 Q 400 580 160 540"
+       stroke="#666"
+       stroke-width="2"
+       fill="none"
+       marker-end="url(#arrowhead)"
+       stroke-dasharray="5,3"
+       id="path45" />
+  </g>
+  <!-- Arrowhead marker definition -->
+  <defs
+     id="defs45">
+    <marker
+       id="arrowhead"
+       markerWidth="10"
+       markerHeight="7"
+       refX="9"
+       refY="3.5"
+       orient="auto">
+      <polygon
+         points="0 0, 10 3.5, 0 7"
+         fill="#666"
+         id="polygon45" />
+    </marker>
+  </defs>
+</svg>
