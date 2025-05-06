@@ -4,3 +4,4 @@ __pycache__/
 *.log
 lab/RECC/
 lab/RECC_test/
+lab/mindlet/mentor.py

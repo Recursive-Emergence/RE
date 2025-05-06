@@ -1,8 +1,8 @@
-\
 # filepath: /media/im2/plus/lab4/ACI/lab/mindlet/il.py
 import time
 from collections import deque, Counter
 import random # Needed for fallback in act
+import logging
 
 class InteractionLoop:
     """
@@ -14,11 +14,14 @@ class InteractionLoop:
         self.input_buffer = deque(maxlen=buffer_maxlen)
         self.buffer_timestamps = deque() # Track arrival time for latency metrics
         self.last_interaction_log = None
+        # Set up logger
+        self.logger = logging.getLogger("IL")
 
     def perceive(self, input_data, source="user"):
         """
         Processes raw input data (e.g., text) into motifs and stores in buffer.
         Migrated from REmindlet.process_input.
+        Enhanced to track source of motifs (user, self, environment).
         Returns the motifs added to the buffer.
         """
         added_motifs = set()
@@ -40,10 +43,19 @@ class InteractionLoop:
                         added_motifs.add(motif2)
         else:
             # Handle other potential input types if necessary
-            print(f"Warning: IL.perceive received non-string input: {type(input_data)}")
+            self.logger.warning(f"IL.perceive received non-string input: {type(input_data)}")
             
-        # Log the perception event
-        self.log_interaction(event_type="perceive", data={"source": source, "raw": input_data, "motifs": added_motifs})
+        # Log the perception event with source information
+        self.log_interaction(
+            event_type="perceive", 
+            data={
+                "source": source, 
+                "raw": input_data, 
+                "motifs": added_motifs,
+                # Apply different valence weights based on source
+                "valence_modifier": 1.5 if source == "self" else 1.0
+            }
+        )
         return added_motifs # Return the set of motifs generated from this input
 
     def get_buffered_input(self):
@@ -59,8 +71,7 @@ class InteractionLoop:
     def act(self, action_details):
         """
         Executes an action chosen by the IPL.
-        Placeholder: Currently uses the old 'express' logic to generate output directly.
-        In the final architecture, 'action_details' should specify what to do.
+        Enhanced to re-perceive the agent's own output as self-sourced input.
         """
         # TODO: Refine this. 'action_details' should come from IPL.
         # For now, assume action_details contains necessary context (memory, emotion state)
@@ -70,7 +81,8 @@ class InteractionLoop:
         emotion_state = action_details.get("emotion_state", Counter())
         positive_assoc = action_details.get("positive_assoc", set())
         negative_assoc = action_details.get("negative_assoc", set())
-        buffer_content = action_details.get("buffer_content", set()) # Content of buffer *before* it was cleared
+        # Ensure buffer_content is a set, even if None is passed
+        buffer_content = action_details.get("buffer_content") or set() # Content of buffer *before* it was cleared
 
         if not memory_elements:
             output = "..."
@@ -122,8 +134,11 @@ class InteractionLoop:
         # Log the action event
         self.log_interaction(event_type="act", data={"chosen_action": action_details.get("chosen_action_raw", "express_placeholder"), "output": output})
         
-        # In a real scenario, this would perform the action (e.g., print to console, send API request)
-        # For now, it just returns the generated text.
+        # NEW: Re-perceive the agent's own output as self-sourced input
+        # This creates the crucial recursive feedback loop where agent learns from its own expressions
+        self.logger.info(f"[IL -> Perceive] Re-perceiving output: '{output}'")
+        self.perceive(output, source="self")
+        
         return output # Return the result of the action (e.g., the text expressed)
 
 
@@ -136,5 +151,5 @@ class InteractionLoop:
         }
         self.last_interaction_log = log_entry
         # In a real implementation, this might write to a file or database.
-        # print(f"[IL Log] {log_entry}") # Optional: print log
+        self.logger.info(f"[IL Log] {log_entry}") # Optional: print log
 

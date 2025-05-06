@@ -1,6 +1,5 @@
-# filepath: /media/im2/plus/lab4/ACI/lab/mindlet/ee.py
 import random
-from collections import Counter
+from collections import Counter, deque # Added deque
 
 class EmotionEngine:
     """
@@ -16,6 +15,22 @@ class EmotionEngine:
         self.decay_prob_joy = 0.15
         self.max_level = 10 # Max level for each emotion
         self.decay_rate = 0.1 # Decay 10% towards 0 each cycle
+        # Track motifs associated with recent strong emotional changes
+        self.positive_associated_motifs = Counter() # motif -> positive association score
+        self.negative_associated_motifs = Counter() # motif -> negative association score
+        self.association_decay = 0.95 # Decay factor for associations over time
+        self.motif_association_history = deque(maxlen=50) # Track (motif, valence_change) pairs
+
+    def _decay_associations(self):
+        # Periodically decay the association scores
+        for motif in list(self.positive_associated_motifs.keys()):
+            self.positive_associated_motifs[motif] *= self.association_decay
+            if self.positive_associated_motifs[motif] < 0.1:
+                del self.positive_associated_motifs[motif]
+        for motif in list(self.negative_associated_motifs.keys()):
+            self.negative_associated_motifs[motif] *= self.association_decay
+            if self.negative_associated_motifs[motif] < 0.1:
+                del self.negative_associated_motifs[motif]
 
     def _internal_dynamics(self):
         """
@@ -39,16 +54,21 @@ class EmotionEngine:
             new_changes['panic'] -= 1
         if joy > 0 and random.random() < self.decay_prob_joy:
             new_changes['joy'] -= 1
-            
+
         # Apply changes, ensuring counts don't go below zero
         self.state.update(new_changes)
         self.state = Counter({k: max(0, v) for k, v in self.state.items()})
+
+        # Decay associations as part of internal dynamics
+        self._decay_associations()
 
 
     def adjust(self, state_change_info):
         """
         Adjusts emotional state based on external events or internal signals.
         'state_change_info' could be input data, action results, entropy changes, etc.
+        Also updates motif-emotion associations.
+        Enhanced to handle source-tagged motifs differently and recognize desire motifs.
         """
         # 1. Apply decay first
         for emotion in list(self.state.keys()):
@@ -61,17 +81,65 @@ class EmotionEngine:
         # 2. Process event
         if state_change_info:
             event_type = state_change_info.get("type")
+            # Get motifs involved, default to empty set if not provided
+            associated_motifs = state_change_info.get("motifs", set()) 
+            # Get source information (user/self/environment)
+            source = state_change_info.get("source", "unknown")
+            # Get valence modifier based on source (self-generated motifs get higher valence)
+            valence_modifier = state_change_info.get("valence_modifier", 1.0)
+            
             if event_type == "merge_success":
-                # Increase joy, decrease panic
                 joy_boost = state_change_info.get("joy_boost", 1)
+                # Apply source-based valence modification
+                joy_boost = int(joy_boost * valence_modifier)
+                
                 self.state['joy'] += joy_boost
                 self.state['panic'] -= joy_boost // 2 # Reduce panic on success
+                
+                # Strengthen positive associations for involved motifs
+                for motif in associated_motifs:
+                    if isinstance(motif, tuple):
+                        self.positive_associated_motifs[motif] += joy_boost
+                        self.motif_association_history.append((motif, joy_boost)) # Track positive change
+                        # Weaken negative association if it existed
+                        if motif in self.negative_associated_motifs:
+                            self.negative_associated_motifs[motif] *= 0.5
+                
+                # NEW: Special handling for identity and desire motifs
+                for motif in associated_motifs:
+                    if isinstance(motif, tuple):
+                        # Check if this is an identity motif ("I am", "I think")
+                        if len(motif) > 1 and motif[0] == "I":
+                            # Identity motifs get stronger joy boost
+                            self.state['joy'] += 1
+                            # Add double strength to positive association
+                            self.positive_associated_motifs[motif] += 1
+                        
+                        # Check if this is a desire motif ("want", "learn", "safe")
+                        if "want" in motif or "learn" in motif or "safe" in motif:
+                            # Desire motifs get stronger joy boost when successfully merged
+                            self.state['joy'] += 1
+                            # Desire fulfillment reduces panic
+                            self.state['panic'] = max(0, self.state['panic'] - 1)
+
             elif event_type == "merge_fail":
-                # Increase panic slightly, decrease joy slightly
-                # Reduced panic boost compared to before
-                panic_boost = state_change_info.get("panic_boost", 1) 
+                panic_boost = state_change_info.get("panic_boost", 1)
+                # Apply source-based modification (self-failures might be more impactful)
+                if source == "self":
+                    panic_boost += 1  # Higher panic when self-generated content fails to merge
+                
                 self.state['panic'] += panic_boost // 2 + 1 # Less sensitive panic increase
                 self.state['joy'] -= panic_boost // 3 # Reduce joy slightly on failure
+                
+                # Strengthen negative associations for involved motifs
+                for motif in associated_motifs:
+                     if isinstance(motif, tuple):
+                        self.negative_associated_motifs[motif] += panic_boost
+                        self.motif_association_history.append((motif, -panic_boost)) # Track negative change
+                        # Weaken positive association if it existed
+                        if motif in self.positive_associated_motifs:
+                            self.positive_associated_motifs[motif] *= 0.5
+
             elif state_change_info.get("type") == "input_keyword":
                  # Example: Adjust based on keywords in input
                  keywords = state_change_info.get("keywords", set())
@@ -79,6 +147,29 @@ class EmotionEngine:
                      self.state['panic'] += 1
                  if "good" in keywords or "happy" in keywords:
                      self.state['joy'] += 1
+                     
+            elif state_change_info.get("type") == "perceive":
+                # NEW: Handle perception events directly
+                # This allows emotional response to perceived input based on source
+                source = state_change_info.get("source", "user")
+                valence_modifier = state_change_info.get("valence_modifier", 1.0)
+                
+                # Self-perception can trigger different emotional responses
+                if source == "self":
+                    # Self-generated content that gets re-perceived can generate small joy
+                    # This creates a positive feedback loop for self-expression
+                    self.state['joy'] += 1
+                    
+                # Special token detection for emotional response
+                motifs = state_change_info.get("motifs", set())
+                for motif in motifs:
+                    if isinstance(motif, tuple):
+                        # Joy triggers
+                        if any(token in ["good", "happy", "joy", "safe", "help"] for token in motif):
+                            self.state['joy'] += 1 * valence_modifier
+                        # Panic triggers    
+                        if any(token in ["bad", "sad", "panic", "fear", "scary"] for token in motif):
+                            self.state['panic'] += 1 * valence_modifier
 
         # 3. Clamp values
         for emotion in self.state:
@@ -89,15 +180,39 @@ class EmotionEngine:
 
         # Apply internal dynamics after adjustments
         self._internal_dynamics()
-
+        
     def valence(self, motif):
         """
-        Placeholder: Assigns an emotional valence (e.g., joy/panic modifier) to a motif.
-        This could be based on past associations.
+        Assigns an emotional valence score to a motif based on past associations.
+        Positive score = positive association, Negative score = negative association.
+        Enhanced with special case handling for identity and desire motifs.
         """
-        # TODO: Implement valence assignment based on learned associations.
-        # Could check against recently_positive/negative motifs stored here or passed in.
-        return 0 # Neutral valence for now
+        if not isinstance(motif, tuple):
+            return 0 # Only score tuple motifs
+
+        pos_score = self.positive_associated_motifs.get(motif, 0)
+        neg_score = self.negative_associated_motifs.get(motif, 0)
+        
+        # Base valence: difference between positive and negative associations
+        valence = pos_score - neg_score
+        
+        # NEW: Special case handling
+        # Identity motifs get an inherent positive bias
+        if len(motif) > 1 and motif[0] == "I":
+            valence += 1
+            
+        # Desire motifs get a small positive bias
+        desire_tokens = {"want", "learn", "safe", "help", "think"}
+        if any(token in desire_tokens for token in motif):
+            valence += 0.5
+            
+        # Motifs with high emotional words get direct valence
+        if any(token in ["good", "happy", "joy"] for token in motif):
+            valence += 1
+        if any(token in ["bad", "sad", "panic", "fear"] for token in motif):
+            valence -= 1
+            
+        return valence
 
     def homeostasis_check(self):
         """

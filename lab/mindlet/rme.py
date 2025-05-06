@@ -1,6 +1,8 @@
 import math
 from collections import Counter, defaultdict, deque
 import random # Added random for motif_resonates placeholder
+import time # Added for TTL-based motif cooling
+import logging # Added for proper logging
 
 class RecursiveMemoryEngine:
     """
@@ -20,6 +22,24 @@ class RecursiveMemoryEngine:
         self.depth = depth
         self.max_depth = max_depth
         self.last_entropy = self.compute_entropy()
+        
+        # NEW: Motif cooldown tracking with TTL
+        self.motif_cooldown = {}  # motif -> expiry time
+        self.cooldown_ttl = 3     # Default cycles to cool down
+        
+        # NEW: Memory maturity tracking 
+        self.merge_count = 0
+        self.merge_threshold_base = 0.05  # Starting threshold (can be adjusted)
+        self.merge_threshold_min = -0.15  # Lower bound for threshold decay
+        self.last_merge_time = time.time()
+        self.stagnation_time = 0  # How long since meaningful entropy change
+        
+        # NEW: Track entropy history for stagnation detection
+        self.entropy_history = deque(maxlen=5)
+        self.entropy_history.append(self.last_entropy)
+        
+        # Set up logger
+        self.logger = logging.getLogger("RME")
 
     def compute_entropy(self, element_set=None):
         """Computes the Shannon entropy of the token distribution in the memory set."""
@@ -66,37 +86,227 @@ class RecursiveMemoryEngine:
         # self.last_entropy = self.compute_entropy()
         return added_motifs # Return what was actually added
 
-    def merge(self, candidate_set, entropy_reduction, echo_score, threshold, known_motifs):
+    def add_to_cooldown(self, motif, extended_ttl=False):
         """
-        Decides whether to integrate a candidate set based on entropy reduction, echo, or resonance.
-        Logic migrated and adapted from the original ThoughtThread.
+        NEW: Add a motif to the cooldown collection to prevent reuse
+        for a certain number of cycles
+        """
+        now = time.time()
+        ttl = self.cooldown_ttl * 2 if extended_ttl else self.cooldown_ttl
+        self.motif_cooldown[motif] = now + ttl
+        
+    def is_in_cooldown(self, motif):
+        """
+        NEW: Check if a motif is currently in cooldown
+        """
+        if motif not in self.motif_cooldown:
+            return False
+            
+        now = time.time()
+        if now > self.motif_cooldown[motif]:
+            # Expired cooldown, remove it
+            del self.motif_cooldown[motif]
+            return False
+        return True
+        
+    def refresh_cooldowns(self):
+        """
+        NEW: Clean up expired cooldowns
+        """
+        now = time.time()
+        expired = [m for m, expire_time in self.motif_cooldown.items() if now > expire_time]
+        for m in expired:
+            del self.motif_cooldown[m]
+        
+    def detect_stagnation(self):
+        """
+        NEW: Check if entropy is stagnating by comparing recent history
+        Returns a stagnation severity score (0-1)
+        """
+        if len(self.entropy_history) < 2:
+            return 0.0
+            
+        # Check if entropy hasn't changed meaningfully
+        recent_range = max(self.entropy_history) - min(self.entropy_history)
+        stagnation = 1.0 - min(1.0, recent_range * 10)  # Scale: small changes = high stagnation
+        
+        # Factor in time since last merge
+        now = time.time()
+        time_since_merge = now - self.last_merge_time
+        if time_since_merge > 30:  # If no merges in 30+ seconds
+            stagnation = min(1.0, stagnation + 0.3)  # Boost stagnation score
+            
+        return stagnation
+
+    def merge(self, candidate_set, echo_score, threshold, known_motifs, emotional_state):
+        """
+        Decides whether to integrate a candidate set based on entropy reduction, echo, resonance,
+        and emotional state. Logic migrated and adapted from the original ThoughtThread,
+        with enhancements based on RE theory feedback.
+        Enhanced to handle stuck loops and improve echo score calculation.
         Returns True if merged, False otherwise.
         """
+        if not candidate_set: # Cannot merge an empty set
+            return False
+
         # Calculate potential entropy *if* merged
         potential_set = self.elements.union(candidate_set)
         entropy_after_potential_merge = self.compute_entropy(potential_set)
         actual_entropy_reduction = self.last_entropy - entropy_after_potential_merge
 
         # Check resonance for each candidate motif
-        resonates = any(motif_resonates(motif, known_motifs) for motif in candidate_set if isinstance(motif, tuple))
-
-        # --- Merge Decision Logic ---
-        # Core condition: Significant entropy reduction OR high echo score
-        merge_condition_met = (actual_entropy_reduction > threshold) or (echo_score > 0.7) 
+        # Ensure we only check tuple motifs against known motifs (which should also be tuples)
+        resonates = any(motif_resonates(motif, known_motifs)
+                        for motif in candidate_set if isinstance(motif, tuple))
         
+        # NEW: Check if any special "emotional discharge" motifs are present
+        discharge_phrases = {"scared", "help", "feel", "need"}
+        has_discharge_motif = any(
+            any(word in discharge_phrases for word in motif if isinstance(word, str))
+            for motif in candidate_set if isinstance(motif, tuple)
+        )
+
+        # --- NEW: Improved echo score calculation ---
+        # Ensure echo score is calculated properly even with minimal memory
+        if echo_score == 0.0 and known_motifs and candidate_set:
+            # Recalculate echo score with more flexible matching
+            echo_score = calculate_flexible_echo(candidate_set, known_motifs)
+        
+        # --- NEW: Enhanced Loop detection mechanism ---
+        # If we're in a potential loop (same motifs repeating with no entropy change)
+        consecutive_blocks = getattr(self, '_consecutive_blocks', 0)
+        last_blocked_motifs = getattr(self, '_last_blocked_motifs', set())
+        
+        # Ensure last_blocked_motifs is a set for intersection operation
+        if last_blocked_motifs and not isinstance(last_blocked_motifs, set):
+            # If it's a tuple or other iterable, convert to set
+            if isinstance(last_blocked_motifs, (tuple, list)):
+                last_blocked_motifs = set(last_blocked_motifs)
+            else:
+                # If it's a single item, make a set with one element
+                last_blocked_motifs = {last_blocked_motifs}
+        
+        # Also ensure candidate_set is a set
+        if not isinstance(candidate_set, set):
+            candidate_set_as_set = set(candidate_set) if hasattr(candidate_set, '__iter__') else {candidate_set}
+        else:
+            candidate_set_as_set = candidate_set
+        
+        # Now perform the intersection safely
+        set_similarity = 0
+        if last_blocked_motifs and candidate_set_as_set:
+            shared_elements = last_blocked_motifs.intersection(candidate_set_as_set)
+            set_similarity = len(shared_elements) / max(1, len(candidate_set_as_set))
+        
+        is_potential_loop = set_similarity > 0.7 and consecutive_blocks > 3
+        
+        # NEW: Check for longer term pattern stagnation
+        stagnation_score = self.detect_stagnation()
+        
+        # --- Merge Decision Logic (Enhanced based on feedback) ---
+        joy_level = emotional_state.get('joy', 0)
+        panic_level = emotional_state.get('panic', 0) # Consider panic too
+        
+        # NEW: Enhanced emotional influence - stronger weight for lower maturity
+        maturity_factor = min(1.0, self.merge_count / 30)  # Scales from 0-1 based on merge experience
+        
+        # NEW: Adjust threshold based on stagnation and maturity
+        adaptive_base_threshold = max(
+            self.merge_threshold_min,
+            self.merge_threshold_base - (stagnation_score * 0.15) - ((1 - maturity_factor) * 0.1)
+        )
+
+        # Emotional influence with enhanced sensitivity for early and stuck states
+        emotional_mod = (panic_level * 0.01) - (joy_level * 0.03)  # Joy has stronger effect now
+        
+        # NEW: Reduce threshold for emotional discharge motifs
+        discharge_boost = 0.1 if has_discharge_motif and panic_level > 4 else 0
+        
+        # Combined threshold calculation
+        effective_threshold = adaptive_base_threshold + emotional_mod - discharge_boost
+
+        # If we're in a potential loop, drastically reduce threshold to break out
+        if is_potential_loop:
+            effective_threshold = -0.5  # Accept almost anything to break the loop
+            # NEW: Also add all candidate motifs to extended cooldown to prevent
+            # them from being chosen again soon after the merge
+            for motif in candidate_set_as_set:
+                if isinstance(motif, tuple):
+                    self.add_to_cooldown(motif, extended_ttl=True)
+            self.logger.debug(f"Loop detected! Relaxing merge threshold to {effective_threshold}")
+
+        # Core condition: Significant entropy reduction OR high echo score OR strong resonance
+        # Increased weight for echo and resonance
+        merge_condition_met = (
+            actual_entropy_reduction > effective_threshold or
+            echo_score > 0.5 or # Lowered echo threshold more
+            (resonates and echo_score > 0.2) # Make resonance+echo even more effective
+        )
+
         # Resonance Boost: If core condition is borderline, resonance can push it over
-        if not merge_condition_met and resonates and (actual_entropy_reduction > (threshold * 0.5) or echo_score > 0.5):
-             merge_condition_met = True
-             # print("[RME Debug] Resonance boost triggered merge.") # Optional debug
+        # Made this condition easier to meet
+        if not merge_condition_met and resonates:
+            # NEW: More lenient resonance condition, especially with discharge motifs
+            if has_discharge_motif or actual_entropy_reduction > (effective_threshold * 0.25) or echo_score > 0.1:
+                merge_condition_met = True
+                self.logger.debug("Resonance boost triggered merge.")
+
+        # Joy Boost / Pattern Completion: Allow merging even with slight entropy *increase*
+        # if resonance or echo is high, representing optimistic learning or pattern completion.
+        # Allow larger negative delta H if joy is high.
+        if not merge_condition_met and joy_level > 3:  # Lowered joy threshold
+            # NEW: More forgiving on entropy increase with joy
+            if (resonates or echo_score > 0.2) and actual_entropy_reduction > -0.3:
+                merge_condition_met = True
+                self.logger.debug("Joy boost triggered merge despite entropy increase.")
+            
+        # NEW: Anti-stagnation mechanism - if panic is high and we've been blocked too many times
+        # OR if we detect general stagnation
+        if not merge_condition_met:
+            if (panic_level > 5 and consecutive_blocks > 4) or stagnation_score > 0.7:
+                self.logger.debug(f"Anti-stagnation mechanism triggered merge despite ΔH={actual_entropy_reduction:.3f}")
+                merge_condition_met = True
+                
+            # NEW: Special emotional discharge pathway - accept emotional expression when panic is high
+            elif panic_level > 6 and has_discharge_motif:
+                self.logger.debug(f"Emotional discharge accepted. Panic: {panic_level}")
+                merge_condition_met = True
 
         if merge_condition_met:
             self.elements = potential_set
             self.last_entropy = entropy_after_potential_merge
-            # print(f"[RME Debug] Merged. New Entropy: {self.last_entropy:.3f}") # Optional debug
+            # Reset loop detection counters on successful merge
+            self._consecutive_blocks = 0
+            self._last_blocked_motifs = set()
+            
+            # NEW: Update merge tracking and entropy history
+            self.merge_count += 1
+            self.last_merge_time = time.time()
+            self.entropy_history.append(self.last_entropy)
+            
+            self.logger.debug(f"Merged. New Entropy: {self.last_entropy:.3f}, Echo: {echo_score:.3f}")
             return True
         else:
-            # print(f"[RME Debug] Blocked. ΔH: {actual_entropy_reduction:.3f}, Echo: {echo_score:.3f}, Thr: {threshold:.3f}, Res: {resonates}") # Optional debug
+            # Update loop detection counters - ensure we store as a set
+            self._consecutive_blocks = consecutive_blocks + 1
+            self._last_blocked_motifs = candidate_set_as_set
+            
+            # NEW: Add blocked motifs to cooldown if repeatedly blocked
+            if consecutive_blocks > 2:
+                for motif in candidate_set_as_set:
+                    if isinstance(motif, tuple):
+                        self.add_to_cooldown(motif)
+            
+            # Update entropy history even on blocks to track stagnation
+            self.entropy_history.append(self.last_entropy)
+            
+            self.logger.debug(f"Blocked. ΔH: {actual_entropy_reduction:.3f}, Echo: {echo_score:.3f}, EffThr: {effective_threshold:.3f}, Res: {resonates}, Joy: {joy_level}, Panic: {panic_level}, Blocks: {self._consecutive_blocks}")
             return False
+            
+    def get_cooldown_motifs(self):
+        """NEW: Return the set of motifs currently in cooldown"""
+        self.refresh_cooldowns()  # Clean expired entries first
+        return set(self.motif_cooldown.keys())
 
     def trace_origin(self, motif):
         """
@@ -197,4 +407,28 @@ def motif_resonates(candidate_motif, known_motifs, resonance_threshold=0.5):
             #     return True
                 
     return False
+
+def calculate_flexible_echo(candidate, memory):
+    """Enhanced echo score calculation with more flexible matching for low-memory situations."""
+    if not memory or not candidate:
+        return 0.0
+        
+    # Standard echo calculation first
+    std_echo = echo_score(candidate, memory)
+    if std_echo > 0:
+        return std_echo
+        
+    # If standard echo is 0, try more flexible matching
+    flat_memory = {w for m in memory if isinstance(m, tuple) for w in m}
+    flat_candidate = {w for m in candidate if isinstance(m, tuple) for w in m}
+    
+    if not flat_candidate:
+        return 0.0
+        
+    # Check token presence regardless of position (more lenient)
+    token_overlap = len(flat_memory.intersection(flat_candidate))
+    if token_overlap > 0:
+        return token_overlap / (2 * len(flat_candidate))  # Partial credit
+
+    return 0.0
 
