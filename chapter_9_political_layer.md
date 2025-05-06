@@ -16,12 +16,13 @@ Each successful political structure locally reduces entropy by transforming pote
 Using our emergence potential formula:
 
 ```math
-P(E_{pol}) = R(E_{pol}) \cdot \left[H(S_t) - H(S_{t+1})\right]
+P(\Phi_{pol}) = R(\Phi_{pol}) \cdot \Delta H_{pol} \cdot S(\Phi_{pol}, \Omega_{pol})
 ```
 
 Where:
-- `R(E_{pol})` represents the reusability of political structures (constitutions, legal precedent, institutions)
-- `H(S_t) - H(S_{t+1})` captures the reduction in social entropy achieved
+- `R(\Phi_{pol})` represents the reusability of political structures (constitutions, legal precedent, institutions)
+- `\Delta H_{pol}` captures the reduction in social entropy achieved
+- `S(\Phi_{pol}, \Omega_{pol})` measures compatibility with the political lattice
 
 Political systems gain legitimacy and stability when they successfully reduce relevant forms of social entropy for their constituents while remaining adaptable enough to address new challenges.
 
@@ -37,12 +38,11 @@ Legal and constitutional systems function as society's formalized memory structu
 These structures evolve through a recursive memory update function:
 
 ```math
-M_{t+1}^{legal} = M_t^{legal} + \sum_j ( P(E_j) \cdot p_j \cdot i_j )
+\Psi_{t+1}^{legal} = \Psi_t^{legal} + \int_{\Phi_t} w(\phi) \cdot \phi \, d\phi
 ```
 
 Where:
-- `p_j` represents persistence factors (constitutional entrenchment, precedential weight)
-- `i_j` represents interpretive evolution (judicial review, legislative amendment)
+- `w(\phi)` represents integration weight factors such as constitutional entrenchment, precedential weight, and interpretive evolution
 
 Legal systems demonstrate strong path dependency—early successful structures deeply influence all subsequent development, creating both stability and potential rigidity.
 
@@ -86,7 +86,7 @@ Power in political systems can be understood through the accumulation and contro
 
 - **Concentration vs. Distribution**: Centralized power reduces decision entropy but risks brittleness; distributed power increases resilience but may increase coordination costs
 - **Legitimacy**: The perceived alignment between power structures and entropy reduction for constituents
-- **Control of Memory**: Power often manifests as the ability to shape which structures enter and persist in collective memory (`M_t`)
+- **Control of Memory**: Power often manifests as the ability to shape which structures enter and persist in collective memory (`\Psi_t`)
 
 The tension between concentration (efficiency) and distribution (resilience) of power creates cyclical patterns in political evolution, with systems oscillating between periods of centralization and decentralization.
 
@@ -94,14 +94,14 @@ The tension between concentration (efficiency) and distribution (resilience) of 
 
 Political systems evolve through a characteristic pattern of:
 
-1. **Initial innovation**: New high-P governance structures emerge (e.g., Athenian democracy, the nation-state)
+1. **Initial innovation**: New high-$P$ governance structures emerge (e.g., Athenian democracy, the nation-state)
 2. **Refinement**: Structures are iteratively improved through practice and adaptation
 3. **Stabilization**: Successful patterns become institutionalized and resistant to change
 4. **Rigidity**: Accumulated dependencies reduce adaptability despite changing conditions
 5. **Crisis**: System failures trigger search for new structures with higher emergence potential
 6. **Transformation**: New innovations emerge, often incorporating elements from prior systems
 
-This cycle reflects the universal RE pattern where accumulated memory structures (`M_t`) simultaneously enable complexity and create path dependencies that eventually require restructuring.
+This cycle reflects the universal RE pattern where accumulated memory structures (`\Psi_t`) simultaneously enable complexity and create path dependencies that eventually require restructuring.
 
 ## 9.7 Democratic Systems as Recursive Feedback
 
@@ -137,3 +137,5 @@ As political systems encounter rapid technological change, new challenges and op
 - **Global Coordination Problems**: Issues like climate change require unprecedented governance scale
 
 The political layer continues to evolve as it adapts to manage entropy in increasingly complex environments—potentially leading toward new emergent forms that better navigate the tensions between coordination scale, feedback incorporation, and adaptive capacity.
+
+This evolution sets the stage for the next emergent layer: the technological layer, where human creativity and coordination begin to build entirely new substrates for recursive emergence.

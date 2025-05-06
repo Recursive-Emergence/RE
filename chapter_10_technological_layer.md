@@ -10,9 +10,9 @@ Technology serves as an extension of human cognition, dramatically accelerating 
 
 - **Symbolic Externalization**: Code transforms cognitive patterns into persistent external memory that can be shared, modified, and built upon recursively:
   ```math
-  M_{t+1}^{tech} = M_t^{tech} + \sum P(E_{code}) \cdot w_{adoption}
+  \Psi_{t+1}^{tech} = \Psi_t^{tech} + \int_{\Phi_t} w(\phi) \cdot \phi \, d\phi
   ```
-  Where `w_{adoption}` represents how widely a technology is adopted and integrated.
+  Where `w(\phi)` represents how widely a technology is adopted and integrated.
 
 - **Computational Acceleration**: Machines execute recursive operations at speeds impossible for biological systems, allowing for the exploration of complex emergence spaces previously inaccessible due to time constraints.
 
@@ -30,7 +30,7 @@ Technological systems create new substrates for memory that transform how inform
 4. **Digital Storage**: Near-perfect replication with global distribution
 5. **Cloud Systems**: Distributed persistent memory with collaborative modification
 
-Each transition represents an increase in both persistence (`Φ`) and reusability (`R`), creating higher emergence potential (`P`) for stored information.
+Each transition represents an increase in both persistence ($\Phi$) and reusability ($R$), creating higher emergence potential ($P$) for stored information.
 
 ### 10.2.2 Version Control as Recursive Memory
 
@@ -54,7 +54,7 @@ Tools fundamentally alter human cognitive patterns:
 - Search engines modified memory and recall strategies
 - Social media restructured social cognition and communication patterns
 
-From the perspective of RE theory, these tools function as cognitive exaptations—structures that enhance the emergence potential (`P`) of human thought by reducing cognitive entropy.
+From the perspective of RE theory, these tools function as cognitive exaptations—structures that enhance the emergence potential ($P$) of human thought by reducing cognitive entropy.
 
 ### 10.3.2 Cognition Shapes Technology
 
@@ -66,7 +66,7 @@ Human cognitive patterns drive technological development:
 This bidirectional shaping creates a recursive loop where each advance in one domain enables advances in the other:
 
 ```math
-P(E_{human-tech}) = R(E_{human}) \cdot R(E_{tech}) \cdot (H(S_t) - H(S_{t+1}))
+P(\Phi_{human-tech}) = R(\Phi_{human}) \cdot R(\Phi_{tech}) \cdot \Delta H_{combined} \cdot S(\Phi_{combined}, \Omega)
 ```
 
 The combined emergence potential exceeds what either humans or technology could achieve independently.
@@ -90,8 +90,8 @@ Modern machine learning exemplifies recursive emergence principles:
 
 Deep learning systems mirror biological neural emergence:
 - They extract patterns from data (entropy reduction)
-- They encode these patterns in reusable network weights (`M_t^{neural}`)
-- They apply these patterns to new data, demonstrating reusability (`R`)
+- They encode these patterns in reusable network weights ($\Psi_t^{neural}$)
+- They apply these patterns to new data, demonstrating reusability ($R$)
 
 The training process resembles evolutionary selection, but dramatically accelerated.
 
@@ -100,10 +100,10 @@ The training process resembles evolutionary selection, but dramatically accelera
 Transfer learning—where models trained on one task improve performance on different tasks—demonstrates technological memory inheritance:
 
 ```math
-P(E_{new}) = P(E_{base}) + \Delta P(specific)
+P(\Phi_{new}) = P(\Phi_{base}) + \Delta P_{specific}
 ```
 
-Pre-trained models serve as accumulated memory (`M_t^{tech}`), enabling new models to begin from a higher complexity baseline—just as evolution builds on previous innovations.
+Pre-trained models serve as accumulated memory ($\Psi_t^{tech}$), enabling new models to begin from a higher complexity baseline—just as evolution builds on previous innovations.
 
 ## 10.6 Technological Recursion Through Generations
 
@@ -140,6 +140,6 @@ Like previous emergent layers, technological evolution demonstrates strong path 
 - Initial architectures constrain future development (x86, Unix)
 - Historical contingencies shape technological trajectories
 
-In RE terms, this reflects how early high-P entities become deeply embedded in `M_t^{tech}`, influencing all subsequent development. Understanding this path dependence is crucial for predicting technological evolution and designing systems that can transcend historical constraints.
+In RE terms, this reflects how early high-$P$ entities become deeply embedded in $\Psi_t^{tech}$, influencing all subsequent development. Understanding this path dependence is crucial for predicting technological evolution and designing systems that can transcend historical constraints.
 
 This technological recursion sets the stage for the next emergent frontier—synthetic systems that demonstrate emergent properties comparable to or exceeding biological consciousness.

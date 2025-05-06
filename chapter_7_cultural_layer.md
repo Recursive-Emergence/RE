@@ -9,23 +9,24 @@ Cultural structures—rituals, myths, tools, norms, institutions—function as *
 - **Coordination Mechanisms**: Synchronizing actions across individuals
 - **Intergenerational Transmission**: Preserving adaptations beyond individual lifetimes
 
-Unlike biological memory (genetic) or cognitive memory (neural), cultural memory creates a novel substrate for emergence that transcends the individual. Mathematically speaking, we define cultural entities `E_c` with:
+Unlike biological memory (genetic) or cognitive memory (neural), cultural memory creates a novel substrate for emergence that transcends the individual. We define cultural entities with:
 
 ```math
-P(E_c) = R(E_c) \cdot ( H(S_t) - H(S_{t+1}) )
+P(\Phi_c) = R(\Phi_c) \cdot \Delta H_c \cdot S(\Phi_c, \Omega_{cultural})
 ```
 
 Where:
-- `R(E_c)` represents reusability through transmissibility, adaptability, and resilience
-- `H(S_t) - H(S_{t+1})` captures social entropy reduction (coordination gains, knowledge preservation)
+- `R(\Phi_c)` represents reusability through transmissibility, adaptability, and resilience
+- `\Delta H_c` captures social entropy reduction (coordination gains, knowledge preservation)
+- `S(\Phi_c, \Omega_{cultural})` measures compatibility with the cultural lattice
 
 Cultural entities with high emergence potential persist and evolve through a recursive update function:
 
 ```math
-M_{t+1}^{cultural} = M_t^{cultural} + \sum ( P(E_c) \cdot s_c \cdot w_c )
+\Psi_{t+1}^{cultural} = \Psi_t^{cultural} + \int_{\Phi_t} w(\phi) \cdot \phi \, d\phi
 ```
 
-Where `s_c` represents selective survival (historical success) and `w_c` represents transmission weight (education, media, ritual reinforcement).
+Where `w(\phi)` represents transmission weight (education, media, ritual reinforcement).
 
 ## 7.2 Language as a Meta-Recursive Structure
 
@@ -47,9 +48,9 @@ Some cultural patterns gain high enough persistence to become institutions—com
 - **Educational Structures**: Formalize knowledge transmission
 - **Economic Systems**: Organize resource production and distribution
 
-These institutions function as stable attractors in the cultural landscape—persistent structures that reduce social entropy by creating predictable patterns of interaction.
+These institutions function as stable attractors in the cultural lattice $\Omega_{cultural}$—persistent structures that reduce social entropy by creating predictable patterns of interaction.
 
-From an RE perspective, institutions succeed when they offer high reusability (`R`) by solving recurring coordination problems while maintaining sufficient adaptability to changing conditions. Institutions that become too rigid (high `R` but low adaptive capacity) eventually fail when environmental conditions shift.
+From an RE perspective, institutions succeed when they offer high reusability ($R$) by solving recurring coordination problems while maintaining sufficient adaptability to changing conditions. Institutions that become too rigid (high $R$ but low adaptive capacity) eventually fail when environmental conditions shift.
 
 ## 7.4 Creativity as Recursive Recombination
 
@@ -82,7 +83,7 @@ This creates a more flexible and potentially faster evolutionary process, but on
 
 ## 7.6 Path Dependency in Cultural Systems
 
-Cultural evolution demonstrates strong path dependency—early high-`P` structures influence all subsequent development:
+Cultural evolution demonstrates strong path dependency—early high-$P$ structures influence all subsequent development:
 
 - **Dominant Paradigms**: Frame thinking in disciplines (e.g., Newtonian mechanics)
 - **Technological Standards**: Lock in development pathways (e.g., QWERTY keyboard)
@@ -100,7 +101,7 @@ Cultural memory functions as a distributed cognitive system—enabling entropy r
 
 This creates a genuinely emergent intelligence—not reducible to individual contributions but arising from their recursive interactions through cultural structures.
 
-The persistence (Φ) of cultural memory far exceeds individual cognitive memory, creating longer timescales for recursive development and allowing the maintenance of complex structures like mathematical proofs, scientific theories, and legal frameworks across centuries.
+The persistence ($\Phi$) of cultural memory far exceeds individual cognitive memory, creating longer timescales for recursive development and allowing the maintenance of complex structures like mathematical proofs, scientific theories, and legal frameworks across centuries.
 
 ## 7.8 The Transition to the Economic and Political Layers
 
@@ -111,7 +112,7 @@ As cultural systems reach sufficient complexity, specialized subsystems emerge t
 
 These specialized cultural domains represent the next recursive layers, where the general principles of culture apply to specific coordination problems, generating their own unique dynamics and structures.
 
-Like all transitions between emergent layers, this shift occurs when specialized structures accumulate sufficient persistence (`Φ`) and generate enough entropy reduction to create stable, self-reinforcing patterns of interaction.
+Like all transitions between emergent layers, this shift occurs when specialized structures accumulate sufficient persistence ($\Phi$) and generate enough entropy reduction to create stable, self-reinforcing patterns of interaction.
 
 ## Appendix C: Recursive Emergence in Culture and Creativity
 

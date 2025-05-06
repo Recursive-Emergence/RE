@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<svg width="900" height="700" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Background and Title -->
+ <!-- Central RE Theory Node -->
+ <!-- Philosophical Perspectives -->
+ <!-- Philosophical Nodes -->
+ <!-- Scientific Theories (moved to left bottom) -->
+ <!-- Scientific Nodes -->
+ <!-- Novel Contributions (moved to right bottom) -->
+ <!-- Contribution Nodes -->
+ <!-- Problems and Implications -->
+ <!-- Problem Nodes -->
+ <!-- Legend -->
+ <g class="layer">
+  <title>Layer 1</title>
+  <text fill="#333" font-family="Arial" font-size="24" font-weight="bold" id="svg_2" text-anchor="middle" x="450" y="40">Parallel Theories of Consciousness &amp; Emergence</text>
+  <text fill="#666" font-family="Arial" font-size="18" id="svg_3" text-anchor="middle" x="450" y="70">Compared to Recursive Emergence (RE) Theory</text>
+  <rect fill="#4b0082" height="30" id="svg_9" opacity="0.8" rx="5" width="250" x="50" y="80"/>
+  <text fill="white" font-family="Arial" font-size="14" font-weight="bold" id="svg_10" text-anchor="middle" x="175" y="100">Philosophical Perspectives</text>
+  <line id="svg_14" stroke="#999" stroke-dasharray="5,3" stroke-width="1.5" x1="370" x2="100" y1="300" y2="150"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_15" transform="matrix(0.866025 -0.5 0.5 0.866025 -165.814 198.775)" x="233.49" y="153.97">Contrasts with RE</text>
+  <text fill="white" font-family="Arial" font-size="10" id="svg_18" text-anchor="middle" transform="matrix(1 0 0 1 0 0)" x="220" y="160">Physical processes</text>
+  <line id="svg_19" stroke="#999" stroke-width="1.5" x1="370" x2="369" y1="300" y2="174"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_20" transform="matrix(0.866025 -0.5 0.5 0.866025 140.055 316.293)" x="234.44" y="7.65">Aligns with RE</text>
+  <line id="svg_24" stroke="#999" stroke-width="2" x1="370" x2="122" y1="300" y2="285"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_25" transform="rotate(-15 461.969 486.8)" x="222" y="248">Most aligned with RE</text>
+  <line id="svg_29" stroke="#999" stroke-width="1.5" transform="matrix(1 0 0 1 0 0)" x1="370" x2="274" y1="300" y2="211"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_30" transform="matrix(0.965926 -0.258819 0.258819 0.965926 -53.3262 64.9476)" x="254.37" y="250.2">Compatible with RE</text>
+  <rect fill="#006400" height="30" id="svg_31" opacity="0.8" rx="5" width="250" x="23" y="359"/>
+  <text fill="white" font-family="Arial" font-size="14" font-weight="bold" id="svg_32" text-anchor="middle" x="148" y="379">Scientific Theories</text>
+  <line id="svg_36" stroke="#999" stroke-width="1.5" x1="370" x2="100" y1="300" y2="450"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_37" transform="rotate(-30 426.525 594.8)" x="243" y="315">Shared concepts</text>
+  <line id="svg_41" stroke="#999" stroke-width="2" x1="370" x2="254" y1="300" y2="470"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_42" transform="rotate(-30 637.181 452.8)" x="306" y="256">Complements RE</text>
+  <line id="svg_46" stroke="#999" stroke-width="2" x1="370" x2="100" y1="300" y2="530"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_47" transform="rotate(-30 100,530)" x="180" y="500">Strongly aligns</text>
+  <line id="svg_51" stroke="#999" stroke-width="1.5" x1="370" x2="270" y1="300" y2="562"/>
+  <text fill="#444" font-family="Arial" font-size="10" id="svg_52" transform="matrix(0.866025 -0.5 0.5 0.866025 -235.526 181.007)" x="244.6" y="567.32">Compatible</text>
+  <rect fill="#8B0000" height="30" id="svg_53" opacity="0.8" rx="5" width="250" x="660" y="362"/>
+  <text fill="white" font-family="Arial" font-size="14" font-weight="bold" id="svg_54" text-anchor="middle" x="785" y="382">RE Novel Contributions</text>
+  <line id="svg_59" stroke="#CD5C5C" stroke-width="2" x1="530" x2="589" y1="300" y2="450"/>
+  <line id="svg_64" stroke="#CD5C5C" stroke-width="2" x1="530" x2="800" y1="300" y2="450"/>
+  <circle cx="742" cy="529" fill="#CD5C5C" id="svg_65" opacity="0.7" r="53" transform="matrix(1 0 0 1 0 0)"/>
+  <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_66" text-anchor="middle" transform="matrix(1 0 0 1 0 0)" x="745" y="507">Energy</text>
+  <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_67" text-anchor="middle" transform="matrix(1 0 0 1 0 0)" x="745" y="522">Congruence</text>
+  <text fill="white" font-family="Arial" font-size="10" id="svg_68" text-anchor="middle" transform="matrix(1 0 0 1 0 0)" x="745" y="537">Energy-stability alignment</text>
+  <line id="svg_69" stroke="#CD5C5C" stroke-width="2" x1="530" x2="710" y1="300" y2="490"/>
+  <rect fill="#0a4b78" height="30" id="svg_70" opacity="0.8" rx="5" width="250" x="600" y="80"/>
+  <text fill="white" font-family="Arial" font-size="14" font-weight="bold" id="svg_71" text-anchor="middle" x="725" y="100">Problems &amp; Implications</text>
+  <line id="svg_76" stroke="#4682B4" stroke-width="2" x1="530" x2="609" y1="300" y2="233"/>
+  <line id="svg_81" stroke="#4682B4" stroke-width="2" transform="matrix(1 0 0 1 0 0)" x1="530" x2="773" y1="300" y2="198.67"/>
+  <line id="svg_86" stroke="#4682B4" stroke-width="2" transform="matrix(1 0 0 1 0 0)" x1="530" x2="755" y1="300" y2="260"/>
+  <rect fill="#eee" height="80" id="svg_87" rx="5" stroke="#ccc" width="300" x="300" y="600"/>
+  <text font-family="Arial" font-size="14" font-weight="bold" id="svg_88" text-anchor="middle" x="450" y="620">Legend</text>
+  <line id="svg_89" stroke="#999" stroke-width="2" x1="330" x2="370" y1="640" y2="640"/>
+  <text font-family="Arial" font-size="12" id="svg_90" text-anchor="start" x="430" y="645">Strong alignment</text>
+  <line id="svg_91" stroke="#999" stroke-width="1.5" x1="330" x2="370" y1="660" y2="660"/>
+  <text font-family="Arial" font-size="12" id="svg_92" text-anchor="start" x="430" y="665">Compatibility</text>
+  <line id="svg_93" stroke="#999" stroke-dasharray="5,3" stroke-width="1.5" x1="330" x2="370" y1="680" y2="680"/>
+  <text font-family="Arial" font-size="12" id="svg_94" text-anchor="start" x="430" y="685">Contrast</text>
+  <g id="svg_95" transform="translate(24 35)">
+   <circle cx="225" cy="556" fill="#3CB371" id="svg_48" opacity="0.7" r="40"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_49" text-anchor="middle" x="225" y="548">Global</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_50" text-anchor="middle" x="225" y="563">Workspace</text>
+  </g>
+  <g id="svg_96">
+   <circle cx="231" cy="498" fill="#3CB371" id="svg_38" opacity="0.7" r="40"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_39" text-anchor="middle" x="232" y="495">Free Energy</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_40" text-anchor="middle" x="232" y="510">Principle</text>
+  </g>
+  <g id="svg_97" transform="translate(-22 24)">
+   <circle cx="100" cy="530" fill="#3CB371" id="svg_43" opacity="0.7" r="40"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_44" text-anchor="middle" x="100" y="525">Autocatalytic</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_45" text-anchor="middle" x="100" y="540">Sets</text>
+  </g>
+  <g id="svg_98" transform="translate(-27 8)">
+   <circle cx="100" cy="450" fill="#3CB371" id="svg_33" opacity="0.7" r="40"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_34" text-anchor="middle" x="100" y="445">Integrated</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_35" text-anchor="middle" x="100" y="460">Information</text>
+  </g>
+  <g id="svg_99" transform="matrix(1 0 0 1 0 0)">
+   <circle cx="80.5" cy="283.5" fill="#9370DB" id="svg_21" opacity="0.7" r="42.5"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_22" text-anchor="middle" x="78" y="278">Emergentism</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_23" text-anchor="middle" x="78" y="293">Complex systems</text>
+  </g>
+  <g id="svg_100" transform="translate(-4 -11) translate(78 -41) matrix(1 0 0 1 -33 -9)">
+   <circle cx="216" cy="227" fill="#9370DB" id="svg_26" opacity="0.7" r="46"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_27" text-anchor="middle" x="220" y="225">Functionalism</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_28" text-anchor="middle" x="220" y="240">Functional roles</text>
+  </g>
+  <g id="svg_101">
+   <circle cx="94.5" cy="155.5" fill="#9370DB" id="svg_11" opacity="0.7" r="45.5"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_12" text-anchor="middle" x="100" y="145">Dualism</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_13" text-anchor="middle" x="100" y="160">Mind-body separation</text>
+  </g>
+  <g id="svg_103" transform="matrix(1 0 0 1 0 0)">
+   <circle cx="800.5" cy="280.5" fill="#4682B4" id="svg_82" opacity="0.7" r="54.5"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_83" text-anchor="middle" x="803" y="268">Evolution of</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_84" text-anchor="middle" x="803" y="283">Consciousness</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_85" text-anchor="middle" x="803" y="298">Progressive recursion</text>
+  </g>
+  <g id="svg_104">
+   <circle cx="801" cy="162" fill="#4682B4" id="svg_77" opacity="0.7" r="53"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_78" text-anchor="middle" x="800" y="140">Artificial</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_79" text-anchor="middle" x="800" y="155">Consciousness</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_80" text-anchor="middle" x="800" y="170">Self-modeling threshold</text>
+  </g>
+  <g id="svg_105">
+   <circle cx="613" cy="488" fill="#CD5C5C" id="svg_55" opacity="0.7" r="45"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_56" text-anchor="middle" x="615" y="471">Statistical</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_57" text-anchor="middle" x="615" y="486">Fluctuation</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_58" text-anchor="middle" x="615" y="501">Rare but inevitable</text>
+  </g>
+  <g id="svg_106" transform="translate(32 10)">
+   <circle cx="800" cy="450" fill="#CD5C5C" id="svg_60" opacity="0.7" r="45"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_61" text-anchor="middle" x="801" y="437">Recursive</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_62" text-anchor="middle" x="801" y="452">Amplification</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_63" text-anchor="middle" x="801" y="467">Feedback loops</text>
+  </g>
+  <g id="svg_107" transform="translate(6 3)">
+   <circle cx="450.5" cy="282.5" fill="#6495ED" id="svg_4" opacity="0.8" r="89.5"/>
+   <text fill="white" font-family="Arial" font-size="16" font-weight="bold" id="svg_5" text-anchor="middle" x="452" y="266">Recursive Emergence</text>
+   <text fill="white" font-family="Arial" font-size="12" id="svg_6" text-anchor="middle" x="452" y="286">P(Ei) = R(Ei) · (H(St) - H(St+1))</text>
+   <text fill="white" font-family="Arial" font-size="12" id="svg_7" text-anchor="middle" x="452" y="306">Self-modeling creates</text>
+   <text fill="white" font-family="Arial" font-size="12" id="svg_8" text-anchor="middle" x="452" y="321">subjectivity</text>
+  </g>
+  <g id="svg_108">
+   <circle cx="362" cy="138" fill="#9370DB" id="svg_16" opacity="0.7" r="40"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_17" text-anchor="middle" x="360" y="141">Materialism</text>
+  </g>
+  <g id="svg_109" transform="translate(684.907 116.077) scale(0.852681 0.895274) translate(-684.907 -116.077)">
+   <circle cx="681" cy="152" fill="#4682B4" id="svg_72" opacity="0.7" r="54" transform="translate(685.968 115.016) scale(1.06159 1.06159) translate(-685.968 -115.016) matrix(1.18411 0 0 1.16598 -185.35 1.75012)"/>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_73" text-anchor="middle" transform="matrix(1.18411 0 0 1.16598 -185.35 1.75012)" x="680" y="140">Hard Problem of</text>
+   <text fill="white" font-family="Arial" font-size="12" font-weight="bold" id="svg_74" text-anchor="middle" transform="matrix(1.18411 0 0 1.16598 -185.35 1.75012)" x="680" y="155">Consciousness</text>
+   <text fill="white" font-family="Arial" font-size="10" id="svg_75" text-anchor="middle" transform="matrix(1.18411 0 0 1.16598 -185.35 1.75012)" x="680" y="170">Recursive self-modeling</text>
+  </g>
+ </g>
+</svg>

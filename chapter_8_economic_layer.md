@@ -16,14 +16,15 @@ Each economic transaction represents a localized entropy reduction where both pa
 Using the emergence potential formula:
 
 ```math
-P(E_{econ}) = R(E_{econ}) \cdot \left[H(S_t) - H(S_{t+1})\right]
+P(\Phi_{econ}) = R(\Phi_{econ}) \cdot \Delta H_{econ} \cdot S(\Phi_{econ}, \Omega_{econ})
 ```
 
 Where:
-- `R(E_econ)` represents the reusability of economic structures (markets, contracts, firms)
-- `H(S_t) - H(S_{t+1})` captures entropy reduction through resource reorganization
+- `R(\Phi_{econ})` represents the reusability of economic structures (markets, contracts, firms)
+- `\Delta H_{econ}` captures entropy reduction through resource reorganization
+- `S(\Phi_{econ}, \Omega_{econ})` measures compatibility with the economic lattice
 
-Economic systems prosper when they maximize both factors—creating highly reusable coordination mechanisms that significantly reduce resource allocation entropy.
+Economic systems prosper when they maximize all factors—creating highly reusable coordination mechanisms that significantly reduce resource allocation entropy while remaining compatible with existing economic structures.
 
 ## 8.2 Money as Meta-Recursive Memory
 
@@ -33,15 +34,16 @@ Money represents perhaps the most profound innovation in economic emergence—a 
 2. **Deferred Exchange**: Storing economic value across time
 3. **Coordination at Scale**: Enabling complex, multi-party transactions
 
-From the RE perspective, money functions as a compressed memory token (`M_t^{econ}`) with extraordinary reusability (`R`):
+From the RE perspective, money functions as a compressed memory token with extraordinary reusability:
 
 ```math
-R(E_{money}) = \frac{U(E_{money})}{C(E_{money})}
+R(\Phi_{money}) = \frac{U(\Phi_{money})}{C(\Phi_{money})} \cdot \frac{1}{H(\Phi_{money})}
 ```
 
 Where:
-- `U(E_{money})` reflects its utility in enabling efficient exchanges
-- `C(E_{money})` represents maintenance costs (trust infrastructure, stability)
+- `U(\Phi_{money})` reflects its utility in enabling efficient exchanges
+- `C(\Phi_{money})` represents maintenance costs (trust infrastructure, stability)
+- `H(\Phi_{money})` is the internal entropy of the structure
 
 The evolution of money—from shells to metal coins to paper currency to digital tokens—follows a recursive path of increasing abstraction and reusability. Each form builds on and extends previous memory structures while reducing various transaction frictions.
 
@@ -56,7 +58,7 @@ Markets function as distributed computational systems that solve complex resourc
 The market system's emergence potential derives from its ability to harness micro-level interactions to produce macro-level order:
 
 ```math
-P(E_{market}) = R(E_{market}) \cdot \sum_{i} \left[H(S_{i,t}) - H(S_{i,t+1})\right]
+P(\Phi_{market}) = R(\Phi_{market}) \cdot \sum_{i} \Delta H_i \cdot S(\Phi_{market}, \Omega_{econ})
 ```
 
 Where the summation represents entropy reduction across all market participants.
@@ -74,12 +76,10 @@ Business organizations function as persistent memory structures that:
 The firm's recursive memory function operates as:
 
 ```math
-M_{t+1}^{firm} = M_t^{firm} + \sum_{j} \left[P(E_j) \cdot s_j \cdot w_j\right]
+\Psi_{t+1}^{firm} = \Psi_t^{firm} + \int_{\Phi_t} w(\phi) \cdot \phi \, d\phi
 ```
 
-Where:
-- `s_j` represents selection factors (market competition, strategic decisions)
-- `w_j` represents weighting factors (resource allocation, organizational emphasis)
+Where `w(\phi)` determines how strongly each element of coherent business practice integrates into the firm's memory.
 
 Unlike biological entities, firms can reconfigure themselves rapidly, acquire other organizations, and directly transfer successful patterns (best practices)—creating potentially faster recursive cycles than seen in evolution.
 
@@ -105,7 +105,7 @@ Capital represents accumulated economic memory—the physical and financial embo
 The interplay between these capital forms creates a compounding effect:
 
 ```math
-P(E_{t+1}) = f\left(M_t^{physical}, M_t^{financial}, M_t^{human}\right)
+P(\Phi_{t+1}) = f\left(\Psi_t^{physical}, \Psi_t^{financial}, \Psi_t^{human}\right)
 ```
 
 This compounding explains why economic growth often follows exponential rather than linear patterns when sufficient memory structures accumulate—each layer builds recursively on previous layers.
@@ -115,7 +115,7 @@ This compounding explains why economic growth often follows exponential rather t
 Economic systems exhibit cycles of stability and disruption that mirror other emergent systems:
 
 - **Path Dependency**: Early successful structures influence all subsequent development
-- **Lock-in**: High-R entities (e.g., technological standards, dominant firms) can persist despite inefficiency
+- **Lock-in**: High-$R$ entities (e.g., technological standards, dominant firms) can persist despite inefficiency
 - **Brittleness**: Excessive optimization around certain patterns creates vulnerability to shocks
 - **Creative Destruction**: Periodic crises break down ossified structures, enabling new emergence
 
