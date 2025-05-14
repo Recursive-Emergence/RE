@@ -60,8 +60,7 @@ The interactions between these components are governed by five fundamental dynam
    $\mathcal{D}(\Phi) = \{\Phi^{(1)}, \Phi^{(2)}, ..., \Phi^{(n)}\} \quad \text{iff} \quad R(\Phi) > \rho_c$
 
 5. **Emergence Threshold**:
-   $\sum_{i=0}^{n} R_i \cdot \Delta H_i > \lambda_c \Rightarrow \text{New Layer (\Phi) Locks In}$
-
+  $\sum_{i=0}^{n} R_i \cdot \Delta H_i > \lambda_c \Rightarrow \text{New Layer } \Phi \text{ Locks In}$
 ### 2.3 Entropy and Reusability
 
 The emergence potential incorporates both reusability and entropy reduction:
