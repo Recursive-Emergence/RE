@@ -1,6 +1,6 @@
 [English](hongkong_taiwan_china.md) | [繁體中文](hongkong_taiwan_china_zh_tw.md) | [简体中文](hongkong_taiwan_china_zh_cn.md)
 
-**Title: Recursive Emergence and the Taiwan Strait: A New Lens for a Shared Future**
+**Recursive Emergence and the Taiwan Strait: A New Lens for a Shared Future**
 
 **Introduction**
 In a world shaped by competing national narratives and deepening ideological divides, the Taiwan Strait remains one of the most sensitive and dangerous geopolitical flashpoints. But what if we approached this not simply as a territorial or political conflict, but as a deeper challenge of identity, memory, and emergence? The theory of Recursive Emergence (RE) offers a powerful new framework for understanding and resolving such complex tensions. By shifting our focus from zero-sum sovereignty to layered coexistence, RE helps us envision a future where differences are not only tolerated but recursively transformed into sources of collective evolution.
