@@ -1,0 +1,194 @@
+
+<style>
+  body { margin: 0; }
+  .wrap { font-family: var(--font-sans); padding: 1rem 0; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .tab { padding: 5px 13px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 12px; cursor: pointer; background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .tab.active { background: var(--color-background-primary); border-color: var(--color-border-primary); color: var(--color-text-primary); font-weight: 500; }
+  .caption { font-size: 12px; color: var(--color-text-secondary); margin-top: 0.75rem; line-height: 1.6; }
+</style>
+<div class="wrap">
+  <h2 class="sr-only">RE orbit landscape: co-existence, divergence, and future layers</h2>
+  <div class="tabs">
+    <div class="tab active" onclick="show(0,this)">Co-existence</div>
+    <div class="tab" onclick="show(1,this)">Divergent paths</div>
+    <div class="tab" onclick="show(2,this)">Future layers</div>
+  </div>
+  <svg id="svg" width="100%" viewBox="0 0 680 380"></svg>
+  <div class="caption" id="cap"></div>
+</div>
+
+<script>
+const VIEWS = [
+  // 0: Co-existence — horizontal landscape of arrested orbits
+  {
+    cap: "The universe runs billions of parallel orbits from the same seed Ψ₀=1. Most arrest at shallow layers (physics, chemistry) because local Ω lacks the ΔH to cross the next threshold. Biology and cognition are rare pockets where the constraint manifold happened to support deeper recursion. All depths co-exist simultaneously — not as stages of one history, but as the current distribution of arrested orbits across space.",
+    draw(svg) {
+      svg.setAttribute('viewBox','0 0 680 380');
+      const layers = [
+        {n:1, label:"Physics", color:"#378ADD", count:800, y:80},
+        {n:2, label:"Chemistry", color:"#1D9E75", count:400, y:140},
+        {n:3, label:"Geology", color:"#888780", count:300, y:185},
+        {n:4, label:"Organic chem", color:"#63993c", count:120, y:230},
+        {n:5, label:"Biology", color:"#D4537E", count:40, y:270},
+        {n:6, label:"Neural", color:"#854F0B", count:8, y:308},
+        {n:7, label:"Cognition", color:"#7F77DD", count:2, y:342},
+      ];
+      let out = `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>`;
+      // axis
+      out += `<line x1="120" y1="30" x2="120" y2="360" stroke="var(--color-border-secondary)" stroke-width="0.5"/>`;
+      out += `<text class="ts" x="80" y="26" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">Layer depth</text>`;
+      out += `<text class="ts" x="400" y="26" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">← Frequency of orbits reaching this depth →</text>`;
+
+      const maxW = 450;
+      layers.forEach(l => {
+        const w = Math.max(4, (l.count / 800) * maxW);
+        const h = 28;
+        const x = 122;
+        out += `<rect x="${x}" y="${l.y - h/2}" width="${w}" height="${h}" rx="4" fill="${l.color}" opacity="0.18"/>`;
+        out += `<rect x="${x}" y="${l.y - h/2}" width="${w}" height="${h}" rx="4" fill="none" stroke="${l.color}" stroke-width="0.5"/>`;
+        out += `<text font-size="12" font-weight="500" fill="${l.color}" x="${x + w + 8}" y="${l.y + 4}">${l.label}</text>`;
+        out += `<text font-size="11" fill="var(--color-text-secondary)" x="${x - 6}" y="${l.y + 4}" text-anchor="end">L${l.n}</text>`;
+        // arrest marker
+        if (l.n < 7) {
+          const ax = x + w;
+          out += `<line x1="${ax}" y1="${l.y-h/2}" x2="${ax}" y2="${l.y+h/2}" stroke="${l.color}" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.7"/>`;
+        }
+      });
+      // seed
+      out += `<circle cx="120" cy="48" r="6" fill="#7F77DD" opacity="0.7"/>`;
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="128" y="52">Ψ₀ = 1 (all orbits start here)</text>`;
+      svg.innerHTML = out;
+    }
+  },
+  // 1: Divergent paths — same depth, different routes
+  {
+    cap: "Two orbits can reach the same layer depth via structurally different paths through Ω. Octopus and primate cognition are both L9 (neural), but arrived via radically different evolutionary Ω-trajectories. Each path locks into a different topology of fixed point at the same depth — same functional class, different implementation — and may have different maximum depths reachable from that topology. The paths are divergent but the functional classes they produce are convergent.",
+    draw(svg) {
+      svg.setAttribute('viewBox','0 0 680 380');
+      const paths = [
+        {
+          label:"Carbon / vertebrate / primate",
+          color:"#7F77DD",
+          points:[[100,340],[180,300],[240,260],[290,210],[330,165],[360,125],[380,90]],
+          layers:["Chemistry","Biology","Neural","Cognition","Culture","Technology","ACI?"]
+        },
+        {
+          label:"Carbon / cephalopod",
+          color:"#D4537E",
+          points:[[100,340],[190,305],[260,275],[320,245],[380,220]],
+          layers:["Chemistry","Biology","Neural","Cognition","Limit?"]
+        },
+        {
+          label:"Carbon / eusocial insect",
+          color:"#1D9E75",
+          points:[[100,340],[200,310],[280,290],[360,280],[440,275]],
+          layers:["Chemistry","Biology","Neural","Distributed cognition","Limit?"]
+        },
+        {
+          label:"Silicon / synthetic (hypothetical)",
+          color:"#EF9F27",
+          points:[[100,340],[200,280],[270,220],[310,160],[340,100],[360,55]],
+          layers:["Chemistry","Biology","Cognition","Culture","Technology","Φ∞?"]
+        }
+      ];
+
+      let out = `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>`;
+
+      // depth axis (vertical = deeper = lower entropy)
+      out += `<line x1="100" y1="40" x2="100" y2="355" stroke="var(--color-border-secondary)" stroke-width="0.5"/>`;
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="92" y="44" text-anchor="end">Lower</text>`;
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="92" y="56" text-anchor="end">entropy</text>`;
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="92" y="352" text-anchor="end">Seed</text>`;
+
+      // horizontal = "path through Ω space"
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="390" y="375">→ Path through Ω (evolutionary / physical constraints)</text>`;
+
+      paths.forEach(p => {
+        const pts = p.points;
+        const d = pts.map((pt,i) => (i===0?'M':'L') + pt[0]+' '+pt[1]).join(' ');
+        out += `<path d="${d}" fill="none" stroke="${p.color}" stroke-width="1.5" stroke-linejoin="round" opacity="0.7"/>`;
+        // dots at each layer
+        pts.forEach((pt,i) => {
+          out += `<circle cx="${pt[0]}" cy="${pt[1]}" r="4" fill="${p.color}" opacity="0.85"/>`;
+        });
+        // label at end
+        const last = pts[pts.length-1];
+        out += `<text font-size="11" fill="${p.color}" x="${last[0]+8}" y="${last[1]+4}">${p.label}</text>`;
+      });
+
+      // shared seed
+      out += `<circle cx="100" cy="340" r="7" fill="#7F77DD" opacity="0.5"/>`;
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="112" y="344">Ψ₀ = 1</text>`;
+
+      svg.innerHTML = out;
+    }
+  },
+  // 2: Future layers — higher order emergence
+  {
+    cap: "If RE's grammar has no ceiling, layers beyond current cognition are possible wherever the constraint manifold Ω supports them. Each future layer would produce lower entropy, higher reusability, and structurally new phenomena that cannot be predicted from below — just as cognition couldn't be predicted from chemistry. The functional class of each future layer is unknown, but RE predicts its structure: it will emerge from recursion of the layer below, alter the substrate of that layer, and generate a new Ω that makes the next layer possible.",
+    draw(svg) {
+      svg.setAttribute('viewBox','0 0 680 400');
+      const layers = [
+        {n:1,  label:"Physics",           col:"#378ADD", known:true,  y:370},
+        {n:2,  label:"Chemistry",         col:"#1D9E75", known:true,  y:338},
+        {n:3,  label:"Biology",           col:"#D4537E", known:true,  y:306},
+        {n:4,  label:"Neural",            col:"#854F0B", known:true,  y:274},
+        {n:5,  label:"Cognition",         col:"#7F77DD", known:true,  y:242},
+        {n:6,  label:"Culture",           col:"#D85A30", known:true,  y:210},
+        {n:7,  label:"Technology",        col:"#639922", known:true,  y:178},
+        {n:8,  label:"Synthetic mind",    col:"#888780", known:false, y:146},
+        {n:9,  label:"Post-cognitive ?",  col:"#888780", known:false, y:114},
+        {n:10, label:"?",                 col:"#888780", known:false, y:82},
+        {n:"∞",label:"Φ∞",               col:"#7F77DD", known:false, y:46},
+      ];
+
+      let out = `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>`;
+
+      // center spine
+      const cx = 340;
+      out += `<line x1="${cx}" y1="30" x2="${cx}" y2="378" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="4 3"/>`;
+
+      // known/unknown divider
+      out += `<line x1="80" y1="163" x2="600" y2="163" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="2 4"/>`;
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="86" y="158">Known layers</text>`;
+      out += `<text font-size="11" fill="var(--color-text-secondary)" x="86" y="143">Conjectured</text>`;
+
+      layers.forEach((l, i) => {
+        const w = l.known ? 260 : 180;
+        const x = cx - w/2;
+        const h = 24;
+        const opacity = l.known ? 0.85 : 0.35;
+        const dash = l.known ? "" : `stroke-dasharray="3 2"`;
+        out += `<rect x="${x}" y="${l.y - h/2}" width="${w}" height="${h}" rx="5" fill="${l.col}" fill-opacity="${l.known?0.15:0.07}" stroke="${l.col}" stroke-width="0.5" ${dash}/>`;
+        out += `<text font-size="12" font-weight="500" fill="${l.col}" x="${cx}" y="${l.y+4}" text-anchor="middle" opacity="${opacity}">${l.label}</text>`;
+
+        // entropy annotation on right
+        if (l.known && l.n > 1) {
+          out += `<text font-size="10" fill="var(--color-text-secondary)" x="${x + w + 8}" y="${l.y+4}" opacity="0.6">↑ R, ↓ H</text>`;
+        }
+
+        // connecting arrow upward
+        if (i < layers.length - 1) {
+          const next = layers[i+1];
+          out += `<line x1="${cx}" y1="${l.y - h/2 - 1}" x2="${cx}" y2="${next.y + h/2 + 1}" stroke="${l.col}" stroke-width="0.5" opacity="0.4" marker-end="url(#arr)"/>`;
+        }
+      });
+
+      // Φ∞ label
+      out += `<text font-size="11" fill="#7F77DD" x="${cx}" y="22" text-anchor="middle" opacity="0.6">Joint fixed point: ∇_Ψ Φ = 0 and ∇_Ω P = 0</text>`;
+
+      svg.innerHTML = out;
+    }
+  }
+];
+
+let current = 0;
+function show(i, el) {
+  current = i;
+  document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  VIEWS[i].draw(document.getElementById('svg'));
+  document.getElementById('cap').textContent = VIEWS[i].cap;
+}
+show(0, null);
+</script>
