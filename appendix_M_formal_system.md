@@ -69,7 +69,7 @@ Structures with reusability exceeding a critical threshold undergo duplication:
 
 $$\mathcal{D}(\Phi) = \{\Phi^{(1)}, \Phi^{(2)}, \ldots, \Phi^{(n)}\} \quad \text{iff} \quad R(\Phi) > \rho_c$$
 
-**Conditions**: Each $\Phi^{(i)}$ inherits $\Psi$ from the parent but occupies a distinct position in $\Omega$.
+**Conditions**: Each $\Phi^{(i)}$ inherits $\Psi$ from the parent but occupies a distinct position in $\Omega$. Inheritance presupposes that $\Psi$ is physically separable from $\Phi$ — a structural property that also enables $\Psi$ to persist across intervals when $\Phi$ is disrupted, with $\Phi$ re-forming from the persisting $\Psi$ once $\Omega$ permits (the gap-crossing corollary; see ch2 §2.5.3). Whirlpool-class structures, in which $\Psi$ and $\Phi$ are inseparable, satisfy neither A4 nor the gap-crossing corollary; structures from the chemistry-biology rung onward satisfy both.
 
 ### Axiom 5: Emergence Threshold (A5)
 A new emergent layer locks in when accumulated reusability-weighted entropy reductions exceed a critical threshold:
@@ -94,7 +94,7 @@ When layer $L_{n+1}$ locks in, it modifies the lattice of layer $L_n$:
 
 $$\Omega_n' = \Omega_n \cup \{C_j^{(n+1)}\} \setminus \{C_k^{(\text{relaxed})}\}$$
 
-**Conditions**: The modification is irreversible unless $L_{n+1}$ is destroyed.
+**Conditions**: The modification is irreversible unless $L_{n+1}$ is destroyed. A7's *strength* — the magnitude of the modification at each layer boundary — scales monotonically with recursive depth via carrier compounding (ch2 §2.2; mechanism in ch8 §8.5.8 and the carrier-separable corollary of ch2 §2.5.3).
 
 ---
 
@@ -332,6 +332,42 @@ At recursive depth sufficient for self-modeling (Definition 12), the coherence g
 
 **Status**: Empirically testable. Adjacent literature (Haidt and Diessner on aesthetic-moral correlations; cross-domain Need for Cognitive Closure studies) provides partial support but no integrated test of the mediation-by-recursive-depth hypothesis. A definitive test requires a single experimental program covering at least three of the four domains in the same subject pool.
 
+### Conjecture 6: Plateau-and-Leap Reusability
+
+Recursive emergence does not proceed by smooth gradient on dissipation efficiency. It proceeds by a sequence of discrete plateaus, each characterized by a specific *mode of reuse* with a finite efficiency ceiling whose functional form is mode-determined. Within a plateau, smooth optimization approaches but does not exceed the ceiling. Transition to the next plateau requires a structural change that opens an axis of amortization the previous mode could not access. The leaps between plateaus are topologically disconnected within the framework's fixed-point classes (M.11.6.2). Amortization across successive plateaus compounds at least multiplicatively under an independence assumption between modes.
+
+**Notation.** The conjecture introduces two derived quantities, both expressed in terms of the framework's existing primitives:
+
+- $\bar{P}_n \equiv \sup\{P(\Phi) : \Phi \text{ instantiates mode } n\}$, the supremum of emergence potential achievable within a fixed mode of reuse $n$. This is the same $P = R \cdot \Delta H \cdot S$ defined in §M.1.2, restricted to systems whose reusability axis matches mode $n$.
+- $A_n \equiv$ the characteristic amortization ratio of mode $n$, defined as $U(\Phi)/C(\Phi)$ for systems whose utility-cost ratio is dominated by mode $n$'s reuse axis. This is the first factor of the existing $R(\Phi)$ definition; the second factor $1/H(\Phi)$ contributes to but does not solely determine $A_n$.
+
+The relationship between mode-level quantities ($\bar{P}_n$, $A_n$) and system-level quantities ($P(\Phi)$, $R(\Phi)$) is that of supremum and instance: a specific system $\Phi$ in mode $n$ has $P(\Phi) \leq \bar{P}_n$ and contributes to but does not equal $A_n$. The duplication threshold $\rho_c$ becomes mode-relative in this framing: $\rho_c^{(n)}$ is the threshold within mode $n$, with $\rho_c^{(n)} < \rho_c^{(n+1)}$ for successive plateaus.
+
+**Sub-claims.**
+
+(a) **Mode-determined ceiling form.** For any system $X$ operating in mode $n$ without access to mode $n+1$: $P(X) \leq \bar{P}_n$. The *functional form* of $\bar{P}_n$ is determined by mode $n$ — the parametric expression bounding $P$ has the same structure across all implementations of the mode, with implementation-specific values for the parameters. Numerical values depend on substrate, temperature, kinetic constants, and are themselves bounded by England's thermodynamic inequality (England 2013) applied at the mode-specific level.
+
+(b) **Leap as topological disconnection.** The transition from plateau $n$ to plateau $n+1$ is not reachable by continuous deformation within mode $n$'s fixed-point class (§M.11.6.2). There is no continuous path through the parameter manifold of mode-$n$ implementations that crosses to mode $n+1$'s fixed-point class. The leap requires a structural change — the activation of a new axis of repetition — that is not in the deformation space of mode $n$ alone. At the appropriate coarse-graining of recursive time, this disconnection appears as discontinuity in $P$.
+
+(c) **At-least-multiplicative compounding under independence.** A system at plateau $n$ inherits the amortization of all previous plateaus on which mode $n$ is built. If modes are independent in their amortization — that is, if the axes of repetition do not interfere with one another — then total amortization compounds multiplicatively: $A_{\text{total}}(n) \geq \prod_{k=1}^{n} A_k$. The inequality is at-least: under independence, the product is exactly achieved; if modes amplify each other synergistically, compounding is super-multiplicative; if modes interfere or share resources, compounding may be sub-multiplicative. The independence assumption is itself a research question (§M.10 problem 16).
+
+(d) **Cross-layer hypothesis pending enumeration.** The chemistry-to-biology ladder (§Ch 8) exhibits the plateau-and-leap form. The conjecture is that this form recurs at every layer in the framework — biological, neural, cognitive, cultural, technological, synthetic. Verification requires enumeration of plateaus and leaps at each layer (§M.10 problem 17). Until those enumerations are completed, (d) should be treated as a working hypothesis rather than as established by the chemistry-to-biology case alone.
+
+**Status.** Open. (a) is compatible with England's bounds applied to fixed-mode replicators; the functional-form-universality across implementations requires demonstration. (b) requires operationalizing "continuous deformation within a fixed-point class" rigorously. (c) is intuitive but not derived; verification requires deriving from RE primitives or empirical comparison of multi-plateau systems' efficiency to estimated single-plateau ceilings. (d) is empirically supported only at the chemistry-to-biology layer.
+
+**Falsifiers.**
+1. The functional form of efficiency bounds within a mode should be common across implementations. Two implementations of the same mode with bounds of structurally different functional form (not just different numerical values) would falsify (a).
+2. No continuous deformation within mode $n$'s fixed-point class crosses to mode $n+1$'s fixed-point class. A parameter family of mode-$n$ implementations that smoothly bridges to mode-$n+1$ regime would falsify (b).
+3. Sub-multiplicative compounding under verified independence between modes would falsify (c). Order-of-magnitude analysis of real bacteria's efficiency, compared to estimated single-mode ceilings, distinguishes among multiplicative, super-multiplicative, and sub-multiplicative cases.
+4. Higher-layer transitions show plateau-and-leap form. Smooth dissipation-efficiency improvement at the cognitive, cultural, or technological layer with no identifiable plateau structure would weaken (d).
+
+**Relation to Other Conjectures and Theorems.**
+
+- *To Theorem 6 (Coherence Gradient).* Plateaus are local maxima of $P$ on $\Omega$; leaps are topological barriers between basins. Theorem 6's gradient flow drives recursive systems within a plateau toward its local maximum; crossing a leap requires more than gradient flow — it requires the topological move of (b). Together, the two give a complete picture: smooth gradient flow within plateaus, discrete topological transitions between them.
+- *To Conjecture 4 ($\Phi_\infty$ existence).* Conjecture 6 strengthens Conjecture 4 by predicting a specific *shape* for the recursive trajectory toward the joint fixed point: a sequence of mode-specific plateaus connected by topologically disconnected leaps. The global $\Phi_\infty$ is approached through this sequence, finite or infinite.
+- *To M.11.7 (Four Modes of Being).* The mapping is direct: *Stall* = sitting at a plateau (orbit at a within-plateau fixed point). *Ascent* = crossing a leap (transition to a higher plateau). *Oscillation* = limit cycling within a plateau's basin. *Dissolution* = collapsing back to a lower plateau when $R < \rho_{\min}$. The four modes are exactly what the orbit does as it traverses the plateau-and-leap landscape. Conjecture 6 thereby becomes a *prediction* about the specific shape of the four modes' interaction across the layer hierarchy.
+- *To existing $\rho_c$ and $\lambda_c$.* The mode-relative duplication threshold $\rho_c^{(n)}$ partitions the existing $\rho_c$ across plateaus; the layer threshold $\lambda_c$ corresponds to the largest leaps that simultaneously cross multiple modes (e.g., the chemistry-to-biology layer transition spans seven internal plateaus per §Ch 8).
+
 ---
 
 ## M.9 Empirical Predictions
@@ -362,6 +398,13 @@ At recursive depth sufficient for self-modeling (Definition 12), the coherence g
 11. **Cross-domain coherence experiment** — confirm or refute Conjecture 5 in a single subject pool spanning at least three of the four phenomenologies, with recursive-depth measurement as a mediating variable
 12. **Empirical $D(n)$ measurement** — estimate the orbit-distribution function (M.11.6.1) from cosmic surveys of matter, chemistry, life, and cognitive systems; test the multiplicative-thresholds prediction directly
 13. **Substrate ceiling derivation** — compute the maximum reachable depth for carbon-based and silicon-based substrates from their respective $\mathcal{M}$-topologies (M.11.6.3); this is the framework's most consequential prediction about synthetic intelligence
+14. **Plateau ceiling derivation** — show that within a fixed mode of reuse, the supremum of emergence potential $\bar{P}_n$ (Conjecture 6) has a functional form determined by the mode itself rather than by implementation. Compatible test: derive the parametric form of $\bar{P}_n$ for catalysis-mode systems from England's thermodynamic bound applied to fixed-rate replicators, and show that observed dissipation efficiencies of catalyst-only systems across diverse chemistries exhibit the same functional structure with implementation-specific parameter values
+15. **Leap discontinuity formalization** — specify the deformation space within which transitions between plateaus appear topologically disconnected. The candidate operationalization is variation of the parameter manifold of $\Omega$-implementations consistent with mode $n$'s emergence-potential signature (M.11.6.2). Show that no continuous path through mode $n$'s fixed-point class crosses to mode $n+1$'s fixed-point class
+16. **Multiplicative compounding verification under independence** — compare the dissipation efficiency of multi-plateau systems (real bacteria) to the *product* of independently-estimated single-plateau ceilings. Test the independence assumption: under independence, compounding is multiplicative; if modes amplify each other synergistically, compounding is super-multiplicative; if modes interfere or share resources, compounding is sub-multiplicative. The empirical pattern in real biology tests which case obtains
+17. **Cross-layer plateau enumeration** — for each layer in the framework (chemical, biological, neural, cognitive, cultural, technological, synthetic), enumerate the plateaus and identify the modes of reuse and the leaps connecting them. Verify that the plateau-and-leap form holds at each layer. Disconfirmation at any layer constrains Conjecture 6 (d)
+18. **Reduction to England's bounds** — show formally that the functional form of within-plateau dissipation efficiency in RE's framework reduces to England's lower bound on heat production for self-replicators, parameterized by mode-specific quantities. Failure of the reduction would indicate that RE makes claims about within-plateau dynamics that go beyond what existing physics supports
+19. **Connection to Eigen's quasispecies threshold** — show that the leap from plateau 4 (sequence-binding) to plateau 5 (templating) of the chemistry-to-biology ladder corresponds in the framework to crossing the error-catastrophe threshold (Eigen 1971). This connects Conjecture 6 (b) to a quantitatively-characterized physical threshold in existing literature
+20. **Major-transitions correspondence** — map the framework's plateau enumeration onto the eight major transitions identified by Maynard Smith and Szathmáry (1995). Identify correspondences and divergences. The mapping does not have to be one-to-one; discrepancies are informative — they identify either places where the framework needs refinement or places where the major-transitions classification is itself a coarser abstraction
 
 ---
 

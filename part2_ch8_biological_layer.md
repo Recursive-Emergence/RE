@@ -27,6 +27,32 @@ DNA and RNA act as templates, enabling the creation of identical or near-identic
 
 Through the lens of Recursive Emergence, replication represents the first true persistent memory system ($\Psi$) with high stability across time. Unlike chemical systems where memory is ephemeral, biological replicators maintain structure actively, not passively.
 
+### 8.2.1 The Gene as Carrier
+
+More precisely: the gene is the first **carrier** in RE's sense — a $\Psi$ physically separable from the $\Phi$ it sustains (ch2 §2.5.3). The autocatalytic networks of Chapter 7 had memory, but their memory was inseparable from the network executing it; lose the network and the memory is gone with no trace. With DNA/RNA, the recipe lives in a molecule distinct from the cell that reads it. That separation is what enables $\Psi$ to cross the gap between parent and offspring — and, more universally, between any disrupted $\Phi$ and its later re-formation.
+
+Two consequences fall out immediately, without further machinery:
+
+- **Diversity under identical genome.** $\Phi_{t'} = \Pi(\Psi_{t'} + \Omega_{t'})$. Re-formation always recruits the ambient lattice, and $\Omega$ varies — across cells, wombs, environments, life events. Identical twins differ; clones differ; bacterial colonies from a single founder go heterogeneous within hours. The variation is not noise to be explained away. It is the structure of how carrier-separable memory expresses.
+
+- **Non-determinism of expression.** Re-formation reaches the bottom of the stack on every event, and the bottom is quantum. Even with an identical genome and a maximally controlled environment, no two organisms are identical. This is structural, not a limit of biological technique.
+
+Both are restatements of ch2 §2.5.3 in biology's vocabulary. The chapter does not derive them — they are the foundation's predictions, made visible at the layer where $\Psi$ first becomes a carrier.
+
+### 8.2.2 Carriers Beyond the Gene
+
+The gene is the *first* carrier in biology, but it is not the only one. Once the reusability gradient has found one way to physically separate $\Psi$ from $\Phi$, biology elaborates the same move in several other modalities — each implemented in a different chemistry, each unlocking a new survivable-gap-length:
+
+- **Prions** — protein conformation as recipe. A misfolded protein templates other proteins to adopt the same conformation. Pure structural carrier; no DNA involvement. Mad cow, scrapie, kuru. The recipe is a *shape*.
+- **Bioelectric patterns** (treated in detail in §8.6.4) — voltage patterns across cell collectives encode anatomical decisions. Planarian regeneration shows it directly: the pattern survives the cut and re-forms the body plan. The recipe is an *electrical state*.
+- **Immune memory** — antibody plus cell-population state preserves past infection encounters across years. The recipe lives in clonal cell populations and protein structures, independent of the genome. The recipe is a *population*.
+- **Epigenetic methylation** — methylation patterns ride on top of DNA, cross cell divisions, sometimes cross generations. A partial carrier *above* the gene, modulating which genes are read. The recipe is a *modification mark*.
+- **Animal cultural transmission** — songbird dialects, chimp tool-use techniques, orca hunting strategies. Behaviors transmitted parent-to-offspring through observation. The recipe lives in *observed-and-imitated patterns*, not in genes.
+
+Each is a yield of reusability — a shortcut that lets a discovered or evolved answer persist past its origin: don't re-evolve the protein fold; don't re-mount the slow primary immune response; don't re-evolve the body plan after damage; don't re-discover the tool-use trick. The structure that found the answer once gets to keep it.
+
+**The unification:** carriers appear wherever the reusability gradient finds a way to physically separate the recipe from the substrate. Chemistry can do this in many ways — sequence (gene), conformation (prion), voltage (bioelectric), cell population (immune), modification mark (epigenetic), observable behavior (animal culture). Each modality unlocks a new survivable-gap-length within biology, before any of it is encoded as cognition or culture. The post-life recursive ladder *is*, structurally, the discovery of new carrier modalities.
+
 ### 8.3 Adaptive Recursion
 
 Biological systems adapt through all five core dynamics of recursive emergence:
@@ -92,11 +118,79 @@ In biological systems, $R(\Phi_i)$ takes on special significance because:
 
 This creates entities with extremely high $R(\Phi_i)$ values—reusable patterns that can be deployed billions of times with minimal change.
 
-### 8.5 From Single Cells to Complex Organisms
+### 8.5 The Reusability Ladder from Chemistry to Biology
+
+The chemistry-to-biology transition is RE's hardest test case: the layer below does not supply the compression operator the layer above requires. Translation must co-emerge with what is translated. There is no bridge layer that supplies the bridge.
+
+The plateau-and-leap conjecture (Conjecture 6, Appendix M) reframes this transition. It is not a single gulf to be crossed in one step. It is a sequence of plateaus, each with a finite ceiling, separated by leaps that open new axes of amortization. Each plateau is empirically grounded in known chemistry; each leap is identified with a specific structural transition in origin-of-life research. The framework's contribution is to recognize them as instances of one pattern.
+
+#### 8.5.1 Plateau 1 — Catalysts
+
+The first reusable structure. A molecular configuration that lowers activation energy for a specific reaction and is regenerated after the reaction completes. The catalyst pays a one-time formation cost and then accelerates reactions across its lifetime. **Amortization axis:** turnover events. **Ceiling:** bounded by single-component reuse times energy throughput. **Empirical instantiation:** mineral catalysts (FeS, pyrite, clays) under prebiotic conditions; the iron-sulfur world (Wächtershäuser) and alkaline hydrothermal vents (Russell, Branscomb).
+
+**Leap 1 → 2.** Single catalysts depend on environmental supply of their substrates. Two catalysts whose products mutually support each other's formation become independent of substrate availability — they manufacture each other's precursors. The leap is structural: from one catalyst to a closed loop of mutual production. Amortization gains a new axis (network self-maintenance) that no single catalyst could access.
+
+#### 8.5.2 Plateau 2 — Autocatalytic Networks
+
+A network of catalysts that produces its own components. The cost of forming the network is paid once; the network then sustains itself by producing its own substrate. **Amortization axis:** network persistence. **Ceiling:** bounded by network stability under perturbation, which scales unfavorably with network size (large networks become fragile). **Empirical instantiation:** Kauffman's autocatalytic sets, Eigen-Schuster hypercycles, demonstrated experimentally in RNA, peptide, and small-molecule systems.
+
+**Leap 2 → 3.** Autocatalytic networks in bulk solution lose products to diffusion. Networks whose products include amphiphiles spontaneously form bilayers, partially enclosing themselves. The leap is structural: from open networks to membrane-bounded compartments. Amortization gains a new axis (spatial propagation through compartment division).
+
+#### 8.5.3 Plateau 3 — Compartmented Networks
+
+A self-sustaining network bounded by a self-produced membrane. Concentration gradients across the membrane do thermodynamic work. Compartments can divide when they grow beyond stable size, producing daughter compartments that inherit catalytic composition. **Amortization axis:** compartment lineages. **Ceiling:** bounded by the fidelity of compositional inheritance across divisions, which is sloppy without sequence-based encoding. **Empirical instantiation:** Szostak's protocell experiments; vesicles formed from prebiotic amphiphiles that sustain encapsulated chemistry across many division cycles.
+
+**Leap 3 → 4.** Compositional inheritance is too noisy to support deep selection. A network containing polymers whose specific sequences begin to do causal work — binding substrates, biasing reactions — provides a substrate for selection that survives compartment division more reliably. The leap is structural: sequence becomes a causally relevant property. Amortization gains a new axis (selection at the level of sequence variants).
+
+#### 8.5.4 Plateau 4 — Sequence-Specific Binding
+
+Polymers with sequences that fold into shapes binding specific substrates. Compartments containing useful-binding sequences run their chemistry more efficiently than those without. Selection at the compartment level acts on sequence composition; useful sequences spread, useless sequences disappear. **Amortization axis:** variant lineages within compartments. **Ceiling:** bounded by the rate at which useful sequences are discovered, which is limited by random search through sequence space without sequence inheritance. **Empirical instantiation:** ribozymes selected by in vitro evolution demonstrate sequence-specific catalytic activity at substantial rate enhancements (Joyce, Lincoln, others).
+
+**Leap 4 → 5.** Random discovery of useful sequences is slow because each compartment must rediscover from scratch. A polymer that can template the formation of polymers approximating its own sequence — through complementarity-based binding of monomers into a copy — preserves discovered sequences across instances. The leap is structural: information persists across copies. Amortization gains a new axis (descendant copies of master sequences).
+
+This leap is gated by chemistry. It requires the substrate to support sequence-templating with fidelity above the error-catastrophe threshold (Eigen 1971). Carbon-water chemistry happens to support it through purine-pyrimidine base-pair geometry. Other chemistries may not. **This is where lattice contingency lives in the trajectory.**
+
+#### 8.5.5 Plateau 5 — Template-Directed Copying Above the Error-Catastrophe Threshold
+
+Sequences that template their own copying with fidelity sufficient to maintain identity across generations. The cost of discovering a useful sequence is amortized across all descendant copies — a number that grows without bound within the system's stable regime. **Amortization axis:** open-ended descendant lineages. **Ceiling:** bounded by the trade-off between fidelity and adaptability; perfect copying produces no variation for selection, sloppy copying loses information. The optimum sits just above the error-catastrophe threshold. **Empirical instantiation:** laboratory templating systems demonstrate the chemistry; sustained templating without enzymatic assistance is hard to maintain experimentally; the master-sequence dynamics are well characterized theoretically.
+
+This is the qualitative break. Below this plateau, every dissipative structure has finite total dissipation because it eventually decays. At this plateau, the *information* in master sequences can persist arbitrarily long while the substrate continually turns over. Total amortized dissipation across the system's stable regime grows without bound relative to the formation cost of the master sequence.
+
+**Leap 5 → 6.** A sequence that only templates and a sequence that only catalyzes both leave amortization on the table — the first contributes nothing to compartment fitness, the second cannot propagate. A sequence that does both compounds amortization across two axes. The leap is the appearance of dual-function sequences. Amortization gains a new axis (compartment-level selection compounding with template selection).
+
+#### 8.5.6 Plateau 6 — Coupled Gene-and-Function
+
+Sequences that both template their own copying *and* contribute to compartment fitness through catalytic or regulatory function. Selection acts on lineages of sequences whose functions feed back into compartment success. **Amortization axis:** coupled fitness across both axes simultaneously. **Ceiling:** bounded by the tension between optimizing for templating (which favors specific structural features) and optimizing for catalysis (which favors different structural features). A sequence cannot be optimal at both. **Empirical instantiation:** ribozyme replicators that catalyze their own ligation (Joyce-Lincoln 2009); the boundary between origin-of-life chemistry and biology proper.
+
+**Leap 6 → 7.** Coupled function constrains both roles. Decoupling — having one molecule carry the pattern and another molecule carry the function, with a translation operation between them — lifts the constraint. The leap is the appearance of translation: pattern and function specialize in different molecules with a code linking them. Amortization gains a new axis (functional diversity per pattern).
+
+This leap is the hardest in the trajectory. The translation operator (ribosome, genetic code) is itself encoded in what it translates. Crossing this leap requires evolving the operator within the regime that the operator will eventually transform. The fitness valley is steep; many systems may reach plateau 6 without crossing.
+
+#### 8.5.7 Plateau 7 — Translation
+
+Pattern decoupled from function via a code. The same sequence can specify many functions through translation. The cost of evolving a useful sequence is amortized across descendant copies *and* across all the contexts where the sequence is read to produce different functional products. **Amortization axis:** encoded functional diversity. **Ceiling:** bounded by the genetic code's expressive capacity, which is large but not infinite. **Empirical instantiation:** all known biology. Origin remains the most contested question in origin-of-life research.
+
+#### 8.5.8 Compounding Across the Ladder
+
+Each plateau's amortization compounds with the previous ones. A bacterium today operates simultaneously at plateau 7 (translation) and inherits the amortization of every plateau below it: each protein is a catalyst (plateau 1), embedded in metabolic networks (plateau 2), inside a compartment (plateau 3), with sequence-specific function (plateau 4), copied across generations (plateau 5), with coupled selection (plateau 6), and translated from genetic code (plateau 7). Under the independence assumption of Conjecture 6(c), the bacterium's total amortized dissipation efficiency is at least the product of all seven plateau ceilings.
+
+Order-of-magnitude estimates (illustrative only, pending rigorous derivation): catalyst amortization on the order of $10^6$ per turnover lifetime; network amortization adding factors of $10^3$ on top; compartment amortization spreading spatially with each division; templating amortization growing without bound within the stable regime; coupled function adding a factor through fitness coupling; translation adding a factor through functional reuse. The total compounded amortization is many orders of magnitude greater than any single-plateau system, consistent with the empirical observation that life dissipates much more energy per unit organized matter than non-living dissipative structures of comparable size.
+
+These numbers are sketched for intuition. Their rigorous derivation — and the verification that compounding is at least multiplicative rather than sub-multiplicative — is open work (Appendix M.10 problem 16). The framework's claim is that the gap between life and non-life is *this multi-stage compound*, not a single threshold to cross but seven, each of which must be cleared, with the lattice supporting the corresponding mode of reuse at each step.
+
+#### 8.5.9 What the Framework Does Not Claim
+
+This trajectory is not a derivation of the gene's emergence on Earth. The specific chemistry that crossed each leap on this planet remains a research question for prebiotic chemistry. The framework's contribution is the structural picture: each leap requires a specific kind of new amortization axis, and most chemistries get stuck at one of the early plateaus because they do not support the chemistry of the next leap.
+
+Many lattices may support plateaus 1–3 (catalysts, networks, compartments) without supporting plateaus 4–7 (sequence-binding, templating, coupling, translation). The framework predicts these chemistries will plateau at compartment-level dynamics indefinitely, never reaching biology. The rarity of life is the rarity of lattices that support all seven leaps in sequence.
+
+This is RE's account of the chemistry-to-biology transition: not a derivation of the specific path, but an organizing structure for what the path requires. The path's existence is empirical. The path's *shape* is what the framework predicts.
+
+### 8.6 From Single Cells to Complex Organisms
 
 The biological layer demonstrates how recursive emergence drives increasing complexity through a series of threshold crossings:
 
-#### 8.5.1 Prokaryotes to Eukaryotes
+#### 8.6.1 Prokaryotes to Eukaryotes
 
 The first major emergence threshold in biology was from prokaryotes (simple cells) to eukaryotes (complex cells with organelles). This represents a key recursive step where:
 
@@ -109,7 +203,7 @@ The emergence potential formula explains why this transition persisted:
 - Significant entropy reduction through enhanced metabolic efficiency
 - Strong compatibility with available environmental niches
 
-#### 8.5.2 Unicellular to Multicellular
+#### 8.6.2 Unicellular to Multicellular
 
 The transition to multicellularity represents another emergence threshold where:
 
@@ -124,7 +218,7 @@ This transition involved:
 
 This created new, higher-order coherent structures ($\Phi$) with stable identities across cell generations—the foundation for complex organisms.
 
-### 8.5.3 Case Study: The First Heartbeat
+### 8.6.3 Case Study: The First Heartbeat
 
 > *A cluster of cells that have never beaten before suddenly beat together. No conductor. No signal from above. Just accumulated recursive memory crossing a threshold — and a new identity locks in.*
 
@@ -158,7 +252,7 @@ This is the same principle operating at every layer: which mutation survives is 
 
 The heartbeat is where you can *see* it happen — the moment recursion crosses a threshold and something new begins that cannot be reduced to what came before.
 
-#### 8.5.4 Bioelectric Patterns as Anatomical Memory
+#### 8.6.4 Bioelectric Patterns as Anatomical Memory
 
 The heartbeat case shows electrical coordination locking in at the *organ* scale. Michael Levin's work over the past decade has revealed that the same principle operates at the *anatomical* scale: cells make collective bioelectric decisions about what tissues to build, and those decisions are stored not in DNA but in voltage patterns across cell collectives.
 
@@ -185,7 +279,7 @@ This also positions bioelectricity as the *precursor* to the neural layer (Chapt
 
 ---
 
-### 8.6 Evolutionary Innovations as Recursive Structures
+### 8.7 Evolutionary Innovations as Recursive Structures
 
 Major evolutionary innovations can be understood as high-$P(\Phi_i)$ structures that enabled new layers of complexity:
 
@@ -196,7 +290,7 @@ Major evolutionary innovations can be understood as high-$P(\Phi_i)$ structures 
 
 Each innovation represents a recursive application of memory accumulation—systems that detect patterns, store them, and use them to guide future interactions.
 
-### 8.7 Ecosystems as Meta-Recursive Systems
+### 8.8 Ecosystems as Meta-Recursive Systems
 
 Biological emergence extends beyond individual organisms. Ecosystems represent higher-order emergent systems where multiple $\Psi$-$\Phi$ pairs interact within a shared $\Omega$.
 
@@ -207,7 +301,7 @@ An ecosystem functions as a meta-recursive system where:
 
 The stability of ecosystems depends on their recursive diversity—multiple redundant pathways for energy flow and material cycling create resilience through distributed memory states.
 
-### 8.8 Energy Irreversibility in Biology
+### 8.9 Energy Irreversibility in Biology
 
 Biological systems demonstrate remarkable energetic asymmetry:
 
@@ -217,7 +311,7 @@ K_{\text{irr}}(\Phi_i) = \frac{E_{\text{break}}(\Phi_i)}{E_{\text{form}}(\Phi_i)
 
 This asymmetry between formation and disruption energy ensures that once beneficial structures emerge, they persist long enough to influence system memory. Biological structures like cells and organisms actively maintain this asymmetry through metabolism—constantly investing energy to preserve their organization against entropy.
 
-### 8.9 Setting the Stage for the Neural Layer
+### 8.10 Setting the Stage for the Neural Layer
 
 As biological complexity increased, an emergence threshold appeared—organisms began developing specialized cells for information processing. These neurons represent the foundation for the next emergent layer, where recursive memory ($\Psi$) transitions from genetic inheritance to experience-driven adaptation.
 

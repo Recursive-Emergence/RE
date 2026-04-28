@@ -165,4 +165,26 @@ This is what convergent emergence looks like when the substrate is human knowled
 
 ---
 
+## P.6 RE and Non-Equilibrium Thermodynamics
+
+The framework of recursive emergence shares intellectual neighborhood with two established research traditions in non-equilibrium statistical mechanics: Prigogine's dissipative structures (Prigogine and Stengers 1984) and England's dissipative adaptation (England 2013; Perunov, Marsland, and England 2016). Both traditions establish that ordered structures persist and self-organize in driven systems through entropy production rather than despite it. RE adopts the same intuition.
+
+RE's distinctive contribution is not to re-derive these results. Prigogine establishes that dissipative structures form spontaneously above critical energy throughflow. England's bounds establish that any self-replicator must dissipate at least a certain quantity of heat per replication, with the bound determined by growth rate, internal entropy, and durability. Perunov-Marsland-England further argue that driven many-particle systems exhibit a general tendency toward self-organization into states formed through reliable absorption and dissipation of work energy.
+
+These results are sound, rigorous, and important. They are not, however, sufficient to derive the layered structure of recursive emergence across many scales. Specifically:
+
+- Prigogine's framework characterizes individual dissipative structures but does not describe the trajectory by which complex hierarchies of such structures arise.
+- England's bound applies to *existing* self-replicators; it does not derive the emergence of self-replication from non-replicating chemistry.
+- The Perunov-Marsland-England tendency-toward-reliable-dissipation operates within a fixed regime; it does not characterize transitions between qualitatively different regimes.
+
+RE addresses these gaps by adding *structural* claims about the shape of the trajectory: that emergence proceeds by plateaus and leaps (Conjecture 6, §M.8), that recursive layered structure compounds at least multiplicatively under an independence assumption, and that the same form is conjectured to recur at every layer of the framework — pending per-layer enumeration.
+
+These claims are *compatible with* Prigogine and England in the sense that they do not contradict their results, and they could in principle be tested for *reduction to* their thermodynamic foundations. But the reduction itself is a research target, not an established fact. RE is not derived from existing thermodynamic frameworks; it is positioned to be *consistent with* them while making distinctive claims those frameworks do not address.
+
+The relationship between the conjectured RE quantities ($R$, $\Delta H$, $S$, $P$) and the established thermodynamic quantities (free energy dissipation, growth rate, internal entropy, durability) is itself a research question. Conjecture 6(a) says the within-plateau ceiling's functional form should be derivable from England's bound applied to fixed-mode replicators — a derivation that has not been carried out (M.10 problem 18). The matching of RE's predictions with quasispecies dynamics (Eigen and Schuster 1979) at the templating plateau is similarly unverified at the formal level (M.10 problem 19).
+
+This position is honest about what the framework currently has and does not have. It acknowledges that several distinguished research programs have addressed pieces of the same broad question, that RE shares their intuitions and is consistent with their established results, and that RE's distinctive contribution is the layered, plateau-and-leap structural picture that those programs do not provide.
+
+---
+
 *For the complete formal system, see Appendix M. For domain-specific applications, see the relevant chapters.*

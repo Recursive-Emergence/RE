@@ -246,7 +246,7 @@ To use pronouns correctly, the child must simultaneously hold three models:
 
 The third requirement is the critical one. It demands that the child model *not just the world, but the fact that others model the world differently*. This is recursive simulation — $\Psi$ including a model of another system's $\Psi$ — and it marks the ignition of Dynamics 3–5.
 
-**The parallel to the heartbeat (Section 8.5.3) is structural:**
+**The parallel to the heartbeat (Section 8.6.3) is structural:**
 
 | First Heartbeat (Ch 8) | First "Me" (Ch 10) |
 |---|---|
@@ -306,6 +306,10 @@ P(\Phi_{language}) = R(\Phi_{language}) \cdot \Delta H_{language} \cdot S(\Phi_{
 Where $R$ is enormous due to the infinitely reusable nature of symbolic combinations, $\Delta H$ is substantial due to the precision of communicated concepts, and $S$ is high due to the strong compatibility between language and social coordination needs.
 
 Linguistic structures themselves evolve through recursive selection, with more effective communicative patterns persisting in collective memory.
+
+### 10.9.1 The Word as Carrier
+
+The word — and more generally, the externalizable symbol — is the cognitive layer's carrier: a $\Psi$ physically separable from the $\Phi$ it sustains (ch2 §2.5.3). A concept that lives only in one mind has no carrier and dies with that mind; a concept paired with a word can travel to another mind, persist on a page, survive its originator. The word is not the concept — it is the *handle* that, given the right ambient lattice (a listener with the right context, a reader with the right language), re-instantiates the concept. The same move as the gene and the synapse, at a longer timescale: the gene crosses generations, the synapse crosses moments within a brain, the word crosses minds. The corollaries from §8.2.1 are vivid here. The same word evokes different concepts in different listeners — not as misunderstanding but as the structure of how carrier-separable memory expresses ($\Phi = \Pi(\Psi + \Omega)$, with $\Omega$ being each listener's context). And every reading is non-deterministic: even the same reader returning to the same text produces a different reading, because $\Pi$ recruits the surrounding cognitive state, which has changed since last time. This is not a bug of language. It is what makes language alive.
 
 ## 10.10 Transition to the Cultural Layer
 

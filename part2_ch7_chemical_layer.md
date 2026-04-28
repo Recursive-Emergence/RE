@@ -106,7 +106,7 @@ FC = \frac{\partial^2 \Phi}{\partial \Psi \partial t}
 
 Systems with high FC values exhibit genuine recursive emergence, while those with low FC may achieve complexity through imposed rather than emergent mechanisms.
 
-This recursive foundation sets the stage for the next emergent layer: biology.
+This recursive foundation sets the stage for the next emergent layer: biology. The structural step is precise — the chemistry-to-biology rung is where $\Psi$ becomes physically separable from $\Phi$. The autocatalytic networks, compartments, and sequence-binding polymers of late prebiotic chemistry keep $\Psi$ bound to the substrate that runs it. The next chapter traces the plateaus on which carrier-separable memory finally locks in — a recipe physically distinct from the machinery that reads it (ch2 §2.5.3). The gene is the first carrier.
 
 ---
 

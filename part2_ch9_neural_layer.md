@@ -44,6 +44,10 @@ Where:
 
 This formula captures how neural systems preferentially strengthen high-utility connections through recursive feedback—"cells that fire together, wire together."
 
+### 9.2.1 The Synapse as Carrier
+
+The synaptic weight pattern is the neural layer's carrier — a $\Psi$ physically separable from the $\Phi$ it sustains (ch2 §2.5.3). Behavior runs in firing patterns, but the recipe for the behavior lives in the synaptic weights, which persist while the firing dies. This is what enables a learned skill to survive sleep, anesthesia, distraction, and decades of disuse: the firing has stopped but the synapse has not, and given the right input, the behavior re-forms. The same move as the gene, applied at a faster timescale — the gene crosses gaps between generations, the synapse crosses gaps between moments. Long-term potentiation and protein-level consolidation are mechanisms that *make the carrier more durable*, extending the maximum survivable gap from milliseconds to a lifetime. The corollaries from §8.2.1 carry over unchanged: a memory recalled twice is never the same recall twice, because $\Pi$ always recruits the surrounding neural state and the bottom of the stack remains quantum.
+
 ## 9.3 The Reusability Revolution
 
 Neural systems dramatically increase $R(\Phi_i)$ compared to purely genetic systems:

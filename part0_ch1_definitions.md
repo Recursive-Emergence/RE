@@ -34,6 +34,8 @@ $$I = \{\delta \mid \delta \in \Psi_t \text{ and } \delta \in \Psi_{t+1}\}$$
 
 **RE definition**: **Stabilized recursion that constrains future interactions.** Memory is not limited to brains. Every persistent structure is a form of memory: a crystal remembers the conditions of its formation; DNA remembers the evolutionary history of its lineage; a legal precedent remembers the cases that shaped it. Memory is the mechanism by which the past reaches into the future — not mystically, but through the physical persistence of recursive structure.
 
+When memory becomes *physically separable* from the structure it sustains, it can also reach across an interruption: the structure breaks, but the memory persists, and given the right ambient lattice, the structure re-forms from it. This is what every layer above pure dissipative structures is doing — DNA carrying organisms across generations, synaptic weights carrying behaviors across sleep, words carrying concepts across minds, texts carrying institutions across centuries. Memory in RE is not just persistence; it is the part of a structure that survives gaps the structure as a whole cannot.
+
 **Formal expression**: Memory is the component of $\Psi$ that survives recursive update:
 
 $$M_t = \Psi_t \cap \Psi_{t+1} \cap \Psi_{t+2} \cap \cdots$$

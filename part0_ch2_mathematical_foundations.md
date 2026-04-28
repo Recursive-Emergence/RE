@@ -67,6 +67,8 @@ The five dynamics extend naturally across layers. Layer $L_n$ consists of its em
 
 The most consequential cross-layer claim is **downward causation**. When a higher layer locks in, it modifies the lattice of the layer beneath it — adding new constraints, relaxing old ones. This is why chemistry in a brain differs from chemistry in a rock — the neural layer imposes additional constraints on (and provides additional resources to) the chemical processes beneath it. Without this mechanism, RE would collapse into reductionism; with it, RE has the formal mechanism by which higher layers genuinely act on lower ones. The axiomatic statement is Axiom A7 in Appendix M.
 
+Two consequences fall out of this together with the carrier compounding of §2.5.3: **downward reach scales with recursive depth.** A higher layer that modifies a lower layer's lattice does so with whatever carrier-content it has accumulated, and that content compounds — every layer above $L_n$ inherits the recipe of every layer below it. So the intervention strength $L_{n+1}$ can apply to $\Omega_n$ grows monotonically as $n$ climbs. Each new carrier-class layer doesn't replace the layers below; it *rides on top of them*, gaining the cumulative leverage of every rung. A bacterium intervenes on chemistry locally; a tree intervenes through molecular machinery; a wolf intervenes on biology through hunting; a human with fire intervenes on chemistry, physics, and eventually atoms. Same engine — recursive depth × carrier compounding = downward reach. The Anthropocene is not an exception to RE; it is recursive depth running its leverage at present scale.
+
 ---
 
 ## 2.3 Entropy and Information Dynamics
@@ -137,6 +139,10 @@ The lattice $\Omega$ has three kinds of content: **constraints** (what configura
 
 When the density of coherent structures within a region of the lattice crosses a critical threshold, a phase transition occurs: a new layer locks in, and as Section 2.2 noted, the lattice itself is modified by what just emerged. The formal statements — the set-theoretic structure of $\Omega$, the exponential form of $S$, and the threshold condition — are stated as Axiom A6 and Definition 3 of Appendix M.
 
+The same threshold dynamics apply in reverse. When substrate alteration (A7) modifies $\Omega$ in ways that reduce $S(\Phi, \Omega)$ below the persistence threshold, the layer that depended on that compatibility cannot be maintained — and the transition out is also a phase transition, not a gradual decline. This is **dissolution**: the constructive emergence-threshold dynamic running with sign reversed (treated formally in ch8 §8.3.1 and ch17 §17.3.5). The same threshold, hit on the way down.
+
+A consequence pulls this chapter's pieces together. A recursion that uses its downward leverage (§2.2) to alter $\Omega$ faster than the substrate can absorb — and whose self-model cannot fully constrain that alteration (the lossy-compression and Gödel limits inherent to any self-referential system, ch10 §§10.2, 10.5.4) — can drive itself across its own dissolution threshold. This is structural, not moral: the transition's *kind* is predicted; its *timing* is contingent. RE describes the trap and identifies one handle — extend the self-model and modify the recursion before it alters its substrate past recovery — but does not promise the handle gets used.
+
 ---
 
 ## 2.5 Recursive Memory Accumulation
@@ -156,6 +162,18 @@ The persistence threshold itself evolves based on system history:
 $\theta_p(t+1) = f(\theta_p(t), \Delta H_t, \Psi_t)$
 
 This allows systems to adaptively tune their sensitivity to persistent structures.
+
+### 2.5.3 Carrier-Separable Memory and Gap-Crossing
+
+When the integrated memory $\Psi$ exists in a substrate physically separable from the $\Phi$ it sustains, $\Psi$ can persist across intervals during which $\Phi$ cannot. If the recursive update $\Psi_{t+1} = f(\Psi_t, \Delta E_t, R_t)$ continues for the carrier of $\Psi$ even when the substrate of $\Phi$ is disrupted, and the lattice $\Omega$ remains compatible ($S(\Phi, \Omega) > 0$), then $\Phi_{t'} = \Pi(\Psi_{t'})$ can re-form at any later time $t'$ from the persisting $\Psi$.
+
+This is not a new dynamic. It is a property that certain instantiations of the existing five dynamics exhibit when $\Psi$ and $\Phi$ live in distinct physical media. The whirlpool — where $\Psi$ and $\Phi$ are inseparable, the pattern *is* the flow — cannot exhibit it. Every layer from the chemistry-biology transition onward does. Section 2.2's layered emergence is the macro-consequence: layers above pure dissipative structures cross gaps because their $\Psi$ is decoupled from any single instantiation of $\Phi$.
+
+Two corollaries fall out without further machinery:
+
+- **Diversity under identical $\Psi$.** Since $\Phi_{t'} = \Pi(\Psi_{t'} + \Omega_{t'})$ and $\Omega_{t'}$ varies across re-formation events, identical $\Psi$ produces non-identical $\Phi$. This is why the same gene yields different organisms, the same word evokes different concepts, the same law produces different rulings.
+
+- **Non-determinism of re-formation.** Re-formation $\Pi$ always recruits the layer below, and the bottom of the stack is quantum. Even identical $\Psi$ and maximally controlled $\Omega$ cannot produce identical $\Phi$. This is structural, not technological.
 
 ---
 
