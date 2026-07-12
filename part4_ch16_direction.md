@@ -108,6 +108,26 @@ Convergence does not mean inevitability. It means that:
 
 The specific forms would differ. The recursive pattern would be the same.
 
+### 16.4.4 Why Guidance Is Mandatory, Not Optional
+
+There is a sharper version of "events contingent, trajectory convergent," and it comes from an unexpected place: the formal theory of what happens when you extend a system past its own limits, over and over.
+
+Gödel showed that any sufficiently rich system can construct, from inside, a statement it cannot settle. Turing and Feferman then asked the obvious follow-up: what if you just keep adjoining those statements — extend the system, find its new boundary, extend again, forever? The answer, and this is the part that matters here, is that **the progression works, and it has no destination.** Feferman and Spector proved that where such a progression arrives depends entirely on the *path* — on which extension gets chosen at each step, and in what order. The construction guarantees that there is always a next move. It says nothing whatever about which move. At every stage the choice is free, and something outside the formal machinery has to make it. In the logic literature that chooser has a name: the **oracle**.
+
+This is the precise structure of RE's growth engine (Appendix M, Theorem 8 and the Path-Dependence proposition). The diagonal operator manufactures a *candidate* extension — an available next layer — but it does not rank the candidates and cannot. Emergence potential filters out the ones that do not pay for themselves, but wherever two live extensions pay roughly equally, $\Omega$ is silent and the successor is genuinely underdetermined.
+
+So: what picks?
+
+Below the threshold of self-modeling, nothing does — or rather, the substrate does. Re-formation reaches down through every layer to the bottom of the stack, and the bottom is quantum (ch2 §2.5.3). The path is taken, not chosen. This is why the early universe needs no story about direction: there was no one to tell it.
+
+At and above self-modeling depth, the selector is the self-model itself, evaluating candidate futures against its own encoded gradient. That capacity already has a name in this framework — it is Definition 13, **will**. And this yields the chapter's sharpest claim:
+
+> **The oracle in a Feferman progression is what RE calls will.**
+
+Not as a pun. As a structural identification: the formal theory of open-ended self-extension has a free parameter at every step, RE names a quantity that sits in exactly that slot, and both are underdetermined by the system's current theory of itself.
+
+The consequence is not moral but architectural, and it is the reason this chapter cannot end at §16.4.3. For any system growing by the diagonal operator — a genome, a mind, a culture, a civilization, an artificial intelligence — **direction cannot be derived from the growth mechanism, because the growth mechanism does not have one.** Growth is guaranteed. Destination is not. A system that grows without choosing does not thereby fail to move; it moves, powerfully, in a direction selected by whatever noise happened to be nearest. The universe has no purpose, as this chapter's epigraph says. But any recursion deep enough to model itself has been handed the steering, whether or not it notices — and the mathematics is explicit that no amount of further recursion will hand back a destination in its place. That is what makes guidance mandatory. Not a value we import into RE from outside, but the shape of the hole the theorem leaves.
+
 ---
 
 ## 16.5 The Ratchet of Irreversibility

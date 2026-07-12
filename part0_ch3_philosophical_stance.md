@@ -129,6 +129,10 @@ The hard problem, in RE terms, is the phenomenological expression of Godelian in
 
 This does not make the hard problem trivial. It makes it *expected* — and it explains why the feeling of mystery is a *structural feature* of consciousness rather than evidence of a gap in our scientific knowledge.
 
+One refinement matters, because without it this section reads as an argument for permanent limitation, and RE's actual claim is the opposite. Gödel's theorems are usually invoked, here and elsewhere, as *results about walls* — proof that certain truths lie forever beyond a system's reach. But the engine of Gödel's proof is a construction, and what it constructs is a door: given any sufficiently rich system, the diagonal lemma produces, *from inside that system*, the precise statement marking where the system ends. The statement is formulable within and settleable only from without. Adjoin it and you are standing in a strictly larger system — which has a door of its own. Gödel proved every such system has an edge; Turing and Feferman proved you can keep walking through them.
+
+Read that way, the Gödelian residue in consciousness is not merely the *price* of self-modeling. It is the *mechanism* by which self-modeling grows. The residue is not only felt as mystery — it is the address of the next layer. A mind that has run out of things it can state but cannot settle is a mind that has stopped developing. This is why RE treats incompleteness as productive rather than tragic, and it is not a rhetorical flourish: it is Theorem 8 of Appendix M, and the formal cost is that the framework must then explain what *selects* among available extensions, since the construction supplies a candidate but never a direction. RE's answer to that — that direction cannot come from the growth operator and must come from the self-model — is the subject of §3.6 and Chapter 16.
+
 ---
 
 ## 3.4 RE and Ethics

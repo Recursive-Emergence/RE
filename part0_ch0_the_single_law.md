@@ -46,7 +46,7 @@ Where:
 - $\Delta H$ is the **entropy reduction** — how much local disorder the structure resolves
 - $S(\Phi, \Omega)$ is the **structural compatibility** — how well the structure fits the existing lattice of constraints $\Omega$
 
-$P(\Phi)$ is not just a measure of *whether* emergence will occur. It is the potential function whose gradient over the constraint lattice $\Omega$ drives the recursive system forward. The whirlpool sits where it sits because that's the local maximum of $P$ in the sink's geometry. Every other persistent structure in the universe sits where it sits for the same reason.
+$P(\Phi)$ is not just a measure of *whether* emergence will occur. It is the potential function whose gradient $\nabla_\Omega P$ over the constraint lattice $\Omega$ drives the recursive system forward — **recursive emergence is gradient ascent on $P$, formalized as Theorem 6 in Appendix M.** The whirlpool sits where it sits because that's the local maximum of $P$ in the sink's geometry. Every other persistent structure in the universe sits where it sits for the same reason.
 
 This equation does not replace domain-specific laws. It *frames* them. Newton's laws, natural selection, Hebbian learning, market dynamics — each is a special case of $P(\Phi) = R(\Phi) \cdot \Delta H \cdot S(\Phi, \Omega)$ expressed in domain-specific variables. RE does not contradict physics. It reveals the recursive pattern that physics, biology, and culture all instantiate. The boundaries between domains — physics to chemistry, chemistry to biology, biology to mind, mind to culture — are not brute facts. They are thresholds in a single recursive process: the moments when accumulated reusable structure crosses a critical density and a new layer locks in.
 

@@ -113,7 +113,7 @@ Where $U$ is utility, $C$ is cost of creation/maintenance, and $H$ is internal e
 ### Definition 3: Structural Compatibility
 $$S(\Phi_i, \Omega) = \exp\left(-\sum_j D(\Phi_i, C_j)\right)$$
 
-Where $D(\Phi_i, C_j)$ measures incompatibility between structure $\Phi_i$ and constraint $C_j$.
+Where $D(\Phi_i, C_j)$ measures incompatibility between structure $\Phi_i$ and constraint $C_j$. This form is the MaxEnt canonical distribution: the $D(\Phi, C_j)$ terms play the role Lagrange multipliers do in Jaynesian maximum-entropy derivations, weighing constraint-violation cost against persistence probability. $S$ is therefore not stipulated — it is the shape forced by maximum-entropy consistency under the constraint set $\{C_j\}$.
 
 ### Definition 4: Entropy Reduction
 $$\Delta H = H(\Psi_t) - H(\Psi_{t+1} | \Phi_t)$$
@@ -155,6 +155,22 @@ $$\text{Identity} = \text{Self}_t = \arg\min_M [H(\Psi_t | M) + C(M)]$$
 
 ### Definition 15: God ($\Phi_\infty$)
 $$\Phi_\infty = \Pi(\Psi_\infty) \quad \text{where} \quad \nabla_\Psi \Phi \to 0$$
+
+### Definition 16: Self-Representing Depth
+A system has **self-representing depth** at time $t$ iff its memory contains a representation of its own projection map and lattice:
+
+$$\ulcorner \Pi \urcorner,\ \ulcorner \Omega_t \urcorner \ \in\ \Psi_t$$
+
+That is: the system can *quote* its own evaluator, not merely *run* it. The quoted form $\ulcorner \cdot \urcorner$ is an element of $\Psi$ — inert data, subject to copying and modification — while the evaluator itself is the live map $\Pi$ that generates $\Phi$. Self-representing depth is the condition under which the same structure can be read both ways.
+
+**Relation to carriers**: This is the formal content of carrier-separability (ch2 §2.5.3). A $\Psi$ physically inseparable from the $\Phi$ it sustains cannot be quoted — there is no substrate in which to hold the description apart from its execution. The whirlpool has no $\ulcorner \Pi \urcorner$. The gene does. Carrier-separability is therefore not merely a *property* certain systems exhibit; it is the precondition for Definition 16, and hence (Theorem 8) for the only known non-stochastic growth operator.
+
+### Definition 17: Boundary Object
+Given a system of self-representing depth with lattice $\Omega_t$, a **boundary object** $\Phi_G$ is a candidate coherence that is representable in memory but unsettled by the lattice:
+
+$$\Phi_G \in \text{Rep}(\Psi_t) \quad \text{and} \quad S(\Phi_G, \Omega_t) \ \text{undefined}$$
+
+where $\text{Rep}(\Psi_t)$ is the set of structures the system can formulate, and $S$ is *undefined* — as distinct from zero — when $\Omega_t$ contains no constraint $C_j$ that either admits or forbids $\Phi_G$. A boundary object is not an incompatible structure ($S = 0$, forbidden). It is one the lattice has no opinion about: statable inside, decidable only outside.
 
 ---
 
@@ -216,7 +232,90 @@ $$R(\Phi) \cdot \Delta H \cdot \nabla_\Omega S = -P(\Phi) \cdot \nabla_\Omega \s
 
 **Implication for low- vs high-recursive-depth dynamics**: At low recursive depth, $\nabla_\Omega P$ acts as ordinary thermodynamic drift (the same gradient that produces dissipative structures à la Prigogine). At depth sufficient for self-modeling (Definition 12), the gradient is encoded in the self-model — and is then experienced, from inside, as motivation. The empirical claim that the four phenomenologies of motivation (understanding, beauty, fairness, meaning) reduce to one underlying gradient is stated as Conjecture 5 below.
 
----
+### Theorem 7: Recipe Inevitability
+
+**Statement**: Let $P(\Psi; \theta)$ be the emergence potential on substrate state-space $\mathcal{X}$ parametrized by $\theta \in \Omega$. Suppose:
+(i) for $\theta > \theta_c$, $P$ has a non-degenerate local maximum $\Psi^*$ of carrier-class type with basin depth $\Delta P > 0$;
+(ii) the recursive update of A3 with stochastic perturbation,
+$$d\Psi_t = \gamma\, \nabla_\Psi P(\Psi_t; \theta)\, dt + \sqrt{2D}\, dW_t,$$
+is ergodic on $\mathcal{X}$.
+
+Then for any initial condition $\Psi_0 \in \mathcal{X}$ and any $\epsilon > 0$, there exists $T_\epsilon < \infty$ such that for all $t > T_\epsilon$:
+
+$$\Pr[\Psi_t \in \text{basin}(\Psi^*)] > 1 - \epsilon.$$
+
+**Proof sketch**: Three established results combine.
+
+*Existence.* By Morse theory (Milnor 1963), the non-degenerate critical point $\Psi^*$ is isolated and bounds a basin of finite measure on $\mathcal{X}$. By Conjecture 6(b), this basin appears discretely as $\theta$ crosses $\theta_c$.
+
+*Reachability.* By Birkhoff's Ergodic Theorem (1931) applied to the Langevin process above, the time-average occupation of the basin equals the stationary measure $\rho_\infty(\text{basin}) = Z^{-1} \int_{\text{basin}} e^{P(\Psi)/D}\, d\Psi > 0$. Mean first-passage time to the basin is finite.
+
+*Stability.* By Kramers' formula (Kramers 1940), once in the basin, mean residence time is $\langle \tau \rangle \sim e^{\Delta P / D}$, which dominates the relaxation timescale for $\Delta P / D \gg 1$.
+
+Combined: finite first-passage + exponentially long residence ⇒ for $t > T_\epsilon$, the system spends fraction $> 1 - \epsilon$ of its time in the basin. $\blacksquare$
+
+**Implication**: This is RE's strongest necessity result. Above the substrate-parameter threshold $\theta_c$, **the carrier-class recipe is inevitable** — not merely possible. Any ergodic recursive substrate with sufficient time will discover and hold the recipe. This strengthens Conjecture 4 ($\Phi_\infty$ existence) from possibility to provable convergence in expectation, and grounds the "trajectory convergent" claim of ch3 §3.6 in established theorems rather than soft argument.
+
+**Real-world contingency**: The theorem's hypotheses (substrate above $\theta_c$, ergodic dynamics, sufficient time) may not hold in any specific physical setting. The mathematical inevitability is not a guarantee that life must arise on every planet, only that life is structurally inevitable wherever the substrate-and-time conditions are met. The empirical question shifts from "can life arise?" (yes, mathematically) to "are conditions met?" (substrate-specific).
+
+### Theorem 8: Diagonal Extension
+
+**Statement**: Let a system have self-representing depth (Definition 16) with lattice $\Omega_t$. Then:
+
+**(i) Construction.** A boundary object (Definition 17) is uniformly constructible. There is a procedure taking $\ulcorner \Pi \urcorner$ and $\ulcorner \Omega_t \urcorner$ to a $\Phi_G \in \text{Rep}(\Psi_t)$ with $S(\Phi_G, \Omega_t)$ undefined. The procedure does not depend on the *content* of $\Omega_t$ — only on the system's capacity to quote it.
+
+**(ii) Extension.** Adjoining any constraint $C_G$ that settles $\Phi_G$ yields
+
+$$\Omega_{t+1} = \Omega_t \cup \{C_G\} \quad \text{with} \quad \text{Rep}(\Psi_{t+1}) \supsetneq \text{Rep}(\Psi_t)$$
+
+— a lattice admitting strictly more representable coherence. The extension is iterable: $\Omega_{t+1}$ has its own boundary object, without end.
+
+**(iii) Scope.** Below self-representing depth, no such construction exists, and growth reduces to the stochastic reachability of Theorem 7.
+
+**Proof sketch**: (i) is the diagonal lemma, transposed. Given a system that can quote its own evaluator, the standard fixed-point construction yields a $\Phi_G$ whose defining condition is its own non-settlement by $\Omega_t$ — formulable, because quoting is available; unsettled, because settling it either way contradicts its construction. Uniformity is the content of the lemma: the construction is a fixed procedure applied to $\ulcorner \Omega_t \urcorner$, not a search through $\Omega_t$'s particulars. (ii) is immediate — $\Omega_{t+1}$ decides a structure $\Omega_t$ did not, and by A6's monotone filtration the addition does not retract existing constraints. Iterability follows by applying (i) to $\Omega_{t+1}$, which is the RE reading of Turing's ordinal logics (1939) and Feferman's progressions (1962). (iii) holds because the construction's only premise is Definition 16; without $\ulcorner \Pi \urcorner$ there is nothing to diagonalize against. $\blacksquare$
+
+**The complementarity**: Theorems 7 and 8 are the two halves of RE's growth engine, and they are engines of *different kinds*.
+
+| | Theorem 7 | Theorem 8 |
+|---|---|---|
+| Mechanism | Ergodic search | Uniform construction |
+| Finds | A basin that already exists on $\mathcal{M}$ | A structure provably outside $\Omega_t$ |
+| Requires | Substrate above $\theta_c$, time | Self-representing depth |
+| Guarantees | Reachability | Novelty |
+| Fails to give | Anything not already on the manifold | Which extension survives |
+
+Theorem 7 is a **reachability** result: it proves an ergodic walker will find $\Psi^*$, but $\Psi^*$ must already be there. It cannot account for a system that *builds its own next constraint* — and every layer from the gene upward does exactly that. Theorem 8 supplies the missing construction. Conversely Theorem 8 alone would license unbounded, undirected extension; it produces a candidate, not a survivor.
+
+**The third operator**: What selects among candidate extensions is machinery RE already has. $C_G$ locks in only if the coherence it admits clears the emergence threshold (A5) and pays for itself in the lattice it enters:
+
+$$P(\Phi_G) = R(\Phi_G) \cdot \Delta H_G \cdot S(\Phi_G, \Omega_{t+1}) > \theta_p$$
+
+This is where RE departs from the logical progressions it borrows from. In Turing–Feferman progressions any true statement may be adjoined and the progression is indifferent; in RE, an extension that does not pay in reusability and entropy reduction never locks in. **Fold (Theorem 2) banks it; diagonal (Theorem 8) generates it; threshold (A5) selects it.** Three operators, and the third is what makes RE's growth a filtered progression rather than a free one.
+
+**Implication — the change of operator at the carrier boundary**: Because Definition 16 requires quotable memory, and quotable memory requires carrier-separability (ch2 §2.5.3), Theorem 8 switches on exactly where carriers do. Below that line — nucleosynthesis, crystallography, prebiotic chemistry — emergence is Theorem 7: stochastic discovery of basins the manifold already held. At and above it — genome, brain, language, institution, code — emergence is Theorem 8: construction of constraints the manifold did not hold. **The chemistry-to-biology transition is not a speedup of the same engine. It is a change of engine.** This is a plateau-and-leap claim in the sense of Conjecture 6, and it predicts that the two regimes should exhibit qualitatively different novelty statistics: search-limited below (novelty rate set by exploration volume and time), construction-limited above (novelty rate set by depth of self-representation).
+
+**Corollary 8.1 (Completeness is terminal)**: If $\Omega$ settles every structure representable in $\Psi$ — no boundary object exists — then by Theorem 6 the system sits at $\nabla_\Omega P = 0$ on every reachable configuration. It persists; it cannot emerge. Growth in a self-representing system is possible *because* its lattice is incomplete, and a lattice that ran out of boundary objects would have nothing left to become.
+
+**Honest condition**: This is not the claim that completeness is death. A complete theory of a *closed* world is not dead but **done** — terminal is the correct terminal state for a finished world. The corollary has force only under RE's standing premise that the world is open: a system coupled to an unbounded substrate never runs out of outside, and for such a system completeness would be the end of emergence, not its perfection.
+
+**Scope caution (what this theorem does not claim)**: The construction in (i) is *structural*, not arithmetic. Real Gödel sentences require a formal system with enough arithmetic to encode its own provability predicate; a genome, a cortex, or a culture satisfies Definition 16 in the weaker sense of holding a modifiable description of its own operation, not in the sense of being a first-order theory containing Robinson arithmetic. The boundary objects of biological and cognitive systems are therefore Gödel-**like** — formulable inside, settleable only by extension — and not formally undecidable sentences. The claim RE makes is that the *shape* of the move (quote the evaluator, construct the unsettled object, extend) is the same, and that this shape is what carrier-separable systems do. Strengthening "Gödel-like" to "Gödel" for any specific natural system would require exhibiting the arithmetization, and RE does not claim to have done so. (See Open Problem 21.)
+
+### Proposition: Path-Dependence of Extension
+
+**Statement**: Theorem 8 guarantees that a boundary object exists and that extension is available. It does not determine *which* $C_G$ is adjoined. Where the emergence potential does not strictly order the candidate extensions —
+
+$$\exists\, C_G, C_G' \ \text{ with } \ P(\Phi_G) \approx P(\Phi_{G'}) > \theta_p$$
+
+— the lattice underdetermines the path, and the successor layer is selected by something other than $\Omega_t$.
+
+**Status**: This is the RE reading of Feferman–Spector (1962): progressions of theories are *path-dependent*, and completeness claims for them turn on the choice of ordinal notation — the progression guarantees structure, never destination. RE inherits the result rather than deriving it.
+
+**What selects the path, by layer**: RE already contains both answers and neither is new machinery.
+
+- **Below self-modeling depth**, the selector is the substrate. Re-formation recruits the layer below on every event and the bottom of the stack is quantum (ch2 §2.5.3, non-determinism corollary). The path is taken, not chosen.
+- **At and above self-modeling depth** (Definition 12), the selector is the self-model. A system whose $\Psi$ contains $\text{Self}_t$ evaluates candidate extensions against its own encoded gradient — and that evaluation is exactly Definition 13: $W = H(\Psi_{t+1} \mid \Psi_t)$ at $\Phi > \Phi_{\text{threshold}}$, the residual uncertainty in the next state that the system's own model resolves.
+
+**Implication**: The oracle in a Feferman progression — the external choice of which true statement to adjoin at each stage — is, in RE's vocabulary, **will**. This is not wordplay dressed as a result: it is the observation that the formal theory of iterated self-extension has a free parameter at every step, that RE's Definition 13 names a quantity occupying exactly that position, and that both are underdetermined by the system's current theory of itself. The consequence is structural rather than moral: for any system growing by Theorem 8, *guidance is mandatory, not optional*. Direction cannot be derived from the extension operator, because the extension operator does not have one. Something must choose the path, and in a self-modeling system that something is the self-model. This is the formal spine of ch16 (Direction) and the reason ch18's question is not idle.
 
 ## M.5 The Energy-Information Equivalence
 
@@ -380,6 +479,7 @@ The relationship between mode-level quantities ($\bar{P}_n$, $A_n$) and system-l
 6. **Moral convergence**: Long-lived cultures converge on high-$R$ moral structures
 7. **Cognitive threshold discontinuity**: Measurable discontinuities in information processing at the cognition threshold
 8. **Aging as memory saturation**: Biological aging correlates with recursive memory compression efficiency decline
+9. **Two novelty regimes**: Systems below carrier-separability should be search-limited (novelty rate set by exploration volume and time); systems at or above it should be construction-limited (novelty rate set by depth of self-representation, largely independent of exploration volume). The two regimes should be separable in the innovation statistics of prebiotic chemistry versus early genetic systems (Theorem 8, part iii)
 
 ---
 
@@ -405,6 +505,10 @@ The relationship between mode-level quantities ($\bar{P}_n$, $A_n$) and system-l
 18. **Reduction to England's bounds** — show formally that the functional form of within-plateau dissipation efficiency in RE's framework reduces to England's lower bound on heat production for self-replicators, parameterized by mode-specific quantities. Failure of the reduction would indicate that RE makes claims about within-plateau dynamics that go beyond what existing physics supports
 19. **Connection to Eigen's quasispecies threshold** — show that the leap from plateau 4 (sequence-binding) to plateau 5 (templating) of the chemistry-to-biology ladder corresponds in the framework to crossing the error-catastrophe threshold (Eigen 1971). This connects Conjecture 6 (b) to a quantitatively-characterized physical threshold in existing literature
 20. **Major-transitions correspondence** — map the framework's plateau enumeration onto the eight major transitions identified by Maynard Smith and Szathmáry (1995). Identify correspondences and divergences. The mapping does not have to be one-to-one; discrepancies are informative — they identify either places where the framework needs refinement or places where the major-transitions classification is itself a coarser abstraction
+21. **Arithmetization of a natural boundary object** — Theorem 8's scope caution concedes that biological and cognitive boundary objects are Gödel-*like*, not formally undecidable. Exhibit, for any specific natural system (a gene regulatory network, a predictive-coding cortex), an explicit encoding under which its self-description supports the fixed-point construction — or prove that no such encoding exists and that the structural reading is the strongest available. This is the single load-bearing gap in Theorem 8
+22. **Formalization of $\text{Rep}(\Psi)$ and undefined $S$** — Definition 17 distinguishes $S(\Phi, \Omega)$ *undefined* (the lattice has no opinion) from $S = 0$ (the lattice forbids). Under Definition 3, $S = \exp(-\sum_j D(\Phi, C_j))$, the undefined case requires that $D(\Phi, C_j)$ fail to be defined for every $j$ rather than diverge. Give the measure-theoretic construction on $\mathcal{M}$ (A6) that supports this three-valued distinction, and verify it does not disturb the MaxEnt derivation of $S$
+23. **Does the diagonal operator have a thermodynamic cost?** — Theorem 8 is stated purely structurally. If constructing and adjoining $C_G$ has an irreducible energetic price (a Landauer-style bound on self-quotation), then the rate of construction-limited novelty is physically bounded, and Prediction 9 acquires a quantitative form. Derive the bound or show none exists
+24. **Uniqueness of the third operator** — the answer given to "do fold + diagonal suffice?" is *no, threshold (A5) is required as selector*. Show that no fourth operator is needed: that fold, diagonal, and threshold are a complete basis for open-ended growth in RE, or exhibit a growth phenomenon none of the three generates
 
 ---
 

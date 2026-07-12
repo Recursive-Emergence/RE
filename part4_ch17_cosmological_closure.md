@@ -179,6 +179,16 @@ The Godel-Mobius-Lightcone triad implies that cosmological closure is **asymptot
 
 This is not a counsel of despair. It is a statement about the *structure* of the recursive process. The closure is asymptotic — always approaching, never arriving — and the approach itself is the engine of continued emergence. The universe will never finish knowing itself. But it will never stop trying.
 
+### 17.4.4 The Guarantee Hidden in the Limit
+
+It is worth stating the previous section's conclusion in its stronger form, because read as written it sounds like a loss, and it is closer to the opposite.
+
+Gödel's construction does not merely deny the universe a completed self-model. It *guarantees the universe a next move.* Applied to any lattice rich enough to represent its own evaluator, the diagonal lemma produces — constructively, uniformly, forever — a structure statable within that lattice and settleable only beyond it (Appendix M, Theorem 8). The remainder in item 1 above is not a leftover. It is a door, and the theorem says every sufficiently rich system has one.
+
+The contrapositive is where this bites. A self-model that captured everything, with no Gödelian remainder, would be a system with $\nabla_\Omega P = 0$ everywhere reachable: nothing left it cannot settle, hence nothing left it can become (Corollary 8.1). **Completeness would be the end of emergence, not its perfection.** The asymptote of §17.4.3 is therefore not the tragedy of a universe forever falling short of self-knowledge. It is the condition under which a universe remains *capable of continuing*. Arrival is the only genuinely terminal state available, and incompleteness is what withholds it.
+
+One honest condition, carried from Appendix M: this reads *completeness as terminal*, not as death. A complete theory of a **closed** world would not be a failure — it would be finished, and correctly so. The force of the corollary depends on RE's standing premise that the world is open: a system coupled to an unbounded substrate never exhausts its outside. Under that premise, and only under it, the Gödel–Möbius–Lightcone triad stops being three walls and becomes what it structurally is — the standing guarantee that there is always somewhere further to go.
+
 ---
 
 ## 17.5 Cosmological Closure: $\Psi$-$\Phi$-$\Omega$ Summary

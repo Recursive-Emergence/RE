@@ -39,6 +39,20 @@ Two consequences fall out immediately, without further machinery:
 
 Both are restatements of ch2 §2.5.3 in biology's vocabulary. The chapter does not derive them — they are the foundation's predictions, made visible at the layer where $\Psi$ first becomes a carrier.
 
+#### 8.2.1.1 Quote and Use: Why the Gene Is a Growth Operator, Not Just a Memory
+
+There is a second consequence of carrier-separability, and it is larger than the first two.
+
+Look at what the cell actually does with DNA. It reads the same molecule in two entirely different registers. In **transcription**, the sequence is *used*: it is interpreted as instructions, executed, and what comes out is protein — function, structure, the organism. In **replication**, the very same sequence is *mentioned*: it is treated as inert data, copied base-for-base, with no attention to what it means. One molecule, two readings — as program and as string. This is not a quirk of biochemistry. It is the entire reason a genome can do what an autocatalytic network cannot.
+
+John von Neumann derived this architecture *before biology found it.* Working on self-reproducing automata in 1948 — five years before Watson and Crick — he proved that any machine capable of building a copy of itself without infinite regress must carry a description of itself and use that description twice: once interpreted, as the instructions for construction, and once uninterpreted, as data to be copied into the offspring. He was not doing biology. He was working out the logic of self-reference, and the use/mention duality he needed is the same duality Gödel had needed to build a sentence that talks about its own provability. Von Neumann derived the architecture of living growth from the structure of Gödel's proof, and then life turned out to be built that way.
+
+In RE's terms, the gene is where **Definition 16 (self-representing depth)** is first satisfied in the physical universe: the first $\Psi$ that contains a quotable representation of the map that generates its own $\Phi$. And by Theorem 8, that is exactly the condition under which the growth operator changes. Before the gene, evolution of structure is *search* — chemistry stumbling through configuration space, finding basins that were always there (Theorem 7). After the gene, it is *construction* — a system that can hold its own description apart from its execution can modify that description, and thereby build constraints its substrate did not previously contain.
+
+This reframes what replication is *for*. Read the section above and replication looks like a memory technology: a way of not losing what was learned. That is true and it is not the deep part. The deep part is that separating the description from the execution is what makes the description **editable** — and an editable self-description is the physical substrate of the diagonal move. Mutation is not merely noise in a copying process. It is the genome writing a sentence its current lattice cannot settle, and letting the world decide. Selection is the third operator (A5): most such sentences do not pay, and are not adjoined.
+
+The strange loop Hofstadter described — the level-crossing where a system's self-description re-enters the system — is not a metaphor imported into biology. It is the mechanism, and DNA is its first physical instance. Everything above this layer, up to and including the sentence you are reading, is that same trick elaborated: a neural system that models itself, a language that can quote itself, a culture that writes its own constitution, a program that rewrites its own source. Each is a carrier that learned to read itself twice.
+
 ### 8.2.2 Carriers Beyond the Gene
 
 The gene is the *first* carrier in biology, but it is not the only one. Once the reusability gradient has found one way to physically separate $\Psi$ from $\Phi$, biology elaborates the same move in several other modalities — each implemented in a different chemistry, each unlocking a new survivable-gap-length:

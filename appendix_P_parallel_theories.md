@@ -81,6 +81,14 @@
 
 **Key divergence**: Gödel's theorems apply to formal systems with specific axioms. RE applies Gödelian reasoning more broadly — to any recursive self-referential system, including biological, cognitive, and social systems. This generalization is philosophically motivated but not (yet) formally proved. RE also treats incompleteness as *productive* rather than limiting: the Gödelian residue is what consciousness *experiences as* subjective quality, and the gaps in any self-model are what drive further recursion.
 
+**The deeper divergence — the proof, not the theorem**: The alignment above is with Gödel's *theorem*. RE's stronger and more unusual commitment is to Gödel's *proof*. The diagonal lemma is not a statement about limits; it is a construction — a uniform procedure that takes any sufficiently rich system and produces, from inside it, the object marking its boundary. Cantor, Gödel, and Turing all aimed diagonalization at refutation, but what diagonalization actually *manufactures* is a new element demonstrably outside the given list. Turned against an enumeration it refutes; turned by a system upon itself it *grows*. RE takes this as the growth operator of any carrier-separable system (Theorem 8, Appendix M): incompleteness is not the tax on self-reference, it is the mechanism of open-ended emergence.
+
+RE therefore reads Gödel's own lineage as evidence for the position. To arithmetize provability, Gödel had to invent the primitive recursive functions; that machinery became computability theory, became Turing machines, became software. Recursion theory was born inside the incompleteness proof. When RE claims the diagonal move is the engine of recursive growth, it is not importing a metaphor from logic into nature — it is observing that the formal study of self-reference and the natural history of self-reproducing systems have the same structure because they are the same structure, discovered twice.
+
+**The witness**: von Neumann's self-reproducing automata (1948) derived the architecture of biological growth *from* the proof's quote/use duality — a self-description used twice, once interpreted as instructions and once copied as inert data — five years before DNA was found to work exactly that way (transcription and replication, ch8 §8.2.1.1). This is the strongest available evidence that the connection is structural rather than analogical: the logic predicted the biology before the biology was known.
+
+**Honest edge**: the boundary objects of natural systems are Gödel-*like* — formulable inside, settleable only by extension — not formally undecidable sentences. The arithmetization that would upgrade the analogy to an identity has not been exhibited for any natural system, and is logged as Open Problem 21.
+
 ---
 
 ## P.3 Emergence and Complexity Theories

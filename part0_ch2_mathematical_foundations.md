@@ -143,6 +143,20 @@ The same threshold dynamics apply in reverse. When substrate alteration (A7) mod
 
 A consequence pulls this chapter's pieces together. A recursion that uses its downward leverage (§2.2) to alter $\Omega$ faster than the substrate can absorb — and whose self-model cannot fully constrain that alteration (the lossy-compression and Gödel limits inherent to any self-referential system, ch10 §§10.2, 10.5.4) — can drive itself across its own dissolution threshold. This is structural, not moral: the transition's *kind* is predicted; its *timing* is contingent. RE describes the trap and identifies one handle — extend the self-model and modify the recursion before it alters its substrate past recovery — but does not promise the handle gets used.
 
+### 2.4.1 Where the New Constraint Comes From
+
+The account above says that when a layer locks in, the lattice acquires new constraints. It does not say where those constraints came from. That question has two different answers, and the boundary between them is one of the most important lines in the framework.
+
+**Below carrier-separability, the answer is search.** The new configuration was always available on the constraint manifold; the system simply had not found it yet. Given a substrate above threshold and enough time, an exploring recursion will find it — this is the content of Theorem 7 (Appendix M), and it is why nucleosynthesis, crystal formation, and prebiotic chemistry are *inevitable* rather than lucky. But note precisely what this kind of inevitability is: a **reachability** claim. The basin exists; the walker arrives. Nothing is created that the manifold did not already hold.
+
+**At and above carrier-separability, the answer is construction.** A system whose memory is physically separable from the structure it sustains (§2.5.3) can hold a description of its own operation *as inert data* — it can quote itself, not merely run itself. And a system that can quote its own evaluator can do something a searching system cannot: it can formulate, from inside, a structure that its current lattice does not settle. Not a structure the lattice *forbids* — that would simply be incompatible, $S = 0$ — but one the lattice has no opinion about: statable within, decidable only from outside. Adjoining a constraint that settles it produces a strictly larger lattice, which in turn has a boundary object of its own, without end.
+
+This is Gödel's construction, running forward. The diagonal lemma is usually read as a limitation — no sufficiently rich system proves all its own truths. Read as a *procedure*, it is the opposite: a uniform method for locating, from within any system, the exact place where that system ends and something larger begins. Gödel proved the door exists in every sufficiently rich theory. Turing's ordinal logics and Feferman's progressions proved you can keep walking through it. What RE observes is that this is not merely an analogy for how complex systems grow — it is the mechanism, and it switches on precisely when memory becomes quotable. The formal statement is **Theorem 8 (Diagonal Extension)** in Appendix M.
+
+The consequence is that the chemistry-to-biology transition is not a speedup of the same engine. **It is a change of engine.** Below the line, novelty is found. Above it, novelty is built. And a third component decides which of the two regimes' offerings survive: the diagonal move generates a *candidate* extension, but only the emergence threshold — does it pay for itself in reusability and entropy reduction? — determines whether it locks in. Fold, diagonal, threshold: compress what you resolved, construct what you cannot yet settle, keep only what pays. Three operations, and the framework needs all three.
+
+One honest limit, carried here from Appendix M: the boundary objects of genomes and minds are Gödel-*like* — formulable inside, settleable only by extension — not literally undecidable sentences in a formal theory. The structural shape is the claim; the arithmetization is not (Appendix M, Open Problem 21).
+
 ---
 
 ## 2.5 Recursive Memory Accumulation
