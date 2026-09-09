@@ -14,10 +14,25 @@
     discharged, that is a mathematical event and belongs in M.8, not in a
     refactor.
 
-  NOT COMPILED. Written without a Lean toolchain available. Syntax is
-    unverified; the structural claims in the comments do not depend on it, but
-    any claim of the form "Lean forces X" that is marked (unverified) below
-    is reasoning about Lean's rules, not an observation of its behavior.
+  COMPILATION RECORD. Lean 4.15.0, bare toolchain, no Mathlib. Compiled clean
+    2026-09-09: exit 0, zero errors, zero linter complaints, warnings limited to
+    the two intended `sorry` sites in §4. Axiom audit of the frame:
+
+      Layer.undecidable, Layer.incompressible, Layer.available,
+      Lattice.P, Lattice.clears, Broad          — no axioms
+      diagonal_boundary_object                  — [sorryAx]
+      opacity_boundary_object                   — [sorryAx]
+
+    No `propext`, no `Quot.sound`, no `Classical.choice` anywhere in the six
+    definitions — and the two conjectural STATEMENTS elaborate on `sorryAx`
+    alone, so reification buys constructivity all the way up to the point where
+    the manuscript's assertions begin. That is the machine-checked form of §2's
+    argument.
+
+  NEGATIVE RESULTS. Two objections were anticipated in this file and the
+    compiler declined both; see §1 (`Lattice.P` loose parameters) and §3
+    (`Layer.available` in `Prop`). Recorded because "Lean was offered this
+    objection and did not take it" is information, and weaker than silence.
 
   Deliberately Mathlib-free. `Val` stays abstract rather than `ℝ` because the
     distinction being formalized — defined vs. undefined vs. zero — needs no
@@ -61,7 +76,15 @@ structure Layer where
   cost   : Method → Nat
   budget : Nat
 
-/-- A method the layer can actually afford to run. -/
+/-- A method the layer can actually afford to run.
+
+    NEGATIVE RESULT (verified). `Prop` rather than `Bool` is deliberate —
+    affordability is a fact about the method, not something the layer computes —
+    and this was expected to bite downstream in `Layer.undecidable`, where
+    `L.available m → …` sits in hypothesis position. It bit nothing: `Prop` is
+    exactly right there, and nothing in the file asks to compute it. Problem 22's
+    classical pressure did NOT arrive at a second site, at least not within this
+    file's demands. -/
 def Layer.available (L : Layer) (m : L.Method) : Prop := L.cost m ≤ L.budget
 
 /-! ## 1. `S`, and the three-valued distinction (Problem 22)
@@ -99,7 +122,16 @@ def Lattice.P {L : Layer} (Ω : Lattice L)
     is UNSTATABLE there, because `P` has no argument to take. This is stronger
     than "S is undefined", and it is forced by the §1 choice rather than added
     to it: whatever else a boundary object is, it is a structure for which the
-    layer cannot form the comparison that would admit or forbid it. -/
+    layer cannot form the comparison that would admit or forbid it.
+
+    NEGATIVE RESULT (verified). `mul : Ω.Val → Ω.Val → Ω.Val` refers to a
+    projection of a parameter bound earlier in the same signature; this was
+    expected to fail elaboration and force `mul`/`R`/`ΔH` into `Lattice` as
+    fields — which would have been a claim about Definition 1, making emergence
+    potential part of the lattice's DATA rather than derived from it. It
+    elaborates cleanly, implicit `{L}` and all. So the claim is not compelled:
+    `P` stays derivable from the lattice, by the compiler's leave rather than by
+    our preference. -/
 def Lattice.clears {L : Layer} (Ω : Lattice L)
     (mul : Ω.Val → Ω.Val → Ω.Val) (R ΔH : L.Rep → Ω.Val) (θ : Ω.Val)
     (x : { y : L.Rep // Ω.Defined y }) : Prop :=
@@ -110,16 +142,28 @@ def Lattice.clears {L : Layer} (Ω : Lattice L)
     The tempting move is to omit `instance : Decidable (Ω.Defined x)` and let
     that absence mean "the layer cannot decide". It does not mean that.
 
-    (unverified, but a fact about Lean's foundations rather than its elaborator)
-    `Classical.dec p : Decidable p` is available as a TERM for every `p : Prop`,
-    and `open Classical` promotes it to an instance. Absence of an instance is a
-    fact about instance resolution in one file — a namespace accident, revocable
-    by an import. It is not a mathematical statement, and a reader who adds
-    `open Classical` to make something compute has silently deleted Definition 17.
+    (VERIFIED on 4.15.0, and a fact about Lean's foundations rather than its
+    elaborator) `Classical.propDecidable a : Decidable a` exists for every
+    `a : Prop`. Note the name: `Classical.dec` is a Mathlib alias and does not
+    exist in core. It is `scoped`, so bare instance resolution for an arbitrary
+    `Decidable p` FAILS, `open Classical` promotes it (and forces
+    `noncomputable`), and explicit invocation works with no `open` at all.
+    Absence of an instance is therefore a fact about instance resolution in one
+    file — a namespace accident, revocable by an import. It is not a
+    mathematical statement, and a reader who adds `open Classical` to make
+    something compute has silently deleted Definition 17.
 
     THIS IS PROBLEM 22 TALKING, and the skeleton records it instead of yielding:
     the layer's inability must be a QUANTIFIED CLAIM over the layer's own
     internalized methods, not a gap in the ambient logic.
+
+    THE GUARD IS NOT THE MISSING INSTANCE — IT IS THE AXIOM AUDIT. Anything
+    touching `propDecidable` drags `[propext, Classical.choice, Quot.sound]`
+    into its axiom report, so the silent-deletion failure mode above is one
+    `#print axioms` from detection: the six frame definitions must report
+    axiom-free, and any classical leak changes a visible audit line. That turns
+    the vulnerability into a checkable invariant rather than a warning to
+    readers. See `formal/check.sh`.
 -/
 
 /-- No method the layer can afford agrees with `p` everywhere. This is the
@@ -146,7 +190,21 @@ def Layer.incompressible (L : Layer) (x : L.Rep) : Prop :=
 
 /-- Largeness: opacity's second ingredient, and the one the diagonal mechanism
     does not need. Left abstract — a predicate on predicates — because supplying
-    a measure is the substance of Problem 25, not a detail of its statement. -/
+    a measure is the substance of Problem 25, not a detail of its statement.
+
+    NEGATIVE RESULT (verified), and sharper than the warning it replaces. This
+    was expected to draw an unused-variable complaint on `L`, with the compiler
+    thereby noticing that largeness supplies nothing layer-relative. It draws
+    NO warning: the linter counts `L` as used, because it occurs in the TYPES of
+    `large` and `p` (`L.Rep → Prop`). A control with a genuinely unused `L` does
+    warn, so this is the linter's reading, not its silence.
+
+    The gap is therefore invisible to tooling by construction. The type system
+    certifies that the STATEMENT of largeness is layer-relative while the BODY
+    supplies no layer-relative content, and no linter reads that difference —
+    it only reads binder occurrences. The finding is the ABSENCE of the warning:
+    `Broad` passes as layer-indexed on the strength of its type alone, which is
+    the unanalyzed-largeness problem stated in the compiler's own terms. -/
 def Broad (L : Layer) (large : (L.Rep → Prop) → Prop) (p : L.Rep → Prop) : Prop :=
   large p
 
@@ -200,7 +258,8 @@ theorem opacity_boundary_object (L : Layer) (Ω : Lattice L)
     same type, same carrier as `large` — the ingredient is one thing appearing in
     both columns and re-entry gains standing. If it is a measure on states rather
     than on representations, the mechanisms are siblings sharing only the frame,
-    and the remark resolves toward nothing. Settleable by construction.
+    and the remark resolves toward nothing. Settleable by construction — and now
+    with somewhere to typecheck against, since this frame compiles.
 -/
 
 end RE
