@@ -194,6 +194,13 @@ theorem opacity_boundary_object (L : Layer) (Ω : Lattice L)
     and it enters exactly there — `large`, a measure, absent from the diagonal
     branch and required by the opacity branch. The remark is not nothing. It is
     also not yet a claim.
+
+    DISCRIMINATOR (pending, cheap). Formalize Theorem 7's ergodic search in this
+    same skeleton and inspect the measure it needs. If it is a measure on `Rep` —
+    same type, same carrier as `large` — the ingredient is one thing appearing in
+    both columns and re-entry gains standing. If it is a measure on states rather
+    than on representations, the mechanisms are siblings sharing only the frame,
+    and the remark resolves toward nothing. Settleable by construction.
 -/
 
 end RE
