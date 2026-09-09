@@ -126,6 +126,8 @@ This understanding connects directly to Gödel's Incompleteness Theorems. A self
 
 The incompleteness inherent in self-reference may explain why consciousness always contains an ineffable quality—there is always something about the experience that cannot be fully captured within the model itself.
 
+This is one instance of a more general pattern rather than a fact about minds alone: any layer whose encoding becomes rich enough to model itself generates questions about itself that its own reusable methods cannot settle (ch2 §2.11; Appendix M, Conjecture 7). What distinguishes the cognitive case is not the residue but the vantage — this is the one layer whose boundary residue is encountered from the inside, and being encountered from the inside is what makes it *felt* as mystery rather than *observed* as difficulty.
+
 #### 10.5.4.1 The Productive Role of Error and Uncertainty
 
 Crucially, the limitations of self-modeling are not mere defects but productive features of recursive emergence. The inherent inability of a system to completely model itself creates specific experiential phenomena:

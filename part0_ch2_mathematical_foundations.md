@@ -342,7 +342,73 @@ Emergence thresholds correspond to **topological** phase transitions — changes
 
 ---
 
-## 2.11 Philosophical Implications of the Formalism
+## 2.11 Boundary Residue: Gödel, Cook–Levin, and the Self-Opacity of Computation
+
+### 2.11.1 Compression That Contains Itself
+
+Gödel's incompleteness theorems are usually remembered for their conclusion — that sufficiently powerful formal systems contain true statements they cannot prove. But the engine of the proof is more important than the conclusion, and it is an engine RE recognizes immediately: **arithmetization**, the demonstration that statements, proofs, and rules of inference can all be encoded as numbers within the system they describe.
+
+Gödel numbering is compression and reusability in their purest form. The metatheory — everything one might say *about* the system — compresses losslessly into the object theory. One encoding scheme handles every formula, every proof, every derivation: maximal reusability, a single $\Pi$ applied uniformly across the entire space of formal objects. In RE terms, arithmetization is the moment a layer's $\Psi$ becomes rich enough to contain a working model of its own dynamics — self-representing depth in the sense of Appendix M, Definition 16, and the sharpest available instance of it.
+
+The critical consequence is the **diagonal lemma**: in any system that can encode its own syntax, for every expressible property there exists a sentence asserting that property *of itself*. Self-reference is not a trick one constructs; past the encoding threshold, it is a fixed point one cannot avoid. The undecidable sentence is not an alien intrusion into arithmetic — it is what the layer necessarily secretes the moment its internal encoding reaches self-modeling fidelity. Compressive power and incompleteness are the same phenomenon seen from two sides.
+
+This gives us the first instance of a pattern this section will state as a general conjecture: **when a layer's encoding achieves self-modeling fidelity, the layer generates boundary objects — questions about itself that resist its own reusable methods.** We call these objects the layer's *boundary residue*. The formal object is Definition 17; what follows is the claim that its production is generic and that arithmetic is not the only layer producing it.
+
+### 2.11.2 The Computational Layer Encodes Itself: Cook–Levin
+
+The layer of efficient computation crossed the same threshold in 1971. The Cook–Levin theorem shows that the step-by-step behavior of any polynomial-time verifier, on any input, compresses into a Boolean formula whose satisfiability encodes acceptance. SAT is the Gödel numbering of efficient computation — and NP-completeness is maximal reusability made formal: one problem into which every problem in the class losslessly reduces.
+
+The parallel is not loose analogy. Both constructions arithmetize a machine's behavior — Gödel encoding derivations as numbers, Cook encoding computations as clauses. In both cases, the layer comes to contain a complete compressed self-model. And in both cases, RE predicts what must follow: boundary residue.
+
+For arithmetic, the residue is the Gödel sentence. For computation, we conjecture, the residue is **P versus NP** — the question of whether every efficiently *verifiable* solution is efficiently *findable*. It is fitting that Gödel himself posed this question first, in his 1956 letter to von Neumann, asking whether theorem-proving could be mechanized in linear or quadratic time. The man who discovered the boundary residue of the arithmetic layer was the first to sight the boundary residue of the computational one.
+
+### 2.11.3 Two Mechanisms of Self-Limitation
+
+Here the analysis must be careful, because the two cases run on *different machinery*, and conflating them would overstate the claim.
+
+**Mechanism 1 — Diagonal fixed points (Gödel).** Self-encoding forces the existence of self-referential sentences; among them are sentences the system can neither prove nor refute. The limitation is unconditional and absolute: it follows from encoding power alone, and no technique inside the system evades it. This is the mechanism Theorem 8 transposes.
+
+**Mechanism 2 — Self-opacity (Razborov–Rudich 1997).** The computational layer's limitation is subtler. A proof technique against efficient circuits is itself a mathematical procedure — and if it is *constructive* (efficiently checkable) and *broad* (applies to many functions), then it functions as an efficient algorithm for recognizing hardness. The natural proofs theorem shows that such an algorithm would break the pseudorandom generators whose existence follows from the cryptographic hardness assumptions most of the field accepts — assumptions stronger than P ≠ NP itself, and believed strictly stronger: whether P ≠ NP alone yields such generators is open (Impagliazzo's 1995 "Pessiland" is the world where even average-case hardness yields no such generators). The proof would refute its own conclusion.
+
+Read through RE, Mechanism 2 says: **the layer cannot inspect its own hardness because its hardness makes hard functions look random to it.** Pseudorandomness is incompressibility relative to the layer's own $\Pi$. Any internal tool sharp enough to see the deep structure would, by its very sharpness, collapse the hardness it was built to detect. Self-encoding does not merely permit self-reference here — it manufactures self-opacity.
+
+The two mechanisms differ in strength, and the differences matter more than the resemblance:
+
+| | Mechanism 1: diagonal | Mechanism 2: opacity |
+|---|---|---|
+| Trigger | Self-encoding alone | Self-encoding + strong PRGs |
+| Strength | Unconditional | Conditional on cryptographic hardness |
+| Blocks | A *statement* (unprovable) | A *technique class* (constructive + broad) |
+| Leaves open | Nothing, for that sentence | The statement's provability |
+| Known loophole | None | Non-broad proofs: single-problem structure |
+
+Gödel renders a statement unprovable; the barriers (relativization, natural proofs, algebrization — Aaronson–Wigderson 2008) fence off technique classes while leaving the statement's provability open. And the computational barriers have a known loophole: proofs exploiting the specific structure of a single problem, rather than a large property of many functions, pass through untouched. These differences must be stated plainly — but they do not break the pattern. They reveal that boundary residue is produced by *at least two distinct mechanisms*, both triggered by the same threshold event: the layer coming to contain itself.
+
+There is, moreover, a rigorous bridge between the mechanisms. Razborov (1995) showed that, under cryptographic assumptions, certain systems of bounded arithmetic *cannot prove* super-polynomial circuit lower bounds — a genuine Gödel-style independence result derived from the natural proofs phenomenon. Self-opacity, pushed into proof theory, becomes unprovability. Mechanism 2 is not a weaker cousin of Mechanism 1; under the right assumptions it *converts into* Mechanism 1.
+
+### 2.11.4 Escape Requires a New Layer
+
+RE makes a further prediction: boundary residue resists the layer's *internal* methods but may yield to methods that step outside the layer's native encoding — a transition to a richer $\Omega$. This is Theorem 8 (ii) read as history rather than as construction: adjoining a constraint the lattice did not contain.
+
+This is precisely the pattern of the field's few genuine breakthroughs. The proof that IP = PSPACE (Shamir 1990, on Lund–Fortnow–Karloff–Nisan) evaded the relativization barrier by *arithmetization over large finite fields* — re-encoding Boolean formulas as polynomials, importing algebraic structure the Boolean layer does not natively contain. Williams' proof that NEXP ⊄ ACC⁰ (2011) evaded both barriers through "ironic complexity": deriving lower bounds *from* algorithms, inverting the layer's usual direction of inference. In each case, progress came not from sharper use of the layer's reusable tools — the barriers guarantee those fail — but from embedding the problem in a larger encoding where new invariants become visible. Events contingent, trajectory convergent (§3.6): the specific escapes were unforeseeable, but *that* escape required layer-transition was structurally determined.
+
+The mathematics here behaves exactly as the substrate does under Theorem 5. A boundary object is not resolved within the lattice that produced it; it is resolved by a lattice that the resolution itself alters. This is why the successful escapes look, in retrospect, less like better proofs of the old kind and more like the arrival of a new kind of proof.
+
+### 2.11.5 The Conjecture, Stated
+
+**Boundary Residue Conjecture.** *Let a layer's encoding reach self-modeling fidelity — the capacity to represent its own objects, operations, and inferences within itself. Then the layer generates at least one boundary object: a question about the layer that is resistant to the layer's own constructive, reusable methods, by diagonal fixed-point, by self-opacity, or by mechanisms not yet identified. Resolution of a boundary object, where possible at all, requires re-encoding within a strictly richer lattice $\Omega$.*
+
+Two instances are established or strongly evidenced: the Gödel sentence for arithmetic (diagonal mechanism, unconditional) and the circuit lower bounds behind P vs NP for computation (opacity mechanism, conditional on cryptographic hardness, with Razborov's bounded-arithmetic results as proof-theoretic confirmation). The formal statement, with falsifiers, is Conjecture 7 in Appendix M.
+
+What this conjecture does *not* claim: it does not prove P ≠ NP, and it does not prove P vs NP independent of ZFC — the barriers constrain techniques, not the statement, and non-natural, non-relativizing proofs remain possible. What it does claim is structural: the extraordinary resistance of P vs NP is not an accident of mathematical difficulty but the signature of a boundary object — the computational layer's version of the residue that every self-encoding layer must secrete.
+
+This places P vs NP alongside the hard problem of consciousness (§3.3; ch10 §10.5.4) as a second instance of the same threshold phenomenon. Consciousness is the boundary residue of recursive self-modeling *experienced from inside*; P vs NP is the boundary residue of computational self-encoding *confronted from outside*. One is felt as irreducible subjectivity, the other as irreducible difficulty. RE's claim is that both are what a layer looks like at the edge of itself.
+
+*Formal counterparts: Appendix M Definition 16 (self-representing depth), Definition 17 (boundary object), Theorem 8 (diagonal extension), Theorem 5 (substrate alteration), Conjecture 7 (boundary residue), Open Problem 25. Parallel treatment of Gödel: Appendix P §P.2.7.*
+
+---
+
+## 2.12 Philosophical Implications of the Formalism
 
 The mathematical framework reveals deeper philosophical principles:
 
@@ -365,9 +431,9 @@ These principles establish why a system becomes more intelligent not simply by a
 
 ---
 
-## 2.12 Empirical Testability
+## 2.13 Empirical Testability
 
-The framework is testable. Predictions include energetic asymmetry across all persistent structures ($K_{\text{irr}} > 1$), threshold timing for phase transitions, capability discontinuities in machine learning, nuclear binding correlations with recursive stability measures, and cross-cultural moral convergence under similar lattice constraints. The full enumeration — currently eight predictions — is in Appendix M.9. The remainder of this book applies the framework to specific domains, from cosmology to consciousness to civilization, and the predictions are restated in their domain-specific form in each chapter.
+The framework is testable. Predictions include energetic asymmetry across all persistent structures ($K_{\text{irr}} > 1$), threshold timing for phase transitions, capability discontinuities in machine learning, nuclear binding correlations with recursive stability measures, and cross-cultural moral convergence under similar lattice constraints. The full enumeration — currently nine predictions — is in Appendix M.9. The remainder of this book applies the framework to specific domains, from cosmology to consciousness to civilization, and the predictions are restated in their domain-specific form in each chapter.
 
 ---
 

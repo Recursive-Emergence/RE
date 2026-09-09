@@ -133,6 +133,8 @@ One refinement matters, because without it this section reads as an argument for
 
 Read that way, the Gödelian residue in consciousness is not merely the *price* of self-modeling. It is the *mechanism* by which self-modeling grows. The residue is not only felt as mystery — it is the address of the next layer. A mind that has run out of things it can state but cannot settle is a mind that has stopped developing. This is why RE treats incompleteness as productive rather than tragic, and it is not a rhetorical flourish: it is Theorem 8 of Appendix M, and the formal cost is that the framework must then explain what *selects* among available extensions, since the construction supplies a candidate but never a direction. RE's answer to that — that direction cannot come from the growth operator and must come from the self-model — is the subject of §3.6 and Chapter 16.
 
+One further consequence is worth stating here, because it changes what kind of claim this section is making. If the Gödelian residue of self-modeling were unique to consciousness, the reframing above would be a special pleading dressed as a structural argument. It is not unique. The layer of efficient computation crossed its own self-encoding threshold in 1971 and secreted a residue of its own — P vs NP, resistant to its layer's methods by a *different* mechanism (self-opacity rather than diagonal fixed point) but at the same threshold event. Two layers, two mechanisms, one trigger: a layer coming to contain a working model of itself. The hard problem is then not the one place where recursion runs out of self-transparency; it is the instance we happen to inhabit. See ch2 §2.11 and Appendix M, Conjecture 7.
+
 ---
 
 ## 3.4 RE and Ethics

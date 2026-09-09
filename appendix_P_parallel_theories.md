@@ -89,6 +89,8 @@ RE therefore reads Gödel's own lineage as evidence for the position. To arithme
 
 **Honest edge**: the boundary objects of natural systems are Gödel-*like* — formulable inside, settleable only by extension — not formally undecidable sentences. The arithmetization that would upgrade the analogy to an identity has not been exhibited for any natural system, and is logged as Open Problem 21.
 
+**The second sighting**: Gödel also posed, in a 1956 letter to von Neumann, the question that became P vs NP — asking whether theorem-proving could be mechanized in linear or quadratic time. The same person identified the boundary residue of the arithmetic layer and was first to sight the residue of the computational one, and RE reads this as more than biographical coincidence: both questions are what a layer produces once it can encode itself, and someone who understood the first mechanism was positioned to notice where the second would appear. The two cases run on different machinery — diagonal fixed point versus self-opacity — which is why RE states the general claim as a conjecture with plural mechanisms rather than as an extension of the diagonal lemma (ch2 §2.11; Appendix M, Conjecture 7).
+
 ---
 
 ## P.3 Emergence and Complexity Theories

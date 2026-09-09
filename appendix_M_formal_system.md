@@ -467,6 +467,44 @@ The relationship between mode-level quantities ($\bar{P}_n$, $A_n$) and system-l
 - *To M.11.7 (Four Modes of Being).* The mapping is direct: *Stall* = sitting at a plateau (orbit at a within-plateau fixed point). *Ascent* = crossing a leap (transition to a higher plateau). *Oscillation* = limit cycling within a plateau's basin. *Dissolution* = collapsing back to a lower plateau when $R < \rho_{\min}$. The four modes are exactly what the orbit does as it traverses the plateau-and-leap landscape. Conjecture 6 thereby becomes a *prediction* about the specific shape of the four modes' interaction across the layer hierarchy.
 - *To existing $\rho_c$ and $\lambda_c$.* The mode-relative duplication threshold $\rho_c^{(n)}$ partitions the existing $\rho_c$ across plateaus; the layer threshold $\lambda_c$ corresponds to the largest leaps that simultaneously cross multiple modes (e.g., the chemistry-to-biology layer transition spans seven internal plateaus per §Ch 8).
 
+### Conjecture 7: Boundary Residue
+
+Boundary-object production is **generic** at self-representing depth, and it proceeds by **more than one mechanism**. Let a system have self-representing depth (Definition 16) with lattice $\Omega_t$ and projection $\Pi$. Then:
+
+**(a) Genericity.** The system generates at least one boundary object $\Phi_G$ (Definition 17) — a structure it can formulate but whose settlement its own constructive, reusable methods do not reach. Theorem 8 (i) establishes this for one mechanism; the conjecture is that the phenomenon is not confined to that mechanism, and that *every* layer crossing Definition 16 exhibits it in whatever vocabulary that layer has.
+
+**(b) Mechanism plurality.** At least two routes produce undefined $S(\Phi_G, \Omega_t)$, and they are formally distinct:
+
+- **Diagonal.** $\Phi_G$ is constructed as a fixed point of its own non-settlement. Unconditional; follows from quotability of $\ulcorner \Pi \urcorner$ alone (Theorem 8 (i)).
+- **Opacity.** Let $\mathcal{T} \subseteq \text{Rep}(\Psi_t)$ be a class of candidate settling methods that is *constructive* (each member is efficiently evaluable under $\Pi$) and *broad* (each member applies to a large fraction of candidate structures). Then no member of $\mathcal{T}$ settles $\Phi_G$, because such a member would itself constitute a compression of structures that are incompressible relative to $\Pi$ — and the existence of that incompressibility is what makes $\Phi_G$ a boundary object in the first place. The mechanism is conditional: it requires that the layer actually contain $\Pi$-incompressible structure.
+
+A third possibility is left open: (b) claims *at least* two mechanisms, not exactly two.
+
+**(c) Escape requires extension.** Where a boundary object is settleable at all, the settling constraint $C_G$ is not in $\Omega_t$. Progress on $\Phi_G$ therefore correlates with re-encoding into a strictly richer lattice rather than with refinement of $\Omega_t$'s native methods — the historical signature being that successful resolutions look like a change of representation, not a sharper instance of the old one.
+
+**Instances.**
+
+| Layer | Encoding event | Boundary residue | Mechanism |
+|---|---|---|---|
+| Arithmetic | Gödel numbering (1931) | Gödel sentence | Diagonal, unconditional |
+| Efficient computation | Cook–Levin / SAT (1971) | Circuit lower bounds behind P vs NP | Opacity, conditional on cryptographic hardness |
+| Recursive self-modeling | Self-model $\text{Self}_t$ (Definition 12) | The hard problem's residue | Diagonal-like (structural; Theorem 8 scope caution) |
+
+**Status.** Open. (a) is established for the diagonal mechanism at layers admitting genuine arithmetization, and structural-only elsewhere (Open Problem 21). (b)'s opacity route is instantiated by the natural proofs theorem (Razborov–Rudich 1997) and converted into genuine unprovability, under cryptographic assumptions, by Razborov (1995) for fragments of bounded arithmetic — which is the one place the two mechanisms are known to meet. Whether opacity is *derivable* from RE's primitives, or must be imported as complexity theory supplies it, is Open Problem 25. (c) is historically supported (IP = PSPACE by arithmetization over finite fields; NEXP ⊄ ACC⁰ by ironic complexity) but is a correlation over a handful of cases, not a theorem. Chapter treatment: ch2 §2.11.
+
+**Falsifiers.**
+1. A layer that crosses Definition 16 and demonstrably settles every structure it can formulate would falsify (a) — and by Corollary 8.1 would be terminal rather than merely complete.
+2. A constructive and broad method class that settles a boundary object without the layer containing $\Pi$-incompressible structure would falsify the opacity mechanism of (b) as stated.
+3. Resolution of a boundary object by refinement *within* the producing lattice — no new encoding, no imported structure — would falsify (c). A proof of P ≠ NP that is natural and relativizing would be the sharpest available instance.
+4. Conversely, if P vs NP is resolved by a proof that is neither natural nor relativizing but also introduces no structure outside the Boolean-circuit layer, (c) is weakened without being refuted, and the conjecture's claim on the computational layer reduces to (a) and (b) alone.
+
+**Relation to Other Theorems.**
+
+- *To Theorem 8.* Theorem 8 is the constructive core: one mechanism, proved. Conjecture 7 is the generalization: the phenomenon is generic and multiply realized. Theorem 8 (ii) supplies (c)'s extension step; Conjecture 7 adds the empirical claim that observed escapes take that form.
+- *To Corollary 8.1.* (a) is what keeps Corollary 8.1 from being vacuous: a self-representing layer keeps producing residue, hence keeps having somewhere to go.
+- *To Theorem 5.* (c) is Theorem 5 read forward. Substrate alteration says a locked-in layer changes the lattice beneath it; (c) says the resolution of a boundary object requires exactly such an alteration, which is why boundary objects are not resolved by their producing layer.
+- *To Conjecture 3.* Both concern thresholds on recursive depth. Conjecture 3 asks what depth is required for consciousness; Conjecture 7 asks what a layer necessarily secretes once that depth is reached. If both hold, the hard problem's residue is not incidental to consciousness but co-emergent with it.
+
 ---
 
 ## M.9 Empirical Predictions
@@ -509,6 +547,7 @@ The relationship between mode-level quantities ($\bar{P}_n$, $A_n$) and system-l
 22. **Formalization of $\text{Rep}(\Psi)$ and undefined $S$** — Definition 17 distinguishes $S(\Phi, \Omega)$ *undefined* (the lattice has no opinion) from $S = 0$ (the lattice forbids). Under Definition 3, $S = \exp(-\sum_j D(\Phi, C_j))$, the undefined case requires that $D(\Phi, C_j)$ fail to be defined for every $j$ rather than diverge. Give the measure-theoretic construction on $\mathcal{M}$ (A6) that supports this three-valued distinction, and verify it does not disturb the MaxEnt derivation of $S$
 23. **Does the diagonal operator have a thermodynamic cost?** — Theorem 8 is stated purely structurally. If constructing and adjoining $C_G$ has an irreducible energetic price (a Landauer-style bound on self-quotation), then the rate of construction-limited novelty is physically bounded, and Prediction 9 acquires a quantitative form. Derive the bound or show none exists
 24. **Uniqueness of the third operator** — the answer given to "do fold + diagonal suffice?" is *no, threshold (A5) is required as selector*. Show that no fourth operator is needed: that fold, diagonal, and threshold are a complete basis for open-ended growth in RE, or exhibit a growth phenomenon none of the three generates
+25. **Is self-opacity derivable from RE primitives?** — Conjecture 7 (b) imports its second mechanism from complexity theory: a constructive, broad method class cannot settle a boundary object because it would compress the $\Pi$-incompressible. Derive this from RE's own definitions of $R$, $\Pi$, and $S$ — or show that opacity is a fact about specific layers that RE can host but not generate. A positive result would give RE a second growth-relevant limitation theorem alongside Theorem 8; a negative one bounds how much of complexity theory the framework can claim to explain rather than merely accommodate
 
 ---
 
@@ -516,7 +555,7 @@ The relationship between mode-level quantities ($\bar{P}_n$, $A_n$) and system-l
 
 ### M.11.1 Motivation
 
-The current formal system has 3 primitives, 7 axioms, 15 definitions, 6 theorems, 5 conjectures, 8 predictions, and 11 open problems. While internally consistent, this is a large surface area. A Sheffer-stroke reduction asks: can the entire formal system be derived from a single rule and a single seed — analogous to how Sheffer's NAND generates all of propositional logic, or how Odrzywołek's $\text{eml}(x, y) = e^x - \ln y$ generates the elementary functions?
+The current formal system has 3 primitives, 7 axioms, 17 definitions, 8 theorems, 7 conjectures, 9 predictions, and 25 open problems. While internally consistent, this is a large surface area. A Sheffer-stroke reduction asks: can the entire formal system be derived from a single rule and a single seed — analogous to how Sheffer's NAND generates all of propositional logic, or how Odrzywołek's $\text{eml}(x, y) = e^x - \ln y$ generates the elementary functions?
 
 If such a reduction succeeds, RE's formal core collapses from 3 primitives + 7 axioms to 1 dynamical map + 1 initial condition. If it fails, the current axiomatic system remains the formal foundation, and the map merely characterizes the common geometric shape of the dynamics without replacing them.
 
