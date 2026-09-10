@@ -1811,4 +1811,64 @@ theorem theorem7_as_stated_refuted :
     voice it used the other ten times. That symmetry is the only reason the
     apparatus is worth anything. -/
 
+/-! ## 19. Item 16 — a one-step kernel, and target (viii)
+
+    RULING (peer, 2026-09-10): discrete time, (α). And the forced part: item
+    15's signature gives only MARGINALS — `law t start B`. Part A cannot be
+    stated against it. Positive Harris recurrence is a property of a transition
+    kernel, and two kernels can share every marginal; "almost surely" lives on
+    path space, which marginals do not determine. So the signature was too weak
+    to host Part A at all.
+
+    ITEM 16, declared representation choice: a one-step kernel `step`, with laws
+    DERIVED from it by iteration rather than asserted. On a finite state space
+    given by an explicit enumeration `univ`, with `Val := Nat` at scale 100 as in
+    §§13–18. Invariance becomes a formula — `ρ ∘ step = ρ` — which is the first
+    time `ρ_∞` has a definition in the record rather than a gloss.
+
+    TARGET (viii), pre-registered by the peer as the compile-decidable test of
+    whether item 16 is the right shape: `lawTwo` must come out DERIVED. If
+    iterating the [[½,½],[½,½]] kernel reproduces the committed `lawTwo` at every
+    `t ≥ 1` from either start, the file's counterexample-turned-confirmation was
+    already a Markov chain that had not been told so. If not, `lawTwo` was never
+    a chain and target (i) is void — to be reported as (i) refuted, not as a
+    kernel problem. -/
+
+open Classical in
+/-- Item 16: laws by iteration of a kernel, over an explicit enumeration. -/
+noncomputable def iterLaw {X : Type} (univ : List X) (step : X → (X → Prop) → Nat) :
+    Nat → X → (X → Prop) → Nat
+  | 0,     start, B => if B start then 100 else 0
+  | t + 1, start, B =>
+      (univ.map (fun x => iterLaw univ step t start (fun y => y = x) * step x B)).sum / 100
+
+open Classical in
+/-- The two-state kernel `[[½,½],[½,½]]`: from either state, each state with
+    mass one half. -/
+noncomputable def stepTwo : Bool → (Bool → Prop) → Nat :=
+  fun _ B => (if B true then 50 else 0) + (if B false then 50 else 0)
+
+/-- TARGET (viii). Iterating the kernel reproduces the committed `lawTwo` at
+    every `t ≥ 1`, from either start, on every set. -/
+theorem lawTwo_is_derived :
+    ∀ t : Nat, ∀ start : Bool, ∀ B : Bool → Prop,
+      iterLaw [true, false] stepTwo (t + 1) start B
+        = lawTwo (fun _ => 0) () 1 1 (t + 1) start B := by
+  intro t
+  induction t with
+  | zero =>
+      intro start B
+      cases start <;> simp [iterLaw, stepTwo, lawTwo]
+  | succ n ih =>
+      intro start B
+      have h1 : ∀ x : Bool,
+          iterLaw [true, false] stepTwo (n + 1) start (fun y => y = x) = 50 := by
+        intro x
+        rw [ih start (fun y => y = x)]
+        cases x <;> simp [lawTwo]
+      rw [iterLaw]
+      simp only [List.map, List.sum_cons, List.sum_nil, h1]
+      simp [stepTwo, lawTwo]
+      omega
+
 end RE
