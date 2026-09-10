@@ -1204,4 +1204,233 @@ theorem G_holds : G :=
        degenerate and the result is wrong, not lucky.
 -/
 
+/-! ## 15. The cost probe, run -/
+
+/-- Clause 1's predicate: the method encoded by `y` rejects its own code. -/
+def D_L (L : Layer) (y : L.Rep) : Prop :=
+  ∀ m', L.decode y = some m' → L.run m' y = false
+
+/-- CLAUSE 1. No method computes `D_L` — no `Defined`, no `CostAxioms`, no
+    affordability, every method. `decode_encode` is used essentially. -/
+theorem diagonal_self_application (L : Layer) (m : L.Method) :
+    ¬ (∀ y, L.run m y = true ↔ D_L L y) := by
+  intro h
+  have hde : L.decode (L.encode m) = some m := L.decode_encode m
+  cases hb : L.run m (L.encode m) with
+  | true =>
+      have hD : D_L L (L.encode m) := (h (L.encode m)).mp hb
+      have hf : L.run m (L.encode m) = false := hD m hde
+      rw [hb] at hf; exact Bool.noConfusion hf
+  | false =>
+      have hD : D_L L (L.encode m) := by
+        intro m' hm'
+        have hmm : some m = some m' := hde.symm.trans hm'
+        have hme : m = m' := Option.some.inj hmm
+        subst hme; exact hb
+      have ht : L.run m (L.encode m) = true := (h (L.encode m)).mpr hD
+      rw [hb] at ht; exact Bool.noConfusion ht
+
+/-- Clause 2, proved separately (declared choice): the computable diagonal. -/
+def diagFn (L : Layer) : L.Rep → Bool :=
+  fun y => match L.decode y with
+           | some m' => !(L.run m' y)
+           | none     => true
+
+/-- CLAUSE 2. No layer computes every Boolean function on its own `Rep` — the
+    cardinality bound of `encode`-injectivity, constructively. -/
+theorem no_omniscient_layer (L : Layer) :
+    ¬ (∀ f : L.Rep → Bool, ∃ m : L.Method, ∀ x, L.run m x = f x) := by
+  intro h
+  obtain ⟨m, hm⟩ := h (diagFn L)
+  have hx : L.run m (L.encode m) = !(L.run m (L.encode m)) := by
+    have h1 := hm (L.encode m)
+    simp [diagFn, L.decode_encode m] at h1
+  cases hb : L.run m (L.encode m) <;> rw [hb] at hx <;> simp at hx
+
+/-! ### Arm 1 (clause 3): both restatements fall under the committed `CostAxioms` -/
+
+/-- Parity-priced layer: identity deciders are free, odd methods cost their
+    index, so costs are unbounded and `CostAxioms` holds. -/
+@[reducible] def Lpar : Layer where
+  Rep := Nat
+  Method := Nat
+  run := fun m x => decide (x = m / 2)
+  encode := fun m => m
+  decode := fun x => some x
+  decode_encode := by intro m; rfl
+  cost := fun m => if m % 2 = 0 then 0 else m
+  budget := 0
+
+@[reducible] def Ompar : Lattice Lpar where
+  Val := Unit
+  zero := ()
+  lt := fun _ _ => False
+  Defined := fun _ => False
+  S := fun _ => ()
+
+theorem Lpar_costAxioms : CostAxioms Lpar := by
+  constructor
+  intro n
+  refine ⟨2 * n + 1, ?_⟩
+  show n < (if (2 * n + 1) % 2 = 0 then 0 else 2 * n + 1)
+  rw [if_neg (by omega : ¬((2 * n + 1) % 2 = 0))]
+  omega
+
+/-- Every identity predicate has a FREE decider: method `2x`. -/
+theorem Lpar_id_cheap (x : Nat) :
+    Lpar.available (2 * x) ∧ ∀ y, Lpar.run (2 * x) y = true ↔ y = x := by
+  constructor
+  · show (if (2 * x) % 2 = 0 then 0 else 2 * x) ≤ 0
+    rw [if_pos (by omega : (2 * x) % 2 = 0)]
+    exact Nat.le_refl 0
+  · intro y
+    show decide (y = 2 * x / 2) = true ↔ y = x
+    rw [(by omega : 2 * x / 2 = x)]
+    exact decide_eq_true_iff
+
+/-- COROLLARY 10.3. The RESTATED diagonal conjecture is false: `CostAxioms`
+    holds here and every identity predicate is still freely decidable. -/
+theorem diagonal_restatement_refuted :
+    ¬ (∀ (L : Layer) (Ω : Lattice L), CostAxioms L →
+        ∃ x : L.Rep, ¬ Ω.Defined x ∧ L.undecidable (fun y => y = x)) := by
+  intro h
+  obtain ⟨x, _, hu⟩ := h Lpar Ompar Lpar_costAxioms
+  obtain ⟨havail, hdec⟩ := Lpar_id_cheap x
+  exact hu (2 * x) havail hdec
+
+/-- Opacity witness: same pricing, but `run` can never fire at `0`, so `0` is
+    incompressible — `hard` is satisfied, not dodged. -/
+@[reducible] def Lopc : Layer where
+  Rep := Nat
+  Method := Nat
+  run := fun m x => decide (x = m / 2 + 1)
+  encode := fun m => m
+  decode := fun x => some x
+  decode_encode := by intro m; rfl
+  cost := fun m => if m % 2 = 0 then 0 else m
+  budget := 0
+
+@[reducible] def Omopc : Lattice Lopc where
+  Val := Unit
+  zero := ()
+  lt := fun _ _ => False
+  Defined := fun _ => False
+  S := fun _ => ()
+
+theorem Lopc_costAxioms : CostAxioms Lopc := by
+  constructor
+  intro n
+  refine ⟨2 * n + 1, ?_⟩
+  show n < (if (2 * n + 1) % 2 = 0 then 0 else 2 * n + 1)
+  rw [if_neg (by omega : ¬((2 * n + 1) % 2 = 0))]
+  omega
+
+theorem Lopc_zero_incompressible : Lopc.incompressible 0 := by
+  intro m _
+  show decide ((0:Nat) = m / 2 + 1) = false
+  exact decide_eq_false (by omega)
+
+/-- COROLLARY 10.4. The RESTATED opacity conjecture is false, with `hard`
+    satisfied and `CostAxioms` proved. -/
+theorem opacity_restatement_refuted :
+    ¬ (∀ (L : Layer) (Ω : Lattice L) (large : (L.Rep → Prop) → Prop),
+        (∃ x : L.Rep, L.incompressible x) → CostAxioms L →
+        ∀ p : L.Rep → Prop, Broad L large p →
+          (∀ m : L.Method, L.available m → ¬ (∀ x, L.run m x = true ↔ p x))) := by
+  intro h
+  refine h Lopc Omopc (fun _ => True) ⟨0, Lopc_zero_incompressible⟩ Lopc_costAxioms
+    (fun x => x = 1) trivial 0 ?_ ?_
+  · show (if (0:Nat) % 2 = 0 then 0 else 0) ≤ 0
+    rw [if_pos (by omega : (0:Nat) % 2 = 0)]
+    exact Nat.le_refl 0
+  · intro x
+    show decide (x = 0 / 2 + 1) = true ↔ x = 1
+    rw [(by omega : (0:Nat) / 2 + 1 = 1)]
+    exact decide_eq_true_iff
+
+/-! ### Arm 3 (clause 4): `Blum2` by relativization -/
+
+/-- The reviewer's relativized Blum-2: the layer can read a method's price off
+    its code. A referent using only existing primitives — no machine model. -/
+def Blum2 (L : Layer) : Prop :=
+  ∀ n : Nat, ∃ m : L.Method, L.available m ∧
+    ∀ y, L.run m y = true ↔ (∃ m', L.decode y = some m' ∧ L.cost m' ≤ n)
+
+/-- CLAUSE 4, FIRST HALF — the prior is FALSIFIED. The Arm-1 opacity witness does
+    NOT satisfy `Blum2`: its methods decide singletons, while the price predicate
+    at `n = 0` holds of every even index. -/
+theorem Lopc_not_blum2 : ¬ Blum2 Lopc := by
+  intro hB
+  obtain ⟨m, _, hm⟩ := hB 0
+  have hcost0 : Lopc.cost 0 ≤ 0 := by
+    show (if (0:Nat) % 2 = 0 then 0 else 0) ≤ 0
+    rw [if_pos (by omega : (0:Nat) % 2 = 0)]
+    exact Nat.le_refl 0
+  have h0 : Lopc.run m 0 = true := (hm 0).mpr ⟨0, rfl, hcost0⟩
+  have hz : (0:Nat) = m / 2 + 1 := of_decide_eq_true h0
+  omega
+
+/-- CLAUSE 4, SECOND HALF, and the reason the first half is not an accident.
+    Under `Blum2`, NO element that is a code can be incompressible: the price
+    query at that method's own cost fires on it. Incompressibility can therefore
+    only live at NON-CODES. -/
+theorem blum2_kills_incompressible (L : Layer) (hB : Blum2 L)
+    (x : L.Rep) (m' : L.Method) (hx : L.decode x = some m') :
+    ¬ L.incompressible x := by
+  intro hinc
+  obtain ⟨m, havail, hm⟩ := hB (L.cost m')
+  have ht : L.run m x = true := (hm x).mpr ⟨m', hx, Nat.le_refl _⟩
+  have hf : L.run m x = false := hinc m havail
+  rw [ht] at hf; exact Bool.noConfusion hf
+
+/-! ### 15.1 Readout
+
+    CLAUSE 1 — PROVED, AXIOM-FREE. `diagonal_self_application` depends on no
+    axioms at all, and `decode_encode` is visible in its proof, as clause 6's
+    standing report demanded. The reviewer's diagnosis was right and sharper than
+    "the hypothesis is too weak": the transposition's PREDICATE was wrong.
+    Identity-with-a-point is cheap in every complexity theory, so no cost axiom
+    could ever have rescued it. Self-application needs no cost theory whatever.
+
+    CLAUSE 2 — PROVED (`propext`). `no_omniscient_layer`: no layer computes every
+    Boolean function on its own `Rep`. Declared choice: proved separately via a
+    computable diagonal rather than derived as a corollary, because the
+    constructive form needs no Cantor library and keeps the file Mathlib-free.
+
+    CLAUSE 3 — BOTH RESTATEMENTS REFUTED, with `CostAxioms` PROVED for each
+    witness and the affordable decider exhibited, so neither refutation is
+    vacuous. Corollaries 10.3 and 10.4.
+
+    CLAUSE 4 — THE PRIOR IS FALSIFIED, AND THE CONCLUSION SURVIVES BY ANOTHER
+    ROUTE. `Lopc` does NOT satisfy `Blum2`: its methods decide singletons while
+    the price predicate at `n = 0` holds of every even index. So `Blum2` is not
+    idle here — it excludes the Arm-1 witness. But it rescues nothing, for a
+    reason the pre-registration did not anticipate:
+    `blum2_kills_incompressible` (axiom-free) shows that under `Blum2` NO CODE
+    CAN BE INCOMPRESSIBLE — the price query at a method's own cost fires on its
+    own code. Incompressibility survives only at NON-CODES. So on any layer
+    where `decode` is total, `Blum2` makes opacity's hardness hypothesis
+    UNSATISFIABLE, and the conjecture holds vacuously. That is worse than being
+    refuted: it means `incompressible` as defined is not a formalization of
+    Razborov–Rudich hardness at all. The reviewer's downstream conclusion stands
+    — opacity's debt is not cost-shaped — reached by a route neither of us
+    predicted.
+
+    CLAUSE 5 — FIRES. The committed opacity statement has the shape
+    `large p → no affordable method computes p`, i.e. `large ⟹ ¬constructive`.
+    Razborov–Rudich concludes `constructive ∧ large ⟹ ¬useful`. The transposition
+    dropped USEFULNESS, and the dropped conjunct is exactly what makes the
+    statement false: `p := fun _ => True` is broad, trivially computable, and
+    useless — which is precisely the witness of Corollaries 10.2 and 10.4. The
+    refutations were never deep; they were the missing conjunct showing up. Do
+    not attempt to fix this with hypotheses on cost. Ledger instance nine.
+
+    NET. Neither conjecture's debt was cost-shaped. The diagonal owed
+    self-application and had it in `decode_encode` since the first commit. Opacity
+    owes a `large` with content (Problem 25's prerequisite, now load-bearing) and
+    a hardness notion about SETS rather than points, plus the usefulness conjunct
+    clause 5 found missing. `CostAxioms` and `Blum2` end this run as honest stubs
+    with no dependents — which is the correct outcome for a debt that was
+    mis-named, and is recorded rather than tidied away. -/
+
 end RE
