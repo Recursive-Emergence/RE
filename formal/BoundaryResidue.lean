@@ -220,6 +220,14 @@ theorem diagonal_boundary_object (L : Layer) (Ω : Lattice L) :
     ∃ x : L.Rep, ¬ Ω.Defined x ∧ L.undecidable (fun y => y = x) := by
   sorry -- CONJECTURE: this is Theorem 8 (i) transposed. Unconditional in the
         -- manuscript; the transposition to `Layer.undecidable` is not proved.
+        --
+        -- RAISED BAR (§10, Theorem 9). This statement conjoins `¬ Defined x`
+        -- with `undecidable (· = x)`, and those conjuncts are now PROVED
+        -- independent in the bare frame: undefinedness buys no inaccessibility.
+        -- So any discharge of this `sorry` must earn the second conjunct from
+        -- `encode` essentially. A proof routing through partiality alone is
+        -- impossible by theorem, not merely unsatisfying. Whatever eventually
+        -- proves this must use self-quotation and be seen to use it.
 
 /-- Opacity (Razborov–Rudich, transposed). Needs largeness AND a hardness
     hypothesis. The extra hypothesis is not decoration: it is what makes this
