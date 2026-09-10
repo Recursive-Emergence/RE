@@ -906,4 +906,131 @@ def G : Prop :=
     (q : I.QMethod) (θ : J.X.Val), I.affordable q ∧
       ∀ x : J.L.Rep, J.Om.Defined x → (I.ask q θ x = true ↔ J.clearsAt agg θ x)
 
+/-! ## 13. Phase two — the attempts -/
+
+/-- A substrate for `L0`. `Val := Nat` with the usual order, so `rho_basin_pos`
+    is discharged honestly rather than by an empty `lt`. -/
+def X0 : Substrate where
+  State := Unit
+  Val   := Nat
+  zero  := 0
+  one   := 1
+  lt    := fun a b => a < b
+  sub   := fun a b => a - b
+  P     := fun _ => 0
+  basin := fun _ => True
+  rho   := fun _ => 1
+  rho_basin_pos := Nat.zero_lt_one
+
+/-- The joined structure over the UNCHANGED `L0`, per clause 1. -/
+def J0 : Joined where
+  L := L0
+  X := X0
+  formulable := fun _ _ => True
+  Om := Om0
+
+/-- The constantly-false query family, affordable at zero cost. -/
+def Qfalse : ThresholdInterface J0.L J0.X.Val where
+  QMethod := Unit
+  ask := fun _ _ _ => false
+  qcost := fun _ => 0
+
+/-- Threshold `0`, typed through the substrate. -/
+def th0 : J0.X.Val := (0 : Nat)
+
+/-- The zero aggregator. -/
+def agg0 : Aggregator J0 := fun _ _ _ => (0 : Nat)
+
+/-- With `agg0` and `th0`, clearance is `0 < 0` — false everywhere. -/
+theorem clears_false (x : J0.L.Rep) : ¬ J0.clearsAt agg0 th0 x :=
+  fun h => absurd h (Nat.lt_irrefl 0)
+
+theorem qfalse_agrees (x : J0.L.Rep) :
+    Qfalse.ask () th0 x = true ↔ J0.clearsAt agg0 th0 x := by
+  constructor
+  · intro h; exact Bool.noConfusion h
+  · intro h; exact absurd h (clears_false x)
+
+/-- `S∃` holds. -/
+theorem S_ex_holds : S_ex :=
+  ⟨J0, rfl, agg0, Qfalse, (), th0, Nat.le_refl 0, qfalse_agrees⟩
+
+/-- `S∀` holds too — and this is the finding, not the theorem. For ANY
+    aggregator the query family is chosen after it and simply COMPUTES the
+    clearance truth. Nothing in the frame forbids that: `qcost` is a number
+    compared against `budget`, wholly unconnected to what `ask` computes. -/
+theorem S_all_holds : S_all := by
+  refine ⟨J0, rfl, ?_⟩
+  intro agg
+  refine ⟨⟨Unit, fun _ θ x => @decide _ (Nat.decLt θ (J0.induced agg x)), fun _ => 0⟩,
+          (), th0, Nat.le_refl 0, ?_⟩
+  intro x
+  exact decide_eq_true_iff
+
+/-- Therefore `D` fails. -/
+theorem D_fails : ¬ D := fun hD => hD S_ex_holds
+
+/-- And `A` fails, by the `S∃` witness. -/
+theorem A_fails : ¬ A := fun hA =>
+  hA J0 agg0 false gap_exists Qfalse () (Nat.le_refl 0) th0 qfalse_agrees
+
+/-- `G` holds — the poverty guard is discharged, so `A`'s failure is not the
+    frame being unable to decide anything at all. -/
+theorem G_holds : G :=
+  ⟨J0, agg0, Qfalse, (), th0, Nat.le_refl 0, fun x _ => qfalse_agrees x⟩
+
+/-! ### 13.1 Readout
+
+    RESULTS. `S∃` holds, `S∀` holds, `D` fails, `A` fails, `G` holds. Axiom
+    audit: all axiom-free except `S_all_holds`, which uses `propext` (via
+    `decide_eq_true_iff`) and no choice. `G` is discharged, so `A`'s failure is
+    NOT the frame being unable to decide anything.
+
+    CLAUSE 6 IS ANSWERED, AND THE LOOP DOES NOT FORM. The pre-registration made
+    the aggregator quantifier the experiment's subject: `S∃ ∧ ¬S∀` would have
+    made survival aggregator-relative and turned the dependency stack into a
+    loop with Problem 26. Both hold instead. Survival is aggregator-INDEPENDENT,
+    27′ does not wait on Problem 26, and no loop needs declaring.
+
+    THE REVIEWER'S PRIOR IS FALSIFIED, and the parametricity argument behind it
+    fails at a specific step. It assumed the induced value at the undefined point
+    varies with the aggregator so no fixed Boolean answer matches all of them —
+    true, but irrelevant, because the query family is chosen AFTER the aggregator
+    in `S∀`'s quantifier order, and may depend on it. `S_all_holds` exploits
+    exactly that: given `agg`, the family simply COMPUTES clearance.
+
+    THE FINDING, which is larger than the theorem and generalises §10. Nothing in
+    this frame connects what a method computes to what it costs. `qcost` is a
+    number compared against `budget`; `ask` is an arbitrary function. So an
+    affordable query family can decide anything whatsoever, and no statement of
+    the form "no affordable method decides X" is provable here for any X a
+    function could compute. Theorem 9 was therefore NOT about `Defined` being
+    Boolean-expressible verbatim — that was the local explanation, and it was too
+    kind. The general fact is that **this frame cannot express hardness at all**,
+    and every inaccessibility claim in it is a stipulation about the method set
+    rather than a result.
+
+    CONSEQUENCE FOR THE REGROUNDED DEFINITION 17, and it cuts. The method-
+    relative clause is now known to be unprovable in the bare frame for any
+    layer whose methods are unconstrained. It is not merely "required outright
+    rather than derived" (§10's reading); it is **not derivable in principle
+    here**, and the definition's status note must say so. The asymmetry's
+    invariant form is not pending a choice — the choice has been made and the
+    answer is that `A` is false. What would change this is a frame in which cost
+    bounds computation, which this one is not and was never claimed to be.
+
+    CLAUSE 9 STANDING REPORT. No statement and no proof in §§12–13 references
+    `encode` or `decode`. The clearance question lives entirely below the
+    self-quotation line: it needs the interface and the joined structure and
+    nothing from the layer's self-encoding apparatus. That is consistent with the
+    diagonal bar and, read the other way, is why it could be settled so cheaply —
+    nothing here is a boundary object in the diagonal sense.
+
+    DECLARED DEVIATION (clause 9). Clause 7 gives no destination for `¬A`; it
+    anticipated `A` proved or unproved. `¬A` is theorem-grade and axiom-free, so
+    it goes to M.4 alongside the others, and Definition 17's status note closes
+    NEGATIVELY rather than positively — the outcome the destination table did not
+    contemplate. Reason recorded rather than the result being filed under the
+    nearest listed heading. -/
+
 end RE
