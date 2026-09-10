@@ -303,4 +303,107 @@ theorem opacity_boundary_object (L : Layer) (Ω : Lattice L)
     skeleton's annotation discipline.
 -/
 
+/-! ## 6. The discriminator, run
+
+    Transcribed from Appendix M, Theorem 7 (Recipe Inevitability) as committed.
+    Its statement quantifies over a substrate state-space `𝒳` with a Langevin
+    update, and concludes about `Pr[Ψ_t ∈ basin(Ψ*)]` via a stationary measure
+    `ρ_∞(basin) = Z⁻¹ ∫_basin e^{P/D} dΨ > 0`.
+
+    ANTI-RIGGING (per the pre-registration). `Substrate` below is deliberately
+    NOT parameterized by `Layer`. If Theorem 7 needs the layer's representation
+    machinery, the transcription will not close and a `Layer` parameter will have
+    to be added — visibly, in the diff. The bridge is a separate structure, so
+    identifying `State` with `Rep` would also be a visible edit rather than a
+    default.
+-/
+
+/-- The substrate of Theorem 7. `Val` abstract for the same reason as §1.
+
+    CHOICE (annotated): `one` and `sub` are carried as fields because the
+    theorem's conclusion is literally `> 1 - ε`, which needs an ordered field the
+    manuscript assumes and this file declines to import. Abstracting them keeps
+    Mathlib out; the cost is that no arithmetic law about them is available, so
+    nothing here can be proved from them. That is acceptable because §6 proves
+    nothing — but it is a choice, not a neutrality. -/
+structure Substrate where
+  State : Type
+  Val   : Type
+  zero  : Val
+  one   : Val
+  lt    : Val → Val → Prop
+  sub   : Val → Val → Val
+  /-- Theorem 7's `P(Ψ; θ)`: emergence potential ON A SUBSTRATE STATE. -/
+  P     : State → Val
+  /-- `basin(Ψ*)`, the carrier-class local maximum's basin. -/
+  basin : State → Prop
+  /-- The stationary measure `ρ_∞`. Note the type: a valuation on SETS OF
+      STATES. This is the object the discriminator was built to inspect. -/
+  rho   : (State → Prop) → Val
+  rho_basin_pos : lt zero (rho basin)
+
+/-- Birkhoff, transcribed: time-average occupation approaches `ρ_∞`. -/
+def Ergodic (X : Substrate) (occupation : Nat → (X.State → Prop) → X.Val) : Prop :=
+  ∀ A : X.State → Prop, ∀ ε : X.Val, X.lt X.zero ε →
+    ∃ T : Nat, ∀ t : Nat, T < t → X.lt (X.sub (X.rho A) ε) (occupation t A)
+
+/-- Theorem 7 (Recipe Inevitability), transcribed. -/
+theorem recipe_inevitability (X : Substrate)
+    (occupation : Nat → (X.State → Prop) → X.Val)
+    (herg : Ergodic X occupation) :
+    ∀ ε : X.Val, X.lt X.zero ε →
+      ∃ T : Nat, ∀ t : Nat, T < t → X.lt (X.sub X.one ε) (occupation t X.basin) := by
+  sorry -- CONJECTURE (as everywhere in this file): the manuscript's proof sketch
+        -- combines Morse theory, Birkhoff, and Kramers. None of that is here.
+
+/-- The bridge, kept separate so that using it is visible. Theorem 7 above does
+    not mention it, which is itself the answer to the pre-registration's second
+    question. -/
+structure Bridge (L : Layer) (X : Substrate) where
+  formulable : X.State → L.Rep → Prop
+
+/-! ### 6.1 Readout
+
+    The two objects the pre-registration said to compare, written side by side:
+
+      largeness slot (§3):   `(L.Rep → Prop) → Prop`
+      ergodic measure (§6):  `(X.State → Prop) → X.Val`
+
+    OUTCOME (B), and by a wider margin than (B) required. The pre-registration
+    scored carrier and shape separately. Both differ.
+
+      · CARRIER: `State` vs `Rep`. Theorem 7's measure attaches to substrate
+        states. Nothing in its statement ranges over formulable structures.
+      · SHAPE: a VALUATION into `Val`, not a PREDICATE into `Prop`. `large` asks
+        whether a property is broad; `rho` asks how much measure a set carries.
+        Even had the carriers matched, these are different instruments — so the
+        (C) branch is also excluded, rather than left ambiguous.
+
+    The §5 remark therefore resolves toward nothing, and is recorded as doing so.
+    The ergodic signature is not the largeness slot refilled.
+
+    SECOND QUESTION: no, and more sharply than asked. `Substrate`, `Ergodic`, and
+    `recipe_inevitability` compile with NO reference to `Layer` — not merely no
+    `encode`, but no `Rep`, no `Method`, no `run`, no `decode`. Theorem 7 does not
+    need the self-representation apparatus in any part. `Bridge` exists solely to
+    show what connecting them would cost, and nothing above uses it.
+
+    CONSEQUENCE for the two tables. The nesting correction of §5 now has a
+    frame-level fact under it: Theorem 7 is statable in a strictly smaller
+    signature than Theorem 8. The carrier boundary is not a sharper version of
+    the boundary Conjecture 7 describes — it is a boundary between signatures,
+    below which self-representation is not merely unused but unmentionable.
+
+    UNSCORED FINDING (the prior's third clause, which the pre-registration could
+    not score). `Substrate.P : State → Val` and `Lattice.P :
+    {x // Defined x} → Val` are DIFFERENT FUNCTIONS ON DIFFERENT DOMAINS, and the
+    manuscript writes both as `P`. Theorem 7's is a potential on substrate states;
+    Definition 1's is emergence potential of a candidate coherence. The
+    transcription cannot close the gap without a choice, and this file declines to
+    make one: no equation relates them, and `Bridge` carries no coherence law. To
+    state one would require saying how a candidate coherence's potential is
+    induced by the substrate states that formulate it — which is not in the
+    manuscript, and is Problem-21-shaped: a bridging law asserted informally by
+    shared notation and not exhibited. Logged for M.10. -/
+
 end RE
