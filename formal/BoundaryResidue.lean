@@ -41,7 +41,7 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD (branch target-x, 2026-09-10). Lean 4.15.0
+  COMPILATION RECORD (branch target-xi, 2026-09-10). Lean 4.15.0
     (commit 11651562caae), bare toolchain, no Mathlib. Exit 0, zero errors.
     Warnings: exactly two, both `declaration uses 'sorry'`, at
     `REamend.general_partA` and `REamend.general_partB` — the file's only
@@ -72,6 +72,8 @@
     on top of that; the reviewer re-runs only if the report does not add up.
     The target-x branch adds §§28–29, re-checking every result derived from `J0`
     on an A2-conforming witness.
+    The target-xi branch adds §§30–31 and AMENDS THE `Substrate` STRUCTURE ITSELF:
+    ρ_∞ is now required to be a measure.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
@@ -83,9 +85,15 @@
       'RE.diagonal_self_application' does not depend on any axioms
       'RE.no_omniscient_layer' depends on axioms: [propext]
       'RE.partiality_does_not_imply_inaccessibility' does not depend on any axioms
-      'RE.recipe_inevitability_refuted' depends on axioms: [propext, Quot.sound]
+      'RE.recipe_inevitability_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE.occBad_ergodic' depends on axioms: [propext, Classical.choice, Quot.sound]
       'RE.theorem7_as_stated_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
       'RE.lawTwo_is_derived' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE.S_ex_holds' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE.S_all_holds' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE.D_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE.A_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE.G_holds' depends on axioms: [propext, Classical.choice, Quot.sound]
       'RE4.unamendedA_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
       'RE5.unamendedC_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REC.iii_singular_fails' depends on axioms: [propext, Quot.sound]
@@ -131,6 +139,9 @@
       'REx.D_fails_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REx.A_fails_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REx.G_holds_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExi.constRho_violates_empty' does not depend on any axioms
+      'RExi.constRho_violates_add' does not depend on any axioms
+      'RExi.pushMass_additive_intrinsic' depends on axioms: [propext, Quot.sound]
       'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
       'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
 
@@ -561,6 +572,8 @@ structure Substrate where
   one   : Val
   lt    : Val → Val → Prop
   sub   : Val → Val → Val
+  /-- (xi) Addition on values, with NO laws: no proof in this file needs one. -/
+  add   : Val → Val → Val
   /-- Theorem 7's `P(Ψ; θ)`: emergence potential ON A SUBSTRATE STATE. -/
   P     : State → Val
   /-- `basin(Ψ*)`, the carrier-class local maximum's basin. -/
@@ -569,6 +582,11 @@ structure Substrate where
       STATES. This is the object the discriminator was built to inspect. -/
   rho   : (State → Prop) → Val
   rho_basin_pos : lt zero (rho basin)
+  /-- (xi) ρ_∞ is a measure: the empty set has mass zero… -/
+  rho_empty : rho (fun _ => False) = zero
+  /-- …and masses add over disjoint sets. -/
+  rho_add : ∀ A B : State → Prop, (∀ s, ¬ (A s ∧ B s)) →
+    rho (fun s => A s ∨ B s) = add (rho A) (rho B)
 
 /-- Birkhoff, transcribed: time-average occupation approaches `ρ_∞`. -/
 def Ergodic (X : Substrate) (occupation : Nat → (X.State → Prop) → X.Val) : Prop :=
@@ -1151,38 +1169,44 @@ def G : Prop :=
 
 /-! ## 13. Phase two — the attempts -/
 
+open Classical in
 /-- A substrate for `L0`. `Val := Nat` with the usual order, so `rho_basin_pos`
     is discharged honestly rather than by an empty `lt`. -/
-def X0 : Substrate where
+noncomputable def X0 : Substrate where
   State := Unit
   Val   := Nat
   zero  := 0
   one   := 1
   lt    := fun a b => a < b
   sub   := fun a b => a - b
+  add   := fun a b => a + b
   P     := fun _ => 0
   basin := fun _ => True
-  rho   := fun _ => 1
-  rho_basin_pos := Nat.zero_lt_one
+  rho   := fun B => if B () then 1 else 0
+  rho_basin_pos := by simp
+  rho_empty := by simp
+  rho_add := by
+    intro A B hdis; have h := hdis ()
+    by_cases a : A () <;> by_cases b : B () <;> simp_all
 
 /-- The joined structure over the UNCHANGED `L0`, per clause 1. -/
-def J0 : Joined where
+noncomputable def J0 : Joined where
   L := L0
   X := X0
   formulable := fun _ _ => True
   Om := Om0
 
 /-- The constantly-false query family, affordable at zero cost. -/
-def Qfalse : ThresholdInterface J0.L J0.X.Val where
+noncomputable def Qfalse : ThresholdInterface J0.L J0.X.Val where
   QMethod := Unit
   ask := fun _ _ _ => false
   qcost := fun _ => 0
 
 /-- Threshold `0`, typed through the substrate. -/
-def th0 : J0.X.Val := (0 : Nat)
+noncomputable def th0 : J0.X.Val := (0 : Nat)
 
 /-- The zero aggregator. -/
-def agg0 : Aggregator J0 := fun _ _ _ => (0 : Nat)
+noncomputable def agg0 : Aggregator J0 := fun _ _ _ => (0 : Nat)
 
 /-- With `agg0` and `th0`, clearance is `0 < 0` — false everywhere. -/
 theorem clears_false (x : J0.L.Rep) : ¬ J0.clearsAt agg0 th0 x :=
@@ -1604,30 +1628,37 @@ theorem blum2_kills_incompressible (L : Layer) (hB : Blum2 L)
          DELIVERS from that hypothesis, i.e. an intermediate step of the proof
          assumed as a premise. -/
 
+open Classical in
 /-- Deviation 1, made concrete: mass `1` spread over a scale where `one` is `10`.
     Nothing in `Substrate` forbids it. -/
-@[reducible] def Xbad : Substrate where
+@[reducible] noncomputable def Xbad : Substrate where
   State := Unit
   Val   := Nat
   zero  := 0
   one   := 10
   lt    := fun a b => a < b
   sub   := fun a b => a - b
+  add   := fun a b => a + b
   P     := fun _ => 0
   basin := fun _ => True
-  rho   := fun _ => 1
-  rho_basin_pos := Nat.zero_lt_one
+  rho   := fun B => if B () then 1 else 0
+  rho_basin_pos := by simp
+  rho_empty := by simp
+  rho_add := by
+    intro A B hdis; have h := hdis ()
+    by_cases a : A () <;> by_cases b : B () <;> simp_all
 
-@[reducible] def occBad : Nat → (Xbad.State → Prop) → Xbad.Val := fun _ _ => 1
+@[reducible] noncomputable def occBad : Nat → (Xbad.State → Prop) → Xbad.Val := fun _ _ => 1
 
+open Classical in
 theorem occBad_ergodic : Ergodic Xbad occBad := by
   intro A ε hε
   refine ⟨0, fun t _ => ?_⟩
   have h1 : 1 ≤ ε := hε
-  have hz : (1:Nat) - ε = 0 := Nat.sub_eq_zero_of_le h1
-  show (1:Nat) - ε < 1
-  rw [hz]
-  exact Nat.zero_lt_one
+  show (if A () then 1 else 0) - ε < 1
+  by_cases hA : A ()
+  · rw [if_pos hA, Nat.sub_eq_zero_of_le h1]; exact Nat.zero_lt_one
+  · rw [if_neg hA, Nat.zero_sub]; exact Nat.zero_lt_one
 
 /-- THE LAST `sorry` MARKED A FALSEHOOD TOO. The occupation converges to the
     stationary measure exactly as `Ergodic` demands, and the conclusion still
@@ -3209,10 +3240,17 @@ inductive S3 where
   one := 100
   lt := fun a b => a < b
   sub := fun a b => a - b
+  add := fun a b => a + b
   P := fun _ => 0
   basin := fun _ => True
   rho := fun B => (if B S3.s1 then 50 else 0) + (if B S3.s2 then 50 else 0)
   rho_basin_pos := by show (0:Nat) < _; simp
+  rho_empty := by simp
+  rho_add := by
+    intro A B hdis
+    have h1 := hdis S3.s1; have h2 := hdis S3.s2
+    by_cases a1 : A S3.s1 <;> by_cases b1 : B S3.s1 <;> by_cases a2 : A S3.s2 <;>
+      by_cases b2 : B S3.s2 <;> simp_all
 
 /-- Functional, total, surjective, many-to-one: `s₁, s₂ ↦ true`, `s₃ ↦ false`. -/
 @[reducible] noncomputable def Jg : Joined where
@@ -3273,10 +3311,15 @@ theorem false_is_formulated : ∃ s, Jg.formulable s false := ⟨S3.s3, rfl⟩
   one := 100
   lt := fun a b => a < b
   sub := fun a b => a - b
+  add := fun a b => a + b
   P := fun _ => 0
   basin := fun _ => True
   rho := fun B => if B () then 100 else 0
   rho_basin_pos := by show (0:Nat) < _; simp
+  rho_empty := by simp
+  rho_add := by
+    intro A B hdis; have h := hdis ()
+    by_cases a : A () <;> by_cases b : B () <;> simp_all
 
 /-- The state formulates BOTH structures — the shape of the file's own `J0`. -/
 @[reducible] noncomputable def Jbad : Joined where
@@ -3700,3 +3743,82 @@ end REx
     1 on a scale where `one` is 10 — still a normalization failure, which is all
     Theorem 13's refutation reads. And Theorem 14 is untouched by (xi)
     altogether, having no `Substrate` to amend. -/
+
+/-! ## 31. Target (xi), run -/
+namespace RExi
+open Classical
+open RE REp25
+
+/-- The constant ρ that `X0` and `Xbad` used to carry. -/
+def constRho : (Unit → Prop) → Nat := fun _ => 1
+
+/-- FROZEN FAILURE 1: the old constant ρ cannot satisfy `rho_empty` — it gives the
+    empty set mass 1, not 0. -/
+theorem constRho_violates_empty : constRho (fun _ => False) ≠ 0 := by
+  unfold constRho; decide
+
+/-- FROZEN FAILURE 2: nor `rho_add` — on the disjoint pair (everything, nothing)
+    it gives 1 against 1 + 1. -/
+theorem constRho_violates_add :
+    constRho (fun s => (fun _ : Unit => True) s ∨ (fun _ : Unit => False) s)
+      ≠ constRho (fun _ => True) + constRho (fun _ => False) := by
+  unfold constRho; decide
+
+/-- (d) The pushforward's additivity, now INTRINSIC: derived from the structure's
+    own `rho_add`, not from a supplied hypothesis. -/
+theorem pushMass_additive_intrinsic (J : Joined) (hsv : SingleValued J)
+    (p q : J.L.Rep → Prop) (hpq : ∀ x, ¬ (p x ∧ q x)) :
+    pushMass J (fun x => p x ∨ q x) = J.X.add (pushMass J p) (pushMass J q) :=
+  pushMass_additive J hsv J.X.add J.X.rho_add p q hpq
+
+end RExi
+
+/-! ### 31.1 Readout — target (xi)
+
+    OUTCOME: (R−), as my prior predicted; the reviewer's prior was (R). ρ_∞ is
+    now a measure in the signature: `Substrate` gains `add` (with NO laws — no
+    proof in the file uses one), `rho_empty` and `rho_add`. Every theorem that
+    compiled before compiles after; the 68-line audit guard is clean.
+
+    REWORK BEYOND `X0`, listed:
+      · `X0` (§13): ρ repaired to a genuine point mass of 1. The repair is
+        classical, so `X0` becomes noncomputable, and with it `J0`, `Qfalse`,
+        `th0` and `agg0`. No §13 PROOF changed — none reads ρ.
+      · `Xbad` (§16): ρ repaired to a genuine point mass of 1, on a scale where
+        `one` is still 10. Noncomputable, with `occBad`. `occBad_ergodic`'s PROOF
+        changed: it had assumed ρ constant, and now cases on whether the set
+        contains the one state.
+      · `XG`, `XU` (§27): ρ unchanged; the new fields added and proved.
+    FROZEN FAILURES: `constRho_violates_empty` and `constRho_violates_add` — the
+    old constant ρ, recorded as ruled out by both new fields. Axiom-free.
+
+    NUMBERED RESULTS, under the reviewer's amended guard:
+      · THEOREM 10's original evidence (§13) re-establishes on its own repaired
+        witness — in addition to (x)'s re-establishment on a legal one.
+      · THEOREM 13 re-establishes DIRECTLY on the repaired `Xbad`: a genuine
+        point mass of 1 still breaks normalization against `one = 10`, and that
+        is all its refutation reads. The reviewer's expectation — that it would
+        survive via Theorem 14 — did not apply. Theorem 14 refutes a different
+        statement and builds no `Substrate`: zero occurrences in the signature
+        of `Theorem7_faithful`, confirmed by Lean's own type for it. Theorem 14
+        is untouched by (xi).
+      · No result depended on ρ NOT being additive. Outcome (B) did not occur.
+
+    (d) CHOICE, as predicted. `pushMass_additive_intrinsic` — additivity now
+    DERIVED from the structure's own `rho_add` rather than supplied — is
+    choice-free, `[propext, Quot.sound]`. Every repaired witness, and every
+    theorem resting on one, now carries `Classical.choice`: Theorem 13's
+    refutation moves from `[propext, Quot.sound]` to `[propext, Classical.choice,
+    Quot.sound]`, and §13's originals, which were nearly axiom-free, likewise.
+    The price of honest measures, a fourth time.
+
+    A MISFIRE OF MINE, recorded. The §30.1 addendum asserted that
+    `Theorem7_faithful` builds no `Substrate`, and was committed BEFORE the check
+    meant to support it. That check then reported nine occurrences — because its
+    range, bounded by an indentation pattern that never matched, ran from the
+    signature to the end of the file. Re-run, bounded by the signature itself and
+    by Lean's own `#check`, it finds none, so the addendum stands. But a reading
+    committed ahead of its evidence, and a check failing silently in a new way,
+    both belong in the record: the second guard to misfire through a
+    text-matching shortcut, after the prefix-match of §22. -/
+
