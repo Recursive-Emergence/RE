@@ -266,25 +266,51 @@ $$\Pr[\Psi_t \in \text{basin}(\Psi^*)] > 1 - \epsilon.$$
 
 Combined: finite first-passage + exponentially long residence ⇒ for $t > T_\epsilon$, the system spends fraction $> 1 - \epsilon$ of its time in the basin. $\blacksquare$
 
-**PROPOSED REPLACEMENT — NOT YET REFUTATION-TESTED.** The conclusion above is false as quantified (Theorem 14), and the original is kept unrevised per the retention convention. A replacement is *proposed* below and explicitly does **not** carry theorem status: it has not been through the enumerate–transcribe–refute loop, and the first attempt at writing it was itself an over-claim of the same kind it was fixing (see the note following). Nothing downstream should cite it.
-
-$$\liminf_{t \to \infty} \Pr[\Psi_t \in \text{basin}(\Psi^*)] \ \geq\ \rho_\infty(\text{basin}(\Psi^*))$$
-
-with $\rho_\infty$ the stationary law of the process, and the approach to certainty available **only for a global maximum, in the small-noise limit at fixed landscape**.
+**REPLACEMENT, WRITTEN AGAINST THE SPECIFICATION — awaiting enumeration.** The conclusion above is false as quantified (Theorem 14), and the original is kept unrevised per the retention convention. The first attempt at a replacement was itself an over-claim and was withdrawn as a sketch rather than a statement; what follows is written against a specification supplied by the reviewer, and is **three separate displayed statements, not one with clauses**. Trailing qualifiers that assert what the display does not are how the first attempt failed. It has not yet been enumerated, transcribed, or attacked.
 
 **The first attempt at this replacement was false, and the record should say so plainly.** It read "$\rho_\infty(\text{basin}) \to 1$ as $\Delta P/D \to \infty$", which is false for a *local* maximum — and a local maximum is all hypothesis (i) asserts. The stationary density is $\propto e^{\gamma P/D}$ and concentrates on **global** maxima as $D \to 0$, so a non-global $\Psi^*$ has basin mass tending to **zero** in that limit. Witness: the three-state path $a - b - c$ with $P = (1, 0, 2)$; $a$ is a local maximum of depth $1$, and numerically its basin mass falls $0.245 \to 0.018 \to 4.5\times10^{-5}$ as $\Delta P/D$ runs $1 \to 4 \to 10$. The two-state chain that refuted the original cannot see this, because it has only one well.
 
-**Five items pre-registered for the loop this replacement must go through**, before it can be stated as anything:
+**Part A — ergodic, time-average.**
 
-1. **"Global" is required.** With only a local maximum the limit claim inverts. Either strengthen (i) to a global maximum or drop the limit clause entirely.
-2. **$\rho_\infty$ is now in the *conclusion* and must be defined in the statement** — it was a proof object before (§17 item 25), and importing a proof object into a statement is precisely what produced the normalization defect of Theorem 13. Its definition must carry $\gamma$ in the exponent: $\propto e^{\gamma P/D}$, not $e^{P/D}$ (§17 item 30).
-3. **Which limit** must be said. Raising $\Delta P$ at fixed $D$ eventually makes $\Psi^*$ global and trivializes the claim; lowering $D$ at fixed landscape is the honest reading, and it still needs "global" from item 1.
-4. **Both hypothesis/conclusion pairs stated explicitly**, not one conditionally: ergodicity with a time-average conclusion, *and* mixing with a pointwise-in-$t$ conclusion. "Strengthen to mixing if the pointwise form is kept" leaves §17 item 29's mismatch alive in prose.
-5. **Refutation target named in advance**: the three-state path above. A replacement that survives the two-state chain but not the three-state path has fixed the symptom.
+*Hypotheses*: $\text{above}(\theta)$ (declared stub, Problem 30); $\Psi^*$ a nondegenerate local maximum of $P(\cdot;\theta)$ of carrier-class type (declared stub, Problem 30); the process has a **unique invariant probability measure**, named $\rho_\infty$ — this hypothesis *is* $\rho_\infty$'s definition here; the marginal laws are probability measures.
+
+*Conclusion*: for every initial condition $\Psi_0 \in \mathcal{X}$, almost surely over the noise,
+
+$$\lim_{t \to \infty} \frac{1}{t}\int_0^t \mathbf{1}[\Psi_s \in \text{basin}(\Psi^*)]\, ds \ =\ \rho_\infty(\text{basin}(\Psi^*)).$$
+
+The limit exists — Birkhoff, not a $\liminf$ bound. The almost-sure scope is over the noise, per $\Psi_0$; no uniformity in $\Psi_0$ is claimed.
+
+**Part B — mixing, pointwise.**
+
+*Hypotheses*: as Part A, with the ergodicity hypothesis replaced by **mixing**: for every $\Psi_0$, the marginal law of $\Psi_t$ started at $\Psi_0$ converges setwise to $\rho_\infty$.
+
+*Conclusion*: for every initial condition $\Psi_0 \in \mathcal{X}$,
+
+$$\lim_{t \to \infty} \Pr\nolimits_{\Psi_0}[\Psi_t \in \text{basin}(\Psi^*)] \ =\ \rho_\infty(\text{basin}(\Psi^*)).$$
+
+Equality, not a bound: mixing makes the limit exist, and stating $\liminf \geq$ under the stronger hypothesis would hide that.
+
+**Part C — the small-noise limit, a separate proposition.**
+
+*Setting*: the landscape is fixed — $P$, $\theta$, $\gamma$ fixed — and a family of processes is indexed by $D > 0$, each satisfying Part A's hypotheses, with invariant measures $\rho_\infty^{(D)}$.
+
+*Additional hypothesis, and it is a hypothesis about the dynamics rather than a consequence of ergodicity*: $\rho_\infty^{(D)}$ has density proportional to $e^{\gamma P(\cdot\,;\theta)/D}$ with respect to a fixed reference measure on $\mathcal{X}$. This holds for reversible gradient-plus-isotropic-noise dynamics — the SDE of hypothesis (ii) — and not for an arbitrary ergodic process. It is where $\gamma$ enters, and it must be assumed, not inherited.
+
+*Additional hypothesis*: let $G$ be the set of global maxima of $P(\cdot;\theta)$, assumed finite, with each element nondegenerate (the Laplace-method conditions).
+
+*Conclusion*:
+
+$$\forall\, \epsilon > 0\ \ \exists\, D_0 > 0\ \ \forall\, D < D_0: \quad \rho_\infty^{(D)}\Big(\bigcup_{\Psi \in G} \text{basin}(\Psi)\Big) > 1 - \epsilon \quad\text{and}\quad \rho_\infty^{(D)}(\text{basin}(\Psi')) < \epsilon$$
+
+for every local maximum $\Psi' \notin G$.
+
+*Corollary*, under the **additional** hypothesis $G = \{\Psi^*\}$: $\rho_\infty^{(D)}(\text{basin}(\Psi^*)) \to 1$ as $D \to 0$. Uniqueness of the global maximum is a hypothesis of this corollary and of nothing else.
+
+**On $\Delta P$ — dropped, and the reason recorded.** The original's basin depth $\Delta P > 0$ appears in none of Parts A, B or C, and it is dropped rather than carried. It did no work in the original conclusion and does none here: a non-global local maximum's mass goes to zero *regardless of its depth*, and the global basins' mass goes to one regardless of theirs. Its only candidate role was Kramers' residence time, which no conclusion above uses, since all three are stated in stationary mass rather than in escape times. Morse's contribution — that a nondegenerate critical point is isolated and bounds a basin of finite measure — is a condition on $\Psi^*$ and $\text{basin}$, already carried by the nondegeneracy hypothesis, and needs no depth parameter. If a later version restores $\Delta P$ it must give it a display to appear in.
 
 **And the consequence to record when a fixed version lands**: with "global" added, recipe inevitability becomes a *sharper* claim than the original, not a weaker one — at low noise a substrate converges on the **deepest** carrier basin, and merely local recipes are transient. That is a prediction the original statement never made, and it is testable in a way "inevitable" was not.
 
-**Implication, as proposed (not yet tested)**: this remains RE's strongest necessity result, but its content is a *limit* claim rather than an unconditional one, and the limit holds only for a global maximum at low noise. Above the threshold, the carrier-class recipe is occupied with probability bounded below by its stationary mass; that mass approaches certainty as noise falls **only if $\Psi^*$ is the deepest basin available**, and tends to zero otherwise. "Inevitable" is correct in the low-noise limit and an over-claim outside it. This still strengthens Conjecture 4 from possibility to quantified convergence, and still grounds the "trajectory convergent" claim of ch3 §3.6 in established theorems — but the grounding is asymptotic, and the earlier phrasing asserted more than Morse, Birkhoff and Kramers deliver.
+**Implication, as written against the specification (not yet enumerated)**: this remains RE's strongest necessity result, but its content is now three claims of different strengths rather than one. Parts A and B say only that a basin is occupied at its stationary mass — a *quantified* statement with no inevitability in it at any noise level. Part C is where necessity lives, and what it makes inevitable is the **union of the deepest basins**, not any one of them: at low noise a substrate is found in some globally-deepest carrier basin with probability approaching one, while every merely-local basin empties. Only under the corollary's extra hypothesis — that the deepest basin is unique — does this become a claim about *the* recipe in the singular. Where several carrier recipes are equally deep the framework predicts a split, not a winner, and the original phrasing had no way to say that. This still strengthens Conjecture 4 from possibility to quantified convergence and still grounds the "trajectory convergent" claim of ch3 §3.6 — but the grounding is asymptotic in the noise, it concerns a union rather than a point, and the original asserted more than Morse, Birkhoff and Kramers deliver.
 
 **Implication (original, superseded)**: This is RE's strongest necessity result. Above the substrate-parameter threshold $\theta_c$, **the carrier-class recipe is inevitable** — not merely possible. Any ergodic recursive substrate with sufficient time will discover and hold the recipe. This strengthens Conjecture 4 ($\Phi_\infty$ existence) from possibility to provable convergence in expectation, and grounds the "trajectory convergent" claim of ch3 §3.6 in established theorems rather than soft argument.
 
