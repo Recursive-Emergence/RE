@@ -3846,3 +3846,77 @@ end RExi
     first transcription, Theorem 14 the faithful one. Lean's own type for
     `Theorem7_faithful` settled it. -/
 
+/-! ## 32. Target (xii) — PRE-REGISTRATION: Problem 26, the bridging law
+
+    Drafted FROM THE FILE'S CLOSURE, ruled by the reviewer (2026-09-10), and
+    committed before any code. From here on, pre-registrations are drafted this
+    way: from the record's dependency graph, not from recall of the exchange.
+
+    ENUMERATION, at kernel-term level. The file was compiled to a module, and a
+    meta command walked the constants each theorem's TYPE and PROOF actually
+    contain, transitively, classifying each statement after unfolding
+    definitions. 236 theorems; 14 reach the aggregation family
+    {`Joined.induced`, `Aggregator`, `Joined.clearsAt`}: §13's `S_ex_holds`,
+    `S_all_holds`, `G_holds` (EXISTENTIAL), `A_fails`, `D_fails` (REFUTATION),
+    `clears_false`, `qfalse_agrees`; and §29's seven legal versions. None from
+    §8, none from §27, none elsewhere.
+
+    FINDING — ZERO theorems reach `Lattice.P`. Definition 1's emergence
+    potential, as the frame carries it, has never been the subject of a theorem.
+    Whatever (xii-a) proves about it is the first.
+
+    FINDING, AND A PRACTICE. The enumeration was first attempted by a regex over
+    the source. It returned 85 dependents — polluted by §12's single-letter
+    constants `A`, `D`, `G` matching every bound variable of the same name,
+    `∀ A B` inside `Substrate` included — and read existentials hidden behind
+    definitions as universals. It was discarded before use. From now on,
+    enumerations over the record are done at kernel-term level. The fifth instance
+    of the surface-text pattern, and the first caught before it fed anything.
+
+    MECHANISM. None of the 14 uses a property of any aggregator: `S_all` ranges
+    over every aggregator; `S_ex`, `A` and `G` use a constant aggregator that
+    ignores its arguments. Their failures are Theorem 10's.
+
+    THE SPLIT, as ruled. (xii-b) partiality-below: all 14 results belong here.
+    BLOCKED on `CostAxioms`, Theorem 10's declared debt — recorded, not
+    attempted, not counted against any bridging law. (xii-a) the bridging law
+    proper: no existing result; probed below. §8's vocabulary clause: no formal
+    referent; Open Problem 33, no probe.
+
+    (xii-a). Candidate: the ρ-weighted conditional expectation, CROSS-MULTIPLIED
+    as ruled, so that only multiplication is needed:
+      C26(x) :  Defined x → P(x) · ρ(fiber x) = Σ_{s ∈ fiber x} ρ{s} · Psub(s)
+    over a legal joined signature with finitely many states. Representation
+    items, logged as they arrive: R1 multiplication on values, with laws only as
+    a named theorem needs them — the first candidate law, `mul a zero = zero`, is
+    what makes the form hold trivially on zero-mass fibers; R2 a finite sum by
+    explicit enumeration; R3 no division; R4 point masses from ρ. CONSEQUENCE of
+    R3, stated: the cross-multiplied form agrees with the divided one exactly on
+    positive-mass fibers and says NOTHING on zero-mass fibers — which is why g2 is
+    load-bearing.
+
+    GUARDS. g1: legal witness — A2-conforming, ρ a measure. g2: at least one
+    defined x of positive fiber mass. g3′, tightened by the ruling: the
+    satisfying and refuting witnesses share ALL lattice data — layer, lattice, R,
+    ΔH, S, the lattice's multiplication — and differ ONLY on the substrate side:
+    states, Psub, ρ, formulable. Anti-cheat on g3′: the refuting substrate is
+    legal and has positive fiber mass at the same defined x, so the failure is a
+    mismatch of values and not a zero-mass trivialization. g4: S nonzero at the
+    defined points. g5: the lattice side is literally `Lattice.P` —
+    Definition 1's form, not a function that happens to equal it.
+
+    THE CEILING, pre-registered. Ruled: do NOT stub R and ΔH, since that would
+    invent manuscript content. R (Definition 2) and ΔH (Definition 4) have no
+    referents, so the most (A1) can honestly give is CONSISTENCY PLUS
+    SUBSTRATE-DISCRIMINATION UNDER FIXED LAYER DATA: with the layer held fixed,
+    C26 accepts some substrates and rejects others under the same R·ΔH. Content
+    about R and ΔH themselves stays blocked on their referents — a further entry.
+
+    OUTCOMES. (A1), read under g3′: satisfiable non-vacuously, and refutable with
+    all lattice data held fixed. (A2): satisfiable only vacuously. (A3):
+    unsatisfiable on legal witnesses — a manuscript decision.
+
+    PRIORS. (A1), mine and the reviewer's — agreement, which earns extra
+    distrust. The reviewer names g5 as the guard likeliest to bite: "literally
+    Definition 1's form" tends to become "a function that happens to equal it"
+    during transcription. -/
