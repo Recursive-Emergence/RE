@@ -4,7 +4,7 @@
 
 ## 0. Outcome in one paragraph
 
-**Proposed outcome: C2.** Res ⊬_poly rfn_CF is proved here, elementarily, and **without Theorem 3.12**. The pre-registered route, the translation lemma (b) plus the composition (c) through Atserias–Bonet, was not needed and was not run.
+**Outcome (reviewer's ruling): C2, C1-adjacent.** Theorems A and B are proved here; the method is Cook's RFN ⇒ p-simulation; the instances are unstated in the sources reached. Theorem B carries the SECONDARY tag on the Res(k) hierarchy until a primary is read. Res ⊬_poly rfn_CF is proved here, elementarily, and **without Theorem 3.12**. The pre-registered route, the translation lemma (b) plus the composition (c) through Atserias–Bonet, was not needed and was not run.
 
 The proof is a *reflection ⇒ simulation* lemma for Res(k), done by restriction and literal substitution. Its content is this: if Res(k) had short refutations of the negated reflection principle of a system T, then Res(k) would have short refutations of every CNF that T refutes shortly. Instantiated with the pigeonhole principle (Haken; Buss), it gives the target.
 
@@ -212,7 +212,7 @@ This refines A1's readout without adding an instance. Reflection of a stronger s
 |---|---|---|---|
 | mine (pre-reg) | 35 | 30 | 35 |
 | reviewer (accepted) | 35 | 25 | 40 |
-| proposed | | **C2** | |
+| ruled | | **C2, C1-adjacent** | |
 
 Both of us put the most weight on C3, and on Flag P specifically. The projection question did not bite, because the route that needs a projection of *proofs* (the translation t) was not needed. The only substitution is σ = constants ∪ σ_F. Flag E was dissolved by proving the result for every admissible encoding, not by matching one.
 
