@@ -74,6 +74,19 @@ So quantifier compression already works, and the gap stays polynomial in n.
 
 **Naming costs size** (Claim §(b)): the diagonal sentence is as large as what it excludes, in the referring system's own measure. Compression moves the question from "short P-proofs" to "short iP-proofs", and it arrives at Pudlák's finite-Gödel conjecture, a known frontier statement. This is consistent with the observation recorded in M3's pre-registration, "the obstruction concerns the typical, never the named", now in the form: a self-reference *names*, and naming is paid for in size.
 
+## Readout additions (on the reviewer's acceptance)
+
+**1. CON^N⁺ is escape-by-extension stated as a proof-complexity conjecture.**
+- Its hypothesis is that T proves Con_S; its conclusion is that S-proofs of Con_T(n̄) are not polynomially bounded.
+- So the layer above, a theory that settles S's consistency, is exactly the layer whose finitistic consistency S cannot reach cheaply.
+- On the name, Pudlák: *"If Conjecture CON^N were proven true, we would certainly advocate calling it the finite Gödel theorem."*
+- In the originating framework's terms, this is its prediction that a residue is settled one layer up, stated here once. *(The single interpretive line.)*
+
+**2. Compression and reuse meet at the proof layer.**
+- The verified theorem is Wang's: implicit resolution, meaning compression through circuits that describe proofs, "is p-equivalent to Extended Frege".
+- EF's defining power is its *extension* rule, which introduces abbreviations that are then reused.
+- *Reading, not theorem:* at the proof layer, succinct description and reusable abbreviation have the same strength. The verified content is the p-equivalence of the two systems. The identification of the two *operations* is an interpretation of it, the closest this programme has come to the Gödel-numbering intuition it started from.
+
 ## Calibration
 
 - **The reviewer:**
