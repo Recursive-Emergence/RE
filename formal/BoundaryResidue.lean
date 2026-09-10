@@ -10,7 +10,13 @@
   WHAT THIS IS NOT
     It proves nothing. There is no result here that was not already assumed.
     Every `sorry` marks a CONJECTURE — a statement the manuscript asserts and
-    has not derived — never an omitted routine step. If a `sorry` here is ever
+    has not derived — never an omitted routine step. This contract was BROKEN
+    between 2026-09-09's §4 and its correction: two `sorry` sites marked
+    statements that this file's own Theorem 10 refutes (§4.1). They now carry the
+    hypotheses the transpositions had silently dropped. The lesson is logged in
+    the manuscript's front matter as an instance of the register-boundary failure
+    mode: a transposition is prose asserting truth-preservation, and nobody had
+    checked it. If a `sorry` here is ever
     discharged, that is a mathematical event and belongs among the manuscript's
     numbered results, not in a refactor. (This originally read "belongs in M.8";
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
@@ -215,31 +221,126 @@ def Broad (L : Layer) (large : (L.Rep → Prop) → Prop) (p : L.Rep → Prop) :
 
 /-! ## 4. The two mechanisms, as instances of one frame -/
 
-/-- Diagonal (Theorem 8 (i)). Needs `encode` and nothing else. -/
-theorem diagonal_boundary_object (L : Layer) (Ω : Lattice L) :
+/-- Blum-flavoured cost axioms, as a STUB. Theorem 10 showed this frame prices
+    nothing: `cost` is a number unrelated to what `run` computes, so affordable
+    methods decide everything and no inaccessibility claim is provable. The debt
+    Theorem 10 calls in is a genuine machine-independent cost theory (Blum 1967);
+    naming it is not paying it. What is assumed here is only that the cost
+    measure is non-degenerate — enough to exclude the transparent layers that
+    refute the unhypothesised conjectures (§4.1), and deliberately NOT enough to
+    imply their conclusions. -/
+structure CostAxioms (L : Layer) : Prop where
+  /-- Costs are unbounded: no finite budget buys the whole method set. -/
+  unbounded : ∀ n : Nat, ∃ m : L.Method, n < L.cost m
+
+/-- The stub has content: unbounded costs make the affordable fragment proper. -/
+theorem CostAxioms.proper {L : Layer} (h : CostAxioms L) :
+    ∃ m : L.Method, ¬ L.available m := by
+  obtain ⟨m, hm⟩ := h.unbounded L.budget
+  exact ⟨m, fun hle => absurd hm (Nat.not_lt.mpr hle)⟩
+
+/-- Diagonal (Theorem 8 (i)), RESTATED under cost axioms. Needs `encode`, and
+    now also a cost measure that prices something. -/
+theorem diagonal_boundary_object (L : Layer) (Ω : Lattice L) (_hC : CostAxioms L) :
     ∃ x : L.Rep, ¬ Ω.Defined x ∧ L.undecidable (fun y => y = x) := by
-  sorry -- CONJECTURE: this is Theorem 8 (i) transposed. Unconditional in the
-        -- manuscript; the transposition to `Layer.undecidable` is not proved.
+  sorry -- CONJECTURE. Restated 2026-09-09; the unhypothesised form is FALSE and
+        -- is refuted in §4.1, so the earlier version of this `sorry` was marking
+        -- a falsehood rather than a conjecture.
         --
-        -- RAISED BAR (§10, Theorem 9). This statement conjoins `¬ Defined x`
-        -- with `undecidable (· = x)`, and those conjuncts are now PROVED
-        -- independent in the bare frame: undefinedness buys no inaccessibility.
-        -- So any discharge of this `sorry` must earn the second conjunct from
-        -- `encode` essentially. A proof routing through partiality alone is
-        -- impossible by theorem, not merely unsatisfying. Whatever eventually
-        -- proves this must use self-quotation and be seen to use it.
+        -- BAR, CORRECTED. Previously: "whatever proves this must use
+        -- self-quotation and be seen to use it." That was advice attached to a
+        -- false statement. Corrected form: as originally stated, refuted
+        -- (Corollary 10.1); as restated here, the bar stands — Theorem 9 proves
+        -- `¬ Defined x` and `undecidable (· = x)` independent, so a proof must
+        -- still earn the second conjunct from `encode`, and now additionally
+        -- from whatever `CostAxioms` is eventually strengthened into.
 
 /-- Opacity (Razborov–Rudich, transposed). Needs largeness AND a hardness
     hypothesis. The extra hypothesis is not decoration: it is what makes this
     mechanism conditional where the diagonal one is not (ch2 §2.11.3). -/
 theorem opacity_boundary_object (L : Layer) (Ω : Lattice L)
     (large : (L.Rep → Prop) → Prop)
-    (hard : ∃ x : L.Rep, L.incompressible x) :
+    (hard : ∃ x : L.Rep, L.incompressible x) (_hC : CostAxioms L) :
     ∀ p : L.Rep → Prop, Broad L large p →
       (∀ m : L.Method, L.available m → ¬ (∀ x, L.run m x = true ↔ p x)) := by
-  sorry -- CONJECTURE: Conjecture 7 (b), opacity route. The manuscript asserts
-        -- this; nothing here derives it. Note `hard` is a HYPOTHESIS, matching
-        -- "conditional on cryptographic hardness" in the instance table.
+  sorry -- CONJECTURE: Conjecture 7 (b), opacity route. Restated 2026-09-09 with
+        -- `CostAxioms`; the unhypothesised form is FALSE (Corollary 10.2), and
+        -- refuted by a layer where `hard` is SATISFIED rather than dodged — an
+        -- incompressible element coexisting with an affordable decider of a
+        -- Broad predicate. `hard` alone was never enough, because in a frame
+        -- that prices nothing, incompressibility of one point constrains no
+        -- method anywhere else.
+
+/-! ### 4.1 The unhypothesised transpositions are FALSE
+
+    Both statements above, WITHOUT `CostAxioms`, are refuted — by Theorem 10's
+    mechanism aimed one section earlier than §13 aimed it. These are corollaries
+    of Theorem 10 in force, and arguably its best statement: "affordability
+    constrains nothing", made concrete twice. -/
+
+/-- Transparent layer: one method per element, each deciding identity with it. -/
+def Lid : Layer where
+  Rep := Bool
+  Method := Bool
+  run := fun m x => decide (x = m)
+  encode := fun m => m
+  decode := fun x => some x
+  decode_encode := by intro m; rfl
+  cost := fun _ => 0
+  budget := 0
+
+def Omid : Lattice Lid where
+  Val := Unit
+  zero := ()
+  lt := fun _ _ => False
+  Defined := fun _ => False
+  S := fun _ => ()
+
+/-- COROLLARY 10.1. Every identity predicate in `Lid` has an affordable decider,
+    so no `x` satisfies `undecidable (· = x)`; and the conjecture quantifies over
+    ALL layers, so one transparent layer kills it. -/
+theorem diagonal_refuted_as_stated :
+    ¬ (∀ (L : Layer) (Ω : Lattice L),
+        ∃ x : L.Rep, ¬ Ω.Defined x ∧ L.undecidable (fun y => y = x)) := by
+  intro h
+  obtain ⟨x, _, hu⟩ := h Lid Omid
+  exact hu x (Nat.le_refl 0) (fun y => decide_eq_true_iff)
+
+/-- A layer with a genuinely incompressible element AND an affordable decider. -/
+def Lop : Layer where
+  Rep := Option Bool
+  Method := Unit
+  run := fun _ x => decide (x = some true)
+  encode := fun _ => some true
+  decode := fun x => match x with | some true => some () | _ => none
+  decode_encode := by intro m; cases m; rfl
+  cost := fun _ => 0
+  budget := 0
+
+def Omop : Lattice Lop where
+  Val := Unit
+  zero := ()
+  lt := fun _ _ => False
+  Defined := fun _ => False
+  S := fun _ => ()
+
+/-- `none` is incompressible: every affordable method returns false on it. So
+    `hard` is SATISFIED here, not dodged. -/
+theorem none_incompressible : Lop.incompressible none := by
+  intro m _; cases m; rfl
+
+/-- COROLLARY 10.2, and the sharper of the two. Opacity's hypothesis and the
+    negation of its conclusion coexist in a three-element layer: an
+    incompressible point, and an affordable method deciding a Broad predicate
+    exactly — including at that point. -/
+theorem opacity_refuted_as_stated :
+    ¬ (∀ (L : Layer) (Ω : Lattice L) (large : (L.Rep → Prop) → Prop),
+        (∃ x : L.Rep, L.incompressible x) →
+        ∀ p : L.Rep → Prop, Broad L large p →
+          (∀ m : L.Method, L.available m → ¬ (∀ x, L.run m x = true ↔ p x))) := by
+  intro h
+  exact h Lop Omop (fun _ => True) ⟨none, none_incompressible⟩
+    (fun x => x = some true) trivial () (Nat.le_refl 0) (fun x => decide_eq_true_iff)
 
 /-! ## 5. The convergence question the build was meant to answer
 
