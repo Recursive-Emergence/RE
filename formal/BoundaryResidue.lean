@@ -406,7 +406,6 @@ structure Bridge (L : Layer) (X : Substrate) where
     manuscript, and is Problem-21-shaped: a bridging law asserted informally by
     shared notation and not exhibited. Logged for M.10. -/
 
-end RE
 
 /-! ## 7. Problem 26's type-level half — PRE-REGISTRATION
 
@@ -459,3 +458,104 @@ end RE
     bridging law does. That would make outcome (I) true but much less
     informative than it sounds, and §8 must say so if it lands that way.
 -/
+
+/-! ## 8. The probe, run -/
+
+/-- The joined signature: substrate, layer, and the bridge between them. -/
+structure Joined where
+  L : Layer
+  X : Substrate
+  formulable : X.State → L.Rep → Prop
+  Om : Lattice L
+
+/-- The fiber of a formulable structure: the substrate states that formulate it.
+    This is `Π⁻¹(Φ)` of A2, as a predicate on states. -/
+def Joined.fiber (J : Joined) (x : J.L.Rep) : J.X.State → Prop :=
+  fun s => J.formulable s x
+
+/-- The aggregation operator, left ABSTRACT exactly as `large` is. It consumes
+    the fiber, the substrate potential, and the measure, and returns a value. No
+    property of it is assumed. -/
+abbrev Aggregator (J : Joined) : Type :=
+  (J.X.State → Prop) → (J.X.State → J.X.Val) → ((J.X.State → Prop) → J.X.Val) → J.X.Val
+
+/-- THE CANDIDATE. Induced potential as fiber aggregation against `ρ_∞`.
+    Note the domain: `J.L.Rep`, TOTAL — no `Defined` anywhere. -/
+def Joined.induced (J : Joined) (agg : Aggregator J) (x : J.L.Rep) : J.X.Val :=
+  agg (J.fiber x) J.X.P J.X.rho
+
+/-- POSITIVE WITNESS (anti-cheating, required by the pre-registration). The
+    induced potential IS formable at a point carrying a `Defined` proof, so the
+    aggregator stub is not vacuous. -/
+def Joined.induced_at_defined (J : Joined) (agg : Aggregator J)
+    (x : { y : J.L.Rep // J.Om.Defined y }) : J.X.Val :=
+  J.induced agg x.val
+
+/-- AND AT AN UNDEFINED POINT. `x` carries a proof that the lattice has NO
+    opinion, and the induced potential is formed at it anyway, for an arbitrary
+    aggregator. -/
+def Joined.induced_at_boundary (J : Joined) (agg : Aggregator J)
+    (x : J.L.Rep) (_h : ¬ J.Om.Defined x) : J.X.Val :=
+  J.induced agg x
+
+/-! ### 8.1 Readout — NEITHER pre-registered outcome, and that is the finding
+
+    Everything above compiles. `induced_at_defined` and `induced_at_boundary`
+    both form, for an ARBITRARY aggregator, so the anti-cheating witness is
+    satisfied: the stub is not vacuous, and formability at `Φ_G` is not an
+    artifact of an aggregator too weak to compute anything.
+
+    THE TEMPTING MISREADING IS (II). `induced_at_boundary` forms at a point
+    carrying `¬ Om.Defined x`, so it looks as though totality leaked and the
+    fiber-aggregation family is dead. It is NOT dead, and reporting (II) here
+    would be wrong. Re-read the constraint: it *requires* totality in the joined
+    signature. `Joined.induced` takes `J : Joined` — it is an expression IN the
+    joined signature. Its formability at `Φ_G` is the constraint's first clause
+    being satisfied, not its second clause being violated.
+
+    WHY (I) IS NOT ESTABLISHED EITHER. The second clause asks whether the
+    restriction to "the layer's own vocabulary" stays partial. Attempting that
+    restriction has two readings, and both are uninformative:
+
+      · Read as "an expression mentioning only `Layer` and `Lattice`": it cannot
+        form, but only because there is no way to produce a `Val` from nothing.
+        That is true of every function of the substrate whatsoever and says
+        nothing about `Defined`.
+      · Read as "formable somewhere in the joined signature": it forms, which is
+        the first clause and permitted.
+
+    THE ACTUAL FINDING, and it is the fourth instance of the named failure mode.
+    "Restriction to the layer's vocabulary" has no formal referent yet. The
+    pre-registered criterion was stated in prose, transcribed here, and turned
+    out not to be sharp enough to discriminate — the probe cannot fail it or pass
+    it, which is different from passing. Problem 26's type-level half is
+    therefore NOT discharged, and NOT refuted; it is underspecified, in exactly
+    the way Definition 16's membership, Problem 21's "encoding", and A2's fiber
+    were underspecified.
+
+    AND THE FRAME ALREADY CONTAINS THE FIX. "Layer-available" was given a formal
+    referent in §2, under exactly this pressure: `L.Method` with `L.run` and
+    `L.available`. So the sharpened second clause is not "no expression in the
+    layer's vocabulary evaluates P at `Φ_G`" but:
+
+      no method the layer can afford yields the induced potential's verdict at
+      `Φ_G` — i.e. the bridging law must not let the layer CONSTRUCT an
+      `m : L.Method` whose `run` tracks `Defined`.
+
+    That is testable, and it is not testable in this signature as written:
+    `L.run` returns `Bool` and knows nothing of `Val`, so no method can consume
+    an induced potential at all. Closing that gap means deciding how methods read
+    values — which is another representation choice, and the honest place to stop
+    this run rather than make it silently.
+
+    PRIOR, SCORED. I predicted (I). The prediction was wrong; neither outcome
+    landed. Worse — or better — the prior's own reasoning contained the
+    refutation: it observed that "an expression that routes only through
+    `Substrate.P` and the fiber never touches `Defined` at all", which is exactly
+    why `induced_at_boundary` forms. I stated the mechanism of the result and
+    then predicted against it. The deflation the prior worried about was also
+    real but landed elsewhere than expected: partiality does come from `S` alone,
+    and the induced potential never routes through `S`, so `Defined` was never in
+    a position to make anything ill-formed. -/
+
+end RE
