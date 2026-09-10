@@ -3820,5 +3820,29 @@ end RExi
     by Lean's own `#check`, it finds none, so the addendum stands. But a reading
     committed ahead of its evidence, and a check failing silently in a new way,
     both belong in the record: the second guard to misfire through a
-    text-matching shortcut, after the prefix-match of §22. -/
+    text-matching shortcut, after the prefix-match of §22.
+
+    THE INVARIANT OF THIS COMMIT, stated rather than implied, and checked
+    mechanically against 277b2cf: NO THEOREM STATEMENT'S TEXT CHANGED —
+    129 theorems compared, none differ, none removed. What changed:
+    witnesses (`X0`, `Xbad`, `XG`, `XU`, plus the `noncomputable` marks their
+    repair forced), and the PROOF of 1 theorem(s): `occBad_ergodic`. A
+    signature-extension commit is judged by that line. One precision the
+    textual check cannot see: statements that quantify over `Substrate` now
+    range over the NARROWER class of measure-substrates. A universal over that
+    class is weaker than before and a refutation of one is STRONGER; every such
+    statement in the file still holds, and Theorem 13's refutation is the one
+    whose content grew while its text did not.
+
+    ORIENTATION, noted. With `add` law-free, `rho_add` is oriented:
+    ρ(A ∪ B) = add (ρ A) (ρ B), with A first. Adding no law that nobody uses is
+    correct; but the first proof that needs ρ(A ∪ B) = ρ(B ∪ A) will need
+    commutativity, and it must arrive as a logged law with that theorem's name
+    attached, as the (xi) pre-registration requires.
+
+    THE REVIEWER'S PRIOR, scored at the reviewer's request: WRONG. It expected
+    Theorem 13 to survive via Theorem 14, conflating two refuted statements
+    because both refute the same manuscript theorem — Theorem 13 refutes the
+    first transcription, Theorem 14 the faithful one. Lean's own type for
+    `Theorem7_faithful` settled it. -/
 
