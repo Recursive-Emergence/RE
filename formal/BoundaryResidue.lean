@@ -3668,3 +3668,35 @@ end REx
     (B) is not expected: the §13 proofs never read ρ, and Theorem 13's refutation
     reads only `one` and the occupation — a genuine point mass of 1 on a scale
     where `one` is 10 still breaks normalization. -/
+
+/-! ## 30.1 Pre-registration addendum — the reviewer's amended guard, and Theorem 13
+
+    Committed after §30 and before any run lands. Two items from the reviewer and
+    one reading of mine, all recorded before the result is known.
+
+    AMENDED GUARD (c), the reviewer's, replacing the one §30 declared a deviation
+    from. Every existing theorem compiles, either unchanged or against a frozen
+    copy of the unamended structure; and every NUMBERED result established on a
+    witness with an illegal ρ is either re-established on a legal witness or
+    explicitly relabeled as holding over the unamended structure only. By the
+    witness-legality lemma (§29.1), only existentials and refutations need
+    checking: Theorem 10 (§13), Theorem 13 (§16), and whatever else the closure
+    finds.
+
+    THE REVIEWER'S EXPECTED ANSWER FOR THEOREM 13, verbatim in substance.
+    Theorem 14's two-state chain also refuted Theorem 7's original statement,
+    with a genuine measure ρ = (½, ½). So even if `Xbad` cannot be repaired, the
+    refutation survives legality via Theorem 14, and Theorem 13 reads "refuted
+    over the unamended structure, and independently by a legal witness".
+
+    MY READING, recorded as a prior against that expectation. Theorems 13 and 14
+    refute DIFFERENT statements. Theorem 13 refutes the first TRANSCRIPTION:
+    `recipe_inevitability_refuted` quantifies over `Substrate`, with `Ergodic`
+    standing for Birkhoff's conclusion. Theorem 14 refutes Theorem 7 AS STATED,
+    faithfully transcribed as `Theorem7_faithful`, whose signature builds no
+    `Substrate`. So Theorem 14 cannot stand in for Theorem 13, and "survives via
+    Theorem 14" is not available. What I expect instead: Theorem 13
+    re-establishes DIRECTLY, because `Xbad` repairs with a genuine point mass of
+    1 on a scale where `one` is 10 — still a normalization failure, which is all
+    Theorem 13's refutation reads. And Theorem 14 is untouched by (xi)
+    altogether, having no `Substrate` to amend. -/
