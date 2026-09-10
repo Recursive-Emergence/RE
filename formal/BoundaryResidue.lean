@@ -348,7 +348,11 @@ def Broad (L : Layer) (large : (L.Rep → Prop) → Prop) (p : L.Rep → Prop) :
     naming it is not paying it. What is assumed here is only that the cost
     measure is non-degenerate — enough to exclude the transparent layers that
     refute the unhypothesised conjectures (§4.1), and deliberately NOT enough to
-    imply their conclusions. -/
+    imply their conclusions.
+
+    CLASSIFIED 2026-09-10: a manuscript decision, not a transcription item.
+    What cost prices is Open Problem 35; Blum's axioms are one of the three
+    readings recorded there (§33.2). -/
 structure CostAxioms (L : Layer) : Prop where
   /-- Costs are unbounded: no finite budget buys the whole method set. -/
   unbounded : ∀ n : Nat, ∃ m : L.Method, n < L.cost m
@@ -4121,3 +4125,60 @@ end RExii
     are one lesson — the order-of-operations entry recorded at (xi) — now at two
     instances, and folded into that entry rather than opened anew. -/
 
+/-! ### 33.2 Classification of the remaining blockers — ruled (reviewer, 2026-09-10)
+
+    DRAFTED FROM A KERNEL-TERM CLOSURE over the compiled module, statement-level
+    (theorem types, definitions unfolded, structures traced to their fields) and
+    proof-only separately. `Layer.cost` sits under 27 statements, 0 proof-only,
+    three of them frame definitions: `Layer.undecidable`, `Layer.incompressible`
+    and `RR_shape`, all through `available`. `CostAxioms`: 7, all closed.
+    `Blum2`: 2. `sorryAx`: exactly `REamend.general_partA` and `general_partB`,
+    whose statements are cost-free. No open statement in the record consumes cost.
+
+    RULING. `CostAxioms`, item (xii-b): a MANUSCRIPT DECISION at a fork, and a
+    transcription only after it; the reviewer's prior (T) was wrong. Problem 33: a
+    manuscript decision, as recorded. Problem 34: a manuscript decision, then an
+    entropy-representation bill (Mathlib, or an axiomatized stand-in). The three
+    are consolidated as Open Problem 35, "what does cost price: a structure or a
+    computation?", and 33 and 34 point at it. The (xii-b) block recorded in §32
+    resolves here: still blocked, now on a named question rather than a stub.
+
+    A CORRECTION TO MY OWN DRAFT, made before it reached the manuscript. I put the
+    fork as per-method price against per-input measure, and the handoff shape
+    inherited it as "Blum, what opacity needs". The file does not say that:
+    `RR_shape` takes hardness as a parameter, and cost enters opacity only through
+    `constructiveFor`, a per-method notion. Razborov–Rudich's own cost is circuit
+    size — priced once per method, like `Layer.cost`, but tied to what methods
+    compute. The axis is tied-or-untied, not per-method-or-per-input, and Problem
+    35 records three readings: (a) untied, Definition 2's C; (b) Blum, per input,
+    with the replace and beside transcriptions and their prices; (c) per method
+    and tied, circuit-style, needing no re-typing and NOT checked against
+    Theorem 10's witness.
+
+    A PREMISE OF THE HANDOFF SHAPE, corrected from the file. "Every remaining
+    derivation routes through cost" is false as stated: `general_partA` and
+    `general_partB` are open and cost-free, waiting on a Doeblin or
+    Perron–Frobenius proof, not on a decision. The handoff names them as the
+    exception.
+
+    THE SIXTH SURFACE-TEXT INSTANCE, in the fixed practice itself. The first
+    closure run for this classification reported ZERO dependents of the cost
+    field. It looked constants up by bare name (`Layer.cost`), while the frame's
+    live in namespace `RE`; `sorryAx`, a root name, resolved, which made the run
+    look healthy. A positive control caught it before the number was used:
+    `Layer.available` is literally `L.cost m ≤ L.budget`, so it had to appear.
+    Kernel-level enumeration takes the text out of the answer, not out of the
+    query; closures now carry a positive control.
+
+    THE REVIEWER'S PREMISE TALLY, recorded at the reviewer's request so its priors
+    can be weighed. Premises about what the record contained, wrong, from target
+    (x) to here: FOUR. (1) §6–§8 named as holding `J0`'s consequences, where the
+    closure found §13 (§28, the declared deviation and its ruling). (2) §8
+    named as having concluded that the aggregation family fails, where the
+    closure found nothing from §8 (§32). (3) `CostAxioms` taken as a
+    transcription item (above). (4) "Every remaining derivation routes through
+    cost" (above). The reviewer's count was three; the fourth arrived in the same
+    message. Outcome priors scored wrong in the record, for the same purpose:
+    27′ (§13.1), (xi) (§31.1), and Theorem 13 via 14 (§31.1). Mine, over
+    the same stretch: one premise wrong (the per-input framing above). My process
+    slips are counted in the surface-text and order-of-operations entries. -/
