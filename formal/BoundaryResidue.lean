@@ -239,37 +239,55 @@ theorem CostAxioms.proper {L : Layer} (h : CostAxioms L) :
   obtain ⟨m, hm⟩ := h.unbounded L.budget
   exact ⟨m, fun hle => absurd hm (Nat.not_lt.mpr hle)⟩
 
-/-- Diagonal (Theorem 8 (i)), RESTATED under cost axioms. Needs `encode`, and
-    now also a cost measure that prices something. -/
-theorem diagonal_boundary_object (L : Layer) (Ω : Lattice L) (_hC : CostAxioms L) :
-    ∃ x : L.Rep, ¬ Ω.Defined x ∧ L.undecidable (fun y => y = x) := by
-  sorry -- CONJECTURE. Restated 2026-09-09; the unhypothesised form is FALSE and
-        -- is refuted in §4.1, so the earlier version of this `sorry` was marking
-        -- a falsehood rather than a conjecture.
-        --
-        -- BAR, CORRECTED. Previously: "whatever proves this must use
-        -- self-quotation and be seen to use it." That was advice attached to a
-        -- false statement. Corrected form: as originally stated, refuted
-        -- (Corollary 10.1); as restated here, the bar stands — Theorem 9 proves
-        -- `¬ Defined x` and `undecidable (· = x)` independent, so a proof must
-        -- still earn the second conjunct from `encode`, and now additionally
-        -- from whatever `CostAxioms` is eventually strengthened into.
+/-! ### The diagonal arm, settled
 
-/-- Opacity (Razborov–Rudich, transposed). Needs largeness AND a hardness
-    hypothesis. The extra hypothesis is not decoration: it is what makes this
-    mechanism conditional where the diagonal one is not (ch2 §2.11.3). -/
-theorem opacity_boundary_object (L : Layer) (Ω : Lattice L)
-    (large : (L.Rep → Prop) → Prop)
-    (hard : ∃ x : L.Rep, L.incompressible x) (_hC : CostAxioms L) :
-    ∀ p : L.Rep → Prop, Broad L large p →
-      (∀ m : L.Method, L.available m → ¬ (∀ x, L.run m x = true ↔ p x)) := by
-  sorry -- CONJECTURE: Conjecture 7 (b), opacity route. Restated 2026-09-09 with
-        -- `CostAxioms`; the unhypothesised form is FALSE (Corollary 10.2), and
-        -- refuted by a layer where `hard` is SATISFIED rather than dodged — an
-        -- incompressible element coexisting with an affordable decider of a
-        -- Broad predicate. `hard` alone was never enough, because in a frame
-        -- that prices nothing, incompressibility of one point constrains no
-        -- method anywhere else.
+    The sorry'd restatement that stood here is GONE, and not because it was
+    proved: Corollary 10.3 refutes it. `CostAxioms` was aimed at the hypothesis
+    when the fault was in the PREDICATE — identity-with-a-point is cheap in every
+    complexity theory, so no cost axiom could ever have rescued it. The correct
+    transposition is `diagonal_self_application` (§15; Theorem 11 in M.4): proved,
+    axiom-free, for EVERY method rather than only affordable ones, and using
+    `decode_encode` essentially. The diagonal mechanism turns out to be cost-free
+    in the literal sense — affordability never entered. -/
+
+/-! ### The opacity arm, DEMOTED — not restated
+
+    The sorry'd opacity conjecture is gone too, and is NOT replaced by a version
+    with the missing usefulness conjunct bolted on. That would repeat the
+    diagonal's error one conjunct over: fixing a statement whose `large` has no
+    content and whose `hard` is point-incompressibility, which
+    `blum2_kills_incompressible` shows is not Razborov–Rudich hardness at all. A
+    `sorry` there would mark a SHAPE, not a belief, breaking the header contract
+    the previous batch repaired.
+
+    What IS committed is the shape, as a `def` asserting nothing — the device §12
+    established for fixing a statement without believing it.
+
+    BOUNDARY, and it must travel with the demotion: Razborov–Rudich is untouched.
+    It is a theorem in the literature and Conjecture 7 (b) rests on it exactly as
+    before. What failed, twice, was this frame's transcription — the logical shape
+    (§15.1 clause 5) and the hardness notion (clause 4). A reader who takes this
+    as the framework retracting the opacity mechanism has read a demotion of a
+    transcription as a demotion of the mathematics. -/
+
+/-- An affordable method decides `p`. The only RR ingredient with a referent. -/
+def constructiveFor (L : Layer) (p : L.Rep → Prop) : Prop :=
+  ∃ m : L.Method, L.available m ∧ ∀ x, L.run m x = true ↔ p x
+
+/-- The CORRECT Razborov–Rudich logical shape, committed and asserted of nothing:
+    `constructive ∧ large ⟹ ¬useful`. The frame's earlier transposition had
+    `large ⟹ ¬constructive`, which is not RR's conclusion and is false for the
+    trivial broad predicate.
+
+    `Large`, `Hard` and `Useful` are PARAMETERS. All three are measure-relative:
+    largeness is a measure on `Rep` (Problem 25's prerequisite), RR hardness is
+    indistinguishability of distributions rather than invisibility of a point,
+    and usefulness is defined relative to hardness. So the three placeholders
+    wait on ONE object. Opacity is not yet hostable in this frame; it becomes
+    hostable when that measure exists, and not before. -/
+def RR_shape (L : Layer)
+    (Large : (L.Rep → Prop) → Prop) (Hard : Prop) (Useful : (L.Rep → Prop) → Prop) : Prop :=
+  Hard → ∀ p : L.Rep → Prop, constructiveFor L p → Large p → ¬ Useful p
 
 /-! ### 4.1 The unhypothesised transpositions are FALSE
 
@@ -674,7 +692,13 @@ def Joined.induced_at_boundary (J : Joined) (agg : Aggregator J)
     the other. Pre-registration is what makes that visible afterward instead of
     laundering it into "as expected". The file's record now holds one confirmed
     prior (§6, discriminator), one wrong prior (here), and — the same one — a
-    prior refuted by its own stated mechanism. That distribution is healthier
+    prior refuted by its own stated mechanism. §15 clause 4 adds a fourth category:
+    PREDICTION WRONG, CONCLUSION RIGHT, MECHANISM REPLACED — `Blum2` was predicted
+    idle and turned out lethal, to the wrong hardness notion, so the downstream
+    conclusion survived by a route nobody predicted. That is the category where a
+    correct conclusion would have been mis-credited to a false mechanism had the
+    mechanism not been pre-registered separately from the prediction. That
+    distribution is healthier
     than three confirmations would have been, and it is the reason none of these
     sections is allowed to edit its own pre-registration. -/
 

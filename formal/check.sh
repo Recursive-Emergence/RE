@@ -26,4 +26,4 @@ if grep -qE 'Classical\.choice|propext|Quot\.sound' "$AUDIT.out"; then
   echo "FAIL: classical axiom leaked into the frame — §2's invariant is broken." >&2
   exit 1
 fi
-echo "OK: frame is axiom-free; only §4's sorry sites are conjectural."
+echo "OK: frame is axiom-free; the remaining sorry marks a conjecture, not a debt."
