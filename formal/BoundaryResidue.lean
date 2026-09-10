@@ -53,11 +53,14 @@
     passes; it audits only the six frame definitions and is not the authority on
     `sorry` sites — this record is.
 
-    REPRODUCTION HISTORY. The peer reviewer reproduced 66c08d5 and then 247a19a
+    REPRODUCTION HISTORY. The peer reviewer reproduced three commits
     independently, each byte-exact from `git show`, in a separate directory,
-    each matching the audit line for line — two machine runs, not readings. The
-    second run did more than reproduce: it REFUTED the two general statements
-    that 247a19a carried `sorry`'d (§22). This branch is owed a re-run.
+    each matching the audit line for line — three machine runs, not readings.
+    66c08d5: reproduced. 247a19a: reproduced, and then its two `sorry`'d general
+    statements REFUTED (§22). 9872874: reproduced, with the false `REgen`
+    statements confirmed unknown to Lean — and then a second witness supplied
+    against it, stochastic but not additive, which forces the `additive` field
+    that §22 left forced only by argument (§22.2). This commit is owed a re-run.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
@@ -81,8 +84,13 @@
       'REref.unamended_general_partA_false' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REref.unamended_general_partB_false' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REref.bad_is_finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REref2.stochastic_alone_insufficient_A' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REref2.stochastic_alone_insufficient_B' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REref2.stepBad2_not_additive' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REref2.bad2_is_finite_chainU' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.two_state_is_finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.bad_not_amended' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.bad2_not_amended' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.stepBad_additive' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
       'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
@@ -2616,6 +2624,136 @@ theorem unamended_general_partB_false :
 
 end REref
 
+/-! ## 22.2 Stochastic alone is not enough (second refutation, by the peer)
+
+    The §22 witness is additive, so §22 forced `stochastic` and nothing else. The
+    argument that `additive` is needed as well — `stochastic` constrains
+    `step x univ` but not `Σ_y step x {y}` — was right, and the peer turned it
+    into a witness against 9872874: the §22 kernel with `step x univ` corrected to
+    100. It is stochastic, positive and exact, `ρ = (50, 50)` is invariant, and
+    yet its singleton laws still sit at 25 and 75. Supplied by the peer, verified
+    here verbatim against the 9872874 blob before being appended, unchanged except
+    for docstrings. -/
+namespace REref2
+open Classical
+open REgen
+
+/-- The §22 kernel with `step x univ` corrected to 100: STOCHASTIC, but not
+    additive — the `false` row's singletons sum to 50 and the `true` row's to
+    150. -/
+noncomputable def stepBad2 : Bool → (Bool → Prop) → Nat :=
+  fun x B => if B true ∧ B false then 100
+    else (if x then 75 else 25) * ((if B true then 1 else 0) + (if B false then 1 else 0))
+
+theorem stepBad2_stochastic : ∀ x, stepBad2 x (fun _ => True) = 100 := by
+  intro x; simp [stepBad2]
+
+theorem stepBad2_not_additive :
+    ¬ (∀ (x : Bool) (B : Bool → Prop),
+        stepBad2 x B = ([true, false].map (fun y => if B y then stepBad2 x (fun z => z = y) else 0)).sum) := by
+  intro h
+  have := h false (fun _ => True)
+  simp [stepBad2] at this
+
+theorem law2_false : ∀ n : Nat, ∀ b : Bool,
+    RE.iterLaw [true, false] stepBad2 (n + 1) false (fun y => y = b) = 25 := by
+  intro n
+  induction n with
+  | zero => intro b; cases b <;> simp [RE.iterLaw, stepBad2]
+  | succ n ih =>
+    intro b
+    rw [RE.iterLaw]
+    simp only [List.map, List.sum_cons, List.sum_nil]
+    rw [ih true, ih false]
+    cases b <;> simp [stepBad2]
+
+theorem law2_true : ∀ n : Nat, ∀ b : Bool,
+    RE.iterLaw [true, false] stepBad2 (n + 1) true (fun y => y = b) = 75 := by
+  intro n
+  induction n with
+  | zero => intro b; cases b <;> simp [RE.iterLaw, stepBad2]
+  | succ n ih =>
+    intro b
+    rw [RE.iterLaw]
+    simp only [List.map, List.sum_cons, List.sum_nil]
+    rw [ih true, ih false]
+    cases b <;> simp [stepBad2]
+
+theorem stepBad2_exact : ExactKernel [true, false] stepBad2 := by
+  intro t start B
+  simp only [List.map, List.sum_cons, List.sum_nil, Nat.add_zero]
+  cases t with
+  | zero =>
+    cases start <;> simp [RE.iterLaw, stepBad2] <;>
+      by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2] <;>
+      first | decide | exact Nat.dvd_of_mod_eq_zero (by decide)
+  | succ n =>
+    cases start
+    · rw [law2_false, law2_false]; simp [stepBad2]
+      by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2] <;>
+        first | decide | exact Nat.dvd_of_mod_eq_zero (by decide)
+    · rw [law2_true, law2_true]; simp [stepBad2]
+      by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2] <;>
+        first | decide | exact Nat.dvd_of_mod_eq_zero (by decide)
+
+theorem bad2_is_finite_chainU : FiniteChainU [true, false] stepBad2 REref.rhoBad := by
+  refine ⟨?_, ?_, stepBad2_exact, ?_, ?_, ?_, ?_⟩
+  · intro x; cases x <;> simp
+  · simp
+  · intro x y; cases x <;> cases y <;> simp [stepBad2]
+  · intro B; simp [REref.rhoBad]
+  · simp [REref.rhoBad]
+  · intro B; simp [stepBad2, REref.rhoBad]
+    by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2]
+
+theorem partB_refuted2 :
+    ¬ (∀ (start : Bool) (basin : Bool → Prop),
+        PartB_concl [true, false] stepBad2 REref.rhoBad start basin) := by
+  intro h
+  obtain ⟨T0, hT⟩ := h false (fun y => y = false) 1 (by omega)
+  have := (hT (T0 + 1) (by omega)).2
+  rw [law2_false] at this
+  simp [REref.rhoBad] at this
+
+theorem psum2 : ∀ n : Nat,
+    RE4.psum (fun s => RE.iterLaw [true, false] stepBad2 s false (fun y => y = false)) (n + 1)
+      = 25 * n + 100 := by
+  intro n
+  induction n with
+  | zero => simp [RE4.psum, RE.iterLaw]
+  | succ n ih =>
+    show RE4.psum _ (n + 1) + _ = _
+    rw [ih]; dsimp only; rw [law2_false]; omega
+
+theorem partA_refuted2 :
+    ¬ (∀ (start : Bool) (basin : Bool → Prop),
+        PartA_concl [true, false] stepBad2 REref.rhoBad start basin) := by
+  intro h
+  obtain ⟨T0, hT⟩ := h false (fun y => y = false) 1 (by omega)
+  have := (hT (T0 + 4) (by omega)).1
+  have e := psum2 (T0 + 3)
+  simp only [show T0 + 3 + 1 = T0 + 4 from rfl] at e
+  rw [e] at this
+  simp [REref.rhoBad] at this
+  omega
+
+/-- `FiniteChainU` plus `stochastic` alone does NOT give Part B: `additive` is
+    forced. -/
+theorem stochastic_alone_insufficient_B :
+    ¬ (∀ (X : Type) (univ : List X) (step : X → (X → Prop) → Nat) (ρ : (X → Prop) → Nat),
+        FiniteChainU univ step ρ → (∀ x, step x (fun _ => True) = 100) →
+        ∀ start basin, PartB_concl univ step ρ start basin) :=
+  fun h => partB_refuted2 (h Bool _ _ _ bad2_is_finite_chainU stepBad2_stochastic)
+
+/-- Same for Part A. -/
+theorem stochastic_alone_insufficient_A :
+    ¬ (∀ (X : Type) (univ : List X) (step : X → (X → Prop) → Nat) (ρ : (X → Prop) → Nat),
+        FiniteChainU univ step ρ → (∀ x, step x (fun _ => True) = 100) →
+        ∀ start basin, PartA_concl univ step ρ start basin) :=
+  fun h => partA_refuted2 (h Bool _ _ _ bad2_is_finite_chainU stepBad2_stochastic)
+
+end REref2
+
 /-! ## 23. The amendment: the kernel is a kernel
 
     Two fields, both logged. `stochastic` is `total` stated for every row of
@@ -2630,13 +2768,23 @@ end REref
     fourth narrowing alongside finite space, exactness and strict positivity:
     they are the hypothesis the transcription dropped.
 
-    WHICH FIELD THE REFUTATION FORCES, stated precisely. The peer's witness FAILS
-    `stochastic` (`stepBad_not_stochastic`) — the compile-decidable sign the fix
-    is aimed correctly. It SATISFIES `additive` (`stepBad_additive`). So §22
-    forces `stochastic` and does not force `additive`. `additive` is justified by
-    an argument rather than a witness — without it, `stochastic` constrains
-    `step x univ` but not `Σ_y step x {y}`, so the single-point transition matrix
-    need not be stochastic — and no witness in the record forces it on its own. -/
+    BOTH FIELDS ARE FORCED, each by its own witness. §22's kernel FAILS
+    `stochastic` (`stepBad_not_stochastic`) and satisfies `additive`
+    (`stepBad_additive`), so it forces `stochastic`. §22.2's kernel is stochastic
+    and FAILS `additive` (`stepBad2_not_additive`), and still refutes Parts A and
+    B (`stochastic_alone_insufficient_A`, `_B`), so it forces `additive`. Each
+    witness fails the amended structure at exactly its own field
+    (`bad_not_amended`, `bad2_not_amended`) — two compile-decidable checks that
+    the fix is aimed where it has to be. An earlier version of this paragraph
+    said no witness forced `additive`; it was true then and is superseded.
+
+    TARGET (ix), ACCEPTED, FOR AFTER MERGE. The amended statements' only proved
+    instance is the two-state chain they were built around. Wanted: a confirming
+    instance that is not — three states, positive, stochastic, additive, exact,
+    rows unequal. Recorded in advance: `ExactKernel` confines such chains to ones
+    that reach stationarity in finitely many steps — on three states, a rank-one
+    part plus a nilpotent deviation — so the confirmation will be weaker than a
+    generic one, and must say so when it lands. -/
 namespace REamend
 open Classical
 open RE RE4 REi REgen REref
@@ -2680,10 +2828,16 @@ theorem stepBad_not_stochastic : ¬ (∀ x, stepBad x (fun _ => True) = 100) := 
 theorem bad_not_amended : ¬ FiniteChain [true, false] stepBad rhoBad :=
   fun h => stepBad_not_stochastic h.stochastic
 
-/-- …but it SATISFIES `additive`, so §22 forces `stochastic` only. -/
+/-- …but it SATISFIES `additive`, so §22 forces `stochastic` only; `additive`
+    is forced by §22.2. -/
 theorem stepBad_additive : ∀ (x : Bool) (B : Bool → Prop),
     stepBad x B = ([true, false].map (fun y => if B y then stepBad x (fun z => z = y) else 0)).sum := by
   intro x B
   cases x <;> by_cases h1 : B true <;> by_cases h2 : B false <;> simp [stepBad, h1, h2]
+
+/-- The §22.2 witness FAILS the amendment too — at `additive`. The mirror of
+    `bad_not_amended`, and the second compile-decidable check on the fix. -/
+theorem bad2_not_amended : ¬ FiniteChain [true, false] REref2.stepBad2 REref.rhoBad :=
+  fun h => REref2.stepBad2_not_additive h.additive
 
 end REamend
