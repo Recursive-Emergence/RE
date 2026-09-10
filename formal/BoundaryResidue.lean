@@ -4248,4 +4248,36 @@ end RExii
           uses, found by kernel-term closure with a positive control.
 
     PRIORS (mine): D1 70%, D4 20%, D2 8%, D3 2%. The step likeliest to bite is
-    L4: absolute values over list sums, in Int, without Mathlib. -/
+    L4: absolute values over list sums, in Int, without Mathlib.
+
+    RULING (reviewer, 2026-09-10), recorded before any code. The pre-registration
+    and the label are accepted, and the cost probe becomes (xiv). Additions:
+      · D4 MITIGATION, the first route to try: no Int and no absolute values.
+        D_t := Σ_x (a_t(x) ∸ r(x)), the positive part, which is half the L1
+        distance since Σ a_t = Σ r = 100. Dobrushin then goes through in Nat
+        with ∸: 100·D_{t+1} ≤ (100 − m)·D_t, with D_0 ≤ 100.
+      · L3 is to be a standalone named theorem, "invariance is exact under
+        truncation". Its readout must say that the direction k_y ≥ 0 uses the
+        invariant field's division being floor division, which Nat's is.
+      · g7: pre-registered field usage. All seven `FiniteChainU` fields plus
+        `stochastic` and `additive`: nine of nine. Any field missing from the
+        proof's kernel closure is a finding. Positive control: the closure of
+        `two_state_is_finite_chain`.
+      · If D1: the compilation record says in one sentence what a zero sorry
+        count does and does not mean.
+    REVIEWER'S PRIOR: D1 60%, D4 25%, D2 10%, D3 5%. It watches L3 for a subtle
+    hole rather than L4, and A's bookkeeping for an off-by-one.
+
+    DECLARED BEFORE CODE, two choices of mine inside the ruling's route.
+      · The column minimum m_y is replaced by the lower bound 1 that `positive`
+        gives. This drops the list-minimum lemmas; the factor becomes
+        (100 − n)/100 with n = |univ| ≥ 1 (`start ∈ univ` by `complete`), so
+        100·D_{t+1} ≤ 99·D_t, and D_t = 0 for every t ≥ 100. B's T0 becomes 100,
+        and A's T0 becomes 10000.
+      · A CHECK ON THE RULING'S L1 NOTE. The ruling says L1 needs exactness at
+        every set, not just singletons. Reading the plan, `additive` reduces
+        every set to singletons before any division, so exactness at singletons
+        may suffice. Made compile-decidable rather than argued: the core lemmas
+        take a SINGLETON-exactness hypothesis, and `ExactKernel` is only
+        specialized into it. If that compiles, singletons suffice. If it cannot
+        be done, the ruling's note stands. Either way the readout reports which. -/
