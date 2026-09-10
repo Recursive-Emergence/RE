@@ -3411,3 +3411,49 @@ end REp25
     Razborov–Rudich's "at least a fixed fraction of total mass". Fraction-
     largeness needs a scale on `Val` the frame does not have; adding one is a
     representation item, not taken here. -/
+
+/-! ## 28. Target (x) — PRE-REGISTRATION: is any result an artifact of `J0`?
+
+    Outcome space by the peer reviewer; committed before the run. One DECLARED
+    DEVIATION, with its reason at the site, per the governance clause.
+
+    THE CONCERN. `J0` sets `formulable := fun _ _ => True`, violating A2 three
+    ways (§26). Every result derived from `J0` is suspect as an artifact of a
+    witness the manuscript rules out.
+
+    DECLARED DEVIATION: THE ENUMERATION. The reviewer's draft named §6–§8 — the
+    discriminator, the Problem 26 aggregation probe, and the type-level
+    partiality result feeding Problem 27 — as what was concluded from `J0`. The
+    file says otherwise. `J0` is defined in §13, and a transitive closure over
+    every declaration that references it, computed on the code with comments
+    stripped, finds exactly ten dependents, all in §13: `Qfalse`, `th0`, `agg0`,
+    `clears_false`, `qfalse_agrees`, and the five theorems `S_ex_holds`,
+    `S_all_holds`, `D_fails`, `A_fails`, `G_holds` — the whole evidence for
+    THEOREM 10. A second, raw search for `J0` in code outside §13, qualified or
+    bare, finds nothing. §6 (`Substrate`, `Bridge`), §8 (`Joined.induced` and
+    `induced_at_boundary`, generic over every `Joined`) and Theorem 9 (`L0` and
+    `Om0`, no `Joined` at all) reference no witness of `Joined`. So the targets
+    are the five §13 theorems, and the numbered result at stake is Theorem 10,
+    not the §6 discriminator. The draft is kept in spirit; its section pointers
+    are corrected because they would have re-checked results that cannot move.
+
+    WHY ONLY THESE CAN MOVE. Restricting to A2-conforming witnesses NARROWS the
+    class of `Joined`. A result quantified over every `Joined` survives any
+    narrowing. What can move is an EXISTENTIAL result or a REFUTATION OF A
+    UNIVERSAL — anything whose force came from exhibiting a witness, which may
+    be the illegal one. All five `J0` theorems are of that kind.
+
+    TARGETS. For each of the five: re-establish it restricted to legal witnesses
+    — `SingleValued ∧ Total ∧ Surjective`, over `L0` where the original requires
+    it — or show that it does not reproduce.
+
+    OUTCOMES. (S) all stand. (M) some move and are relabeled. (X) a numbered
+    result — here Theorem 10 — depended on the illegal witness and is withdrawn.
+
+    PRIORS. The reviewer's: most stand, with the §6 discriminator the likeliest to
+    move — its second half answered by the deviation, since §6 has no witness to
+    move. Mine: (S), because every `J0` proof runs through an aggregator or query
+    family that never reads `formulable` — the constant aggregator in `S_ex`, `A`
+    and `G`, and a query family reading the induced potential directly in
+    `S_all`. Mechanism stated beside the prediction, which this record says to
+    distrust. -/
