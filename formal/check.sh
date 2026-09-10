@@ -6,9 +6,12 @@
 # silently. What is NOT silent is the axiom report: anything touching
 # `Classical.propDecidable` pulls in [propext, Classical.choice, Quot.sound].
 #
-# So the invariant is: the six frame definitions report axiom-free, and only the
-# two conjectural theorems of §4 report sorryAx. Verified on Lean 4.15.0, bare
-# toolchain, no Mathlib. Not wired to CI; run it by hand after editing the file.
+# So the invariant is: the six frame definitions below report axiom-free. That
+# is ALL this script checks. It does not audit the rest of the file, where
+# classical choice enters deliberately through declared representation choices
+# (item 15 onward), and it does not count `sorry` sites — those are named in the
+# file's compilation record, which is the authority on them. Not wired to CI;
+# run it by hand after editing the file.
 set -e
 FILE="${1:-formal/BoundaryResidue.lean}"
 AUDIT=$(mktemp)
@@ -26,4 +29,4 @@ if grep -qE 'Classical\.choice|propext|Quot\.sound' "$AUDIT.out"; then
   echo "FAIL: classical axiom leaked into the frame — §2's invariant is broken." >&2
   exit 1
 fi
-echo "OK: frame is axiom-free, and the file now carries no sorry at all."
+echo "OK: the six frame definitions are axiom-free. (sorry sites: see the compilation record.)"

@@ -7,14 +7,17 @@
     A record of representation choices. Each choice is annotated with the open
     problem it decides. The payload is the annotations, not the theorems.
 
-  WHAT IT HAS BECOME (2026-09-09). It began as the above and is no longer only
-    that. It now proves thirteen things about the frame, holds two shapes
-    awaiting faithful content, and carries no `sorry`: the three transcriptions
-    it started with are gone, replaced by one proved theorem and two blocked
-    problems. It asserts nothing it has not proved. That state was reached by
-    REMOVING false statements as much as by proving true ones, and the contract
-    below was broken once and recorded before it was repaired. It is currently
-    kept.
+  WHAT IT HAS BECOME (updated at merge, 2026-09-10). It began as the above and
+    is no longer only that. It proves results about the frame and about the
+    manuscript's own theorems — among them a refutation of one of those
+    theorems as stated (Theorem 14) and of the unamended drafts of its
+    replacement — and it carries exactly two `sorry` sites, both general
+    statements the manuscript asserts by citation, each with its unamended
+    predecessor refuted and a proved instance in the same file. Between
+    2026-09-09 and this merge it carried none, a state reached by REMOVING false
+    statements; the two now present are the first to arrive shape-audited rather
+    than be removed. The contract below was broken once and recorded before it
+    was repaired. It is currently kept.
 
   WHAT THIS IS NOT
     It was written to prove nothing, and the representation choices remain its
@@ -32,22 +35,47 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD. Lean 4.15.0 (commit 11651562caae), bare toolchain, no
-    Mathlib. Compiled clean 2026-09-09: exit 0, zero errors, zero linter
-    complaints, warnings limited to the two intended `sorry` sites in §4.
-    Reproduced independently twice — once on a trimmed copy, once on this file
-    byte-exact — with identical audits. `formal/check.sh` passes. Axiom audit:
+  COMPILATION RECORD (at merge, 2026-09-10). Lean 4.15.0 (commit 11651562caae),
+    bare toolchain, no Mathlib. Exit 0, zero errors. Warnings: exactly two, both
+    `declaration uses 'sorry'`, at `REgen.general_partA` and
+    `REgen.general_partB` — the file's only conjecture markers, each with a
+    proved instance beside it (`partA_instance`, `partB_instance`). The two
+    unused-variable warnings formerly at the Corollary 10.2 and 10.4 statements
+    are fixed, the unused binder renamed `_Ω`. `formal/check.sh` passes; it audits
+    only the six frame definitions and is not the authority on `sorry` sites —
+    this record is.
 
-      Layer.undecidable, Layer.incompressible, Layer.available,
-      Lattice.P, Lattice.clears, Broad          — no axioms
-      diagonal_boundary_object                  — [sorryAx]
-      opacity_boundary_object                   — [sorryAx]
+    REPRODUCED INDEPENDENTLY by the peer reviewer on 2026-09-10, from
+    `git show 66c08d5:formal/BoundaryResidue.lean`, byte-exact, in a separate
+    directory: exit 0, no `sorry`, audit matching line for line. A second machine
+    run, not a reading. That reproduction covers 66c08d5; §21 was added after it,
+    and the merge commit is owed a re-run.
 
-    No `propext`, no `Quot.sound`, no `Classical.choice` anywhere in the six
-    definitions — and the two conjectural STATEMENTS elaborate on `sorryAx`
-    alone, so reification buys constructivity all the way up to the point where
-    the manuscript's assertions begin. That is the machine-checked form of §2's
-    argument.
+    Axiom audit at merge, as printed:
+      'RE.Layer.undecidable' does not depend on any axioms
+      'RE.Layer.incompressible' does not depend on any axioms
+      'RE.Layer.available' does not depend on any axioms
+      'RE.Lattice.P' does not depend on any axioms
+      'RE.Lattice.clears' does not depend on any axioms
+      'RE.Broad' does not depend on any axioms
+      'RE.diagonal_self_application' does not depend on any axioms
+      'RE.no_omniscient_layer' depends on axioms: [propext]
+      'RE.partiality_does_not_imply_inaccessibility' does not depend on any axioms
+      'RE.recipe_inevitability_refuted' depends on axioms: [propext, Quot.sound]
+      'RE.theorem7_as_stated_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE.lawTwo_is_derived' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE4.unamendedA_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RE5.unamendedC_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REC.iii_singular_fails' depends on axioms: [propext, Quot.sound]
+      'REgen.two_state_is_finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REgen.partA_instance' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REgen.partB_instance' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REgen.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+      'REgen.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+
+    The six frame definitions report no axioms. `Classical.choice` elsewhere
+    enters through declared representation choices (item 15 onward), never the
+    frame; `sorryAx` appears at exactly the two general statements.
 
   NEGATIVE RESULTS. Two objections were anticipated in this file and the
     compiler declined both; see §1 (`Lattice.P` loose parameters) and §3
@@ -362,7 +390,7 @@ theorem none_incompressible : Lop.incompressible none := by
     incompressible point, and an affordable method deciding a Broad predicate
     exactly — including at that point. -/
 theorem opacity_refuted_as_stated :
-    ¬ (∀ (L : Layer) (Ω : Lattice L) (large : (L.Rep → Prop) → Prop),
+    ¬ (∀ (L : Layer) (_Ω : Lattice L) (large : (L.Rep → Prop) → Prop),
         (∃ x : L.Rep, L.incompressible x) →
         ∀ p : L.Rep → Prop, Broad L large p →
           (∀ m : L.Method, L.available m → ¬ (∀ x, L.run m x = true ↔ p x))) := by
@@ -1386,7 +1414,7 @@ theorem Lopc_zero_incompressible : Lopc.incompressible 0 := by
 /-- COROLLARY 10.4. The RESTATED opacity conjecture is false, with `hard`
     satisfied and `CostAxioms` proved. -/
 theorem opacity_restatement_refuted :
-    ¬ (∀ (L : Layer) (Ω : Lattice L) (large : (L.Rep → Prop) → Prop),
+    ¬ (∀ (L : Layer) (_Ω : Lattice L) (large : (L.Rep → Prop) → Prop),
         (∃ x : L.Rep, L.incompressible x) → CostAxioms L →
         ∀ p : L.Rep → Prop, Broad L large p →
           (∀ m : L.Method, L.available m → ¬ (∀ x, L.run m x = true ↔ p x))) := by
@@ -2338,3 +2366,131 @@ end REi
     print identically. That is the register-boundary failure mode one level
     down, inside the formal register itself — same surface text, different
     objects — and it was caught by the compiler, not by reading. -/
+
+/-! ## 21. General Parts A and B on finite spaces (merge condition 1)
+
+    EXACTNESS, a declared hypothesis. `iterLaw` composes by `.sum / 100`, which
+    is ℕ division: exact for `stepTwo` (5000 / 100) and TRUNCATING for a kernel
+    whose sums 100 does not divide. A general statement quantifying over every
+    `step` would quantify over a truncating object — the wrong one. So kernels
+    are required to be exact at scale 100. This is STRONGER THAN IT LOOKS: a law
+    confined to the 1/100 grid that keeps approaching `ρ` must eventually hit it,
+    so exact positive kernels are close to those that reach stationarity in
+    finitely many steps. It excludes no witness this file uses; `stepTwo` is
+    exact (`stepTwo_exact`).
+
+    HOW THE GENERAL STATEMENTS COMPARE TO THE DISPLAY — weaker in three ways,
+    stronger in one, and the file says which:
+      · weaker: finite state space; exact kernel; STRICT POSITIVITY in place of
+        positive Harris recurrence — strictly stronger than Harris, since
+        irreducible aperiodic chains may have zero entries, so these hypotheses
+        admit fewer chains than the display's.
+      · stronger: the conclusions hold for EVERY set, not only basins, so the
+        stubs `above`, nondegenerate-local-maximum and carrier-class drop out and
+        `basin` is universally quantified. A proof of these would imply the
+        display's conclusion for any `Ψ*`, on the class of chains they cover. -/
+namespace REgen
+open RE RE4 REi
+
+open Classical in
+/-- The kernel is exact at scale 100 along every iterate. -/
+def ExactKernel {X : Type} (univ : List X) (step : X → (X → Prop) → Nat) : Prop :=
+  ∀ (t : Nat) (start : X) (B : X → Prop),
+    100 ∣ (univ.map (fun x => iterLaw univ step t start (fun y => y = x) * step x B)).sum
+
+open Classical in
+/-- Shared hypotheses of general A and B. `positive` is the DECLARED stand-in for
+    positive Harris recurrence, as in target (i). -/
+structure FiniteChain {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) : Prop where
+  complete  : ∀ x, x ∈ univ
+  nodup     : univ.Nodup
+  exact     : ExactKernel univ step
+  positive  : ∀ x y, 0 < step x (fun z => z = y)
+  measure   : ∀ B, ρ B = (univ.map (fun x => if B x then ρ (fun y => y = x) else 0)).sum
+  total     : ρ (fun _ => True) = 100
+  invariant : ∀ B, (univ.map (fun x => ρ (fun y => y = x) * step x B)).sum / 100 = ρ B
+
+/-- Part A's conclusion, in the Cesàro-marginal form the record holds (A9). -/
+def PartA_concl {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) (start : X) (basin : X → Prop) : Prop :=
+  ∀ ε : Nat, 0 < ε → ∃ T0 : Nat, ∀ t : Nat, T0 < t →
+    t * ρ basin < psum (fun s => iterLaw univ step s start basin) t + t * ε ∧
+    psum (fun s => iterLaw univ step s start basin) t < t * ρ basin + t * ε
+
+/-- Part B's conclusion, pointwise. -/
+def PartB_concl {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) (start : X) (basin : X → Prop) : Prop :=
+  ∀ ε : Nat, 0 < ε → ∃ T0 : Nat, ∀ t : Nat, T0 < t →
+    iterLaw univ step t start basin < ρ basin + ε ∧
+    ρ basin < iterLaw univ step t start basin + ε
+
+/-- GENERAL PART A, finite state space. CONJECTURE, not proved here. The
+    manuscript asserts it by citing Harris and Birkhoff; the file has not derived
+    it. This is the first `sorry` in the file's history to arrive shape-audited,
+    kernel-derived, with its unamended predecessor refuted in the same file
+    (`RE4.unamendedA_refuted`) and a proved instance beside it
+    (`partA_instance`). -/
+theorem general_partA {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
+    ∀ (start : X) (basin : X → Prop), PartA_concl univ step ρ start basin := by
+  sorry -- CONJECTURE: general Part A (Cesàro form) on exact, strictly positive
+        -- finite chains. Its proof needs a contraction argument (Doeblin) that
+        -- is not formalized in this Mathlib-free file.
+
+/-- GENERAL PART B, finite state space. CONJECTURE, not proved here: under
+    strict positivity a finite chain is mixing, and mixing is what Part B's
+    conclusion restates. Proved instance: `partB_instance`. -/
+theorem general_partB {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
+    ∀ (start : X) (basin : X → Prop), PartB_concl univ step ρ start basin := by
+  sorry -- CONJECTURE: strict positivity ⇒ mixing (Perron–Frobenius / Doeblin),
+        -- not formalized here.
+
+/-! ### The instance check the reviewer asked for
+
+    The two-state chain satisfies every `FiniteChain` hypothesis, and its PROVED
+    theorems are instances of the general conclusions. These proofs use
+    `partA_cesaro_two` and `partB_two`, NOT the sorry'd general theorems, so they
+    check that the general statements have the right shape without borrowing
+    their unproved content. -/
+
+theorem stepTwo_exact : ExactKernel [true, false] stepTwo := by
+  intro t start B
+  simp only [List.map, List.sum_cons, List.sum_nil]
+  cases t with
+  | zero => cases start <;> simp [iterLaw, stepTwo] <;> omega
+  | succ m =>
+    rw [lawTwo_is_derived m start (fun y => y = true),
+        lawTwo_is_derived m start (fun y => y = false)]
+    simp [lawTwo, stepTwo] <;> omega
+
+theorem two_state_is_finite_chain : FiniteChain [true, false] stepTwo rhoTwo where
+  complete  := by intro x; cases x <;> simp
+  nodup     := by decide
+  exact     := stepTwo_exact
+  positive  := stepTwo_positive
+  measure   := by intro B; simp [rhoTwo]
+  total     := by simp [rhoTwo]
+  invariant := rhoTwo_invariant
+
+theorem partA_instance (start : Bool) :
+    PartA_concl [true, false] stepTwo rhoTwo start (fun y => y = true) := by
+  have h50 : rhoTwo (fun y => y = true) = 50 := by simp [rhoTwo]
+  unfold PartA_concl; rw [h50]; exact partA_cesaro_two start
+
+theorem partB_instance (start : Bool) :
+    PartB_concl [true, false] stepTwo rhoTwo start (fun y => y = true) := by
+  intro ε hε
+  refine ⟨0, fun t ht => ?_⟩
+  obtain ⟨m, rfl⟩ : ∃ m, t = m + 1 := ⟨t - 1, by omega⟩
+  rw [partB_two start m]; constructor <;> omega
+
+/-! ### Part C has no Lean marker, and that is stated here rather than left
+    implicit. A general term would need ℝⁿ — volume, gradient, the Laplace
+    integral — which this Mathlib-free file cannot host. The record holds Part
+    C's refutation-of-predecessor (target (v)) and its finite confirmations
+    ((ii), (iii)) only. The manuscript's "not machine-checked" sentence at Part C
+    is its marker. -/
+
+end REgen
