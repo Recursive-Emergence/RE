@@ -53,6 +53,15 @@
     passes; it audits only the six frame definitions and is not the authority on
     `sorry` sites — this record is.
 
+    UPDATED (branch target-xiii, 2026-09-10). Exit 0, zero errors, ZERO
+    warnings: the two `sorry` sites above are discharged (§§34–35). No open
+    statement remains in the formal record, and general Parts A and B are proved
+    for the narrow class the record can host — finite, strictly positive kernels
+    exact at scale 100, where convergence is exact within 100 steps by
+    discreteness — which is not Doeblin's theorem, says nothing about truncating
+    kernels, and discharges neither the declared-Harris nor the
+    declared-exactness note.
+
     REPRODUCTION HISTORY. The peer reviewer reproduced three commits
     independently, each byte-exact from `git show`, in a separate directory,
     each matching the audit line for line — three machine runs, not readings.
@@ -152,12 +161,18 @@
       'RExii.S_nonzero' does not depend on any axioms
       'RExii.shared_lattice_data' depends on axioms: [propext, Classical.choice, Quot.sound]
       'RExii.substrates_differ' depends on axioms: [propext, Classical.choice, Quot.sound]
-      'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
-      'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+      'REamend.invariance_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.dob_partA' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.dob_partB' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.FiniteChain.toS' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.general_partA' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.general_partB' depends on axioms: [propext, Classical.choice, Quot.sound]
 
     The six frame definitions report no axioms. `Classical.choice` elsewhere
     enters through declared representation choices (item 15 onward), never the
     frame; `sorryAx` appears at exactly the two amended general statements.
+    UPDATED at target (xiii), 2026-09-10: `sorryAx` now appears nowhere. The two
+    general lines above are regenerated from Lean, not edited by hand.
 
   NEGATIVE RESULTS. Two objections were anticipated in this file and the
     compiler declined both; see §1 (`Lattice.P` loose parameters) and §3
@@ -2881,21 +2896,411 @@ structure FiniteChain {X : Type} (univ : List X) (step : X → (X → Prop) → 
   additive   : ∀ (x : X) (B : X → Prop),
     step x B = (univ.map (fun y => if B y then step x (fun z => z = y) else 0)).sum
 
+/-! ### generic list-sum lemmas (Nat, no Mathlib) -/
+section sums
+variable {X Y : Type}
+
+theorem dob_sum_add (l : List X) (f g : X → Nat) :
+    (l.map (fun x => f x + g x)).sum = (l.map f).sum + (l.map g).sum := by
+  induction l with
+  | nil => rfl
+  | cons a l ih => simp only [List.map_cons, List.sum_cons, ih]; omega
+
+theorem dob_sum_mul_left (l : List X) (c : Nat) (f : X → Nat) :
+    (l.map (fun x => c * f x)).sum = c * (l.map f).sum := by
+  induction l with
+  | nil => simp
+  | cons a l ih => simp only [List.map_cons, List.sum_cons, ih, Nat.mul_add]
+
+theorem dob_sum_mul_right (l : List X) (c : Nat) (f : X → Nat) :
+    (l.map (fun x => f x * c)).sum = (l.map f).sum * c := by
+  induction l with
+  | nil => simp
+  | cons a l ih => simp only [List.map_cons, List.sum_cons, ih, Nat.add_mul]
+
+theorem dob_sum_eq_zero_of (l : List X) (f : X → Nat) (h : ∀ x ∈ l, f x = 0) :
+    (l.map f).sum = 0 := by
+  induction l with
+  | nil => rfl
+  | cons a l ih =>
+    simp only [List.map_cons, List.sum_cons]
+    rw [h a (List.mem_cons_self a l), ih (fun x hx => h x (List.mem_cons_of_mem a hx))]
+
+theorem dob_sum_congr (l : List X) (f g : X → Nat) (h : ∀ x ∈ l, f x = g x) :
+    (l.map f).sum = (l.map g).sum := by
+  induction l with
+  | nil => rfl
+  | cons a l ih =>
+    simp only [List.map_cons, List.sum_cons]
+    rw [h a (List.mem_cons_self a l), ih (fun x hx => h x (List.mem_cons_of_mem a hx))]
+
+theorem dob_sum_le (l : List X) (f g : X → Nat) (h : ∀ x ∈ l, f x ≤ g x) :
+    (l.map f).sum ≤ (l.map g).sum := by
+  induction l with
+  | nil => exact Nat.le_refl 0
+  | cons a l ih =>
+    simp only [List.map_cons, List.sum_cons]
+    exact Nat.add_le_add (h a (List.mem_cons_self a l)) (ih (fun x hx => h x (List.mem_cons_of_mem a hx)))
+
+theorem dob_sum_comm (l1 : List X) (l2 : List Y) (f : X → Y → Nat) :
+    (l1.map (fun x => (l2.map (fun y => f x y)).sum)).sum
+      = (l2.map (fun y => (l1.map (fun x => f x y)).sum)).sum := by
+  induction l1 with
+  | nil => simp only [List.map_nil, List.sum_nil]; exact (dob_sum_eq_zero_of l2 _ (fun _ _ => rfl)).symm
+  | cons a l ih =>
+    simp only [List.map_cons, List.sum_cons]
+    rw [ih, ← dob_sum_add]
+
+theorem dob_sum_sub_le (l : List X) (f g : X → Nat) :
+    (l.map f).sum - (l.map g).sum ≤ (l.map (fun x => f x - g x)).sum := by
+  induction l with
+  | nil => simp
+  | cons a l ih => simp only [List.map_cons, List.sum_cons]; omega
+
+theorem dob_eq_of_le_sum (l : List X) (f g : X → Nat) (h : ∀ x ∈ l, g x ≤ f x)
+    (hs : (l.map f).sum = (l.map g).sum) : ∀ x ∈ l, f x = g x := by
+  induction l with
+  | nil => intro x hx; cases hx
+  | cons a l ih =>
+    simp only [List.map_cons, List.sum_cons] at hs
+    have ha := h a (List.mem_cons_self a l)
+    have hl := dob_sum_le l g f (fun x hx => h x (List.mem_cons_of_mem a hx))
+    have e1 : f a = g a := by omega
+    have e2 : (l.map f).sum = (l.map g).sum := by omega
+    intro x hx
+    cases hx with
+    | head => exact e1
+    | tail _ hx => exact ih (fun y hy => h y (List.mem_cons_of_mem a hy)) e2 x hx
+
+theorem dob_sum_zero (l : List X) (f : X → Nat) (hs : (l.map f).sum = 0) : ∀ x ∈ l, f x = 0 := by
+  intro x hx
+  have := dob_eq_of_le_sum l f (fun _ => 0) (fun _ _ => Nat.zero_le _)
+    (by rw [hs]; exact (dob_sum_eq_zero_of l _ (fun _ _ => rfl)).symm) x hx
+  exact this
+
+theorem dob_sum_single (l : List X) (a : X) (f : X → Nat) (hn : l.Nodup) (ha : a ∈ l)
+    (hf : ∀ x ∈ l, x ≠ a → f x = 0) : (l.map f).sum = f a := by
+  induction l with
+  | nil => cases ha
+  | cons b l ih =>
+    rw [List.nodup_cons] at hn
+    simp only [List.map_cons, List.sum_cons]
+    by_cases hb : b = a
+    · subst hb
+      rw [dob_sum_eq_zero_of l f (fun x hx => hf x (List.mem_cons_of_mem _ hx)
+            (fun e => hn.1 (e ▸ hx)))]
+      omega
+    · have ha' : a ∈ l := by
+        cases ha with
+        | head => exact absurd rfl hb
+        | tail _ h => exact h
+      rw [hf b (List.mem_cons_self b l) hb, ih hn.2 ha' (fun x hx => hf x (List.mem_cons_of_mem _ hx))]
+      omega
+
+theorem dob_sum_pred (l : List X) (f : X → Nat) (h : ∀ x ∈ l, 1 ≤ f x) :
+    (l.map (fun x => f x - 1)).sum + l.length = (l.map f).sum := by
+  induction l with
+  | nil => rfl
+  | cons a l ih =>
+    simp only [List.map_cons, List.sum_cons, List.length_cons]
+    have := h a (List.mem_cons_self a l)
+    have := ih (fun x hx => h x (List.mem_cons_of_mem a hx))
+    omega
+
+theorem dob_sub_mul (a b c : Nat) : (a - b) * c = a * c - b * c := by
+  rcases Nat.le_total a b with h | h
+  · rw [Nat.sub_eq_zero_of_le h, Nat.zero_mul]
+    exact (Nat.sub_eq_zero_of_le (Nat.mul_le_mul_right c h)).symm
+  · obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le h
+    rw [Nat.add_sub_cancel_left, Nat.add_mul, Nat.add_sub_cancel_left]
+
+theorem dob_mul_pred (a p : Nat) (h : 1 ≤ p) : a * p = a * (p - 1) + a := by
+  cases p with
+  | zero => omega
+  | succ q => simp [Nat.mul_succ]
+
+end sums
+
+/-! ### the chain -/
+
+/-- Exactness at SINGLETONS only — weaker than `ExactKernel`, which is exact at
+    every set. -/
+def SingletonExact {X : Type} (univ : List X) (step : X → (X → Prop) → Nat) : Prop :=
+  ∀ (t : Nat) (start y : X),
+    100 ∣ (univ.map (fun x => iterLaw univ step t start (fun z => z = x) * step x (fun z => z = y))).sum
+
+/-- `FiniteChain` with `exact` weakened to `SingletonExact`. The core proofs take
+    only this, so they cannot use exactness at any non-singleton set. -/
+structure FiniteChainS {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) : Prop where
+  complete   : ∀ x, x ∈ univ
+  nodup      : univ.Nodup
+  exactS     : SingletonExact univ step
+  positive   : ∀ x y, 0 < step x (fun z => z = y)
+  measure    : ∀ B, ρ B = (univ.map (fun x => if B x then ρ (fun y => y = x) else 0)).sum
+  total      : ρ (fun _ => True) = 100
+  invariant  : ∀ B, (univ.map (fun x => ρ (fun y => y = x) * step x B)).sum / 100 = ρ B
+  stochastic : ∀ x, step x (fun _ => True) = 100
+  additive   : ∀ (x : X) (B : X → Prop),
+    step x B = (univ.map (fun y => if B y then step x (fun z => z = y) else 0)).sum
+
+theorem FiniteChain.toS {X : Type} {univ : List X} {step : X → (X → Prop) → Nat}
+    {ρ : (X → Prop) → Nat} (h : FiniteChain univ step ρ) : FiniteChainS univ step ρ where
+  complete   := h.base.complete
+  nodup      := h.base.nodup
+  exactS     := fun t start y => h.base.exact t start (fun z => z = y)
+  positive   := h.base.positive
+  measure    := h.base.measure
+  total      := h.base.total
+  invariant  := h.base.invariant
+  stochastic := h.stochastic
+  additive   := h.additive
+
+section chain
+variable {X : Type} {univ : List X} {step : X → (X → Prop) → Nat} {ρ : (X → Prop) → Nat}
+
+theorem dob_iter_succ (t : Nat) (start : X) (B : X → Prop) :
+    iterLaw univ step (t + 1) start B
+      = (univ.map (fun x => iterLaw univ step t start (fun y => y = x) * step x B)).sum / 100 := rfl
+
+theorem dob_row (hC : FiniteChainS univ step ρ) (x : X) :
+    (univ.map (fun y => step x (fun z => z = y))).sum = 100 := by
+  have h := hC.additive x (fun _ => True)
+  rw [hC.stochastic x] at h
+  rw [h]; exact dob_sum_congr univ _ _ (fun y _ => by simp)
+
+theorem dob_rho_sum (hC : FiniteChainS univ step ρ) :
+    (univ.map (fun x => ρ (fun y => y = x))).sum = 100 := by
+  have h := hC.measure (fun _ => True)
+  rw [hC.total] at h
+  rw [h]; exact dob_sum_congr univ _ _ (fun y _ => by simp)
+
+/-- L1: the law at every time is additive over points. Uses exactness at
+    singletons only. -/
+theorem dob_L1 (hC : FiniteChainS univ step ρ) (t : Nat) (start : X) (B : X → Prop) :
+    iterLaw univ step t start B
+      = (univ.map (fun y => if B y then iterLaw univ step t start (fun z => z = y) else 0)).sum := by
+  cases t with
+  | zero =>
+    rw [dob_sum_single univ start _ hC.nodup (hC.complete start)]
+    · by_cases hb : B start <;> simp [iterLaw, hb]
+    · intro x _ hx
+      by_cases hb : B x
+      · simp [iterLaw, hb, Ne.symm hx]
+      · simp [hb]
+  | succ t =>
+    rw [dob_iter_succ]
+    -- expand step x B by additivity, swap the sums
+    have e1 : (univ.map (fun x => iterLaw univ step t start (fun y => y = x) * step x B)).sum
+        = (univ.map (fun y => if B y then
+            (univ.map (fun x => iterLaw univ step t start (fun z => z = x) * step x (fun z => z = y))).sum
+            else 0)).sum := by
+      rw [dob_sum_congr univ _ (fun x => (univ.map (fun y =>
+            iterLaw univ step t start (fun z => z = x) * (if B y then step x (fun z => z = y) else 0))).sum)
+          (fun x _ => by rw [hC.additive x B, ← dob_sum_mul_left])]
+      rw [dob_sum_comm]
+      exact dob_sum_congr univ _ _ (fun y _ => by
+        by_cases hb : B y
+        · simp only [hb, if_true]
+        · simp only [hb, if_false, Nat.mul_zero]; exact dob_sum_eq_zero_of univ _ (fun _ _ => rfl))
+    rw [e1]
+    have e2 : (univ.map (fun y => if B y then
+            (univ.map (fun x => iterLaw univ step t start (fun z => z = x) * step x (fun z => z = y))).sum
+            else 0)).sum
+        = 100 * (univ.map (fun y => if B y then iterLaw univ step (t + 1) start (fun z => z = y) else 0)).sum := by
+      rw [← dob_sum_mul_left]
+      exact dob_sum_congr univ _ _ (fun y _ => by
+        by_cases hb : B y
+        · simp only [hb, if_true]; rw [dob_iter_succ]; exact (Nat.mul_div_cancel' (hC.exactS t start y)).symm
+        · simp only [hb, if_false])
+    rw [e2, Nat.mul_div_cancel_left _ (by decide)]
+
+/-- L2: mass is conserved. -/
+theorem dob_L2 (hC : FiniteChainS univ step ρ) (t : Nat) (start : X) :
+    (univ.map (fun x => iterLaw univ step t start (fun z => z = x))).sum = 100 := by
+  induction t with
+  | zero =>
+    rw [dob_sum_single univ start _ hC.nodup (hC.complete start)]
+    · simp [iterLaw]
+    · intro x _ hx; simp [iterLaw, Ne.symm hx]
+  | succ t ih =>
+    have h := dob_L1 hC (t + 1) start (fun _ => True)
+    simp only [if_true] at h
+    rw [← h, dob_iter_succ]
+    rw [dob_sum_congr univ _ (fun x => iterLaw univ step t start (fun y => y = x) * 100)
+          (fun x _ => by rw [hC.stochastic x]), dob_sum_mul_right, ih]
+
+/-- L3, INVARIANCE IS EXACT UNDER TRUNCATION. The invariant field is stated with
+    truncating division; it is nonetheless exact at every point. Uses that Nat
+    division is floor division, so the remainders are nonnegative. -/
+theorem invariance_exact (hC : FiniteChainS univ step ρ) (y : X) :
+    (univ.map (fun x => ρ (fun z => z = x) * step x (fun z => z = y))).sum = 100 * ρ (fun z => z = y) := by
+  let S : X → Nat := fun y => (univ.map (fun x => ρ (fun z => z = x) * step x (fun z => z = y))).sum
+  have hle : ∀ y ∈ univ, 100 * ρ (fun z => z = y) ≤ S y := by
+    intro y _
+    have h := hC.invariant (fun z => z = y)
+    have := Nat.div_mul_le_self (S y) 100
+    show 100 * ρ (fun z => z = y) ≤ S y
+    rw [← h]; rw [Nat.mul_comm]; exact this
+  have htot : (univ.map S).sum = (univ.map (fun y => 100 * ρ (fun z => z = y))).sum := by
+    rw [dob_sum_mul_left, dob_rho_sum hC]
+    show (univ.map (fun y => (univ.map (fun x => ρ (fun z => z = x) * step x (fun z => z = y))).sum)).sum = _
+    rw [← dob_sum_comm]
+    rw [dob_sum_congr univ _ (fun x => ρ (fun z => z = x) * 100)
+          (fun x _ => by rw [dob_sum_mul_left, dob_row hC x])]
+    rw [dob_sum_mul_right, dob_rho_sum hC]
+  exact dob_eq_of_le_sum univ S _ hle htot y (hC.complete y)
+
+/-- The positive part of the distance to `ρ` — half the L1 distance. -/
+noncomputable def dobD (univ : List X) (step : X → (X → Prop) → Nat) (ρ : (X → Prop) → Nat)
+    (t : Nat) (start : X) : Nat :=
+  (univ.map (fun x => iterLaw univ step t start (fun z => z = x) - ρ (fun z => z = x))).sum
+
+/-- L4, Dobrushin in Nat with the lower bound 1 from `positive`. -/
+theorem dob_L4 (hC : FiniteChainS univ step ρ) (t : Nat) (start : X) :
+    100 * dobD univ step ρ (t + 1) start ≤ 99 * dobD univ step ρ t start := by
+  let a : X → Nat := fun x => iterLaw univ step t start (fun z => z = x)
+  let r : X → Nat := fun x => ρ (fun z => z = x)
+  let p : X → X → Nat := fun x y => step x (fun z => z = y)
+  have hp : ∀ x y, 1 ≤ p x y := fun x y => hC.positive x y
+  -- pointwise bound at each y
+  have hy : ∀ y ∈ univ, 100 * (iterLaw univ step (t + 1) start (fun z => z = y) - r y)
+      ≤ (univ.map (fun x => (a x - r x) * (p x y - 1))).sum := by
+    intro y _
+    have hS : 100 * iterLaw univ step (t + 1) start (fun z => z = y) = (univ.map (fun x => a x * p x y)).sum := by
+      rw [dob_iter_succ]; exact Nat.mul_div_cancel' (hC.exactS t start y)
+    have hR : 100 * r y = (univ.map (fun x => r x * p x y)).sum := (invariance_exact hC y).symm
+    have sA : (univ.map (fun x => a x * p x y)).sum = (univ.map (fun x => a x * (p x y - 1))).sum + 100 := by
+      rw [dob_sum_congr univ _ (fun x => a x * (p x y - 1) + a x) (fun x _ => dob_mul_pred _ _ (hp x y)),
+          dob_sum_add, dob_L2 hC t start]
+    have sR : (univ.map (fun x => r x * p x y)).sum = (univ.map (fun x => r x * (p x y - 1))).sum + 100 := by
+      rw [dob_sum_congr univ _ (fun x => r x * (p x y - 1) + r x) (fun x _ => dob_mul_pred _ _ (hp x y)),
+          dob_sum_add, dob_rho_sum hC]
+    have hsub := dob_sum_sub_le univ (fun x => a x * (p x y - 1)) (fun x => r x * (p x y - 1))
+    have hcong : (univ.map (fun x => a x * (p x y - 1) - r x * (p x y - 1))).sum
+        = (univ.map (fun x => (a x - r x) * (p x y - 1))).sum :=
+      dob_sum_congr univ _ _ (fun x _ => (dob_sub_mul _ _ _).symm)
+    have : 100 * (iterLaw univ step (t + 1) start (fun z => z = y) - r y)
+        = 100 * iterLaw univ step (t + 1) start (fun z => z = y) - 100 * r y := by omega
+    rw [this, hS, hR, sA, sR, ← hcong]; omega
+  -- sum over y, swap, and use the row sums
+  have h1 : 100 * dobD univ step ρ (t + 1) start
+      ≤ (univ.map (fun y => (univ.map (fun x => (a x - r x) * (p x y - 1))).sum)).sum := by
+    unfold dobD; rw [← dob_sum_mul_left]; exact dob_sum_le univ _ _ hy
+  have h2 : (univ.map (fun y => (univ.map (fun x => (a x - r x) * (p x y - 1))).sum)).sum
+      ≤ (univ.map (fun x => (a x - r x) * 99)).sum := by
+    rw [← dob_sum_comm]
+    apply dob_sum_le
+    intro x hx
+    rw [dob_sum_mul_left]
+    apply Nat.mul_le_mul_left
+    have hpred : (univ.map (fun y => p x y - 1)).sum + univ.length = (univ.map (fun y => p x y)).sum :=
+      dob_sum_pred univ (fun y => p x y) (fun y _ => hp x y)
+    have hrow : (univ.map (fun y => p x y)).sum = 100 := dob_row hC x
+    have hlen : 1 ≤ univ.length := List.length_pos_of_mem hx
+    show (univ.map (fun y => p x y - 1)).sum ≤ 99
+    omega
+  have h3 : (univ.map (fun x => (a x - r x) * 99)).sum = 99 * dobD univ step ρ t start := by
+    rw [dob_sum_mul_right, Nat.mul_comm]; rfl
+  omega
+
+/-- L5: discreteness. -/
+theorem dob_L5 (hC : FiniteChainS univ step ρ) (start : X) :
+    ∀ t, dobD univ step ρ t start ≤ 100 - t := by
+  intro t
+  induction t with
+  | zero =>
+    show dobD univ step ρ 0 start ≤ 100
+    have := dob_sum_le univ (fun x => iterLaw univ step 0 start (fun z => z = x) - ρ (fun z => z = x))
+      (fun x => iterLaw univ step 0 start (fun z => z = x)) (fun x _ => Nat.sub_le _ _)
+    rw [dob_L2 hC 0 start] at this; exact this
+  | succ t ih =>
+    have := dob_L4 hC t start
+    omega
+
+theorem dob_stationary (hC : FiniteChainS univ step ρ) (start : X) (t : Nat) (ht : 100 ≤ t) :
+    ∀ x, iterLaw univ step t start (fun z => z = x) = ρ (fun z => z = x) := by
+  have hD : dobD univ step ρ t start = 0 := by have := dob_L5 hC start t; omega
+  have hle := dob_sum_zero univ _ hD
+  intro x
+  exact (dob_eq_of_le_sum univ (fun x => ρ (fun z => z = x)) (fun x => iterLaw univ step t start (fun z => z = x))
+    (fun x hx => by have h := hle x hx; dsimp only at h ⊢; omega) (by rw [dob_rho_sum hC, dob_L2 hC t start]) x (hC.complete x)).symm
+
+theorem dob_law_eq (hC : FiniteChainS univ step ρ) (start : X) (t : Nat) (ht : 100 ≤ t) (B : X → Prop) :
+    iterLaw univ step t start B = ρ B := by
+  rw [dob_L1 hC, hC.measure B]
+  exact dob_sum_congr univ _ _ (fun y _ => by rw [dob_stationary hC start t ht y])
+
+theorem dob_law_le (hC : FiniteChainS univ step ρ) (start : X) (t : Nat) (B : X → Prop) :
+    iterLaw univ step t start B ≤ 100 := by
+  rw [dob_L1 hC, ← dob_L2 hC t start]
+  exact dob_sum_le univ _ _ (fun y _ => by by_cases hb : B y <;> simp [hb])
+
+theorem dob_rho_le (hC : FiniteChainS univ step ρ) (B : X → Prop) : ρ B ≤ 100 := by
+  rw [hC.measure B, ← dob_rho_sum hC]
+  exact dob_sum_le univ _ _ (fun y _ => by by_cases hb : B y <;> simp [hb])
+
+theorem dob_partB (hC : FiniteChainS univ step ρ) :
+    ∀ (start : X) (basin : X → Prop), PartB_concl univ step ρ start basin := by
+  intro start basin ε hε
+  refine ⟨100, fun t ht => ?_⟩
+  rw [dob_law_eq hC start t (by omega)]
+  omega
+
+theorem dob_psum_le (f : Nat → Nat) (hf : ∀ s, f s ≤ 100) : ∀ n, psum f n ≤ n * 100 := by
+  intro n; induction n with
+  | zero => simp [psum]
+  | succ n ih => show psum f n + f n ≤ (n + 1) * 100; have := hf n; rw [Nat.add_mul]; omega
+
+theorem dob_psum_tail (f : Nat → Nat) (c : Nat) (hf : ∀ s, 100 ≤ s → f s = c) :
+    ∀ k, psum f (100 + k) = psum f 100 + k * c := by
+  intro k; induction k with
+  | zero => simp
+  | succ k ih =>
+    show psum f (100 + k) + f (100 + k) = _
+    rw [ih, hf (100 + k) (by omega), Nat.add_mul, Nat.one_mul, Nat.add_assoc]
+
+theorem dob_partA (hC : FiniteChainS univ step ρ) :
+    ∀ (start : X) (basin : X → Prop), PartA_concl univ step ρ start basin := by
+  intro start basin ε hε
+  refine ⟨10000, fun t ht => ?_⟩
+  let f : Nat → Nat := fun s => iterLaw univ step s start basin
+  have hP := dob_psum_le f (fun s => dob_law_le hC start s basin) 100
+  obtain ⟨k, rfl⟩ : ∃ k, t = 100 + k := ⟨t - 100, by omega⟩
+  have htail := dob_psum_tail f (ρ basin) (fun s hs => dob_law_eq hC start s hs basin) k
+  have hρ := dob_rho_le hC basin
+  have hte : 100 + k ≤ (100 + k) * ε := Nat.le_mul_of_pos_right _ hε
+  have hsplit : (100 + k) * ρ basin = 100 * ρ basin + k * ρ basin := Nat.add_mul _ _ _
+  show (100 + k) * ρ basin < psum f (100 + k) + (100 + k) * ε ∧
+       psum f (100 + k) < (100 + k) * ρ basin + (100 + k) * ε
+  rw [htail, hsplit]
+  generalize k * ρ basin = K at *
+  generalize (100 + k) * ε = E at *
+  constructor <;> omega
+
+end chain
+
 /-- GENERAL PART A, amended. CONJECTURE: the finite Doeblin statement in the
     record's Cesàro form. Its unamended predecessor is refuted in §22; its
     two-state instance is proved (`REgen.partA_instance`); and this time it was
-    attacked before commit — the §22 witness is excluded by `stochastic`. -/
+    attacked before commit — the §22 witness is excluded by `stochastic`.
+
+    PROVED 2026-09-10, target (xiii): `dob_partA` through `FiniteChain.toS`, on
+    the record's class only; §35 says what that does and does not mean. -/
 theorem general_partA {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
     (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
     ∀ (start : X) (basin : X → Prop), PartA_concl univ step ρ start basin := by
-  sorry -- CONJECTURE: needs a Doeblin contraction, not formalized here.
+  exact dob_partA _hC.toS
 
 /-- GENERAL PART B, amended. CONJECTURE: strict positivity on a finite
-    stochastic kernel gives mixing. Proved instance: `REgen.partB_instance`. -/
+    stochastic kernel gives mixing. Proved instance: `REgen.partB_instance`.
+
+    PROVED 2026-09-10, target (xiii): `dob_partB` through `FiniteChain.toS`, on
+    the record's class only; §35 says what that does and does not mean. -/
 theorem general_partB {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
     (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
     ∀ (start : X) (basin : X → Prop), PartB_concl univ step ρ start basin := by
-  sorry -- CONJECTURE: Perron–Frobenius / Doeblin, not formalized here.
+  exact dob_partB _hC.toS
 
 /-- The two-state chain satisfies the AMENDED hypotheses, so the proved
     instances still witness the general statements' shape. -/
@@ -4281,3 +4686,60 @@ end RExii
         take a SINGLETON-exactness hypothesis, and `ExactKernel` is only
         specialized into it. If that compiles, singletons suffice. If it cannot
         be done, the ruling's note stands. Either way the readout reports which. -/
+
+/-! ## 35. Target (xiii), readout
+
+    OUTCOME: (D1). Both generals are proved from their hypotheses as they stand;
+    the sorry count goes from 2 to 0. Priors: mine D1 70%, the reviewer's 60%,
+    both on the outcome that landed. Agreement, so it carries no calibration
+    beyond itself.
+
+    GUARDS, all observed.
+      g1, g2  The kernel types and definition bodies of `general_partA`,
+              `general_partB`, `iterLaw`, `ExactKernel`, `FiniteChainU`,
+              `PartA_concl`, `PartB_concl`, `psum` and `FiniteChain` match the
+              pre-code module (cb7f7aa, code-identical to ff9a31b): nine
+              signature lines, identical.
+      g3      `sorryAx` dependents across the module: 0. Positive control: the
+              same scan on the pre-code module finds exactly `general_partA` and
+              `general_partB`.
+      g4      check.sh OK.
+      g5      Zero errors and zero warnings. Every earlier theorem compiles,
+              including the refutations of the unamended predecessors.
+      g6, g7  The core proofs use nine of nine `FiniteChainS` fields, as
+              pre-registered. Through `toS`, the stated generals use all ten
+              `FiniteChain` projections. Positive control: the closure of `toS`
+              lists all ten.
+
+    THE RULING'S L1 NOTE, decided by the compiler: exactness at SINGLETONS
+    suffices. The core proofs take `FiniteChainS`, whose only exactness field is
+    `SingletonExact`, and `ExactKernel` is absent from their kernel closure.
+    `additive` reduces every set to singletons before any division, so the
+    quotient of the sum is the sum of the singleton quotients. Without
+    `additive` the note would be right. This was a claim about what the proof
+    needs, not about what the record contains, so it is not added to the
+    premise tally.
+
+    L3, AS THE RULING ASKED: `invariance_exact` is standalone. Its k_y ≥ 0
+    direction is `Nat.div_mul_le_self`, which holds because Nat division is
+    floor division. Summing then forces every remainder to 0.
+
+    ROUTE: the reviewer's D4 mitigation, in Nat with ∸ throughout — no Int, no
+    absolute value — and no list minimum, since the declared lower bound 1
+    replaced it. Both the step the reviewer watched (L3) and the one I watched
+    (L4) went through. The only compile errors were mechanical: a core lemma
+    that Lean 4.15 does not have (`Nat.sub_mul`, replaced by `dob_sub_mul`), and
+    two beta-unreduced atoms that `omega` could not match.
+
+    WHAT IT MEANS — the ceiling, as pre-registered. No open statement remains in
+    the formal record, and general Parts A and B are proved for the narrow class
+    the record can host. That class is finite, strictly positive and exact at
+    scale 100, and on it convergence is EXACT within 100 steps, from any start,
+    by discreteness (`dob_stationary`). This is not Doeblin's theorem, it says
+    nothing about truncating kernels, and it discharges neither the
+    declared-Harris nor the declared-exactness note. One sharpening follows
+    from the proof itself: the appendix said exactness is "close to requiring"
+    finite-time stationarity; together with the other hypotheses it FORCES it.
+    That is why the generic difficulty the appendix names — asymptotic mixing —
+    was avoided here, not overcome. -/
+
