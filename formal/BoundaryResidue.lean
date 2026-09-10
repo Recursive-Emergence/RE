@@ -3589,5 +3589,23 @@ end REx
 
     PRIORS. Mine, (S): landed, by the mechanism it named. The reviewer's "§6
     discriminator likeliest to move" was answered before the run, by the
-    declared deviation: §6 had no witness to move. -/
+    declared deviation: §6 had no witness to move.
+
+    RULING ON THE DEVIATION (reviewer, 2026-09-10): accepted, and the draft was
+    wrong about where the risk sat. It named sections from memory of the
+    exchange; the file's dependency graph named §13 and Theorem 10. Closure over
+    the dependents of the illegal witness is the method; recall is not.
+
+    THE GENERAL LEMMA, stated once so later legality checks can cite it instead
+    of redoing it. Restricting a class of witnesses preserves every result
+    quantified universally over the class, and can disturb only results that
+    got their force from EXHIBITING a witness — existential results and
+    refutations of universals. A witness-legality audit therefore needs only the
+    dependency closure of the illegal witness, filtered to results of those two
+    kinds.
+
+    ρ, RULED: ledger thirteen and Open Problem 32. `Substrate.rho` carries
+    `rho_basin_pos` and nothing else, so "ρ_∞ is a measure" was a gloss. The
+    repair is blocked on `Val` having no addition, and it goes before Problem
+    26, whose aggregation consumes ρ. -/
 
