@@ -3040,3 +3040,62 @@ end REix
     stated with `u3` failed to match goals where it had been unfolded to the
     literal list — the same surface-text-versus-object gap the file records
     elsewhere, in a smaller form. -/
+
+/-! ## 25. Problem 25's pushforward probe — PRE-REGISTRATION
+
+    Outcome space by the peer reviewer, who is not running it; committed before
+    any probe code, on my user's go (2026-09-10). The runner does not edit these
+    items. Deviations get declared at the site, as before.
+
+    THE CANDIDATE. Push ρ_∞ from `State` to `Rep` through the fibers: for a
+    property `p : L.Rep → Prop`, its preimage is the set of substrate states that
+    formulate some `x` with `p x`, and its mass is `J.X.rho` of that preimage.
+    "Large" means that mass is not small. This is ρ_∞'s THIRD role — not on `Rep`
+    directly (the resolved remark), not Problem 26's aggregation — built only from
+    objects already in `Joined`: `rho`, `formulable`, `fiber`.
+
+    (i) THE FORK, and the first target. `formulable` is a relation, not a map, so
+        the pushforward needs no choice of section — but it does need
+        single-valuedness. If each state formulates at most one structure, the
+        pushforward is a measure: disjoint properties have disjoint preimages.
+        If not, a state in two fibers is counted twice and the pushforward is only
+        subadditive — an outer measure, which does not meet Problem 25's
+        prerequisite. A2 says Π is a many-to-one FUNCTION, which reads as
+        functional. FIRST, COMMIT-DECIDABLE CHECK (peer's addendum, folded in
+        here): does any hypothesis in `Joined` or its witnesses make `formulable`
+        single-valued? If none does, the gap gets a Problem-30-style entry BEFORE
+        the pushforward is defined, and the restriction goes in as an explicit
+        hypothesis citing A2. Then both sides of the fork are exhibited: a
+        witness where `formulable` is functional and the pushforward is proved
+        additive, and one where it is not and additivity fails.
+    (ii) NON-VACUITY: on the same witness, a property with positive pushforward
+        mass AND a property with zero pushforward mass. Without both, Large is
+        everything or nothing, and the RR shape is trivially satisfied or
+        trivially refuted — which is how the last two transpositions of this
+        conjecture died.
+    (iii) HOSTABILITY: instantiate `RR_shape` with the pushforward Large. Hard and
+        Useful stay parameters; the pushforward fills one slot of three. The
+        result says "Large now has a referent; Hard and Useful don't", and no
+        more. If the instantiated shape can be evaluated on the transparent layer
+        `Lid`, it is — Theorem 10's mechanism has refuted every prior
+        transposition and gets its turn on this one.
+
+    THRESHOLD, a logged choice. "Not small" means POSITIVE MASS (`lt zero`),
+    since `Val` offers `lt` and needs nothing more. Razborov–Rudich use "at least
+    a fixed fraction of total mass", which needs a scale on `Val` the frame lacks;
+    adding one would be a representation item. Positive mass is WEAKER than RR's
+    largeness, and the result must say so.
+
+    OUTCOMES.
+      (A) `formulable` functional in the intended reading, pushforward proved
+          additive, both guards exhibited, `RR_shape` instantiated with Large
+          filled: Problem 25's prerequisite has a candidate from inside the file.
+          Not a derivation of opacity — a hosting of its largeness slot.
+      (B) Functional, but non-vacuity fails on every witness tried: a measure
+          with no content in this frame. Record and stop.
+      (C) `formulable` not functional, and the manuscript does not say it must
+          be: the pushforward is not a measure. Log the choice — restrict
+          `Joined` to functional, as a hypothesis — and re-run under it.
+    PRIOR, the peer's, distrusted as usual: (C), with the restriction then giving
+    (A) one level down. Under the addendum, (C) is the EXPECTED path if no
+    hypothesis in the file supplies single-valuedness. -/
