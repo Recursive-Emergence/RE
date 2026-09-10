@@ -125,3 +125,11 @@ The existence-side analogue, Cook–Krajíček's one-bit-advice optimal systems 
 ## Formal record
 
 Untouched. `formal/` and `appendix_M_formal_system.md` are unchanged since b88c18b.
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as O1.** Both attribution records stay as written, not merged:
+- the Khaniki slip;
+- NE = coNE ⇒ optimal credited to Pudlák 1984 (Ben-David–Gringauze) vs KP89 (Egidy–Glaßer).
+
+Khaniki's Theorem 3.4.1, RFN^N_1 ⟺ non-optimality for Σ^q_1-TAUT, goes into the final page as the exact form of the chain's middle term.
