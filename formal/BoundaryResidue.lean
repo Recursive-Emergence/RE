@@ -3609,3 +3609,62 @@ end REx
     repair is blocked on `Val` having no addition, and it goes before Problem
     26, whose aggregation consumes ρ. -/
 
+/-! ## 30. Target (xi) — PRE-REGISTRATION: make ρ_∞ a measure in the signature
+
+    Outcome space by the peer reviewer; committed before any code, on my user's
+    go (2026-09-10). Enumeration first, as the lemma of §29.1 prescribes.
+
+    ENUMERATION, from the file and not from recall. Four `Substrate` instances,
+    no anonymous literals:
+      X0   (§13)  rho := fun _ => 1        NOT a measure. 11 dependents: J0 and
+                                           all of §13 — Theorem 10's original
+                                           evidence.
+      Xbad (§16)  rho := fun _ => 1        NOT a measure. 3 dependents: occBad,
+                  (one := 10)              occBad_ergodic, and
+                                           recipe_inevitability_refuted — i.e.
+                                           Theorem 13.
+      XG   (§27)  point masses 50/50/0     A measure. 27 dependents.
+      XU   (§27)  point mass 100           A measure. 4 dependents.
+
+    DECLARED DEVIATIONS from the reviewer's guard (c), with reasons.
+      · The guard said "X0 must fail; XG and the Theorem 13/14 substrates must
+        pass". Theorem 13's witness `Xbad` is ALSO a constant, non-measure ρ and
+        fails too. Theorem 14 builds no `Substrate` at all — `Theorem7_faithful`
+        takes its ingredients as bare parameters — so there is nothing there to
+        pass or fail.
+      · "X0 must fail" and "every existing theorem must still compile" cannot
+        both hold of the file as it stands: `X0` failing takes `J0` and all
+        eleven §13 dependents with it. Resolution: each non-measure ρ is kept as
+        a FROZEN, compile-decidable failure — a theorem that the old ρ violates
+        the new fields — and the witness itself is REPAIRED with a genuine measure
+        that preserves the result it supports. The pattern of `bad_not_amended`.
+
+    THE REPAIR.
+      (a) `Substrate` gains `add : Val → Val → Val`, with NO laws unless some
+          proof needs one; any law that is needed will be named by the theorem
+          that needs it.
+      (b) `Substrate` gains `rho_empty` (the empty set has mass `zero`) and
+          `rho_add` (masses add over disjoint sets).
+      (c) GUARD: the old constant ρ of `X0` and `Xbad` is recorded as violating
+          the new fields; `XG` and `XU` keep their ρ unchanged and gain the new
+          fields; every theorem that compiled before compiles after, with every
+          repaired witness and reworked proof listed.
+      (d) CHOICE: witnesses keep `Classical.choice`; the general statement about
+          ρ — the pushforward's additivity, now derivable from `rho_add` instead
+          of a supplied hypothesis — stays choice-free.
+      NORMALIZATION (`rho` of everything equals `one`) IS NOT ADDED. It is
+      Theorem 13's separate finding, and adding it here would change what
+      Theorem 13's witness demonstrates.
+
+    OUTCOMES. (R) repaired, all prior results re-compile unchanged. (R−)
+    repaired, some prior witness needs rework beyond X0, listed. (B) blocked,
+    because a prior theorem depends on ρ NOT being additive — itself a finding.
+
+    PRIORS. The reviewer's: (R). Mine, from the enumeration: (R−). `Xbad` needs
+    rework as well as `X0`, and `occBad_ergodic`'s proof — which assumes ρ is
+    constant — will change. Expected also: repairing `X0` and `Xbad` with genuine
+    measures makes them noncomputable, so their computable dependents in §13 and
+    §16 will need `noncomputable` — the price of honest measures, a fourth time.
+    (B) is not expected: the §13 proofs never read ρ, and Theorem 13's refutation
+    reads only `one` and the occupation — a genuine point mass of 1 on a scale
+    where `one` is 10 still breaks normalization. -/
