@@ -61,7 +61,7 @@ Applebaum's survey §5.1 (verified, l.1203–1217): a random local function at m
 ## Calibration
 
 - **Me:** (A) was right. (B)'s predicted location was wrong: the hardness already has a constant-factor gap.
-- **The reviewer:** the dense-image repair it proposed is excluded by counting, which refines the tension; that is a note, not a miss. The novelty check it asked for found the fact already known, which was its instinct.
+- **The reviewer:** the dense-image repair it proposed is excluded by counting, which refines the tension. At the reviewer's request it is counted as its **seventh wrong outcome prior**, since it was pre-registered as a repair. The novelty check it asked for found the fact already known, which was its instinct.
 
 ## Sources checked in R5
 
