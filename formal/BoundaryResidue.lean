@@ -842,4 +842,68 @@ theorem partiality_does_not_imply_inaccessibility :
        whether the clearance question lives above or below that line.
 -/
 
+/-! ## 12. Phase one — elaboration only
+
+    No proof is attempted in this section. Per clause 4, elaboration IS the test
+    of "stateable", and a statement that fails here is (C) for its clause.
+
+    DECLARED DEVIATION (clause 9). Clause 4 says to commit the statements "with
+    `sorry`". Asserting `S`, `D` and `A` as sorry'd theorems would assert a
+    contradiction — `D` is the negation of `S` — so they are committed as `def
+    … : Prop`, which is what actually carries the elaboration test. Nothing is
+    asserted here. The reason is that the clause as written cannot be followed
+    literally without making the file inconsistent; the spirit — no proving
+    before the statements are fixed and committed — is followed exactly. -/
+
+/-- Clause 1's interface, as a separate structure over an unchanged `Layer`. -/
+structure ThresholdInterface (L : Layer) (V : Type) where
+  QMethod : Type
+  /-- Clause 2: a family indexed by θ, one cost per method. -/
+  ask     : QMethod → V → L.Rep → Bool
+  qcost   : QMethod → Nat
+
+/-- Affordability, inherited from the layer's budget rather than re-declared. -/
+def ThresholdInterface.affordable {L : Layer} {V : Type}
+    (I : ThresholdInterface L V) (q : I.QMethod) : Prop :=
+  I.qcost q ≤ L.budget
+
+/-- Clause 3: clearance truth, in the joined signature, graded against the
+    induced potential. -/
+def Joined.clearsAt (J : Joined) (agg : Aggregator J) (θ : J.X.Val) (x : J.L.Rep) : Prop :=
+  J.X.lt θ (J.induced agg x)
+
+/-- Total agreement between a query family and clearance truth. -/
+def Agrees (J : Joined) (agg : Aggregator J) (I : ThresholdInterface J.L J.X.Val)
+    (q : I.QMethod) (θ : J.X.Val) : Prop :=
+  ∀ x : J.L.Rep, I.ask q θ x = true ↔ J.clearsAt agg θ x
+
+/-- `S∃` — 27′ survival for SOME aggregator. Agreement is total, so it includes
+    `L0`'s undefined point; affordability is witnessed, not assumed. -/
+def S_ex : Prop :=
+  ∃ (J : Joined), J.L = L0 ∧
+    ∃ (agg : Aggregator J) (I : ThresholdInterface J.L J.X.Val)
+      (q : I.QMethod) (θ : J.X.Val), I.affordable q ∧ Agrees J agg I q θ
+
+/-- `S∀` — survival for EVERY aggregator. -/
+def S_all : Prop :=
+  ∃ (J : Joined), J.L = L0 ∧
+    ∀ (agg : Aggregator J), ∃ (I : ThresholdInterface J.L J.X.Val)
+      (q : I.QMethod) (θ : J.X.Val), I.affordable q ∧ Agrees J agg I q θ
+
+/-- `D` — death: the negation, universally over interfaces. -/
+def D : Prop := ¬ S_ex
+
+/-- `A` — the asymmetry's invariant form, general frame. -/
+def A : Prop :=
+  ∀ (J : Joined) (agg : Aggregator J) (x : J.L.Rep), ¬ J.Om.Defined x →
+    ∀ (I : ThresholdInterface J.L J.X.Val) (q : I.QMethod), I.affordable q →
+      ∀ θ : J.X.Val, ¬ Agrees J agg I q θ
+
+/-- `G` — the poverty guard: some affordable family agrees on the DEFINED
+    region. Without this, `A` could hold because nothing is decidable at all. -/
+def G : Prop :=
+  ∃ (J : Joined) (agg : Aggregator J) (I : ThresholdInterface J.L J.X.Val)
+    (q : I.QMethod) (θ : J.X.Val), I.affordable q ∧
+      ∀ x : J.L.Rep, J.Om.Defined x → (I.ask q θ x = true ↔ J.clearsAt agg θ x)
+
 end RE
