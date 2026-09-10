@@ -750,4 +750,96 @@ theorem partiality_does_not_imply_inaccessibility :
     which is a (C)-shaped finding inside this (B) and must be reported as such.
     Not tested here; the choice is still unmade. -/
 
+/-! ## 11. The threshold-query extension — PRE-REGISTRATION
+
+    Written by the NON-RUNNER and committed before any line of the interface
+    elaborates. The runner does not edit clauses 1–9 (clause 9). Reproduced here
+    in condensed form; the reasons are load-bearing and are kept.
+
+    1. INTERFACE IS A SEPARATE STRUCTURE OVER `Layer`, NOT A NEW FIELD. The
+       compiled frame stays verbatim, so Theorem 9, both guards and the axiom
+       audit need no re-verification. Extension-as-structure makes the signature
+       event explicit; a new field would silently assert that every layer
+       natively queries values — the unpaid formal promise the front matter now
+       warns about. And it makes 27′ well-posed: survival becomes quantification
+       over interfaces on the UNCHANGED `L0`.
+         `ThresholdInterface (L : Layer) (V : Type)` with `QMethod`, `ask :
+         QMethod → V → L.Rep → Bool`, `qcost`, affordability `qcost q ≤ L.budget`.
+
+    2. `ask` IS A FAMILY INDEXED BY θ, not one query per θ. Per-θ supply needs
+       θ-indexed budgets or an enumeration of `Val` by methods — an unforced
+       choice smuggled in as bookkeeping. A family keeps one cost per method so
+       affordability transfers unchanged, and it is the stronger adversary: any
+       per-θ decider embeds as a family constant in θ, so inaccessibility against
+       families implies it against per-θ deciders, never the reverse.
+
+    3. GROUND TRUTH FOR CLEARANCE LIVES IN THE JOINED SIGNATURE — forced, not
+       chosen. In the layer-only signature clearance at an undefined point has no
+       truth-value, so the claim would be unstatable and the asymmetry would hold
+       vacuously, failing its own guard. Grading is against the induced
+       potential's clearance, aggregator abstract. Every outcome is relative to
+       how the aggregator is quantified, and clause 6 makes that quantifier the
+       experiment's subject rather than a nuisance parameter.
+
+    4. PHASE DISCIPLINE: ELABORATE FIRST, PROVE SECOND. Statements are committed
+       before any proof attempt. A statement that fails to elaborate is outcome
+       (C) for its clause, recorded with the failing term kept in a comment, and
+       no proving is attempted on it. Elaboration is the compile-decidable
+       meaning of "stateable".
+
+    5. THE TWO DEPENDENTS. 27′ survival `S`: there exist a joined structure over
+       `L0`, an affordable `q` (witnessed), and θ with total agreement between
+       `ask q θ` and clearance truth, INCLUDING at `L0`'s undefined point. `D`:
+       the negation, universally over interfaces. Asymmetry `A`: for the general
+       frame, every affordable family fails total agreement at every θ, conjoined
+       with poverty guard `G`: some affordable family agrees on the defined
+       region for some θ.
+
+    6. THE AGGREGATOR QUANTIFIER IS THE QUESTION, pre-registered as two clauses.
+       `S∃`: survival for SOME aggregator. `S∀`: for EVERY aggregator. If
+       `S∃ ∧ ¬S∀`, survival is aggregator-relative — the gap persists or closes
+       depending on the bridging law — and 27′'s answer is "waits on Problem 26",
+       turning the dependency stack into a LOOP that must then be declared in
+       both problems' texts rather than found later by a reader.
+
+    7. DESTINATIONS, checked against which sections hold what: M.4 theorems, M.8
+       conjectures.
+         · `S` proved → M.4. Gap is representation-INDEPENDENT at the strength
+           proved; regrounded Definition 17 unaffected (inaccessibility is
+           required outright, not derived); `L0`'s undefined point is confirmed
+           lattice-partial but NOT a boundary object, and the status note's
+           "pending" becomes "not derivable; definitional".
+         · `D` proved → M.4. The (C)-inside-(B) made real: the gap was an
+           artifact of `Defined` being Boolean-expressible verbatim, and for
+           clearance-type questions partiality regains teeth. Licences (does not
+           presume) a follow-up: does lattice-partiality IMPLY clearance-
+           inaccessibility, reconnecting for A5's actual question what Theorem 9
+           severed.
+         · `A` proved with `G` witnessed → M.4, and Definition 17's status note
+           closes.
+         · Any elaborating but unproved → M.8 as conjectures, sorry count rises
+           honestly, stall recorded as stall.
+         · Elaboration failure → (C), recorded in 27′ or as an explicit
+           dependency on Problem 26's aggregator.
+
+    8. PRIORS, RECORDED TO BE DISTRUSTED. Reviewer's: `S∃ ∧ ¬S∀`, by
+       parametricity — with the aggregator universally quantified the induced
+       value at the undefined point varies with it, so no fixed Boolean answer
+       matches all unless `L0`'s fiber structure collapses; existentially
+       quantified, choose the aggregator making truth match. Mechanism and
+       prediction agree this time, which is a consistency property of the guess
+       and not evidence for it (§8.1). Second-order, lower confidence: if `¬S∀`,
+       its proof is nearly definitional and the finding is the loop with
+       Problem 26 rather than the theorem.
+
+    9. GOVERNANCE. The runner does not edit 1–8. Deviations are declared with
+       reasons at the site, per the M.8→M.4 precedent; a deviation whose reason
+       is "the clause was wrong" is permitted and expected. Standing addition for
+       this run: for each of `S`, `D`, `A`, `G`, report whether the STATEMENT's
+       elaboration needed anything from `Layer`'s self-encoding apparatus
+       (`encode`, `decode`) or only the interface and joined structure — the
+       diagonal bar says self-quotation must be seen to be used, and it matters
+       whether the clearance question lives above or below that line.
+-/
+
 end RE
