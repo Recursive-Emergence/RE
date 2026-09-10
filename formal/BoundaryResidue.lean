@@ -1554,4 +1554,107 @@ theorem recipe_inevitability_refuted :
   have hbad : (10 : Nat) - 1 < 1 := hT (T + 1) (by omega)
   omega
 
+/-! ## 17. Problem 29 — THE ENUMERATION (by the non-transcriber)
+
+    Written by the reviewer, who has never seen a prior transcription of
+    Theorem 7, and committed BEFORE any term is written. This is the
+    countermeasure of Problem 29 applied for the first time, and to the case that
+    motivated it. The transcriber checks each item off against the finished term;
+    an item absent from the term is a defect, an item absent from THIS LIST that
+    the term reveals is the enumerator's ledger entry.
+
+    A. OBJECTS AND TYPES
+     1. `𝒳` substrate state-space — type only; no structure asserted by the
+        statement's logic (smoothness serves ∇ and Morse, not the statement).
+     2. `Ω` — A6 supplies the TYPE and nothing more; only `θ ∈ Ω` is load-bearing.
+     3. `θ ∈ Ω` — one fixed parameter; every θ-mentioning object means THIS θ.
+     4. `P : 𝒳 → Ω → Val` — substrate-side `P`, the Problem 26 letter. Never
+        written bare.
+     5. `θ_c` — UNDEFINED in the appendix. Parameter, not constant.
+     6. `Ψ*` — depends on θ; witness of (i)'s existential, same witness in the
+        conclusion. Uniqueness NOT asserted; multiple witnesses with different
+        basins are not excluded by the statement.
+     7. `basin(Ψ*)` — NEVER DEFINED; only characterized via Morse in the sketch.
+        Must carry its link to `P(·;θ)` and `Ψ*` IN ITS TYPE — the dropped link.
+     8. `>` on `Ω` — UNDEFINED. A6 gives manifold, measure, filtration; none is
+        an order, so `θ > θ_c` is ill-typed. Parameter `above : Ω → Prop`. The
+        manuscript owes both the threshold AND the relation.
+     9. `ΔP > 0` basin depth — parameter with `0 < ΔP`. See item 27.
+    10. `γ > 0` — A3's adaptation rate.
+    11. `D > 0` diffusion — COLLIDES with Definition 3's `D(Φ,C_j)`. Named
+        `Dnoise`. See item 27.
+    12. `W_t` — not transcribable Mathlib-free; see 15.
+    13. `Ψ_t` — process; depends on `Ψ₀, θ, γ, D`.
+    14. `Pr` — over the noise, `Ψ₀` a deterministic point.
+    15. DECLARED REPRESENTATION CHOICE: the SDE cannot be written here. Faithful
+        abstraction is a family of marginal laws with `Pr[Ψ_t ∈ B] := law t Ψ₀ B`,
+        carrying `P, θ, γ, D` as arguments so the dependence is in the type even
+        though the dynamics are not. Consequences at item 31.
+    16. `Val` — needs `0`, `1`, `<`, and subtraction for `1 − ε`.
+
+    B. HYPOTHESES, each a separate conjunct
+    17. (i-a) `above θ`.
+    18. (i-b) non-degenerate local maximum — parameter predicate.
+    19. NORMALIZATION: `∀ t Ψ₀, law … (fun _ => True) = 1`. The defect that killed
+        the last transcription. It lives on `law`, not on any ρ_∞.
+    20. (i-c) "of carrier-class type" — undefined in the material supplied;
+        parameter predicate, and recorded as a candidate fourth undefined term.
+    21. (i-d) `0 < ΔP`.
+    22. (ii) ergodicity FOR THIS θ.
+    23. `0 < γ`, `0 < Dnoise`.
+    24. WHAT ERGODICITY MAY MEAN: unique invariant measure / Birkhoff / mixing.
+        The last transcription assumed Birkhoff's CONCLUSION as premise. Faithful
+        move: an abstract predicate, NOT unfolded — the statement says "is
+        ergodic" and no more.
+    25. ρ_∞ IS ABSENT FROM THE STATEMENT. It is a proof object. Checked by grep.
+
+    C. QUANTIFIER ORDER
+    26. `∀ P θ, [17–23] → ∀ Ψ₀, ∀ ε > 0, ∃ T, ∀ t > T, Pr > 1 − ε`. `T` may depend
+        on `Ψ₀`; the uniform-in-`Ψ₀` reading is STRONGER and is not what is
+        written.
+
+    D. STATEMENT/PROOF MISMATCHES — refutation targets, not transcription items
+    27. `ΔP` and `Dnoise` appear in hypotheses and NOWHERE in the conclusion; the
+        conclusion is quantitatively independent of noise level.
+    28. The sketch yields a time fraction equal to `ρ_∞(basin)` — fixed and `< 1`
+        for nondegenerate noise, since `e^{P/D} > 0` everywhere. Then no `T`
+        exists for `ε < 1 − ρ_∞(basin)`. The sketch supports "fraction → 1 as
+        ΔP/D → ∞"; the statement claims "> 1 − ε for every ε at fixed D".
+    29. Pointwise-in-time vs time-average: the conclusion is about marginals
+        (mixing); Birkhoff gives time averages.
+    30. Sketch-internal: stationary density of `γ∇P dt + √(2D)dW` is `∝ e^{γP/D}`,
+        not `e^{P/D}`.
+
+    E. PRE-REGISTRATION FOR THE REFUTATION
+    31. The witness must be a GENUINE process, not an artifact of item 15's
+        abstraction: a finite-state chain with strictly positive transitions,
+        hence unique strictly positive stationary distribution. Two states
+        suffice. Guards: every hypothesis 17–23 exhibited, and the basin
+        non-empty with `Ψ* = in`.
+    32. OUTCOME (R) — refuted. THE BOUNDARY SENTENCE FLIPS: the transport was
+        faithful, checked item by item; the defect is in Theorem 7 AS STATED.
+        Destination M.4, and Theorem 7 is revised. Propagation sites marked in
+        advance: its Implication, its contingency note, Theorem 8's table row,
+        and any chapter citing recipe inevitability as a theorem.
+    33. OUTCOME (F) — faithful, not refuted: a `sorry` marking a believed
+        statement, and item 28 was wrong.
+    34. OUTCOME (C) — an item lacks a referent even as a parameter. Candidates:
+        `above` (8), `carrierClass` (20). A stubbed item is a DECLARED gap, which
+        is not a dropped one.
+    35. PRIORS: (R) at high confidence via the two-state chain on item 28 —
+        mechanism stated alongside the prediction, which the record says is a
+        consistency property of the guess. Secondary: item 8 is the sharpest
+        MANUSCRIPT finding independent of the refutation, since hypothesis (i)
+        has been ill-typed since it was written and Theorem 8's table inherits it.
+    36. CALIBRATION: the five defects of Theorem 13 map onto items 19, 26, 17/8,
+        7, and 24 — all five are on this list.
+
+    AND A NOTE ON DIRECTION, recorded before the result. Every ledger entry so
+    far was a transport loss: the manuscript right, the term lossy. Items 27–29
+    are not that. If (R) lands it is the first time the skeleton reaches back
+    through a FAITHFUL transcription and finds the informal register claiming
+    more than its own proof delivers. It cuts against the manuscript, and the
+    record should say so in the voice it used the ten times it cut the other way.
+-/
+
 end RE
