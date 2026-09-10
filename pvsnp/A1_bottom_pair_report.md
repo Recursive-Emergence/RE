@@ -65,6 +65,10 @@ At the bottom, the finite Gödel theorem changes form:
 
 The first rung is a lower bound for Res(2) on Res(3)'s reflection principle, or, through §4, possibly for resolution on Circuit Frege's. It is a concrete tautology family for a weak system, within reach of the known techniques (feasible interpolation, as in the proofs of Theorems 3.11–3.12).
 
+## Readout addition (on the reviewer's acceptance): the sixth instance of the observation
+
+*A reading, not a theorem.* The consistency statement con_P concerns **one named object**, the formula ⊥. The reflection principle rfn_P is soundness over **all** P-proofs of all formulas. At the bottom of the ladder the named case is cheap (Proposition 3.9: resolution proves its own consistency in polynomial size), and the case over all proofs is not (Theorem 3.12: resolution needs 2^{n^ε}-size proofs of its reflection principle). That is the precise reason the finite Gödel theorem has a bottom rung only in its reflection form. It is the sixth instance of "the obstruction concerns the typical, never the named", recorded in the M-program final page.
+
 ## Calibration
 
 - **The reviewer:**
