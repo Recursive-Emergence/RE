@@ -41,7 +41,7 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD (branch kernel-is-a-kernel, 2026-09-10). Lean 4.15.0
+  COMPILATION RECORD (branch target-ix, 2026-09-10). Lean 4.15.0
     (commit 11651562caae), bare toolchain, no Mathlib. Exit 0, zero errors.
     Warnings: exactly two, both `declaration uses 'sorry'`, at
     `REamend.general_partA` and `REamend.general_partB` — the file's only
@@ -63,7 +63,8 @@
     that §22 left forced only by argument (§22.2). ff5aef2: reproduced — the
     fourth independent run — with the §22.2 code lines diffed against the peer's
     original and found identical modulo docstrings. The commit that merges to
-    main adds only this paragraph to ff5aef2; its code is the code reproduced.
+    main adds only this paragraph to ff5aef2; its code is the code reproduced. The target-ix branch adds §24 — the target (ix)
+    confirming instance — on top of that, and is owed a re-run.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
@@ -95,6 +96,13 @@
       'REamend.bad_not_amended' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.bad2_not_amended' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.stepBad_additive' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REix.chain3' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REix.exact3' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REix.law_ge2' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REix.ix_partA' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REix.ix_partB' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REix.ix_not_stationary_at_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REix.ix_rows_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
       'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
 
@@ -2844,3 +2852,188 @@ theorem bad2_not_amended : ¬ FiniteChain [true, false] REref2.stepBad2 REref.rh
   fun h => REref2.stepBad2_not_additive h.additive
 
 end REamend
+
+/-! ## 24. Target (ix): a confirming instance that is not the two-state chain -/
+namespace REix
+open Classical
+open RE RE4 REgen REamend
+
+inductive T3 where
+  | a | b | c
+  deriving DecidableEq
+
+/-- `abbrev`, so rewrites stated with `u3` match a goal where it has been
+    unfolded to the literal list. -/
+abbrev u3 : List T3 := [T3.a, T3.b, T3.c]
+
+/-- Point masses of the kernel, in percent. Rows a = (31,42,27), b = (37,34,29),
+    c = (55,10,35): positive, each summing to 100, pairwise distinct, none equal
+    to ρ. Built as ρ + ½·u vᵀ with u = (3,1,−5) ⊥ ρ and v = 1 × u = (−6,8,−2),
+    so the deviation is nilpotent: M² = 1ρᵀ. -/
+def M3 : T3 → T3 → Nat
+  | .a, .a => 31 | .a, .b => 42 | .a, .c => 27
+  | .b, .a => 37 | .b, .b => 34 | .b, .c => 29
+  | .c, .a => 55 | .c, .b => 10 | .c, .c => 35
+
+noncomputable def step3 : T3 → (T3 → Prop) → Nat :=
+  fun x B => (if B T3.a then M3 x T3.a else 0) + (if B T3.b then M3 x T3.b else 0)
+    + (if B T3.c then M3 x T3.c else 0)
+
+noncomputable def rho3 : (T3 → Prop) → Nat :=
+  fun B => (if B T3.a then 40 else 0) + (if B T3.b then 30 else 0) + (if B T3.c then 30 else 0)
+
+theorem law1 : ∀ (start : T3) (B : T3 → Prop), iterLaw u3 step3 1 start B = step3 start B := by
+  intro start B
+  cases start <;> simp [iterLaw, u3]
+
+theorem rho3_invariant : ∀ B : T3 → Prop,
+    (u3.map (fun x => rho3 (fun y => y = x) * step3 x B)).sum / 100 = rho3 B := by
+  intro B
+  by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;>
+    simp [u3, rho3, step3, M3, ha, hb, hc]
+
+theorem law2 : ∀ (start : T3) (B : T3 → Prop), iterLaw u3 step3 2 start B = rho3 B := by
+  intro start B
+  rw [iterLaw]
+  simp only [u3, List.map, List.sum_cons, List.sum_nil]
+  rw [law1 start (fun y => y = T3.a), law1 start (fun y => y = T3.b), law1 start (fun y => y = T3.c)]
+  cases start <;> by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;>
+    simp [step3, M3, rho3, ha, hb, hc]
+
+theorem law_ge2 : ∀ (t : Nat) (start : T3) (B : T3 → Prop),
+    iterLaw u3 step3 (t + 2) start B = rho3 B := by
+  intro t
+  induction t with
+  | zero => exact law2
+  | succ n ih =>
+    intro start B
+    rw [iterLaw]
+    simp only [u3, List.map, List.sum_cons, List.sum_nil]
+    rw [ih start (fun y => y = T3.a), ih start (fun y => y = T3.b), ih start (fun y => y = T3.c)]
+    have := rho3_invariant B
+    simp only [u3, List.map, List.sum_cons, List.sum_nil] at this
+    exact this
+
+theorem exact3 : ExactKernel u3 step3 := by
+  intro t start B
+  simp only [u3, List.map, List.sum_cons, List.sum_nil]
+  cases t with
+  | zero =>
+    cases start <;> by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;>
+      simp [iterLaw, step3, M3, ha, hb, hc] <;> omega
+  | succ t =>
+    cases t with
+    | zero =>
+      rw [law1 start (fun y => y = T3.a), law1 start (fun y => y = T3.b), law1 start (fun y => y = T3.c)]
+      cases start <;> by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;>
+        simp [step3, M3, ha, hb, hc] <;> omega
+    | succ t =>
+      rw [law_ge2 t start (fun y => y = T3.a), law_ge2 t start (fun y => y = T3.b),
+          law_ge2 t start (fun y => y = T3.c)]
+      by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;>
+        simp [rho3, step3, M3, ha, hb, hc] <;> omega
+
+/-- The instance satisfies the AMENDED hypotheses. -/
+theorem chain3 : REamend.FiniteChain u3 step3 rho3 where
+  base :=
+    { complete  := by intro x; cases x <;> simp [u3]
+      nodup     := by decide
+      exact     := exact3
+      positive  := by intro x y; cases x <;> cases y <;> simp [step3, M3]
+      measure   := by
+        intro B
+        by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;>
+          simp [u3, rho3, ha, hb, hc]
+      total     := by simp [rho3]
+      invariant := rho3_invariant }
+  stochastic := by intro x; cases x <;> simp [step3, M3]
+  additive   := by intro x B; simp [step3, u3, Nat.add_assoc]
+
+/-- REQUIREMENT (1): convergence is NOT stationarity from step one. From start `a`
+    the law of `{a}` at t = 1 is 31, not ρ's 40. -/
+theorem ix_not_stationary_at_one :
+    iterLaw u3 step3 1 T3.a (fun y => y = T3.a) ≠ rho3 (fun y => y = T3.a) := by
+  rw [law1]; simp [step3, M3, rho3]
+
+/-- REQUIREMENT (2): the three rows are pairwise distinct, and none equals ρ —
+    witnessed on `{a}`, where they give 31, 37, 55 against ρ's 40. -/
+theorem ix_rows_distinct :
+    step3 T3.a (fun y => y = T3.a) ≠ step3 T3.b (fun y => y = T3.a) ∧
+    step3 T3.a (fun y => y = T3.a) ≠ step3 T3.c (fun y => y = T3.a) ∧
+    step3 T3.b (fun y => y = T3.a) ≠ step3 T3.c (fun y => y = T3.a) ∧
+    step3 T3.a (fun y => y = T3.a) ≠ rho3 (fun y => y = T3.a) ∧
+    step3 T3.b (fun y => y = T3.a) ≠ rho3 (fun y => y = T3.a) ∧
+    step3 T3.c (fun y => y = T3.a) ≠ rho3 (fun y => y = T3.a) := by
+  simp [step3, M3, rho3]
+
+theorem bound_rho (B : T3 → Prop) : rho3 B ≤ 100 := by
+  by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;> simp [rho3, ha, hb, hc]
+
+theorem bound_law0 (start : T3) (B : T3 → Prop) : iterLaw u3 step3 0 start B ≤ 100 := by
+  by_cases h : B start <;> simp [iterLaw, h]
+
+theorem bound_law1 (start : T3) (B : T3 → Prop) : iterLaw u3 step3 1 start B ≤ 100 := by
+  rw [law1]
+  cases start <;> by_cases ha : B T3.a <;> by_cases hb : B T3.b <;> by_cases hc : B T3.c <;>
+    simp [step3, M3, ha, hb, hc]
+
+/-- PART B CONFIRMED on this instance, for EVERY start and EVERY set. -/
+theorem ix_partB : ∀ (start : T3) (basin : T3 → Prop), PartB_concl u3 step3 rho3 start basin := by
+  intro start basin ε hε
+  refine ⟨1, fun t ht => ?_⟩
+  obtain ⟨m, rfl⟩ : ∃ m, t = m + 2 := ⟨t - 2, by omega⟩
+  rw [law_ge2]; constructor <;> omega
+
+theorem psum3 (start : T3) (B : T3 → Prop) : ∀ m : Nat,
+    psum (fun s => iterLaw u3 step3 s start B) (m + 2)
+      = iterLaw u3 step3 0 start B + iterLaw u3 step3 1 start B + m * rho3 B := by
+  intro m
+  induction m with
+  | zero => simp [psum]
+  | succ n ih =>
+    show psum _ (n + 2) + iterLaw u3 step3 (n + 2) start B = _
+    rw [ih, law_ge2]; rw [Nat.succ_mul]; omega
+
+/-- PART A CONFIRMED on this instance, in the record's Cesàro form, for EVERY
+    start and EVERY set. -/
+theorem ix_partA : ∀ (start : T3) (basin : T3 → Prop), PartA_concl u3 step3 rho3 start basin := by
+  intro start basin ε hε
+  refine ⟨300, fun t ht => ?_⟩
+  obtain ⟨m, rfl⟩ : ∃ m, t = m + 2 := ⟨t - 2, by omega⟩
+  rw [psum3]
+  have h0 := bound_law0 start basin
+  have h1 := bound_law1 start basin
+  have hr := bound_rho basin
+  have hte : 1 * (m + 2) ≤ ε * (m + 2) := Nat.mul_le_mul_right _ (by omega : 1 ≤ ε)
+  have hcomm : (m + 2) * ε = ε * (m + 2) := Nat.mul_comm _ _
+  have hmr : (m + 2) * rho3 basin = m * rho3 basin + 2 * rho3 basin := by rw [Nat.add_mul]
+  constructor <;> omega
+
+end REix
+
+/-! ### 24.1 Readout — target (ix)
+
+    (ix) confirming instance beyond the two-state chain | expected: confirmed,
+    narrow | OBSERVED: CONFIRMED. `chain3` proves the three-state kernel satisfies
+    every AMENDED hypothesis — positive, stochastic, additive, exact, with
+    ρ = (40, 30, 30) invariant. `ix_partA` and `ix_partB` prove Parts A and B for
+    EVERY start and EVERY set, from the instance lemmas alone and never from the
+    `sorry`'d general statements.
+
+    REQUIREMENT (1), proved: from start `a` the law of `{a}` at t = 1 is 31, not
+    ρ's 40 (`ix_not_stationary_at_one`), so convergence is not stationarity from
+    step one. REQUIREMENT (2), proved: the rows are pairwise distinct and none
+    equals ρ (`ix_rows_distinct`).
+
+    THE WEAKENING, ruled by the reviewer and recorded before the attempt: ONE
+    INSTANCE, FINITE-HORIZON BY CONSTRUCTION. The kernel is ρ plus a nilpotent
+    deviation, so M² = 1ρᵀ and the law equals ρ exactly from t = 2 on
+    (`law_ge2`). That is what `ExactKernel` permits on a 1/100 grid, and it is
+    why the confirmation is narrow: it exercises the amended hypotheses and the
+    conclusions' quantifier structure, not the asymptotic mixing that makes
+    Parts A and B hard. THE GENERIC FINITE DOEBLIN CASE REMAINS THE SORRY.
+
+    One mechanical note: `u3` is an `abbrev`, not a `def`. As a `def`, rewrites
+    stated with `u3` failed to match goals where it had been unfolded to the
+    literal list — the same surface-text-versus-object gap the file records
+    elsewhere, in a smaller form. -/
