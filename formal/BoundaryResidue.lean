@@ -14,9 +14,11 @@
     discharged, that is a mathematical event and belongs in M.8, not in a
     refactor.
 
-  COMPILATION RECORD. Lean 4.15.0, bare toolchain, no Mathlib. Compiled clean
-    2026-09-09: exit 0, zero errors, zero linter complaints, warnings limited to
-    the two intended `sorry` sites in §4. Axiom audit of the frame:
+  COMPILATION RECORD. Lean 4.15.0 (commit 11651562caae), bare toolchain, no
+    Mathlib. Compiled clean 2026-09-09: exit 0, zero errors, zero linter
+    complaints, warnings limited to the two intended `sorry` sites in §4.
+    Reproduced independently twice — once on a trimmed copy, once on this file
+    byte-exact — with identical audits. `formal/check.sh` passes. Axiom audit:
 
       Layer.undecidable, Layer.incompressible, Layer.available,
       Lattice.P, Lattice.clears, Broad          — no axioms
@@ -192,12 +194,13 @@ def Layer.incompressible (L : Layer) (x : L.Rep) : Prop :=
     does not need. Left abstract — a predicate on predicates — because supplying
     a measure is the substance of Problem 25, not a detail of its statement.
 
-    NEGATIVE RESULT (verified), and sharper than the warning it replaces. This
-    was expected to draw an unused-variable complaint on `L`, with the compiler
-    thereby noticing that largeness supplies nothing layer-relative. It draws
-    NO warning: the linter counts `L` as used, because it occurs in the TYPES of
-    `large` and `p` (`L.Rep → Prop`). A control with a genuinely unused `L` does
-    warn, so this is the linter's reading, not its silence.
+    NEGATIVE RESULT (verified twice), and sharper than the warning it replaces.
+    This was expected to draw an unused-variable complaint on `L`, with the
+    compiler thereby noticing that largeness supplies nothing layer-relative. It
+    draws NO warning: the linter counts `L` as used, because it occurs in the
+    TYPES of `large` and `p` (`L.Rep → Prop`). A control with a genuinely unused
+    `L` in the same file DOES warn (`unused variable \`L\``), so this is the
+    linter's reading, not its silence.
 
     The gap is therefore invisible to tooling by construction. The type system
     certifies that the STATEMENT of largeness is layer-relative while the BODY
