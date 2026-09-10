@@ -3370,25 +3370,42 @@ end REp25
         trivial zero of the empty property.
     (iii) hostability | expected: one slot filled | OBSERVED: ONE SLOT FILLED.
         `RR_hosted` instantiates `RR_shape` with the pushforward largeness.
-        LARGE NOW HAS A REFERENT; HARD AND USEFUL DON'T. Lid's turn: on the
-        transparent layer the large property is constructive
-        (`constructive_true_Lid`), so the shape's antecedent fires — and all it
-        does is force `¬ Useful` on that property whenever `Hard` holds
-        (`rr_hosted_on_Lid_forces`). The shape is satisfiable there for every
-        `Hard` (`rr_hosted_satisfiable`). Theorem 10's mechanism, which refuted
-        every earlier transposition of this conjecture, does not refute this one:
-        the shape now runs in Razborov–Rudich's direction, and `Useful` is still a
-        free slot for it to constrain.
+        LARGE NOW HAS A REFERENT; HARD AND USEFUL DON'T. On Lid the hosted shape
+        is CONSISTENT (`rr_hosted_satisfiable`, with `Useful` empty), and it
+        CONSTRAINS `Useful` ON ONE PROPERTY WHEN `Hard` HOLDS
+        (`rr_hosted_on_Lid_forces`, via `constructive_true_Lid` and
+        `large_true`). Nothing stronger is claimed: satisfiability is consistency,
+        not content, and `Hard` and `Useful` remain empty slots. The transparent
+        layer that refuted every earlier transposition does not refute this one,
+        because the shape now runs in Razborov–Rudich's direction. The next
+        transposition that claims more than consistency plus this one constraint
+        is the one to attack.
 
-    OUTCOME, and where it departs from the pre-registration's wording. Outcome
-    (C) was worded for the case where `formulable` is not functional AND the
-    manuscript does not say it must be. The manuscript does say so — A2,
-    explicitly — so the gap is a TRANSCRIPTION loss (ledger twelve), not a
-    manuscript silence. Under the restriction, logged and citing A2, the result is
-    outcome (A): Problem 25's prerequisite has a candidate from inside the file.
-    Not a derivation of opacity — a hosting of its largeness slot. The peer's
-    prior, "(C), then (A) one level down", landed in substance, for a different
-    reason than it gave.
+    TWO FINDINGS, not just audit lines.
+      · `pushMass_additive` is CHOICE-FREE: `[propext, Quot.sound]`, no
+        `Classical.choice`. Single-valuedness ⇒ additivity is a constructive fact
+        about the relation; every witness needs choice only to evaluate its
+        classical `if`s. Same shape as the §2 frame, axiom-free up to exactly the
+        point where assertions begin.
+      · `zero_mass_false` is a property that is non-empty, formulated, and of
+        zero mass. It is the first place in the file where LARGE SEPARATES FROM
+        NON-EMPTY — largeness is measure content, not set content — and it is
+        exactly what the two dead transpositions of this conjecture lacked. That
+        is why (ii) matters.
+
+    OUTCOME, AS RULED BY THE REVIEWER: (A), UNDER A HYPOTHESIS THE MANUSCRIPT
+    ALREADY STATES AND THE TRANSCRIPTION HAD DROPPED (Problem 31). Outcome (C) had
+    two conjuncts, and the second — the manuscript silent on whether the
+    projection is a function — is false: A2 says function. What separates the
+    cases is where the hypothesis comes from. `SingleValued` is imported from A2,
+    not invented for the proof, so it repairs the transcription rather than
+    adding an assumption. The result hosts opacity's largeness slot from inside
+    the file; it does not derive opacity.
+
+    THE PRIOR, scored as the reviewer asked: it landed in substance for the WRONG
+    REASON. It predicted a choice to log and got a loss to repair — a worse miss
+    than a plain wrong call, because the right outcome was reached by a mechanism
+    it never named.
 
     THE WEAKENING, as logged: largeness here is POSITIVE mass, weaker than
     Razborov–Rudich's "at least a fixed fraction of total mass". Fraction-
