@@ -4755,3 +4755,98 @@ end RExii
     That is why the generic difficulty the appendix names — asymptotic mixing —
     was avoided here, not overcome. -/
 
+/-! ## 36. Problem 35 decided in the loop; target (xiv) — PRE-REGISTRATION
+
+    DECISION: adopted in the loop, 2026-09-10, on the reviewer's ruling under
+    the author's direction, and confirmed by the author in this session. It is
+    not yet manuscript text, and the manuscript can reverse it. Reading (c):
+    cost is a per-method price tied to what methods compute, and Definition 2's
+    C — a structure's creation and maintenance cost — is identified with the
+    cost of the method that carries the structure. The manuscript owes the
+    sentence that says so.
+    REASONS (the reviewer's): (a) makes Theorem 10 permanent, so Conjecture
+    7(b) could never be hosted; (b) needs per-input semantics that a total
+    `run` cannot carry without re-typing the frame, and it is not the cost
+    Razborov–Rudich use; (c) needs no re-typing and matches circuit size. (c) is
+    unchecked, and (xiv) is the check. If it fails, the decision reverts to
+    open, with the failure recorded.
+
+    A PREMISE CORRECTED BEFORE DRAFTING. The guide named `Lid` as the refuter
+    behind Theorem 10's §13 results. From the file: `Lid` carries Corollary
+    10.1 only. §13 runs on `J0`, over `L0`; Corollary 10.2 runs on `Lop` (Rep
+    = Option Bool); 10.3 and 10.4 run on `Lpar` and `Lopc` (Rep = Nat). This is
+    the reviewer's fifth premise miss, and it is on the tally.
+
+    THE DESIGN CONSTRAINT (mine, accepted by the reviewer). With κ free, every
+    layer satisfies the tie with κ ≡ 0, so a bare tie constrains nothing and
+    inaccessibility could only be stipulated — Theorem 10 in a mirror. κ
+    therefore carries exactly one law, a counting law: Shannon's, that most
+    predicates are expensive.
+
+    BUILD EXACTLY THIS.
+      1. `Tied (L : Layer)`, a structure ON a layer and not a field of it, so
+         every existing witness typechecks unchanged. Fields:
+           · an explicit enumeration `univ : List L.Rep`, complete and nodup,
+             plus decidable equality on `L.Rep`;
+           · `κ : (L.Rep → Bool) → Nat` and `g : Nat → Nat`;
+           · tie: ∀ m, κ (L.run m) ≤ L.cost m;
+           · counting: for all k and ps : List (L.Rep → Bool), if the codes
+             `ps.map (fun p => univ.map p)` are nodup and every p ∈ ps has
+             κ p ≤ k, then ps.length ≤ g k.
+      2. `inaccessible_exists`: for any L with `Tied L` and
+         g L.budget < 2 ^ univ.length, ∃ p : L.Rep → Prop, L.undecidable p.
+         It is stated with the frame's own `Layer.undecidable`.
+      3. Tied instances on `Lid` and `L0`, each with its existing cost and
+         budget, κ ≡ 0 and g k = 4. These relabel Corollary 10.1 and §13 as
+         "affordability constrains nothing about cheap predicates". This adds
+         `L0` to the guide's two witnesses, because the §13 relabel needs it.
+      4. One hard witness: finite Rep, a small budget, and
+         g budget < 2 ^ |Rep|, on which `inaccessible_exists` fires. This is
+         the positive control that cost now prices something.
+      Nothing else: not R's denominator, not Problem 33, not the partiality
+      clause.
+
+    SCOPE, from the file. `Tied` needs a finite enumeration, so it cannot be
+    stated on `Lpar` or `Lopc`. Corollaries 10.3 and 10.4 are outside its
+    reach; this target neither relabels nor tests them. `Lop` could be tied the
+    same way as `Lid`, but that is not built here.
+
+    SUB-PREDICTIONS, pre-registered.
+      s1  The guide calls the result non-constructive by necessity: the layer
+          "can prove an expensive predicate exists and cannot exhibit one".
+          Mine: FALSE in this setting. Rep is finitely enumerated with decidable
+          equality and κ is a function, so a finite search exhibits an
+          expensive predicate. I expect `inaccessible_exists` to be provable
+          without `Classical.choice`, and the audit decides. The
+          Razborov–Rudich point is that the layer's own affordable methods
+          cannot exhibit one — which is what `undecidable` says — not that
+          logic cannot.
+      s2  On one witness the stipulation relocates into (κ, g), since both are
+          chosen there. The content is the generality of `inaccessible_exists`:
+          ANY κ obeying ANY counting bound below 2^|Rep| at the budget. The
+          readout must call the hard witness a positive control, not evidence
+          about any particular layer.
+
+    OUTCOMES (the reviewer's).
+      (T+) Proved on the hard witness; `Lid` and `L0` tied with unchanged cost
+           and budget; relabels made.
+      (T−) The counting law as stated cannot be satisfied on a small witness
+           together with the tie, or the pigeonhole needs a form the file
+           cannot state. Log it and retry once.
+      (T×) `Tied` is inconsistent with a frame definition or breaks a frame
+           result. The decision reverts to open, and that is the finding.
+
+    GUARDS.
+      · check.sh OK.
+      · `Layer`'s kernel type unchanged, and every existing witness compiles.
+      · Zero sorry.
+      · The kernel closure of `inaccessible_exists` uses BOTH `tie` and
+        `counting`, with a positive control.
+      · The `Lid` and `L0` instances are stated for the literal layers, so
+        they use exactly the existing cost and budget.
+
+    PRIORS. The reviewer's: T+ 60, T− 30, T× 10. Mine: T+ 75, T− 20, T× 5.
+    `Tied` is a separate structure that no frame definition mentions, which
+    makes T× unlikely. The likeliest cost is the pigeonhole over lists of
+    predicates without Fintype. s1: 80% that no `Classical.choice` appears. -/
+
