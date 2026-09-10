@@ -272,31 +272,44 @@ Combined: finite first-passage + exponentially long residence ⇒ for $t > T_\ep
 
 **Part A — ergodic, time-average.**
 
-*Hypotheses*: $\text{above}(\theta)$ (declared stub, Problem 30); $\Psi^*$ a nondegenerate local maximum of $P(\cdot;\theta)$ of carrier-class type (declared stub, Problem 30); the process has a **unique invariant probability measure**, named $\rho_\infty$ — this hypothesis *is* $\rho_\infty$'s definition here; the marginal laws are probability measures.
+*Hypotheses*: $\text{above}(\theta)$ (declared stub, Problem 30); $\Psi^*$ a nondegenerate local maximum of $P(\cdot;\theta)$ of carrier-class type (declared stub, Problem 30); the marginal laws are probability measures; and the process is **positive Harris recurrent, with invariant probability measure $\rho_\infty$** — this hypothesis *is* $\rho_\infty$'s definition here.
+
+*Declared choice (amendment A1)*: the earlier draft assumed only a *unique* invariant probability measure, which is false "for every $\Psi_0$": Birkhoff then gives the limit only for $\rho_\infty$-almost-every start. Witness: state space $\{a\} \cup \mathbb{N}$ with $a$ absorbing and $n \to n+1$ at rate one; the only invariant probability is $\delta_a$, yet from $\Psi_0 = 1$ the time-average of $\mathbf{1}[a]$ is $0$, not $1$. Two repairs were available — keep uniqueness and weaken to $\rho_\infty$-a.e. $\Psi_0$, or strengthen to positive Harris recurrence and keep every $\Psi_0$. The second is taken, because "for any initial condition" is the content of the original theorem, and a repair that silently dropped it would be the initial-condition defect of Theorem 13 again.
 
 *Conclusion*: for every initial condition $\Psi_0 \in \mathcal{X}$, almost surely over the noise,
 
 $$\lim_{t \to \infty} \frac{1}{t}\int_0^t \mathbf{1}[\Psi_s \in \text{basin}(\Psi^*)]\, ds \ =\ \rho_\infty(\text{basin}(\Psi^*)).$$
 
-The limit exists — Birkhoff, not a $\liminf$ bound. The almost-sure scope is over the noise, per $\Psi_0$; no uniformity in $\Psi_0$ is claimed.
+The limit exists — not a $\liminf$ bound. The almost-sure scope is over the noise, per $\Psi_0$; no uniformity in $\Psi_0$ is claimed.
 
 **Part B — mixing, pointwise.**
 
-*Hypotheses*: as Part A, with the ergodicity hypothesis replaced by **mixing**: for every $\Psi_0$, the marginal law of $\Psi_t$ started at $\Psi_0$ converges setwise to $\rho_\infty$.
+*Hypotheses*: $\text{above}(\theta)$ and $\Psi^*$ as in Part A; the marginal laws are probability measures; and **mixing**: for every $\Psi_0$, the marginal law of $\Psi_t$ started at $\Psi_0$ converges setwise to $\rho_\infty$, an invariant probability measure (necessarily unique, since two such would be distinct setwise limits of the same laws).
 
 *Conclusion*: for every initial condition $\Psi_0 \in \mathcal{X}$,
 
 $$\lim_{t \to \infty} \Pr\nolimits_{\Psi_0}[\Psi_t \in \text{basin}(\Psi^*)] \ =\ \rho_\infty(\text{basin}(\Psi^*)).$$
 
-Equality, not a bound: mixing makes the limit exist, and stating $\liminf \geq$ under the stronger hypothesis would hide that.
+**This conclusion is its hypothesis applied to one set** — setwise convergence, evaluated at $\text{basin}(\Psi^*)$. Part B is stated because the pointwise form is what the original claimed, and it is honest; but it proves nothing beyond its premise, and should not be read as if it did. Its content is that *this* is the hypothesis a pointwise claim needs, and ergodicity is not it.
 
 **Part C — the small-noise limit, a separate proposition.**
 
-*Setting*: the landscape is fixed — $P$, $\theta$, $\gamma$ fixed — and a family of processes is indexed by $D > 0$, each satisfying Part A's hypotheses, with invariant measures $\rho_\infty^{(D)}$.
+*Setting*: the landscape is fixed — $P$, $\theta$ and $\gamma$ fixed — and for each $D > 0$ a process given by the SDE
 
-*Additional hypothesis, and it is a hypothesis about the dynamics rather than a consequence of ergodicity*: $\rho_\infty^{(D)}$ has density proportional to $e^{\gamma P(\cdot\,;\theta)/D}$ with respect to a fixed reference measure on $\mathcal{X}$. This holds for reversible gradient-plus-isotropic-noise dynamics — the SDE of hypothesis (ii) — and not for an arbitrary ergodic process. It is where $\gamma$ enters, and it must be assumed, not inherited.
+$$d\Psi_t \ =\ \gamma\,\nabla_\Psi P(\Psi_t;\theta)\,dt + \sqrt{2D}\,dW_t,$$
 
-*Additional hypothesis*: let $G$ be the set of global maxima of $P(\cdot;\theta)$, assumed finite, with each element nondegenerate (the Laplace-method conditions).
+each positive Harris recurrent with invariant probability measure $\rho_\infty^{(D)}$. Only these process hypotheses are inherited from Part A; $\Psi^*$ does not appear in the proposition, and first appears in the corollary.
+
+*Hypothesis on $\gamma$*: $\gamma > 0$. With $\gamma < 0$ the Gibbs weights below concentrate on *minima* and both clauses of the conclusion fail.
+
+*Hypothesis on the invariant measures, about the dynamics rather than a consequence of recurrence*: $\rho_\infty^{(D)}$ has density proportional to $e^{\gamma P(\cdot\,;\theta)/D}$ with respect to a reference measure $\lambda$ on $\mathcal{X}$. This holds for reversible gradient-plus-isotropic-noise dynamics such as the SDE above, and not for an arbitrary recurrent process. It is where $\gamma$ enters, and it is assumed, not inherited.
+
+*Hypotheses for the Laplace limit (amendment A3)* — without these, "fixed reference measure" is too weak: taking $\lambda$ to be a point mass at a non-global local maximum makes $\rho_\infty^{(D)}$ that point mass for every $D$, and both clauses fail.
+- **(a)** $\lambda$ has a positive continuous density with respect to volume on a neighbourhood of each point of $G$ (defined below);
+- **(b)** either $\mathcal{X}$ is compact, or there are a compact neighbourhood $K$ of $G$ and $\delta > 0$ with $\sup_{\mathcal{X}\setminus K} P(\cdot;\theta) \leq \max P(\cdot;\theta) - \delta$ — otherwise mass can escape to infinity;
+- **(c)** $e^{\gamma P(\cdot;\theta)/D}$ is $\lambda$-integrable for some $D$; given (b), integrability at one $D$ implies it at every smaller $D$.
+
+*Hypothesis*: let $G$ be the set of global maxima of $P(\cdot;\theta)$, assumed finite, each nondegenerate.
 
 *Conclusion*:
 
@@ -304,7 +317,7 @@ $$\forall\, \epsilon > 0\ \ \exists\, D_0 > 0\ \ \forall\, D < D_0: \quad \rho_\
 
 for every local maximum $\Psi' \notin G$.
 
-*Corollary*, under the **additional** hypothesis $G = \{\Psi^*\}$: $\rho_\infty^{(D)}(\text{basin}(\Psi^*)) \to 1$ as $D \to 0$. Uniqueness of the global maximum is a hypothesis of this corollary and of nothing else.
+*Corollary*, under the **additional** hypothesis $G = \{\Psi^*\}$ for a point $\Psi^*$ — first introduced here: $\rho_\infty^{(D)}(\text{basin}(\Psi^*)) \to 1$ as $D \to 0$. Uniqueness of the global maximum is a hypothesis of this corollary and of nothing else.
 
 **On $\Delta P$ — dropped, and the reason recorded.** The original's basin depth $\Delta P > 0$ appears in none of Parts A, B or C, and it is dropped rather than carried. It did no work in the original conclusion and does none here: a non-global local maximum's mass goes to zero *regardless of its depth*, and the global basins' mass goes to one regardless of theirs. Its only candidate role was Kramers' residence time, which no conclusion above uses, since all three are stated in stationary mass rather than in escape times. Morse's contribution — that a nondegenerate critical point is isolated and bounds a basin of finite measure — is a condition on $\Psi^*$ and $\text{basin}$, already carried by the nondegeneracy hypothesis, and needs no depth parameter. If a later version restores $\Delta P$ it must give it a display to appear in.
 
