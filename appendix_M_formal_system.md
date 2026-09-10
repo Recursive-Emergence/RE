@@ -442,6 +442,8 @@ is **false**.
 
 **Proof idea**: the cost function is a number compared against a budget and is wholly unconnected to what the query computes. Given any aggregator, choose the query family afterwards and let it compute clearance. $\blacksquare$
 
+**Evidence re-checked on a legal witness (2026-09-10).** The witness Theorem 10's evidence was first built on related every state to every structure, which A2 rules out (Problem 31), and carried a stationary "measure" that was not additive. Restricted to witnesses that conform to A2, all five supporting results re-establish (skeleton §§28–29), so Theorem 10 stands on ground the manuscript permits. None of the original proofs read either defective component. The price is small but real: a genuine measure on arbitrary predicates must decide membership, so the legal re-establishment depends on classical choice where the original did not.
+
 **Why this supersedes Theorem 9's explanation**: Theorem 9 was read as turning on $\text{Defined}$ being expressible verbatim by a Boolean evaluator. That reading was too kind to the framework. The general fact is that **this formalization cannot express hardness at all** — there is no notion of cost that bounds computation — so the gap Theorem 9 exhibited was never about the particular predicate.
 
 **Corollary 10.1 (the diagonal transposition, unhypothesised, is false)**: there is a three-line layer — two structures, one method per structure, each deciding identity with it — in which no element satisfies method-inaccessibility. Since the transposed statement quantifies over *all* layers, one transparent layer refutes it. Machine-checked, `[propext]` only (`formal/BoundaryResidue.lean` §4.1).

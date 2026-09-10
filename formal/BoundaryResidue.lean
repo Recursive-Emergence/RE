@@ -41,7 +41,7 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD (branch p25-pushforward, 2026-09-10). Lean 4.15.0
+  COMPILATION RECORD (branch target-x, 2026-09-10). Lean 4.15.0
     (commit 11651562caae), bare toolchain, no Mathlib. Exit 0, zero errors.
     Warnings: exactly two, both `declaration uses 'sorry'`, at
     `REamend.general_partA` and `REamend.general_partB` — the file's only
@@ -70,6 +70,8 @@
     merges target-ix adds only this sentence; its code is the code reproduced.
     The p25-pushforward branch adds §§25–27 — the Problem 25 pushforward probe —
     on top of that; the reviewer re-runs only if the report does not add up.
+    The target-x branch adds §§28–29, re-checking every result derived from `J0`
+    on an A2-conforming witness.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
@@ -123,6 +125,12 @@
       'REp25.constructive_true_Lid' depends on axioms: [propext]
       'REp25.rr_hosted_on_Lid_forces' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REp25.rr_hosted_satisfiable' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REx.legal_J1' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REx.S_ex_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REx.S_all_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REx.D_fails_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REx.A_fails_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REx.G_holds_legal' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
       'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
 
@@ -3457,3 +3465,129 @@ end REp25
     and `G`, and a query family reading the induced potential directly in
     `S_all`. Mechanism stated beside the prediction, which this record says to
     distrust. -/
+
+/-! ## 29. Target (x), run -/
+namespace REx
+open Classical
+open RE RE4 REgen REamend REp25
+
+/-- A2-conformance, the restriction every re-established result carries. -/
+def Legal (J : Joined) : Prop := SingleValued J ∧ Total J ∧ Surjective J
+
+/-- An A2-conforming witness over `L0`, where §13's `J0` was not: three states,
+    `s₁, s₂ ↦ true`, `s₃ ↦ false`. Single-valued, total, surjective, many-to-one. -/
+@[reducible] noncomputable def J1 : Joined where
+  L := L0
+  X := XG
+  formulable := fun s x => match s with
+    | S3.s1 => x = true
+    | S3.s2 => x = true
+    | S3.s3 => x = false
+  Om := Om0
+
+theorem legal_J1 : Legal J1 := by
+  refine ⟨?_, ?_, ?_⟩
+  · intro s x y hx hy; cases s <;> (simp only [J1] at hx hy; rw [hx, hy])
+  · intro s; cases s
+    · exact ⟨true, rfl⟩
+    · exact ⟨true, rfl⟩
+    · exact ⟨false, rfl⟩
+  · intro x; cases x
+    · exact ⟨S3.s3, rfl⟩
+    · exact ⟨S3.s1, rfl⟩
+
+/-- §13's objects, rebuilt over the legal witness. -/
+noncomputable def Qfalse1 : ThresholdInterface J1.L J1.X.Val where
+  QMethod := Unit
+  ask := fun _ _ _ => false
+  qcost := fun _ => 0
+
+noncomputable def th1 : J1.X.Val := (0 : Nat)
+
+noncomputable def agg1 : Aggregator J1 := fun _ _ _ => (0 : Nat)
+
+theorem clears_false1 (x : J1.L.Rep) : ¬ J1.clearsAt agg1 th1 x :=
+  fun h => absurd h (Nat.lt_irrefl 0)
+
+theorem qfalse_agrees1 (x : J1.L.Rep) :
+    Qfalse1.ask () th1 x = true ↔ J1.clearsAt agg1 th1 x := by
+  constructor
+  · intro h; exact Bool.noConfusion h
+  · intro h; exact absurd h (clears_false1 x)
+
+/-- `S_ex_holds`, restricted to legal witnesses. -/
+theorem S_ex_legal : ∃ J : Joined, J.L = L0 ∧ Legal J ∧
+    ∃ (agg : Aggregator J) (I : ThresholdInterface J.L J.X.Val) (q : I.QMethod) (θ : J.X.Val),
+      I.affordable q ∧ Agrees J agg I q θ :=
+  ⟨J1, rfl, legal_J1, agg1, Qfalse1, (), th1, Nat.le_refl 0, qfalse_agrees1⟩
+
+/-- `S_all_holds`, restricted to legal witnesses: for EVERY aggregator, an
+    affordable query family computes clearance. -/
+theorem S_all_legal : ∃ J : Joined, J.L = L0 ∧ Legal J ∧
+    ∀ (agg : Aggregator J), ∃ (I : ThresholdInterface J.L J.X.Val) (q : I.QMethod) (θ : J.X.Val),
+      I.affordable q ∧ Agrees J agg I q θ := by
+  refine ⟨J1, rfl, legal_J1, ?_⟩
+  intro agg
+  refine ⟨⟨Unit, fun _ θ x => @decide _ (Nat.decLt θ (J1.induced agg x)), fun _ => 0⟩,
+          (), th1, Nat.le_refl 0, ?_⟩
+  intro x
+  exact decide_eq_true_iff
+
+/-- `D_fails`, restricted: "no legal witness survives" is false. -/
+theorem D_fails_legal : ¬ ¬ (∃ J : Joined, J.L = L0 ∧ Legal J ∧
+    ∃ (agg : Aggregator J) (I : ThresholdInterface J.L J.X.Val) (q : I.QMethod) (θ : J.X.Val),
+      I.affordable q ∧ Agrees J agg I q θ) :=
+  fun h => h S_ex_legal
+
+/-- `A_fails`, restricted: the asymmetry's invariant form is false EVEN over
+    legal witnesses. -/
+theorem A_fails_legal : ¬ (∀ (J : Joined), Legal J →
+    ∀ (agg : Aggregator J) (x : J.L.Rep), ¬ J.Om.Defined x →
+    ∀ (I : ThresholdInterface J.L J.X.Val) (q : I.QMethod), I.affordable q →
+      ∀ θ : J.X.Val, ¬ Agrees J agg I q θ) :=
+  fun hA => hA J1 legal_J1 agg1 false gap_exists Qfalse1 () (Nat.le_refl 0) th1 qfalse_agrees1
+
+/-- `G_holds`, restricted: the poverty guard holds on a legal witness. -/
+theorem G_holds_legal : ∃ (J : Joined), Legal J ∧
+    ∃ (agg : Aggregator J) (I : ThresholdInterface J.L J.X.Val) (q : I.QMethod) (θ : J.X.Val),
+      I.affordable q ∧ ∀ x : J.L.Rep, J.Om.Defined x → (I.ask q θ x = true ↔ J.clearsAt agg θ x) :=
+  ⟨J1, legal_J1, agg1, Qfalse1, (), th1, Nat.le_refl 0, fun x _ => qfalse_agrees1 x⟩
+
+end REx
+
+/-! ### 29.1 Readout — target (x)
+
+    (x) is any result an artifact of `J0`? | expected: (S), all stand |
+    OBSERVED: (S). All five §13 theorems re-establish, restricted to LEGAL
+    witnesses — single-valued, total, surjective — on `J1` over `L0`:
+    `S_ex_legal`, `S_all_legal`, `D_fails_legal`, `A_fails_legal` and
+    `G_holds_legal`, with `legal_J1` proving the witness conforms to A2. No
+    `sorryAx`. THEOREM 10 STANDS, now on a witness the manuscript permits.
+
+    WHY, as the mechanism stated in advance: no §13 proof reads `formulable`. The
+    constant aggregator ignores the fiber, and the query family in `S_all` reads
+    the induced potential directly. `J0`'s illegality was idle in every proof
+    that used it.
+
+    A SECOND ILLEGALITY IN `J0`, found on the way. Its substrate `X0` carries
+    `rho := fun _ => 1` — mass 1 on every set, the empty set included — which is
+    not a measure. Harmless for the same reason: no §13 proof reads ρ. The legal
+    witness carries a genuine additive ρ (`REp25.XG`, additivity proved as
+    `hadd_G`). Underneath it sits a question this target does not settle:
+    `Substrate.rho` is never REQUIRED to be additive. Theorem 13 caught the
+    missing normalization of Theorem 7's measure; nothing caught this. Flagged
+    for the reviewer rather than entered in the ledger here.
+
+    THE PRICE, stated. The originals were nearly axiom-free: `S_ex`, `A` and `G`
+    used no axioms, and `S_all` only `propext`. Every legal re-establishment
+    carries `Classical.choice`. The cause is the repair of the second
+    illegality: a genuine measure on arbitrary predicates must decide
+    membership, which is classical, and `X0` was computable precisely because
+    its ρ was not a measure. Moving to a legal witness costs choice — the same
+    representation cost this file declares at item 15, arriving for the same
+    reason.
+
+    PRIORS. Mine, (S): landed, by the mechanism it named. The reviewer's "§6
+    discriminator likeliest to move" was answered before the run, by the
+    declared deviation: §6 had no witness to move. -/
+
