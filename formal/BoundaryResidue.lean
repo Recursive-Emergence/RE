@@ -11,8 +11,10 @@
     It proves nothing. There is no result here that was not already assumed.
     Every `sorry` marks a CONJECTURE — a statement the manuscript asserts and
     has not derived — never an omitted routine step. If a `sorry` here is ever
-    discharged, that is a mathematical event and belongs in M.8, not in a
-    refactor.
+    discharged, that is a mathematical event and belongs among the manuscript's
+    numbered results, not in a refactor. (This originally read "belongs in M.8";
+    M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
+    produced an actual theorem and the slip would have misfiled it.)
 
   COMPILATION RECORD. Lean 4.15.0 (commit 11651562caae), bare toolchain, no
     Mathlib. Compiled clean 2026-09-09: exit 0, zero errors, zero linter
@@ -640,5 +642,104 @@ def Joined.induced_at_boundary (J : Joined) (agg : Aggregator J)
     representation choice — a (C)-shaped finding hiding inside a (B), and it must
     be reported as such rather than as a clean refutation.
 -/
+
+/-! ## 10. Problem 27, run
+
+    Order of construction, per the pre-registration: the (A)-guard witness is
+    built FIRST, so it cannot be retrofitted to whatever lands. -/
+
+/-- A two-element layer. One method, costing nothing, which returns the
+    structure itself. Nothing exotic: this is the smallest layer that can have
+    an opinion. -/
+def L0 : Layer where
+  Rep := Bool
+  Method := Unit
+  run := fun _ b => b
+  encode := fun _ => true
+  decode := fun b => match b with | true => some () | false => none
+  decode_encode := by intro m; cases m; rfl
+  cost := fun _ => 0
+  budget := 0
+
+/-- A lattice on it with a genuine gap: it has an opinion about `true` and none
+    about `false`. -/
+def Om0 : Lattice L0 where
+  Val := Unit
+  zero := ()
+  lt := fun _ _ => False
+  Defined := fun b => b = true
+  S := fun _ => ()
+
+/-- (A)-GUARD, BUILT FIRST. The frame does not make everything method-
+    inaccessible: `()` is affordable. -/
+theorem guard_affordable : L0.available () := Nat.le_refl 0
+
+/-- (A)-GUARD, second half. An affordable method DOES decide the relevant
+    question on the defined region — indeed everywhere. So an (A) result could
+    not have been vacuous. -/
+theorem guard_decides_somewhere : ∀ x : L0.Rep, L0.run () x = true ↔ Om0.Defined x :=
+  fun _ => Iff.rfl
+
+/-- The gap is real: `false` is undefined. -/
+theorem gap_exists : ¬ Om0.Defined false := by
+  intro h; exact Bool.noConfusion h
+
+/-- THE RESULT. Type-level partiality does NOT imply method-quantified
+    inaccessibility. Outcome (B), by construction, with both guards discharged
+    above rather than assumed. -/
+theorem partiality_does_not_imply_inaccessibility :
+    ¬ (∀ (L : Layer) (Ω : Lattice L),
+        (∃ x : L.Rep, ¬ Ω.Defined x) → L.undecidable Ω.Defined) := by
+  intro h
+  exact h L0 Om0 ⟨false, gap_exists⟩ () guard_affordable guard_decides_somewhere
+
+/-! ### 10.1 Readout
+
+    OUTCOME (B). Type-level partiality does not imply method-quantified
+    inaccessibility. The refutation is a construction, it carries no `sorry`, and
+    `#print axioms` reports it and all four supporting lemmas as depending on NO
+    axioms — not `propext`, not `Classical.choice`. This is the file's first
+    result rather than its first record of a choice.
+
+    BOTH GUARDS DISCHARGED, and the (A)-guard was built first as required.
+    `guard_affordable` exhibits `cost ≤ budget` rather than assuming it, so the
+    refutation does not hold vacuously through an unsatisfiable `available`. And
+    `guard_decides_somewhere` exhibits an affordable method deciding the relevant
+    question — everywhere, in fact — so an (A) result could not have been vacuous
+    either. Neither guard was retrofitted.
+
+    WHAT THE COUNTEREXAMPLE ACTUALLY SHOWS. `L0` is two-valued with one free
+    method that returns its argument; `Om0` has an opinion about `true` and none
+    about `false`. The method decides `Defined` exactly. So the lattice has a
+    genuine gap AND the layer can see straight through it. Nothing pathological
+    was needed — no large cardinals, no cost trickery — which is the point: the
+    bare frame imposes NO relation whatsoever between `run` and `Defined`. The
+    two were never connected, and Definition 17 has been quietly assuming they
+    were.
+
+    DEVIATION FROM THE PRE-REGISTRATION, declared rather than silently taken.
+    The destination for (B) was written as "M.8, as a constructed counterexample
+    with the standing of a theorem". M.8 is the CONJECTURES section; M.4 is where
+    theorems live. Following the letter would file a proved, axiom-free theorem
+    among the conjectures, which inverts the very distinction the destinations
+    exist to protect. It goes to M.4 as Theorem 9, and this note records that the
+    pre-registration said otherwise and why it was not followed. (The header's
+    "belongs in M.8" is the same slip, written by me, and is corrected there too.)
+
+    PRIORS, SCORED. The reviewer expected (B) cheaply, and so did I; both landed.
+    Two confirmed priors in a row is worth less than the one falsification in
+    §8.1, and the mechanism named in advance — "nothing constrains `run` relative
+    to `Defined`" — is exactly what the construction exploits, so this time the
+    mechanism and the outcome did cohere. That is not evidence the reasoning
+    improved; it is evidence the question was easy.
+
+    THE RESIDUE, still open. Whether this counterexample survives the run/Val
+    choice. `L0`'s method decides `Defined` by returning its argument, which is
+    available only because `Defined` here is `· = true` — a predicate the layer's
+    Boolean `run` can express verbatim. Under the threshold-query extension the
+    relevant question changes shape, and it is not obvious the same trick works.
+    If it does not, the implication's truth depends on the representation choice,
+    which is a (C)-shaped finding inside this (B) and must be reported as such.
+    Not tested here; the choice is still unmade. -/
 
 end RE
