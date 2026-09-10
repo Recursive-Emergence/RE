@@ -313,6 +313,10 @@ each positive Harris recurrent with invariant probability measure $\rho_\infty^{
 
 *Hypothesis*: let $G$ be the set of global maxima of $P(\cdot;\theta)$, assumed finite, each nondegenerate.
 
+*Hypothesis on basins (target (vi))*: basins of distinct local maxima are disjoint. The second clause of the conclusion follows from the first only under this, since otherwise a local basin could share mass with the global union. For gradient-flow basins it holds by construction — but in the formal record `basin` is a declared stub (Problem 30), so disjointness is not derivable there and is assumed outright rather than used silently.
+
+*Carrier of $\mathcal{X}$ (target (vii))*: the "volume" of (a) and the gradient in the SDE require $\mathcal{X}$ to be $\mathbb{R}^n$ or a manifold, which is the intended reading. The formal record cannot host either without Mathlib: it states Part C's refutation and its confirmations on **finite** state spaces, where volume is counting measure, and the general Laplace statement above is **not machine-checked**.
+
 *Conclusion*:
 
 $$\forall\, \epsilon > 0\ \ \exists\, D_0 > 0\ \ \forall\, D < D_0: \quad \rho_\infty^{(D)}\Big(\bigcup_{\Psi \in G} \text{basin}(\Psi)\Big) > 1 - \epsilon \quad\text{and}\quad \rho_\infty^{(D)}(\text{basin}(\Psi')) < \epsilon$$

@@ -1872,3 +1872,469 @@ theorem lawTwo_is_derived :
       omega
 
 end RE
+
+/-! Target (iv): the escape chain against UNAMENDED Part A (uniqueness only).
+    Developed standalone and verified before being appended. -/
+namespace RE4
+
+def psum (f : Nat → Nat) : Nat → Nat
+  | 0 => 0
+  | M + 1 => psum f M + f M
+
+theorem psum_zero_below (f : Nat → Nat) : ∀ M, (∀ n, n < M → f n = 0) → psum f M = 0 := by
+  intro M; induction M with
+  | zero => intro _; rfl
+  | succ m ih =>
+    intro h; simp only [psum]
+    rw [ih (fun n hn => h n (by omega)), h m (by omega)]
+
+theorem psum_single (f : Nat → Nat) (n₀ : Nat) (h₀ : f n₀ = 100)
+    (h : ∀ n, n ≠ n₀ → f n = 0) : ∀ M, n₀ < M → psum f M = 100 := by
+  intro M; induction M with
+  | zero => intro hM; omega
+  | succ m ih =>
+    intro hM; simp only [psum]
+    by_cases hm : m = n₀
+    · subst hm; rw [psum_zero_below f m (fun n hn => h n (by omega)), h₀]
+    · rw [ih (by omega), h m hm]
+
+/-- ℕ-valued probability measure at scale 100, countably additive in
+    stabilization form (a bounded monotone ℕ sequence stabilizes). -/
+structure ProbM {X : Type} (μ : (X → Prop) → Nat) : Prop where
+  total : μ (fun _ => True) = 100
+  add : ∀ A B : X → Prop, (∀ x, ¬ (A x ∧ B x)) → μ (fun x => A x ∨ B x) = μ A + μ B
+  countable : ∀ F : Nat → X → Prop, (∀ i j x, i ≠ j → F i x → ¬ F j x) →
+      ∃ N, ∀ M, N ≤ M → psum (fun n => μ (F n)) M = μ (fun x => ∃ n, F n x)
+
+def Invariant {X : Type} (T : X → X) (μ : (X → Prop) → Nat) : Prop :=
+  ∀ B : X → Prop, μ (fun x => B (T x)) = μ B
+
+theorem ext' {X : Type} {μ : (X → Prop) → Nat} (A B : X → Prop)
+    (h : ∀ x, A x ↔ B x) : μ A = μ B := by
+  have : A = B := funext (fun x => propext (h x)); rw [this]
+
+theorem ProbM.empty' {X : Type} {μ : (X → Prop) → Nat} (hP : ProbM μ) :
+    μ (fun _ : X => False) = 0 := by
+  have h := hP.add (fun _ => False) (fun _ => False) (fun _ h => h.1)
+  rw [ext' (μ := μ) (fun (_ : X) => False ∨ False) (fun _ => False)
+        (fun _ => ⟨fun h => h.elim id id, Or.inl⟩)] at h
+  omega
+
+/-- The escape dynamics: `a = none` absorbing, `some n ↦ some (n+1)`. -/
+def Tesc : Option Nat → Option Nat
+  | none => none
+  | some n => some (n + 1)
+
+def iterT {X : Type} (T : X → X) : Nat → X → X
+  | 0, x => x
+  | n + 1, x => iterT T n (T x)
+
+theorem iter_esc : ∀ s m, iterT Tesc s (some m) = some (m + s) := by
+  intro s; induction s with
+  | zero => intro m; rfl
+  | succ k ih => intro m; simp only [iterT, Tesc]; rw [ih (m + 1)]; congr 1; omega
+
+open Classical in
+noncomputable def deltaA : (Option Nat → Prop) → Nat := fun B => if B none then 100 else 0
+
+open Classical in
+theorem deltaA_prob : ProbM deltaA where
+  total := by simp [deltaA]
+  add := by
+    intro A B hdis; unfold deltaA
+    by_cases ha : A none
+    · by_cases hb : B none
+      · exact absurd ⟨ha, hb⟩ (hdis none)
+      · simp [ha, hb]
+    · by_cases hb : B none <;> simp [ha, hb]
+  countable := by
+    intro F hdis
+    by_cases hex : ∃ n, F n none
+    · obtain ⟨n₀, hn₀⟩ := hex
+      refine ⟨n₀ + 1, fun M hM => ?_⟩
+      have rhs : deltaA (fun x => ∃ n, F n x) = 100 := by
+        unfold deltaA; rw [if_pos ⟨n₀, hn₀⟩]
+      rw [rhs]
+      apply psum_single _ n₀
+      · unfold deltaA; rw [if_pos hn₀]
+      · intro n hne; unfold deltaA
+        rw [if_neg (fun hn => hdis n n₀ none hne hn hn₀)]
+      · omega
+    · refine ⟨0, fun M _ => ?_⟩
+      have rhs : deltaA (fun x => ∃ n, F n x) = 0 := by unfold deltaA; rw [if_neg hex]
+      rw [rhs]
+      exact psum_zero_below _ M (fun n _ => by
+        unfold deltaA; rw [if_neg (fun hn => hex ⟨n, hn⟩)])
+
+theorem deltaA_inv : Invariant Tesc deltaA := by intro B; rfl
+
+section uniq
+variable (μ : (Option Nat → Prop) → Nat) (hP : ProbM μ) (hI : Invariant Tesc μ)
+include hP hI
+
+theorem sing_zero : ∀ n, μ (fun x => x = some n) = 0 := by
+  intro n; induction n with
+  | zero =>
+    rw [← hI (fun x => x = some 0)]
+    rw [ext' (μ := μ) (fun x => Tesc x = some 0) (fun _ => False)
+          (by intro x; cases x <;> simp [Tesc])]
+    exact hP.empty'
+  | succ m ih =>
+    rw [← hI (fun x => x = some (m + 1))]
+    rw [ext' (μ := μ) (fun x => Tesc x = some (m + 1)) (fun x => x = some m)
+          (by intro x; cases x <;> simp [Tesc])]
+    exact ih
+
+theorem npart_zero : μ (fun x => ∃ n, x = some n) = 0 := by
+  obtain ⟨N, hN⟩ := hP.countable (fun n x => x = some n)
+    (by intro i j x hij hi hj; rw [hi] at hj; exact hij (Option.some.inj hj))
+  rw [← hN N (Nat.le_refl N)]
+  exact psum_zero_below _ N (fun n _ => sing_zero μ hP hI n)
+
+theorem none_full : μ (fun x => x = none) = 100 := by
+  have h := hP.add (fun x => x = none) (fun x => ∃ n, x = some n)
+    (by intro x ⟨h1, n, h2⟩; rw [h1] at h2; cases h2)
+  rw [ext' (μ := μ) (fun x => x = none ∨ ∃ n, x = some n) (fun _ => True)
+        (by intro x; cases x <;> simp)] at h
+  rw [hP.total, npart_zero μ hP hI] at h; omega
+
+open Classical in
+/-- Uniqueness: the ONLY invariant probability measure is `δ_a`. -/
+theorem unique_escape : μ = deltaA := by
+  funext B
+  have hsplit := hP.add (fun x => B x ∧ x = none) (fun x => B x ∧ ∃ n, x = some n)
+    (by intro x ⟨⟨_, h1⟩, _, n, h2⟩; rw [h1] at h2; cases h2)
+  rw [ext' (μ := μ) (fun x => (B x ∧ x = none) ∨ (B x ∧ ∃ n, x = some n)) B
+        (by intro x; cases x <;> simp)] at hsplit
+  have hN := hP.add (fun x => B x ∧ ∃ n, x = some n) (fun x => ¬ B x ∧ ∃ n, x = some n)
+    (by intro x ⟨⟨h1, _⟩, h2, _⟩; exact h2 h1)
+  rw [ext' (μ := μ) (fun x => (B x ∧ ∃ n, x = some n) ∨ (¬ B x ∧ ∃ n, x = some n))
+        (fun x => ∃ n, x = some n) (by intro x; by_cases hb : B x <;> simp [hb])] at hN
+  rw [npart_zero μ hP hI] at hN
+  have hBN : μ (fun x => B x ∧ ∃ n, x = some n) = 0 := by omega
+  rw [hBN] at hsplit
+  unfold deltaA
+  by_cases hb : B none
+  · rw [if_pos hb]
+    rw [ext' (μ := μ) (fun x => B x ∧ x = none) (fun x => x = none)
+          (by intro x; constructor
+              · exact fun h => h.2
+              · intro h; subst h; exact ⟨hb, rfl⟩)] at hsplit
+    rw [none_full μ hP hI] at hsplit; omega
+  · rw [if_neg hb]
+    rw [ext' (μ := μ) (fun x => B x ∧ x = none) (fun _ => False)
+          (by intro x; constructor
+              · intro ⟨h1, h2⟩; subst h2; exact hb h1
+              · intro h; exact h.elim)] at hsplit
+    rw [hP.empty'] at hsplit; omega
+end uniq
+
+/-- The escape orbit never meets `a`, stated for ANY `Decidable` instance on the
+    condition. The transcribed statement's `if` carries the classical instance
+    (its condition was an arbitrary `basin` predicate), while `… = none` also has
+    a genuine `DecidableEq` instance; the two print identically and do not
+    unify syntactically. `if_neg` is instance-polymorphic, which is the fix. -/
+theorem psum_escape_zero (d : ∀ s, Decidable (iterT Tesc s (some 1) = none)) :
+    ∀ t, psum (fun s => @ite Nat (iterT Tesc s (some 1) = none) (d s) 100 0) t = 0 :=
+  fun t => psum_zero_below _ t (fun n _ => by rw [if_neg (by rw [iter_esc]; simp)])
+
+open Classical in
+/-- UNAMENDED Part A (uniqueness only), specialized to deterministic dynamics,
+    in the record's Cesàro-marginal form. For deterministic dynamics the path is
+    a single trajectory, so the a.s. time average and the Cesàro average of the
+    point-mass marginals coincide: refuting this refutes both forms. Stubs carried
+    exactly as in `Theorem7_faithful`. -/
+def UnamendedA_det : Prop :=
+  ∀ (X Th : Type) (T : X → X) (ρ : (X → Prop) → Nat)
+    (P : X → Th → Nat) (above : Th → Prop) (θ : Th)
+    (nondegLocalMax : (X → Nat) → Th → X → Prop) (carrierClass : X → Prop)
+    (basin : X → (X → Prop)),
+    above θ → ProbM ρ → Invariant T ρ → (∀ μ, ProbM μ → Invariant T μ → μ = ρ) →
+    ∀ Ψstar : X, nondegLocalMax (fun x => P x θ) θ Ψstar → carrierClass Ψstar →
+    ∀ start : X, ∀ ε : Nat, 0 < ε → ∃ T0 : Nat, ∀ t : Nat, T0 < t →
+      t * ρ (basin Ψstar)
+        < psum (fun s => if basin Ψstar (iterT T s start) then 100 else 0) t + t * ε ∧
+      psum (fun s => if basin Ψstar (iterT T s start) then 100 else 0) t
+        < t * ρ (basin Ψstar) + t * ε
+
+open Classical in
+/-- TARGET (iv): unamended Part A is false. `δ_a` is the unique invariant
+    probability measure, PROVED (not assumed); `basin(a) = {a}` is the genuine
+    basin of attraction; from `Ψ₀ = some 1` the orbit never meets `a`. -/
+theorem unamendedA_refuted : ¬ UnamendedA_det := by
+  intro h
+  obtain ⟨T0, hT⟩ := h (Option Nat) Unit Tesc deltaA (fun _ _ => 0) (fun _ => True) ()
+    (fun _ _ _ => True) (fun _ => True) (fun g x => x = g)
+    trivial deltaA_prob deltaA_inv (fun μ hP hI => unique_escape μ hP hI)
+    none trivial trivial (some 1) 1 (by decide)
+  have h1 := (hT (T0 + 1) (by omega)).1
+  have hρ : deltaA (fun x => x = none) = 100 := by unfold deltaA; simp
+  rw [hρ] at h1
+  first
+    | rw [psum_escape_zero (fun s => Classical.propDecidable _) (T0 + 1)] at h1
+    | simp only [psum_escape_zero] at h1
+  omega
+
+end RE4
+
+/-! Target (v): a point-mass reference measure against UNAMENDED Part C.
+    Developed standalone and verified before being appended. -/
+namespace RE5
+
+inductive Tri where
+  | a | b | c
+  deriving DecidableEq
+
+def triList : List Tri := [Tri.a, Tri.b, Tri.c]
+
+/-- The three-state path `a – b – c`, `P = (1, 0, 2)`. -/
+def Pt : Tri → Nat
+  | .a => 1
+  | .b => 0
+  | .c => 2
+
+open Classical in
+noncomputable def numR {X : Type} (univ : List X) (w : X → Nat) (E : Nat → X → Nat)
+    (k : Nat) (B : X → Prop) : Nat :=
+  (univ.map (fun x => if B x then w x * E k x else 0)).sum
+
+def denR {X : Type} (univ : List X) (w : X → Nat) (E : Nat → X → Nat) (k : Nat) : Nat :=
+  (univ.map (fun x => w x * E k x)).sum
+
+/-- UNAMENDED Part C (before A3 and A4), on a finite state space with an explicit
+    enumeration. Declared representation choices: the reference measure is a
+    weight `w`; the Gibbs weight `e^{γP/D}` is an ARBITRARY positive `E k x`
+    (the refutation below holds for every `E`, hence for the Gibbs one); small
+    noise is reparametrized as `k → ∞`; probabilities at scale 100. -/
+def UnamendedC : Prop :=
+  ∀ (X : Type) (univ : List X) (P : X → Nat) (w : X → Nat) (E : Nat → X → Nat)
+    (G : X → Prop) (nondeg : X → Prop) (localMax : X → Prop) (basin : X → (X → Prop)),
+    (∀ k x, 0 < E k x) →
+    (∀ x, G x ↔ ∀ y, P y ≤ P x) →
+    (∀ g, G g → nondeg g) →
+    ∀ ε : Nat, 0 < ε → ε < 100 → ∃ k0 : Nat, ∀ k : Nat, k0 < k →
+      (100 - ε) * denR univ w E k < 100 * numR univ w E k (fun x => ∃ g, G g ∧ basin g x) ∧
+      ∀ ψ, localMax ψ → ¬ G ψ → 100 * numR univ w E k (basin ψ) < ε * denR univ w E k
+
+/-- The reference measure: a point mass at the NON-global local maximum `a`. -/
+def wDelta : Tri → Nat := fun x => if x = Tri.a then 1 else 0
+
+/-- Global maxima of `Pt`, defined as the statement requires. -/
+def Gt : Tri → Prop := fun x => ∀ y, Pt y ≤ Pt x
+
+theorem a_not_global : ¬ Gt Tri.a := fun h => by have := h Tri.c; simp [Pt] at this
+
+/-- Clause 1 fails at the witness for EVERY weight `E` — so in particular for
+    `e^{γP/D}`, at every `γ` and every `D`. The Gibbs factor cancels against a
+    point mass, which is why no real exponential is needed. -/
+theorem clause1_fails (E : Nat → Tri → Nat) (k ε : Nat) :
+    ¬ ((100 - ε) * denR triList wDelta E k
+        < 100 * numR triList wDelta E k (fun x => ∃ g, Gt g ∧ x = g)) := by
+  have ha : ¬ (∃ g, Gt g ∧ Tri.a = g) := fun ⟨g, hg, he⟩ => by subst he; exact a_not_global hg
+  have hnum : numR triList wDelta E k (fun x => ∃ g, Gt g ∧ x = g) = 0 := by
+    simp [numR, triList, wDelta, ha]
+  rw [hnum]; simp
+
+/-- TARGET (v): unamended Part C is false. -/
+theorem unamendedC_refuted : ¬ UnamendedC := by
+  intro h
+  obtain ⟨k0, hk⟩ := h Tri triList Pt wDelta (fun _ _ => 1) Gt (fun _ => True)
+    (fun x => x = Tri.a ∨ x = Tri.c) (fun g x => x = g)
+    (fun _ _ => Nat.one_pos) (fun _ => Iff.rfl) (fun _ _ => trivial)
+    1 (by decide) (by decide)
+  exact clause1_fails (fun _ _ => 1) (k0 + 1) 1 (hk (k0 + 1) (by omega)).1
+
+/-- Target (vi), concretely: at the witness the basins ARE disjoint — so the
+    refutation does not lean on overlapping basins. -/
+theorem witness_basins_disjoint : ∀ x, ¬ (x = Tri.a ∧ x = Tri.c) := by
+  intro x ⟨h1, h2⟩; rw [h1] at h2; cases h2
+
+end RE5
+
+/-! Targets (ii) and (iii): confirmations of AMENDED Part C on the three-state
+    path. Declared representation: Gibbs weight `b^{P x}` with `b = e^{γ/D}`, so
+    small noise ↔ large `b`; reference measure = counting measure (A3(a)); finite
+    space (A3(b), A3(c)). Probabilities at scale 100: a mass `m = num/den` is
+    within `ε/100` of a target `q/100` iff `|100·num − q·den| < ε·den`. -/
+namespace REC
+
+/-! (ii) `P = (1, 0, 2)`: weights `a ↦ b`, `b ↦ 1`, `c ↦ b²`; `den = b + 1 + b²`.
+    `G = {c}`; `a` is a non-global local maximum. -/
+
+/-- Second clause: the non-global local basin `{a}` empties — `100·b < ε·den`. -/
+theorem ii_local_basin_empties : ∀ ε : Nat, 0 < ε → ∃ b0 : Nat, ∀ b : Nat, b0 < b →
+    100 * b < ε * (b + 1 + b * b) := by
+  intro ε hε
+  refine ⟨100, fun b hb => ?_⟩
+  have h1 : 100 * b < b * b := Nat.mul_lt_mul_of_pos_right hb (by omega)
+  have h2 : 1 * (b + 1 + b * b) ≤ ε * (b + 1 + b * b) :=
+    Nat.mul_le_mul_right _ (by omega : 1 ≤ ε)
+  omega
+
+/-- First clause: the global basin `{c}` fills — `100·(den − b²) < ε·den`. -/
+theorem ii_global_basin_fills : ∀ ε : Nat, 0 < ε → ∃ b0 : Nat, ∀ b : Nat, b0 < b →
+    100 * (b + 1) < ε * (b + 1 + b * b) := by
+  intro ε hε
+  refine ⟨200, fun b hb => ?_⟩
+  have h1 : 200 * b < b * b := Nat.mul_lt_mul_of_pos_right hb (by omega)
+  have h2 : 1 * (b + 1 + b * b) ≤ ε * (b + 1 + b * b) :=
+    Nat.mul_le_mul_right _ (by omega : 1 ≤ ε)
+  omega
+
+/-! (iii) `P = (2, 0, 2)`: weights `a ↦ b²`, `b ↦ 1`, `c ↦ b²`; `den = 2b² + 1`.
+    `G = {a, c}` — TWO global maxima at equal height. -/
+
+/-- Each global basin tends to ONE HALF, not to one: `|100·b² − 50·den| < ε·den`.
+    A statement written for "the global maximum" would claim one here, and fail. -/
+theorem iii_each_basin_half : ∀ ε : Nat, 0 < ε → ∃ b0 : Nat, ∀ b : Nat, b0 < b →
+    50 * (2 * (b * b) + 1) < 100 * (b * b) + ε * (2 * (b * b) + 1) ∧
+    100 * (b * b) < 50 * (2 * (b * b) + 1) + ε * (2 * (b * b) + 1) := by
+  intro ε hε
+  refine ⟨10, fun b hb => ?_⟩
+  have h1 : 10 * b < b * b := Nat.mul_lt_mul_of_pos_right hb (by omega)
+  have h2 : 1 * (2 * (b * b) + 1) ≤ ε * (2 * (b * b) + 1) :=
+    Nat.mul_le_mul_right _ (by omega : 1 ≤ ε)
+  constructor <;> omega
+
+/-- The UNION of the global basins tends to one: `100·(den − 2b²) < ε·den`. -/
+theorem iii_union_one : ∀ ε : Nat, 0 < ε → ∃ b0 : Nat, ∀ b : Nat, b0 < b →
+    100 * (2 * (b * b) + 1) < 100 * (2 * (b * b)) + ε * (2 * (b * b) + 1) := by
+  intro ε hε
+  refine ⟨10, fun b hb => ?_⟩
+  have h1 : 10 * b < b * b := Nat.mul_lt_mul_of_pos_right hb (by omega)
+  have h2 : 1 * (2 * (b * b) + 1) ≤ ε * (2 * (b * b) + 1) :=
+    Nat.mul_le_mul_right _ (by omega : 1 ≤ ε)
+  omega
+
+/-- And the singular reading is FALSE at (iii): no single global basin tends to
+    one. Mass exactly `b² / (2b² + 1) < ½` for every `b`. -/
+theorem iii_singular_fails : ∀ b : Nat, 2 * (100 * (b * b)) < 100 * (2 * (b * b) + 1) := by
+  intro b; omega
+
+end REC
+
+/-! Target (i): Theorem 14's two-state chain as a MODEL of amended Parts A and B.
+    The chain is now derived from a kernel (target (viii)), so its hypotheses are
+    statements about `stepTwo`, not about a bare family of marginals. -/
+namespace REi
+open RE RE4
+
+open Classical in
+/-- `ρ_∞` for the two-state chain: mass one half on each state. -/
+noncomputable def rhoTwo : (Bool → Prop) → Nat :=
+  fun B => (if B true then 50 else 0) + (if B false then 50 else 0)
+
+/-- Invariance as a FORMULA under item 16: one kernel step from `ρ` returns `ρ`. -/
+theorem rhoTwo_invariant : ∀ B : Bool → Prop,
+    ([true, false].map (fun x => rhoTwo (fun y => y = x) * stepTwo x B)).sum / 100
+      = rhoTwo B := by
+  intro B; simp [rhoTwo, stepTwo]; omega
+
+/-- Strict positivity of the kernel. On a finite state space this gives positive
+    Harris recurrence — the standard fact, DECLARED here and not re-derived,
+    since Harris recurrence itself is not formalized in this file. -/
+theorem stepTwo_positive : ∀ x y : Bool, 0 < stepTwo x (fun z => z = y) := by
+  intro x y; cases y <;> simp [stepTwo]
+
+/-- PART B CONFIRMED: from either start, the marginal law of `{true}` equals
+    `ρ_∞({true})` at every `t ≥ 1`. -/
+theorem partB_two : ∀ start : Bool, ∀ t : Nat,
+    iterLaw [true, false] stepTwo (t + 1) start (fun y => y = true) = rhoTwo (fun y => y = true) := by
+  intro start t
+  rw [lawTwo_is_derived]
+  simp [lawTwo, rhoTwo]
+
+theorem cesaro_two (start : Bool) : ∀ t : Nat,
+    psum (fun s => iterLaw [true, false] stepTwo s start (fun y => y = true)) (t + 1)
+      = iterLaw [true, false] stepTwo 0 start (fun y => y = true) + 50 * t := by
+  intro t; induction t with
+  | zero => simp [psum]
+  | succ n ih =>
+    have hf : iterLaw [true, false] stepTwo (n + 1) start (fun y => y = true) = 50 := by
+      rw [partB_two start n]; simp [rhoTwo]
+    show psum _ (n + 1) + iterLaw [true, false] stepTwo (n + 1) start (fun y => y = true) = _
+    rw [ih, hf]; omega
+
+/-- PART A CONFIRMED, in the Cesàro-marginal form the record holds (A9): the
+    average of the marginals of `{true}` converges to `ρ_∞({true}) = ½`, from
+    either start. -/
+theorem partA_cesaro_two (start : Bool) : ∀ ε : Nat, 0 < ε → ∃ T0 : Nat, ∀ t : Nat, T0 < t →
+    t * 50 < psum (fun s => iterLaw [true, false] stepTwo s start (fun y => y = true)) t + t * ε ∧
+    psum (fun s => iterLaw [true, false] stepTwo s start (fun y => y = true)) t < t * 50 + t * ε := by
+  intro ε hε
+  refine ⟨100, fun t ht => ?_⟩
+  obtain ⟨m, rfl⟩ : ∃ m, t = m + 1 := ⟨t - 1, by omega⟩
+  rw [cesaro_two start m]
+  have hc : iterLaw [true, false] stepTwo 0 start (fun y => y = true) ≤ 100 := by
+    cases start <;> simp [iterLaw]
+  have hte : 1 * (m + 1) ≤ ε * (m + 1) := Nat.mul_le_mul_right _ (by omega : 1 ≤ ε)
+  have hcomm : (m + 1) * ε = ε * (m + 1) := Nat.mul_comm _ _
+  constructor <;> omega
+
+end REi
+
+
+/-! ## 20. Targets (i)–(viii): results
+
+    Reported as target, expected, observed. Every theorem named below compiles
+    and is audited free of `sorryAx`.
+
+    (viii) lawTwo derived from a kernel | expected: derivable | OBSERVED: derivable
+           (`RE.lawTwo_is_derived`). Target (i) is not void.
+    (iv)   escape chain vs UNAMENDED A  | expected: refuted   | OBSERVED: refuted
+           (`RE4.unamendedA_refuted`). `δ_a` is PROVED the unique invariant
+           probability (`RE4.unique_escape`), not assumed. A1 was forced.
+    (v)    point-mass λ vs UNAMENDED C  | expected: refuted   | OBSERVED: refuted
+           (`RE5.unamendedC_refuted`), for EVERY Gibbs weight (`clause1_fails`):
+           the exponential cancels against a point mass. A3 was forced.
+    (i)    two-state chain, A and B     | expected: model     | OBSERVED: model
+           Part B pointwise (`REi.partB_two`); Part A in the record's Cesàro form
+           (`REi.partA_cesaro_two`); invariance as a formula (`rhoTwo_invariant`).
+    (ii)   P = (1,0,2)                  | expected: local → 0 | OBSERVED: local → 0,
+           global → 1 (`REC.ii_local_basin_empties`, `ii_global_basin_fills`).
+    (iii)  P = (2,0,2)                  | expected: each ½, ∪ → 1 | OBSERVED: each ½,
+           ∪ → 1, and the SINGULAR reading fails at every b (`iii_singular_fails`).
+    (vi)   basin disjointness           | expected: provable or stub | OBSERVED:
+           STUB. `basin` is a declared parameter in every transcription here, so
+           disjointness is not derivable and goes into Part C as an explicit
+           hypothesis. It holds concretely at the witnesses
+           (`RE5.witness_basins_disjoint`), so no refutation leans on overlap.
+    (vii)  carrier of 𝒳                 | expected: choose and log | LOGGED: 𝒳 stays
+           an opaque `Type` in the general transcriptions. The display's "volume"
+           and "∇P" require ℝⁿ or a manifold, which this Mathlib-free file cannot
+           host. Every refutation and confirmation lives on a FINITE or COUNTABLE
+           state space, where volume is counting measure and the gradient is
+           replaced by the discrete structure.
+
+    DECLARED REPRESENTATION CHOICES, each a cost rather than a hidden hypothesis:
+      · (iv) uses DETERMINISTIC dynamics on `Option Nat`. `iterLaw` needs a finite
+        enumeration and cannot host the escape chain, and no finite chain can
+        serve as that witness: on a finite space a unique invariant probability
+        forces one recurrent class that every start reaches. For deterministic
+        dynamics the a.s. time average and the Cesàro average coincide, so
+        refuting one refutes both.
+      · Measures are ℕ-valued at scale 100, countably additive in stabilization
+        form — the Theorem 14 precedent.
+      · (ii)/(iii) reparametrize small noise as large `b = e^{γ/D}`, with Gibbs
+        weight `b^{P x}` and counting reference measure.
+      · Harris recurrence for (i) is not formalized. What is proved is the
+        kernel's strict positivity (`stepTwo_positive`); that this gives positive
+        Harris recurrence on a finite space is the standard fact, declared.
+
+    THE GAP, stated rather than left out. The AMENDED Parts A–C are not
+    transcribed as general Lean statements. The record holds refutations of the
+    unamended versions (in the specialization each refutation needs) and
+    confirmations on concrete witnesses. The general Laplace statement of Part C
+    in particular is not machine-checked: it needs ℝⁿ.
+
+    PRIORS, SCORED. The reviewer's: A3 most likely to come back incomplete, (b)
+    the likeliest omission. A3 came back complete — all of (a)(b)(c) present and
+    (v) confirms the point-mass case (a) is aimed at. The prior did not land.
+    Mine, never stated in advance and so not scored.
+
+    AND ONE FINDING THE PRE-REGISTRATION DID NOT ANTICIPATE: two superficially
+    identical `if`-expressions failed to unify in (iv) because one carried the
+    classical `Decidable` instance and the other a genuine `DecidableEq`. They
+    print identically. That is the register-boundary failure mode one level
+    down, inside the formal register itself — same surface text, different
+    objects — and it was caught by the compiler, not by reading. -/
