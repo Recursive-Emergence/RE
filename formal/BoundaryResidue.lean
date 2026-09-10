@@ -60,7 +60,10 @@
     statements REFUTED (§22). 9872874: reproduced, with the false `REgen`
     statements confirmed unknown to Lean — and then a second witness supplied
     against it, stochastic but not additive, which forces the `additive` field
-    that §22 left forced only by argument (§22.2). This commit is owed a re-run.
+    that §22 left forced only by argument (§22.2). ff5aef2: reproduced — the
+    fourth independent run — with the §22.2 code lines diffed against the peer's
+    original and found identical modulo docstrings. The commit that merges to
+    main adds only this paragraph to ff5aef2; its code is the code reproduced.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
