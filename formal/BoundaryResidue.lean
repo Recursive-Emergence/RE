@@ -256,13 +256,51 @@ theorem opacity_boundary_object (L : Layer) (Ω : Lattice L)
     branch and required by the opacity branch. The remark is not nothing. It is
     also not yet a claim.
 
-    DISCRIMINATOR (pending, cheap). Formalize Theorem 7's ergodic search in this
-    same skeleton and inspect the measure it needs. If it is a measure on `Rep` —
-    same type, same carrier as `large` — the ingredient is one thing appearing in
-    both columns and re-entry gains standing. If it is a measure on states rather
-    than on representations, the mechanisms are siblings sharing only the frame,
-    and the remark resolves toward nothing. Settleable by construction — and now
-    with somewhere to typecheck against, since this frame compiles.
+    DISCRIMINATOR — PRE-REGISTRATION. Written 2026-09-09 BEFORE the construction
+    exists, and committed before it, so the result is evidence rather than
+    narration. §6 will report against this and must not edit it.
+
+    RIGGING RISK. This frame currently offers exactly one carrier: `Rep`. A
+    measure formalized into the frame as it stands lands on `Rep` BY DEFAULT,
+    for want of anywhere else to land, and would confirm re-entry vacuously. The
+    experiment is therefore only an experiment if the construction is offered two
+    candidate carriers — an abstract `State` alongside `Rep`, with a map between
+    them — and the theorem's own content decides which one the measure attaches
+    to. If the transcription cannot be written without identifying `State` with
+    `Rep`, that is a finding. If the formalizer identifies them for convenience,
+    that is contamination, and it must be visible in the diff.
+
+    THREE OUTCOMES, not two. `large : (Rep → Prop) → Prop` has both a carrier
+    (`Rep`) and a shape (second-order predicate). Ergodic search needs some
+    measure-or-reachability structure, and it may match on either, both, or
+    neither:
+
+      (A) CARRIER AND SHAPE BOTH MATCH — the ergodic ingredient is the `large`
+          slot refilled. Re-entry gains full standing; the §5 remark is promoted
+          to conjecture typography AT MOST, since it still would not be derived.
+      (B) CARRIER MISMATCH — measure on `State`, not on `Rep`. The two mechanisms
+          are siblings sharing only the frame; the remark resolves toward
+          nothing, and is to be recorded as resolving toward nothing.
+      (C) CARRIER MATCHES, SHAPE DOES NOT — e.g. a transition kernel on `Rep`
+          rather than a largeness predicate. Same territory, different
+          instrument: neither re-entry nor nothing, and the remark's next
+          revision must say that rather than round to a pole.
+
+    SECOND QUESTION, independent of A/B/C. Does the ergodic construction need
+    `encode` at all? Diagonal needed `encode` alone; opacity needed `encode` plus
+    two. If ergodic search needs NO self-encoding, the carrier boundary is a
+    different kind of boundary from the one Conjecture 7 describes, and the
+    nesting of the two tables becomes a fact about the frame rather than a
+    reading of it.
+
+    RECORDED PRIOR (mine, after reading Theorem 7 as committed, before writing
+    any Lean). Theorem 7 quantifies over a substrate state-space `𝒳` with a
+    stationary measure `ρ_∞(basin)`, and never quotes anything. I expect (B),
+    and I expect the answer to the second question to be no. I also expect a
+    third thing the pre-registration cannot score: that `P` in Theorem 7 and `P`
+    in Definition 1 are not the same function on the same domain, in which case
+    the transcription will not close without a choice, and that choice gets the
+    skeleton's annotation discipline.
 -/
 
 end RE
