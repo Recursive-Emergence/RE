@@ -3099,3 +3099,27 @@ end REix
     PRIOR, the peer's, distrusted as usual: (C), with the restriction then giving
     (A) one level down. Under the addendum, (C) is the EXPECTED path if no
     hypothesis in the file supplies single-valuedness. -/
+
+/-! ## 26. Problem 25 probe, item (i): the first check, and a gap logged BEFORE
+    the pushforward is defined
+
+    RESULT OF THE FIRST CHECK: NO hypothesis anywhere in the file makes
+    `formulable` single-valued. `Joined.formulable` and `Bridge.formulable` are
+    both bare relations `X.State → L.Rep → Prop`, constrained by nothing. The
+    file's only `Joined` witness, `J0`, sets `formulable := fun _ _ => True` —
+    the MAXIMALLY non-functional relation: every state formulates every
+    structure.
+
+    A2, verbatim: "Π is a surjective function from 𝒮 to 𝒪. Π is many-to-one."
+    So the transcription of A2 into `Joined`, written during the Problem 26
+    probe, dropped three properties at once: SINGLE-VALUEDNESS and TOTALITY —
+    what "function" means — and SURJECTIVITY. Which of them the pushforward
+    needs: single-valuedness for ADDITIVITY, since disjoint properties then have
+    disjoint preimages; totality for NORMALIZATION, since the pushforward of the
+    whole space is then the whole mass; surjectivity for neither. Logged as Open
+    Problem 31 and as ledger entry twelve.
+
+    CONSEQUENCE, as pre-registered: outcome (C) is the expected path. The
+    restriction goes in as explicit hypotheses citing A2 — `SingleValued`, and
+    `Total` for normalization — and the probe runs under them. This section is
+    committed before the pushforward is defined; the definition comes next. -/
