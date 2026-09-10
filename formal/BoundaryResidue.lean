@@ -1134,4 +1134,74 @@ theorem G_holds : G :=
     contemplate. Reason recorded rather than the result being filed under the
     nearest listed heading. -/
 
+/-! ## 14. The cost probe — PRE-REGISTRATION (clauses by the non-runner)
+
+    Committed before any construction. Runner does not edit clauses 1–6.
+
+    THE SHAPE CHANGED. The probe is not "does `CostAxioms` suffice" but "which
+    conjecture's debt is cost-shaped at all". Reviewer's prediction: neither. The
+    diagonal owed self-application, which it had all along; opacity owes a
+    measure.
+
+    1. THE DIAGONAL CONJECTURE'S PROBLEM IS ITS PREDICATE, NOT ITS HYPOTHESIS.
+       Comparing an input to a constant is trivial in every complexity theory
+       ever proposed, so `undecidable (· = x)` is false under ANY cost axioms,
+       including a full machine model. No strengthening rescues it. The Gödel
+       transposition was never "some point's identity is undecidable" — it is
+       SELF-APPLICATION. Commit instead:
+         `D_L y := ∀ m', decode y = some m' → run m' y = false`
+         statement: `∀ L m, ¬ (∀ y, run m y = true ↔ D_L y)`
+       No `Defined`, no `CostAxioms`, no affordability — every method, not just
+       affordable ones. Prior: PROVABLE, axiom-free, using `decode_encode`
+       essentially; instantiate at `y := encode m`. Mechanism and prediction
+       align, which the record says to distrust. If it proves, it discharges a
+       `sorry` positively for the first time — by REPLACEMENT, the file recording
+       that the original predicate was refutable under all cost models and that
+       the correct transposition needs no cost model at all. The bar note was
+       right about the mechanism while the statement was wrong about the object.
+
+    2. THE CANTOR FACT AND CLAUSE 1 ARE ONE THEOREM. Cantor's argument IS
+       self-application. Runner's choice whether to derive the cardinality bound
+       as a corollary or prove it separately; declared either way. Destination
+       for both: M.4. The `¬ Defined x` conjunct is DROPPED, not proved — Theorem
+       9 already made lattice-partiality and inaccessibility independent, so the
+       diagonal theorem is about inaccessibility alone and the link to boundary
+       objects stays definitional at Definition 17's third clause.
+
+    3. ARM 1, THE CONTROL. Refute both restatements under the COMMITTED
+       `CostAxioms`: the runner's parity witness for the diagonal, an analogous
+       one for opacity. Anti-vacuity by PROVING `CostAxioms` holds for each
+       witness and exhibiting the affordable decider. Destination M.4 as
+       Corollaries 10.3/10.4 — required, because they refute the committed state
+       and the header contract now tracks that.
+
+    4. ARM 3 — `CostAxioms₂` BY RELATIVIZATION. Blum's second axiom stated
+       classically falls into §2's trap. Relativize through `encode`:
+         `Blum2 L := ∀ n, ∃ m, available m ∧
+            ∀ y, run m y = true ↔ (∃ m', decode y = some m' ∧ cost m' ≤ n)`
+       — the layer reads a method's price off its code; a referent using only
+       existing primitives, no machine model. Test whether Arm 1's opacity
+       witness satisfies it. Prior: IT DOES, and rescues nothing. If so, Blum was
+       the wrong debt-name for opacity: Blum's axioms are silent on the hardness
+       of specific functions, and RR is a lower-bound barrier. Opacity owes
+       (i) a `large` with content — Problem 25's prerequisite, now load-bearing
+       rather than adjacent — and (ii) a hardness axiom about SETS not points.
+
+    5. PHASE-ONE SHAPE CHECK ON OPACITY, before any arm runs on it. Flagged
+       unverified by the reviewer: RR's conclusion is `constructive ∧ large ⟹
+       ¬useful`, not `large ⟹ ¬constructive`. If the committed statement has the
+       latter shape it is the inverse of the theorem it transposes, no hypothesis
+       fixes it, and it is ledger instance nine. If the shape is right, strike
+       with a note.
+
+    6. GOVERNANCE AND PRIORS. Clause 1 proves (high, distrusted on principle).
+       Clause 3 refutes both (high). Clause 4 elaborates and fails to rescue
+       (moderate; `Blum2` is the reviewer's construction and may be too weak or
+       mis-aimed — failure to elaborate is (C) and raises the register-boundary
+       count, theirs). Destinations: M.4 theorems, M.8 conjectures, open problems
+       for (C). Standing report: Clause 1's proof must be SEEN to use
+       `decode_encode`; a proof going through without it means the predicate is
+       degenerate and the result is wrong, not lucky.
+-/
+
 end RE
