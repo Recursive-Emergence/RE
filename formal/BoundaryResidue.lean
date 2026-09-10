@@ -4584,7 +4584,8 @@ end RExii
     transcription item (above). (4) "Every remaining derivation routes through
     cost" (above). The reviewer's count was three; the fourth arrived in the same
     message. Outcome priors scored wrong in the record, for the same purpose:
-    27′ (§13.1), (xi) (§31.1), and Theorem 13 via 14 (§31.1). Mine, over
+    27′ (§13.1), (xi) (§31.1), and Theorem 13 via 14 (§31.1); a fourth
+    arrived at target (xiii), the L1 note (§35). Mine, over
     the same stretch: one premise wrong (the per-input framing above). My process
     slips are counted in the surface-text and order-of-operations entries. -/
 
@@ -4717,8 +4718,19 @@ end RExii
     `additive` reduces every set to singletons before any division, so the
     quotient of the sum is the sum of the singleton quotients. Without
     `additive` the note would be right. This was a claim about what the proof
-    needs, not about what the record contains, so it is not added to the
-    premise tally.
+    needs, not about what the record contains, so it is not a premise miss.
+    COUNTED, at the reviewer's request, as the FOURTH WRONG OUTCOME PRIOR — a
+    pre-registered claim about the argument that the compiler scored. The
+    reviewer's clause: it reasoned about division before additivity, and the
+    proof does additivity before division. Order of operations again, this time
+    in the mathematics rather than the tooling.
+
+    LOGGED FOR LATER, not done now. The core is proved from `SingletonExact`, so
+    the stated generals carry a hypothesis, `ExactKernel` at every set, strictly
+    stronger than the proof needs. The generals hold under `SingletonExact`;
+    `ExactKernel` is kept for statement stability, since the statements were
+    pre-registered as they stand and g1 held. A restatement is a one-line change
+    with a re-run.
 
     L3, AS THE RULING ASKED: `invariance_exact` is standalone. Its k_y ≥ 0
     direction is `Nat.div_mul_le_self`, which holds because Nat division is
