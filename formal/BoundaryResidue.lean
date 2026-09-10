@@ -7,8 +7,18 @@
     A record of representation choices. Each choice is annotated with the open
     problem it decides. The payload is the annotations, not the theorems.
 
+  WHAT IT HAS BECOME (2026-09-09). It began as the above and is no longer only
+    that. It now proves thirteen things about the frame, holds two shapes
+    awaiting faithful content, and carries no `sorry`: the three transcriptions
+    it started with are gone, replaced by one proved theorem and two blocked
+    problems. It asserts nothing it has not proved. That state was reached by
+    REMOVING false statements as much as by proving true ones, and the contract
+    below was broken once and recorded before it was repaired. It is currently
+    kept.
+
   WHAT THIS IS NOT
-    It proves nothing. There is no result here that was not already assumed.
+    It was written to prove nothing, and the representation choices remain its
+    main payload.
     Every `sorry` marks a CONJECTURE — a statement the manuscript asserts and
     has not derived — never an omitted routine step. This contract was BROKEN
     between 2026-09-09's §4 and its correction: two `sorry` sites marked
