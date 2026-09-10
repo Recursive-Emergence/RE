@@ -476,14 +476,33 @@ def Ergodic (X : Substrate) (occupation : Nat → (X.State → Prop) → X.Val) 
   ∀ A : X.State → Prop, ∀ ε : X.Val, X.lt X.zero ε →
     ∃ T : Nat, ∀ t : Nat, T < t → X.lt (X.sub (X.rho A) ε) (occupation t A)
 
-/-- Theorem 7 (Recipe Inevitability), transcribed. -/
-theorem recipe_inevitability (X : Substrate)
-    (occupation : Nat → (X.State → Prop) → X.Val)
-    (herg : Ergodic X occupation) :
-    ∀ ε : X.Val, X.lt X.zero ε →
-      ∃ T : Nat, ∀ t : Nat, T < t → X.lt (X.sub X.one ε) (occupation t X.basin) := by
-  sorry -- CONJECTURE (as everywhere in this file): the manuscript's proof sketch
-        -- combines Morse theory, Birkhoff, and Kramers. None of that is here.
+/-! ### Theorem 7's transcription, DEMOTED — see §16
+
+    The `sorry`'d transcription that stood here is gone. It was false as written
+    (§16, `recipe_inevitability_refuted`), and four further conjuncts had been
+    dropped in transport besides the one that refutes it. Following the opacity
+    precedent, it is demoted rather than patched: the shape is committed as a
+    definition asserting nothing, with every dropped ingredient present as an
+    explicit parameter, so that what a faithful transcription owes is visible
+    rather than remembered. -/
+
+/-- Theorem 7's SHAPE, asserted of nothing. Each parameter is an ingredient the
+    earlier transcription dropped: `θ` and its threshold, the initial condition,
+    the link between `basin` and a non-degenerate maximum of `P` with positive
+    depth, and normalization of the measure. `Ergodic` is passed as a parameter
+    too, because the earlier version assumed Birkhoff's conclusion in place of
+    the ergodicity hypothesis it is derived from. -/
+def Theorem7_shape (X : Substrate)
+    (Theta : Type) (aboveThreshold : Theta → Prop)
+    (occupation : Theta → X.State → Nat → (X.State → Prop) → X.Val)
+    (ergodicSDE : Theta → Prop)
+    (basinOfMax : Theta → Prop)
+    (normalized : Prop) : Prop :=
+  normalized →
+    ∀ θ : Theta, aboveThreshold θ → basinOfMax θ → ergodicSDE θ →
+      ∀ start : X.State, ∀ ε : X.Val, X.lt X.zero ε →
+        ∃ T : Nat, ∀ t : Nat, T < t →
+          X.lt (X.sub X.one ε) (occupation θ start t X.basin)
 
 /-- The bridge, kept separate so that using it is visible. Theorem 7 above does
     not mention it, which is itself the answer to the pre-registration's second
@@ -1456,5 +1475,73 @@ theorem blum2_kills_incompressible (L : Layer) (hB : Blum2 L)
     clause 5 found missing. `CostAxioms` and `Blum2` end this run as honest stubs
     with no dependents — which is the correct outcome for a debt that was
     mis-named, and is recorded rather than tidied away. -/
+
+/-! ## 16. Shape audit of the last `sorry`
+
+    `recipe_inevitability` was the only surviving conjecture marker and the only
+    statement in this file whose fidelity nobody but its transcriber had checked.
+    The session's record on sorry'd transcriptions was zero for two. It is now
+    zero for three.
+
+    FIVE DEVIATIONS FROM THEOREM 7 AS COMMITTED, found by reading the two side by
+    side. The first is fatal on its own; the rest are why a patch is not enough.
+
+      1. NORMALIZATION DROPPED. `ρ_∞` in the manuscript is a stationary
+         probability measure. `Substrate` lets `rho` and `one` be unrelated, so
+         nothing says total mass is `one`. Refuted below.
+      2. THE INITIAL CONDITION IS GONE. Theorem 7 says "for any initial condition
+         Ψ₀ ∈ 𝒳" — that ANY start reaches the basin is the theorem's content. The
+         transcription quantifies over no start at all.
+      3. θ AND θ > θ_c ARE GONE. Theorem 7 is parameterized by θ ∈ Ω and its
+         hypothesis is conditional on being above the threshold. `Substrate` has
+         no θ, so the conditionality vanished in transport.
+      4. THE BASIN IS UNLINKED FROM `P`. In Theorem 7 the basin is the basin of a
+         non-degenerate local maximum of `P` with depth ΔP > 0 — Morse for
+         existence, Kramers for residence. Here `basin` is a free predicate and
+         `P` never appears in the statement.
+      5. ERGODICITY REPLACED BY BIRKHOFF'S CONCLUSION. Theorem 7 hypothesizes
+         that a specific Langevin process is ergodic. `Ergodic` here states that
+         time-average occupation approaches `ρ_∞` — which is what Birkhoff
+         DELIVERS from that hypothesis, i.e. an intermediate step of the proof
+         assumed as a premise. -/
+
+/-- Deviation 1, made concrete: mass `1` spread over a scale where `one` is `10`.
+    Nothing in `Substrate` forbids it. -/
+@[reducible] def Xbad : Substrate where
+  State := Unit
+  Val   := Nat
+  zero  := 0
+  one   := 10
+  lt    := fun a b => a < b
+  sub   := fun a b => a - b
+  P     := fun _ => 0
+  basin := fun _ => True
+  rho   := fun _ => 1
+  rho_basin_pos := Nat.zero_lt_one
+
+@[reducible] def occBad : Nat → (Xbad.State → Prop) → Xbad.Val := fun _ _ => 1
+
+theorem occBad_ergodic : Ergodic Xbad occBad := by
+  intro A ε hε
+  refine ⟨0, fun t _ => ?_⟩
+  have h1 : 1 ≤ ε := hε
+  have hz : (1:Nat) - ε = 0 := Nat.sub_eq_zero_of_le h1
+  show (1:Nat) - ε < 1
+  rw [hz]
+  exact Nat.zero_lt_one
+
+/-- THE LAST `sorry` MARKED A FALSEHOOD TOO. The occupation converges to the
+    stationary measure exactly as `Ergodic` demands, and the conclusion still
+    fails — because `1 - ε` is measured against a `one` that has nothing to do
+    with the measure's total mass. -/
+theorem recipe_inevitability_refuted :
+    ¬ (∀ (X : Substrate) (occupation : Nat → (X.State → Prop) → X.Val),
+        Ergodic X occupation →
+        ∀ ε : X.Val, X.lt X.zero ε →
+          ∃ T : Nat, ∀ t : Nat, T < t → X.lt (X.sub X.one ε) (occupation t X.basin)) := by
+  intro h
+  obtain ⟨T, hT⟩ := h Xbad occBad occBad_ergodic 1 (by show (0:Nat) < 1; omega)
+  have hbad : (10 : Nat) - 1 < 1 := hT (T + 1) (by omega)
+  omega
 
 end RE
