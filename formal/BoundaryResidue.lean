@@ -1791,6 +1791,19 @@ theorem theorem7_as_stated_refuted :
     as such. Secondary prior — that item 8 would be the sharpest manuscript
     finding independent of the refutation — also correct, and it is Problem 30.
 
+    POSTSCRIPT, ADDED IN REVIEW. The replacement statement written alongside this
+    result was itself false — it claimed basin mass tends to 1 as `ΔP/D → ∞`,
+    which holds only for a GLOBAL maximum, while hypothesis (i) asserts merely a
+    local one. The stationary density `∝ e^{γP/D}` concentrates on global maxima
+    as `D → 0`, so a local `Ψ*` loses its mass in exactly that limit. Refuting
+    witness (numerically confirmed, not yet transcribed): three-state path
+    `a–b–c` with `P = (1,0,2)`, where basin mass at `a` falls to 4.5e-5 by
+    `ΔP/D = 10`. The two-state chain that refuted the original cannot see it —
+    one well. The replacement is marked PROPOSED in M.4 with five items
+    pre-registered, and must go through this same loop before it is anything.
+    Recorded here because the failure is instructive: the batch that opened the
+    over-claim category committed the second entry in it, one paragraph later.
+
     AND THE DIRECTION, as pre-registered before the result was known. This is the
     first finding that cuts against the manuscript rather than the transport.
     Ten times the term lost something the prose had; once now, the prose claimed
