@@ -44,6 +44,24 @@ If the compression worked at no cost, it would give superpolynomial lower bounds
 
 **(d)** The smallest form: the exact statement "a polynomial-size self-referential tautology family for iP has no iP-proofs of size s", together with the step it needs.
 
+## Ruling on the draft (the reviewer, 2026-09-10): accepted, with (c) sharpened
+
+**Flags S and F** go in as pre-registered results: S is to be proved in the report, and F is the verified mechanism.
+
+**The live question, made precise by Flag F.**
+- *Why Pudlák's upper bound works.* His n^k upper bound on Con_T(n) goes through a *partial truth definition*. T defines truth for formulas of bounded size and can **evaluate** any candidate proof of length ≤ n, so it proves cheaply that no such proof derives a contradiction. That depends on the excluded proofs being evaluable in polynomial size.
+- *Why implicit proofs may be different.* An implicit proof is a circuit of size n computing a proof of size about 2^n, and evaluating it takes exponential time. *(That characterization is to be verified against Krajíček's definition.)*
+- **So (c) must answer this:** does the partial-truth-definition upper bound go through for Con_{iP}(n), the finitistic consistency of an *implicit* system, which asserts that no implicit proof (a circuit of size ≤ n) computes a contradiction? Or does it fail because the proof cannot be evaluated? Verify from Krajíček 2004 and any follow-up:
+  - (i) Is Con_{iP}(n) definable in size poly(n)?
+  - (ii) What is known about its proof complexity in P, in iP, and in EF?
+  - (iii) Does Krajíček prove that lower bounds for iP are equivalent to a known open question, such as superpolynomial EF lower bounds or Con_EF(2^n)? That would make the succinct diagonal a *restatement* of that question (D1), not a lever.
+- **Pre-registered expectation, held with distrust:** D1 through (iii).
+- **If (iii) has no such theorem and (i)–(ii) are open, that is D2,** the first new question: *"is Con_{iP}(n) provable in P in size poly(n)?"* A NO for a sound P would be a superpolynomial lower bound, so a polynomial upper bound is what to expect, and the mechanism that gives it is the catch.
+
+**The reviewer's priors, updated:** D1 60 / D2 25 / D3 15.
+
+**Status: the run waits for the author's review, as the author chose.**
+
 ## Outcomes (the reviewer's)
 
 | Code | Outcome |
