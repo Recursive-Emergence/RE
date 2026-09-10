@@ -41,7 +41,7 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD (branch target-xi, 2026-09-10). Lean 4.15.0
+  COMPILATION RECORD (branch target-xii, 2026-09-10). Lean 4.15.0
     (commit 11651562caae), bare toolchain, no Mathlib. Exit 0, zero errors.
     Warnings: exactly two, both `declaration uses 'sorry'`, at
     `REamend.general_partA` and `REamend.general_partB` — the file's only
@@ -74,6 +74,8 @@
     on an A2-conforming witness.
     The target-xi branch adds §§30–31 and AMENDS THE `Substrate` STRUCTURE ITSELF:
     ρ_∞ is now required to be a measure.
+    The target-xii branch adds §§32–33: Problem 26's bridging law, and the first
+    theorems in the record about Definition 1's potential.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
@@ -142,6 +144,14 @@
       'RExi.constRho_violates_empty' does not depend on any axioms
       'RExi.constRho_violates_add' does not depend on any axioms
       'RExi.pushMass_additive_intrinsic' depends on axioms: [propext, Quot.sound]
+      'RExii.c26_sat' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExii.c26_ref_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExii.A1_substrate_discrimination' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExii.legal_JS' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExii.fiber_mass_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExii.S_nonzero' does not depend on any axioms
+      'RExii.shared_lattice_data' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExii.substrates_differ' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
       'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
 
@@ -3920,3 +3930,185 @@ end RExi
     distrust. The reviewer names g5 as the guard likeliest to bite: "literally
     Definition 1's form" tends to become "a function that happens to equal it"
     during transcription. -/
+
+/-! ## 33. Target (xii-a), run -/
+namespace RExii
+open Classical
+open RE RE4 REgen REamend REp25 REx
+
+/-- (xii-a) The bridging condition C26, cross-multiplied. Representation items:
+    `mulX` (R1), the explicit enumeration `univ` (R2), no division (R3), point
+    masses from ρ (R4) — and `ι` (R5), FORCED by the signature: the frame keeps
+    the lattice's values `Om.Val` and the substrate's values `X.Val` as two
+    different types, so the two P's cannot even be compared without an
+    identification. The lattice side is `Lattice.P` itself — guard g5. -/
+noncomputable def C26 (J : Joined)
+    (mulL : J.Om.Val → J.Om.Val → J.Om.Val) (R ΔH : J.L.Rep → J.Om.Val)
+    (ι : J.Om.Val → J.X.Val) (mulX : J.X.Val → J.X.Val → J.X.Val)
+    (univ : List J.X.State) (x : J.L.Rep) (h : J.Om.Defined x) : Prop :=
+  mulX (ι (Lattice.P J.Om mulL R ΔH ⟨x, h⟩)) (J.X.rho (J.fiber x))
+    = (univ.map (fun s => if J.formulable s x
+                          then mulX (J.X.rho (fun t => t = s)) (J.X.P s) else J.X.zero)).foldr
+        J.X.add J.X.zero
+
+/-- THE SHARED LATTICE SIDE (g3′): defined exactly at `true`, with `S` nonzero there
+    (g4). Both witnesses use this very lattice. -/
+@[reducible] noncomputable def OmN : Lattice L0 where
+  Val := Nat
+  zero := 0
+  lt := fun a b => a < b
+  Defined := fun b => b = true
+  S := fun _ => 1
+
+/-- THE SUBSTRATE, as a function of its potential `Pf` ALONE. Satisfying and
+    refuting witnesses are this one construction at two arguments, so g3′ — differ
+    only on the substrate side — holds by construction, not by care. ρ is the
+    measure (50, 50, 0), a genuine measure under (xi)'s fields. -/
+@[reducible] noncomputable def XS (Pf : S3 → Nat) : Substrate where
+  State := S3
+  Val := Nat
+  zero := 0
+  one := 100
+  lt := fun a b => a < b
+  sub := fun a b => a - b
+  add := fun a b => a + b
+  P := Pf
+  basin := fun _ => True
+  rho := fun B => (if B S3.s1 then 50 else 0) + (if B S3.s2 then 50 else 0)
+  rho_basin_pos := by show (0:Nat) < _; simp
+  rho_empty := by simp
+  rho_add := by
+    intro A B hdis
+    have h1 := hdis S3.s1; have h2 := hdis S3.s2
+    by_cases a1 : A S3.s1 <;> by_cases b1 : B S3.s1 <;> by_cases a2 : A S3.s2 <;>
+      by_cases b2 : B S3.s2 <;> simp_all
+
+@[reducible] noncomputable def JS (Pf : S3 → Nat) : Joined where
+  L := L0
+  X := XS Pf
+  formulable := fun s x => match s with
+    | S3.s1 => x = true
+    | S3.s2 => x = true
+    | S3.s3 => x = false
+  Om := OmN
+
+/-- Shared lattice data, fixed across both witnesses: R = 2, ΔH = 3, and the
+    lattice's multiplication. -/
+def mulN : Nat → Nat → Nat := fun a b => a * b
+def R2 : Bool → Nat := fun _ => 2
+def D3 : Bool → Nat := fun _ => 3
+def u3s : List S3 := [S3.s1, S3.s2, S3.s3]
+
+/-- The satisfying potential, and the refuting one — differing at `s₂` only. -/
+def Psat : S3 → Nat := fun _ => 6
+def Pref : S3 → Nat := fun s => match s with
+  | S3.s1 => 6
+  | S3.s2 => 0
+  | S3.s3 => 0
+
+/-- g1: both witnesses are legal — the relation conforms to A2 for EVERY `Pf`. -/
+theorem legal_JS (Pf : S3 → Nat) : Legal (JS Pf) := by
+  refine ⟨?_, ?_, ?_⟩
+  · intro s x y hx hy; cases s <;> (simp only [JS] at hx hy; rw [hx, hy])
+  · intro s; cases s
+    · exact ⟨true, rfl⟩
+    · exact ⟨true, rfl⟩
+    · exact ⟨false, rfl⟩
+  · intro x; cases x
+    · exact ⟨S3.s3, rfl⟩
+    · exact ⟨S3.s1, rfl⟩
+
+/-- g2 and the anti-cheat on g3′: the fiber of the defined point `true` has
+    POSITIVE mass, 100, on BOTH witnesses. -/
+theorem fiber_mass_pos (Pf : S3 → Nat) : (JS Pf).X.rho ((JS Pf).fiber true) = 100 := by
+  simp [JS, XS, Joined.fiber]
+
+/-- g4: `S` is nonzero at the defined point. -/
+theorem S_nonzero : OmN.S ⟨true, rfl⟩ ≠ 0 := by decide
+
+/-- g3′: the two witnesses share the layer and the lattice exactly. -/
+theorem shared_lattice_data : (JS Psat).L = (JS Pref).L ∧ (JS Psat).Om = (JS Pref).Om :=
+  ⟨rfl, rfl⟩
+
+/-- …and differ on the substrate's potential. -/
+theorem substrates_differ : (JS Psat).X.P S3.s2 ≠ (JS Pref).X.P S3.s2 := by decide
+
+/-- C26 HOLDS on the satisfying substrate: 6 · 100 = 50·6 + 50·6. -/
+theorem c26_sat : C26 (JS Psat) mulN R2 D3 (fun v => v) mulN u3s true rfl := by
+  simp [C26, Lattice.P, JS, XS, OmN, Joined.fiber, mulN, R2, D3, u3s, Psat]
+
+/-- C26 FAILS on the refuting substrate under the SAME lattice data: 600 against
+    50·6 + 50·0 = 300. -/
+theorem c26_ref_fails : ¬ C26 (JS Pref) mulN R2 D3 (fun v => v) mulN u3s true rfl := by
+  simp [C26, Lattice.P, JS, XS, OmN, Joined.fiber, mulN, R2, D3, u3s, Pref]
+
+/-- (A1) under g3′: with the layer held fixed, C26 accepts one substrate and
+    rejects another. -/
+theorem A1_substrate_discrimination :
+    C26 (JS Psat) mulN R2 D3 (fun v => v) mulN u3s true rfl ∧
+    ¬ C26 (JS Pref) mulN R2 D3 (fun v => v) mulN u3s true rfl :=
+  ⟨c26_sat, c26_ref_fails⟩
+
+end RExii
+
+/-! ### 33.1 Readout — target (xii-a)
+
+    OUTCOME: (A1), read under g3′. With ALL lattice data held fixed — layer `L0`,
+    lattice `OmN`, R = 2, ΔH = 3, S = 1, the lattice's multiplication — C26
+    ACCEPTS one substrate (`c26_sat`) and REJECTS another (`c26_ref_fails`),
+    together `A1_substrate_discrimination`. The two substrates are one
+    construction, `XS`, at two potentials, so they differ on the substrate side
+    and nowhere else by construction. What the law says, on this evidence:
+    Definition 1's potential at a defined structure is the stationary-weighted
+    average of the substrate potential over the states that formulate it. It
+    accepts the substrate whose average is 6 and rejects the one whose average is 3.
+
+    GUARDS, each with its witness. g1 `legal_JS` (A2-conforming for every
+    potential; ρ a measure under (xi)). g2 and the anti-cheat on g3′
+    `fiber_mass_pos`: the fiber of `true` has mass 100 on BOTH witnesses, so the
+    refutation is a mismatch of values, not a zero-mass trivialization. g3′
+    `shared_lattice_data` and `substrates_differ`. g4 `S_nonzero`. g5 CHECKED AT
+    KERNEL-TERM LEVEL rather than asserted: C26's own definition body contains
+    `RE.Lattice.P`, so the lattice side is literally Definition 1's form. The guard
+    the reviewer named as likeliest to bite did not.
+
+    FINDING — THE FIRST THEOREMS ABOUT DEFINITION 1's POTENTIAL. A kernel-term
+    search finds exactly three theorems reaching `Lattice.P`: `c26_sat`,
+    `c26_ref_fails` and `A1_substrate_discrimination`. (It also lists two
+    equation lemmas Lean generated while unfolding `Lattice.P` and `C26`; they are
+    the proof assistant's, not the record's, and are not counted.) Before this run
+    the number was zero.
+
+    FINDING — R5 WAS FORCED BY THE SIGNATURE. The frame stores the lattice's
+    values and the substrate's values as two different types, so the two P's
+    cannot even be compared without an identification `ι`. On the witness both
+    are ℕ and `ι` is the identity; in general it is a representation item, and it
+    is one more thing the shared letter P had been hiding.
+
+    R1, as logged: no law of multiplication is used by any theorem here — the
+    witnesses use ℕ's. `mul a zero = zero`, the law that makes the cross-multiplied
+    form hold trivially on zero-mass fibers, was not needed: no defined point of
+    zero fiber mass occurs.
+
+    THE CEILING, as pre-registered: consistency plus substrate-discrimination
+    under fixed layer data. Content about R and ΔH themselves stays blocked on
+    their referents, now Open Problem 34. The witnesses carry
+    `Classical.choice`, through the substrate's genuine measure, as expected.
+
+    PRIORS. (A1) — mine and the reviewer's, and it landed. Agreement earned extra
+    distrust, and the guard chosen to absorb it (g5) was checked mechanically
+    rather than taken on trust.
+
+    A FAILURE IN THIS RUN'S OWN COMMIT CHAIN, recorded. The first commit of this
+    section, 48efe23 — never merged, pushed or reported — carried the Lean half
+    only. The step that wrote the manuscript half stopped on a failed assertion:
+    its anchor put the italic mark after "The" where the manuscript has it
+    before, a surface-text mismatch in my own markup. But the chain around it had
+    no stop-on-failure, so it went on to verify, audit, compile and commit, and
+    the commit message named manuscript changes that were not in it. The
+    assertion worked; the chain did not honour it. Caught before anything was
+    reported and amended into this commit, whose chain now aborts on any failed
+    step. A second slip inside the first: I diagnosed the wrong assertion before
+    counting which line had failed — a conclusion ahead of its check, harmless
+    only because the next check caught it. -/
+
