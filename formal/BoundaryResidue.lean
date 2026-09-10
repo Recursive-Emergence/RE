@@ -41,7 +41,7 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD (at merge of target-ix, 2026-09-10). Lean 4.15.0
+  COMPILATION RECORD (branch p25-pushforward, 2026-09-10). Lean 4.15.0
     (commit 11651562caae), bare toolchain, no Mathlib. Exit 0, zero errors.
     Warnings: exactly two, both `declaration uses 'sorry'`, at
     `REamend.general_partA` and `REamend.general_partB` — the file's only
@@ -68,6 +68,8 @@
     independent run — including an independent check that the ff5aef2 →
     02feeed diff is a single hunk before the first namespace. The commit that
     merges target-ix adds only this sentence; its code is the code reproduced.
+    The p25-pushforward branch adds §§25–27 — the Problem 25 pushforward probe —
+    on top of that; the reviewer re-runs only if the report does not add up.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
@@ -106,6 +108,21 @@
       'REix.ix_partB' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REix.ix_not_stationary_at_one' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REix.ix_rows_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.pushMass_additive' depends on axioms: [propext, Quot.sound]
+      'REp25.pushMass_additive_G' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.pushMass_total_G' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.A2_G' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.pos_mass_true' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.zero_mass_false' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.false_is_formulated' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.hadd_U' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.not_sv_bad' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.additivity_fails_bad' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.large_true' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.not_large_false' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.constructive_true_Lid' depends on axioms: [propext]
+      'REp25.rr_hosted_on_Lid_forces' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REp25.rr_hosted_satisfiable' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
       'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
 
@@ -3123,3 +3140,257 @@ end REix
     restriction goes in as explicit hypotheses citing A2 — `SingleValued`, and
     `Total` for normalization — and the probe runs under them. This section is
     committed before the pushforward is defined; the definition comes next. -/
+
+/-! ## 27. The pushforward probe, run
+
+    Under the restriction logged in §26: `SingleValued` and `Total` as explicit
+    hypotheses citing A2. -/
+namespace REp25
+open Classical
+open RE RE4 REgen REamend
+
+/-- The pushforward of the substrate's measure through the fibers of `formulable`:
+    the mass of the set of states that formulate SOME structure with `p`. -/
+noncomputable def pushMass (J : Joined) (p : J.L.Rep → Prop) : J.X.Val :=
+  J.X.rho (fun s => ∃ x, J.formulable s x ∧ p x)
+
+/-- A2's "function", part one: each state formulates at most one structure. -/
+def SingleValued (J : Joined) : Prop :=
+  ∀ s x y, J.formulable s x → J.formulable s y → x = y
+
+/-- A2's "function", part two: each state formulates some structure. -/
+def Total (J : Joined) : Prop := ∀ s, ∃ x, J.formulable s x
+
+/-- Under single-valuedness, the pushforward inherits additivity from `ρ`. The
+    hypothesis is exactly what is needed: without it, a state in two fibers lands
+    in both preimages. -/
+theorem pushMass_additive (J : Joined) (hsv : SingleValued J)
+    (add : J.X.Val → J.X.Val → J.X.Val)
+    (hadd : ∀ A B : J.X.State → Prop, (∀ s, ¬ (A s ∧ B s)) →
+      J.X.rho (fun s => A s ∨ B s) = add (J.X.rho A) (J.X.rho B))
+    (p q : J.L.Rep → Prop) (hpq : ∀ x, ¬ (p x ∧ q x)) :
+    pushMass J (fun x => p x ∨ q x) = add (pushMass J p) (pushMass J q) := by
+  unfold pushMass
+  have e : (fun s => ∃ x, J.formulable s x ∧ (p x ∨ q x))
+      = (fun s => (∃ x, J.formulable s x ∧ p x) ∨ (∃ x, J.formulable s x ∧ q x)) := by
+    funext s; apply propext; constructor
+    · rintro ⟨x, hf, hp | hq⟩
+      · exact Or.inl ⟨x, hf, hp⟩
+      · exact Or.inr ⟨x, hf, hq⟩
+    · rintro (⟨x, hf, hp⟩ | ⟨x, hf, hq⟩)
+      · exact ⟨x, hf, Or.inl hp⟩
+      · exact ⟨x, hf, Or.inr hq⟩
+  rw [e]
+  apply hadd
+  rintro s ⟨⟨x, hfx, hp⟩, ⟨y, hfy, hq⟩⟩
+  have hxy := hsv s x y hfx hfy
+  subst hxy
+  exact hpq x ⟨hp, hq⟩
+
+/-! ### The functional side of the fork -/
+
+inductive S3 where
+  | s1 | s2 | s3
+  deriving DecidableEq
+
+/-- Three substrate states with masses (50, 50, 0). -/
+@[reducible] noncomputable def XG : Substrate where
+  State := S3
+  Val := Nat
+  zero := 0
+  one := 100
+  lt := fun a b => a < b
+  sub := fun a b => a - b
+  P := fun _ => 0
+  basin := fun _ => True
+  rho := fun B => (if B S3.s1 then 50 else 0) + (if B S3.s2 then 50 else 0)
+  rho_basin_pos := by show (0:Nat) < _; simp
+
+/-- Functional, total, surjective, many-to-one: `s₁, s₂ ↦ true`, `s₃ ↦ false`. -/
+@[reducible] noncomputable def Jg : Joined where
+  L := Lid
+  X := XG
+  formulable := fun s x => match s with
+    | S3.s1 => x = true
+    | S3.s2 => x = true
+    | S3.s3 => x = false
+  Om := Omid
+
+theorem sv_G : SingleValued Jg := by
+  intro s x y hx hy
+  cases s <;> (simp only [Jg] at hx hy; rw [hx, hy])
+
+theorem total_G : Total Jg := by
+  intro s; cases s
+  · exact ⟨true, rfl⟩
+  · exact ⟨true, rfl⟩
+  · exact ⟨false, rfl⟩
+
+theorem hadd_G : ∀ A B : Jg.X.State → Prop, (∀ s, ¬ (A s ∧ B s)) →
+    Jg.X.rho (fun s => A s ∨ B s) = Jg.X.rho A + Jg.X.rho B := by
+  intro A B hdis
+  have h1 := hdis S3.s1; have h2 := hdis S3.s2
+  by_cases a1 : A S3.s1 <;> by_cases b1 : B S3.s1 <;> by_cases a2 : A S3.s2 <;>
+    by_cases b2 : B S3.s2 <;> simp_all [Jg, XG]
+
+/-- FORK, functional side: the pushforward is additive. -/
+theorem pushMass_additive_G (p q : Jg.L.Rep → Prop) (hpq : ∀ x, ¬ (p x ∧ q x)) :
+    pushMass Jg (fun x => p x ∨ q x) = pushMass Jg p + pushMass Jg q :=
+  pushMass_additive Jg sv_G (· + ·) hadd_G p q hpq
+
+/-- Normalization, from totality: the pushforward of everything is the full mass. -/
+theorem pushMass_total_G : pushMass Jg (fun _ => True) = 100 := by
+  unfold pushMass; simp [Jg, XG]
+
+/-! ### Item (ii): both non-vacuity guards, on the same witness -/
+
+theorem pos_mass_true : pushMass Jg (fun x => x = true) = 100 := by
+  unfold pushMass; simp [Jg, XG]
+
+/-- ZERO mass on a property that is NOT empty and IS formulated — by `s₃`, a
+    zero-mass state. Not the trivial zero of the empty property. -/
+theorem zero_mass_false : pushMass Jg (fun x => x = false) = 0 := by
+  unfold pushMass; simp [Jg, XG]
+
+theorem false_is_formulated : ∃ s, Jg.formulable s false := ⟨S3.s3, rfl⟩
+
+/-! ### The non-functional side of the fork -/
+
+/-- One state, with an ADDITIVE point-mass `ρ`, so any failure of additivity
+    below is `formulable`'s fault, not `ρ`'s. -/
+@[reducible] noncomputable def XU : Substrate where
+  State := Unit
+  Val := Nat
+  zero := 0
+  one := 100
+  lt := fun a b => a < b
+  sub := fun a b => a - b
+  P := fun _ => 0
+  basin := fun _ => True
+  rho := fun B => if B () then 100 else 0
+  rho_basin_pos := by show (0:Nat) < _; simp
+
+/-- The state formulates BOTH structures — the shape of the file's own `J0`. -/
+@[reducible] noncomputable def Jbad : Joined where
+  L := Lid
+  X := XU
+  formulable := fun _ _ => True
+  Om := Omid
+
+theorem hadd_U : ∀ A B : Jbad.X.State → Prop, (∀ s, ¬ (A s ∧ B s)) →
+    Jbad.X.rho (fun s => A s ∨ B s) = Jbad.X.rho A + Jbad.X.rho B := by
+  intro A B hdis
+  have h := hdis ()
+  by_cases a : A () <;> by_cases b : B () <;> simp_all [Jbad, XU]
+
+theorem not_sv_bad : ¬ SingleValued Jbad := by
+  intro h; have := h () true false trivial trivial; cases this
+
+/-- FORK, non-functional side: on two DISJOINT properties, with `ρ` additive, the
+    pushforward is not — 100 against 100 + 100. -/
+theorem additivity_fails_bad :
+    pushMass Jbad (fun x => x = true ∨ x = false)
+      ≠ pushMass Jbad (fun x => x = true) + pushMass Jbad (fun x => x = false) := by
+  unfold pushMass; simp [Jbad, XU]
+
+/-! ### Item (iii): `RR_shape` with the largeness slot filled -/
+
+/-- Largeness as POSITIVE pushforward mass — the logged threshold, weaker than
+    Razborov–Rudich's fraction-largeness. -/
+noncomputable def LargePush (J : Joined) : (J.L.Rep → Prop) → Prop :=
+  fun p => J.X.lt J.X.zero (pushMass J p)
+
+/-- The RR shape with ONE of its three slots filled. `Hard` and `Useful` stay
+    parameters. -/
+def RR_hosted (J : Joined) (Hard : Prop) (Useful : (J.L.Rep → Prop) → Prop) : Prop :=
+  RR_shape J.L (LargePush J) Hard Useful
+
+theorem large_true : LargePush Jg (fun x => x = true) := by
+  show (0:Nat) < pushMass Jg (fun x => x = true)
+  rw [pos_mass_true]; decide
+
+theorem not_large_false : ¬ LargePush Jg (fun x => x = false) := by
+  show ¬ (0:Nat) < pushMass Jg (fun x => x = false)
+  rw [zero_mass_false]; exact Nat.lt_irrefl 0
+
+/-- On the transparent layer `Lid`, the large property IS constructive — so
+    Theorem 10's mechanism can fire the shape's antecedent. -/
+theorem constructive_true_Lid : constructiveFor Lid (fun x => x = true) :=
+  ⟨true, Nat.le_refl 0, fun _ => decide_eq_true_iff⟩
+
+/-- Lid's turn. With the antecedent firing, the hosted shape FORCES `¬ Useful` on
+    the large constructive property whenever `Hard` holds. It constrains the
+    unfilled slot; it does not fall. -/
+theorem rr_hosted_on_Lid_forces (Hard : Prop) (Useful : (Jg.L.Rep → Prop) → Prop) :
+    RR_hosted Jg Hard Useful → Hard → ¬ Useful (fun x => x = true) :=
+  fun h hH => h hH _ constructive_true_Lid large_true
+
+/-- …and it is satisfiable on Lid, for every `Hard`: take `Useful` empty. So
+    Theorem 10's mechanism does not refute this transposition. -/
+theorem rr_hosted_satisfiable (Hard : Prop) : RR_hosted Jg Hard (fun _ => False) :=
+  fun _ _ _ _ h => h
+
+
+/-! ### The functional witness satisfies ALL of A2, not only what the probe needs -/
+
+/-- A2's "surjective". -/
+def Surjective (J : Joined) : Prop := ∀ x, ∃ s, J.formulable s x
+
+theorem surj_G : Surjective Jg := by
+  intro x; cases x
+  · exact ⟨S3.s3, rfl⟩
+  · exact ⟨S3.s1, rfl⟩
+
+/-- A2 in full on the witness: a single-valued, total, surjective relation — a
+    surjective function — and many-to-one, since `s₁` and `s₂` both formulate
+    `true`. So `Jg` witnesses the reading A2 intends, not a convenient part of it. -/
+theorem A2_G : SingleValued Jg ∧ Total Jg ∧ Surjective Jg ∧
+    (Jg.formulable S3.s1 true ∧ Jg.formulable S3.s2 true) :=
+  ⟨sv_G, total_G, surj_G, rfl, rfl⟩
+
+end REp25
+
+/-! ### 27.1 Readout — Problem 25 pushforward probe
+
+    (i) single-valuedness | expected: a gap, likely | OBSERVED: GAP. No hypothesis
+        in the file makes `formulable` single-valued, and the file's only witness
+        is maximally non-functional. Logged in §26 BEFORE the pushforward was
+        defined. The fork is exhibited on both sides. Functional: the pushforward
+        is additive, as a general theorem under `SingleValued`
+        (`pushMass_additive`) and on the witness (`pushMass_additive_G`).
+        Non-functional: additivity FAILS — 100 against 100 + 100 on two disjoint
+        properties (`additivity_fails_bad`) — with `ρ` itself PROVED additive
+        there (`hadd_U`), so the failure is `formulable`'s. Normalization from
+        totality: `pushMass_total_G`. The functional witness satisfies all of A2
+        (`A2_G`): single-valued, total, surjective, many-to-one.
+    (ii) non-vacuity | expected: both guards | OBSERVED: BOTH, on one witness.
+        Positive mass 100 on `(· = true)` (`pos_mass_true`); mass ZERO on
+        `(· = false)` (`zero_mass_false`), a property that is non-empty and IS
+        formulated (`false_is_formulated`) — by a zero-mass state. Not the
+        trivial zero of the empty property.
+    (iii) hostability | expected: one slot filled | OBSERVED: ONE SLOT FILLED.
+        `RR_hosted` instantiates `RR_shape` with the pushforward largeness.
+        LARGE NOW HAS A REFERENT; HARD AND USEFUL DON'T. Lid's turn: on the
+        transparent layer the large property is constructive
+        (`constructive_true_Lid`), so the shape's antecedent fires — and all it
+        does is force `¬ Useful` on that property whenever `Hard` holds
+        (`rr_hosted_on_Lid_forces`). The shape is satisfiable there for every
+        `Hard` (`rr_hosted_satisfiable`). Theorem 10's mechanism, which refuted
+        every earlier transposition of this conjecture, does not refute this one:
+        the shape now runs in Razborov–Rudich's direction, and `Useful` is still a
+        free slot for it to constrain.
+
+    OUTCOME, and where it departs from the pre-registration's wording. Outcome
+    (C) was worded for the case where `formulable` is not functional AND the
+    manuscript does not say it must be. The manuscript does say so — A2,
+    explicitly — so the gap is a TRANSCRIPTION loss (ledger twelve), not a
+    manuscript silence. Under the restriction, logged and citing A2, the result is
+    outcome (A): Problem 25's prerequisite has a candidate from inside the file.
+    Not a derivation of opacity — a hosting of its largeness slot. The peer's
+    prior, "(C), then (A) one level down", landed in substance, for a different
+    reason than it gave.
+
+    THE WEAKENING, as logged: largeness here is POSITIVE mass, weaker than
+    Razborov–Rudich's "at least a fixed fraction of total mass". Fraction-
+    largeness needs a scale on `Val` the frame does not have; adding one is a
+    representation item, not taken here. -/
