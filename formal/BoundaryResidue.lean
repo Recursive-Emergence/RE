@@ -62,6 +62,14 @@
     kernels, and discharges neither the declared-Harris nor the
     declared-exactness note.
 
+    UPDATED (branch target-xiv, 2026-09-10). Exit 0, zero errors, zero
+    warnings, still no `sorry`. §37 adds `Tied`, a structure ON a layer that ties
+    cost to computation through a counting law; `Layer` itself is unchanged, and
+    its kernel type is identical to the one before §37. The new lines in the
+    audit above are regenerated from Lean. Every new declaration is free of
+    `Classical.choice` except `J0_tied`, which inherits it from `J0` (X0's
+    classical repair, §31), not from the tie.
+
     REPRODUCTION HISTORY. The peer reviewer reproduced three commits
     independently, each byte-exact from `git show`, in a separate directory,
     each matching the audit line for line — three machine runs, not readings.
@@ -167,6 +175,17 @@
       'REamend.FiniteChain.toS' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.general_partA' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REamend.general_partB' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExiv.inaccessible_strong' depends on axioms: [propext, Quot.sound]
+      'RExiv.inaccessible_exists' depends on axioms: [propext, Quot.sound]
+      'RExiv.L0_hard_fires' depends on axioms: [propext, Quot.sound]
+      'RExiv.L0_trivial_no_fire' depends on axioms: [propext, Quot.sound]
+      'RExiv.tiedLid' depends on axioms: [propext, Quot.sound]
+      'RExiv.tiedL0' depends on axioms: [propext, Quot.sound]
+      'RExiv.tiedLop' depends on axioms: [propext, Quot.sound]
+      'RExiv.tiedL0hard' depends on axioms: [propext, Quot.sound]
+      'RExiv.cor10_1_under_tied' depends on axioms: [propext, Quot.sound]
+      'RExiv.cor10_2_under_tied' depends on axioms: [propext, Quot.sound]
+      'RExiv.J0_tied' depends on axioms: [propext, Classical.choice, Quot.sound]
 
     The six frame definitions report no axioms. `Classical.choice` elsewhere
     enters through declared representation choices (item 15 onward), never the
@@ -4849,4 +4868,371 @@ end RExii
     `Tied` is a separate structure that no frame definition mentions, which
     makes T× unlikely. The likeliest cost is the pigeonhole over lists of
     predicates without Fintype. s1: 80% that no `Classical.choice` appears. -/
+
+/-! ## 37. Target (xiv), run -/
+
+namespace RExiv
+open RE
+
+section lists
+variable {α β γ : Type}
+
+theorem map_congr' (f g : α → β) : ∀ (l : List α), (∀ x ∈ l, f x = g x) → l.map f = l.map g
+  | [], _ => rfl
+  | a :: l, h => by
+    rw [List.map_cons, List.map_cons, h a (List.mem_cons_self a l),
+        map_congr' f g l (fun x hx => h x (List.mem_cons_of_mem a hx))]
+
+/-- Remove the first occurrence — local, so no library lemma brings in choice. -/
+def rm [DecidableEq α] (a : α) : List α → List α
+  | [] => []
+  | b :: l => if b = a then l else b :: rm a l
+
+theorem rm_length [DecidableEq α] (a : α) : ∀ (l : List α), a ∈ l → (rm a l).length + 1 = l.length
+  | [], h => nomatch h
+  | b :: l, h => by
+    unfold rm
+    by_cases hb : b = a
+    · rw [if_pos hb]; rfl
+    · rw [if_neg hb, List.length_cons, List.length_cons]
+      have : a ∈ l := by
+        cases h with
+        | head => exact absurd rfl hb
+        | tail _ h' => exact h'
+      rw [rm_length a l this]
+
+theorem mem_rm [DecidableEq α] (a x : α) (hx : x ≠ a) : ∀ (l : List α), x ∈ l → x ∈ rm a l
+  | [], h => nomatch h
+  | b :: l, h => by
+    unfold rm
+    by_cases hb : b = a
+    · rw [if_pos hb]
+      cases h with
+      | head => exact absurd hb hx
+      | tail _ h' => exact h'
+    · rw [if_neg hb]
+      cases h with
+      | head => exact List.mem_cons_self _ _
+      | tail _ h' => exact List.mem_cons_of_mem _ (mem_rm a x hx l h')
+
+theorem nodup_subset_length [DecidableEq α] :
+    ∀ (l1 l2 : List α), l1.Nodup → (∀ x ∈ l1, x ∈ l2) → l1.length ≤ l2.length
+  | [], _, _, _ => Nat.zero_le _
+  | a :: l1, l2, hn, hs => by
+    rw [List.nodup_cons] at hn
+    have ha : a ∈ l2 := hs a (List.mem_cons_self a l1)
+    have hsub : ∀ x ∈ l1, x ∈ rm a l2 := fun x hx =>
+      mem_rm a x (fun e => hn.1 (e ▸ hx)) l2 (hs x (List.mem_cons_of_mem a hx))
+    have ih := nodup_subset_length l1 (rm a l2) hn.2 hsub
+    have hl := rm_length a l2 ha
+    rw [List.length_cons]; omega
+
+theorem nodup_append_of : ∀ (l1 l2 : List α), l1.Nodup → l2.Nodup → (∀ x ∈ l1, x ∉ l2) → (l1 ++ l2).Nodup
+  | [], _, _, h2, _ => h2
+  | a :: l1, l2, h1, h2, hd => by
+    rw [List.nodup_cons] at h1
+    rw [List.cons_append, List.nodup_cons]
+    refine ⟨?_, nodup_append_of l1 l2 h1.2 h2 (fun x hx => hd x (List.mem_cons_of_mem a hx))⟩
+    intro hm
+    rcases List.mem_append.1 hm with h | h
+    · exact h1.1 h
+    · exact hd a (List.mem_cons_self a l1) h
+
+theorem nodup_map_of_inj (f : α → β) (hf : ∀ a b, f a = f b → a = b) :
+    ∀ (l : List α), l.Nodup → (l.map f).Nodup
+  | [], _ => List.nodup_nil
+  | a :: l, h => by
+    rw [List.nodup_cons] at h
+    rw [List.map_cons, List.nodup_cons]
+    refine ⟨?_, nodup_map_of_inj f hf l h.2⟩
+    intro hm
+    obtain ⟨b, hb, e⟩ := List.mem_map.1 hm
+    exact h.1 (hf b a e ▸ hb)
+
+theorem nodup_map_filter (c : β → γ) (f : β → Bool) :
+    ∀ (l : List β), (l.map c).Nodup → ((l.filter f).map c).Nodup
+  | [], _ => List.nodup_nil
+  | a :: l, h => by
+    rw [List.map_cons, List.nodup_cons] at h
+    rw [List.filter_cons]
+    by_cases ha : f a = true
+    · rw [if_pos ha, List.map_cons, List.nodup_cons]
+      refine ⟨fun hm => h.1 ?_, nodup_map_filter c f l h.2⟩
+      obtain ⟨b, hb, e⟩ := List.mem_map.1 hm
+      exact e ▸ List.mem_map_of_mem c (List.mem_filter.1 hb).1
+    · rw [if_neg ha]; exact nodup_map_filter c f l h.2
+
+theorem count_lt_exists (f : β → Bool) : ∀ (l : List β), (l.filter f).length < l.length → ∃ x ∈ l, f x = false
+  | [], h => by simp at h
+  | a :: l, h => by
+    rw [List.filter_cons] at h
+    by_cases ha : f a = true
+    · rw [if_pos ha, List.length_cons, List.length_cons] at h
+      obtain ⟨x, hx, hf⟩ := count_lt_exists f l (by omega)
+      exact ⟨x, List.mem_cons_of_mem a hx, hf⟩
+    · exact ⟨a, List.mem_cons_self a l, by cases h' : f a <;> simp_all⟩
+end lists
+
+/-- All Boolean lists of length `n`, explicitly. -/
+def allBL : Nat → List (List Bool)
+  | 0 => [[]]
+  | n + 1 => (allBL n).map (fun c => true :: c) ++ (allBL n).map (fun c => false :: c)
+
+theorem allBL_length : ∀ n, (allBL n).length = 2 ^ n
+  | 0 => rfl
+  | n + 1 => by
+    show ((allBL n).map (fun c => true :: c) ++ (allBL n).map (fun c => false :: c)).length = 2 ^ (n + 1)
+    rw [List.length_append, List.length_map, List.length_map, allBL_length n, Nat.pow_succ]; omega
+
+theorem mem_allBL : ∀ (c : List Bool), c ∈ allBL c.length
+  | [] => List.mem_singleton_self _
+  | true :: c => List.mem_append_left _ (List.mem_map_of_mem (fun c => true :: c) (mem_allBL c))
+  | false :: c => List.mem_append_right _ (List.mem_map_of_mem (fun c => false :: c) (mem_allBL c))
+
+theorem allBL_mem_length : ∀ (n : Nat) (c : List Bool), c ∈ allBL n → c.length = n
+  | 0, c, h => by cases h with | head => rfl | tail _ h => cases h
+  | n + 1, c, h => by
+    rcases List.mem_append.1 h with h | h <;>
+    · obtain ⟨d, hd, rfl⟩ := List.mem_map.1 h
+      rw [List.length_cons, allBL_mem_length n d hd]
+
+theorem allBL_nodup : ∀ n, (allBL n).Nodup
+  | 0 => List.nodup_cons.2 ⟨List.not_mem_nil _, List.nodup_nil⟩
+  | n + 1 => by
+    apply nodup_append_of
+    · exact nodup_map_of_inj _ (fun a b h => (List.cons.inj h).2) _ (allBL_nodup n)
+    · exact nodup_map_of_inj _ (fun a b h => (List.cons.inj h).2) _ (allBL_nodup n)
+    · intro x hx hx'
+      obtain ⟨c, _, rfl⟩ := List.mem_map.1 hx
+      obtain ⟨d, _, e⟩ := List.mem_map.1 hx'
+      exact Bool.noConfusion (List.cons.inj e).1
+
+/-- The predicate with a given value list along an enumeration. -/
+def predOf {R : Type} [DecidableEq R] : List R → List Bool → R → Bool
+  | [], _, _ => false
+  | _ :: _, [], _ => false
+  | a :: us, b :: cs, x => if x = a then b else predOf us cs x
+
+theorem code_predOf {R : Type} [DecidableEq R] :
+    ∀ (us : List R) (c : List Bool), us.Nodup → c.length = us.length → us.map (predOf us c) = c
+  | [], [], _, _ => rfl
+  | [], _ :: _, _, h => by rw [List.length_cons, List.length_nil] at h; exact absurd h (Nat.succ_ne_zero _)
+  | _ :: _, [], _, h => by rw [List.length_cons, List.length_nil] at h; exact absurd h.symm (Nat.succ_ne_zero _)
+  | a :: us, b :: cs, hn, hl => by
+    rw [List.nodup_cons] at hn
+    have hl' : cs.length = us.length := by
+      rw [List.length_cons, List.length_cons] at hl; exact Nat.succ.inj hl
+    rw [List.map_cons]
+    have h1 : predOf (a :: us) (b :: cs) a = b := by
+      show (if a = a then b else predOf us cs a) = b; exact if_pos rfl
+    have h2 : us.map (predOf (a :: us) (b :: cs)) = us.map (predOf us cs) :=
+      map_congr' _ _ us (fun x hx => by
+        have : x ≠ a := fun e => hn.1 (e ▸ hx)
+        show (if x = a then b else predOf us cs x) = predOf us cs x; exact if_neg this)
+    rw [h1, h2, code_predOf us cs hn.2 hl']
+
+theorem codes_bound {R : Type} (univ : List R) (ps : List (R → Bool))
+    (h : (ps.map (fun p => univ.map p)).Nodup) : ps.length ≤ 2 ^ univ.length := by
+  have hs : ∀ c ∈ ps.map (fun p => univ.map p), c ∈ allBL univ.length := by
+    intro c hc
+    obtain ⟨p, _, rfl⟩ := List.mem_map.1 hc
+    have := mem_allBL (univ.map p)
+    rwa [List.length_map] at this
+  have := nodup_subset_length _ _ h hs
+  rwa [List.length_map, allBL_length] at this
+
+/-- A layer whose cost is TIED to what its methods compute, through a price κ on
+    predicates that obeys ONE law: Shannon's counting law. A structure ON a
+    layer, not a field of it. -/
+structure Tied (L : Layer) where
+  univ     : List L.Rep
+  complete : ∀ x, x ∈ univ
+  nodup    : univ.Nodup
+  decEq    : DecidableEq L.Rep
+  κ        : (L.Rep → Bool) → Nat
+  g        : Nat → Nat
+  tie      : ∀ m, κ (L.run m) ≤ L.cost m
+  counting : ∀ (k : Nat) (ps : List (L.Rep → Bool)),
+    (ps.map (fun p => univ.map p)).Nodup → (∀ p ∈ ps, κ p ≤ k) → ps.length ≤ g k
+
+/-- Shannon's counting argument, in the frame's terms: when fewer predicates are
+    cheap than there are predicates, some predicate is decided by no affordable
+    method. -/
+theorem inaccessible_strong (L : Layer) (T : Tied L) (h : T.g L.budget < 2 ^ T.univ.length) :
+    ∃ p : L.Rep → Bool, L.budget < T.κ p ∧ L.undecidable (fun x => p x = true) := by
+  letI := T.decEq
+  let all : List (L.Rep → Bool) := (allBL T.univ.length).map (predOf T.univ)
+  have hcodes : all.map (fun p => T.univ.map p) = allBL T.univ.length := by
+    show ((allBL T.univ.length).map (predOf T.univ)).map (fun p => T.univ.map p) = _
+    rw [List.map_map]
+    have := map_congr' ((fun p => T.univ.map p) ∘ predOf T.univ) id (allBL T.univ.length)
+      (fun c hc => code_predOf T.univ c T.nodup (allBL_mem_length _ c hc))
+    rw [this, List.map_id]
+  have hlen : all.length = 2 ^ T.univ.length := by
+    show ((allBL T.univ.length).map (predOf T.univ)).length = _
+    rw [List.length_map, allBL_length]
+  have hcn : ((all.filter (fun p => decide (T.κ p ≤ L.budget))).map (fun p => T.univ.map p)).Nodup :=
+    nodup_map_filter _ _ all (by rw [hcodes]; exact allBL_nodup _)
+  have hc := T.counting L.budget _ hcn (fun p hp => of_decide_eq_true (List.mem_filter.1 hp).2)
+  obtain ⟨p, _, hp⟩ := count_lt_exists (fun p => decide (T.κ p ≤ L.budget)) all (by omega)
+  have hκ : L.budget < T.κ p := by
+    have : ¬ T.κ p ≤ L.budget := fun hle => by rw [decide_eq_true hle] at hp; cases hp
+    omega
+  refine ⟨p, hκ, ?_⟩
+  intro m hm hrun
+  have hfun : L.run m = p := funext (fun x => by
+    have := hrun x
+    cases h1 : L.run m x <;> cases h2 : p x <;> simp_all)
+  have ht := T.tie m
+  rw [hfun] at ht
+  have : L.cost m ≤ L.budget := hm
+  omega
+
+theorem inaccessible_exists (L : Layer) (T : Tied L) (h : T.g L.budget < 2 ^ T.univ.length) :
+    ∃ p : L.Rep → Prop, L.undecidable p :=
+  let ⟨p, _, hu⟩ := inaccessible_strong L T h
+  ⟨fun x => p x = true, hu⟩
+
+/-! ### instances -/
+
+def tiedLid : Tied Lid where
+  univ := [true, false]
+  complete := by show ∀ x : Bool, x ∈ [true, false]; intro x; cases x <;> simp
+  nodup := by show ([true, false] : List Bool).Nodup; decide
+  decEq := inferInstanceAs (DecidableEq Bool)
+  κ := fun _ => 0
+  g := fun _ => 4
+  tie := fun _ => Nat.zero_le _
+  counting := fun _ ps h _ => codes_bound _ ps h
+
+def tiedL0 : Tied L0 where
+  univ := [true, false]
+  complete := by show ∀ x : Bool, x ∈ [true, false]; intro x; cases x <;> simp
+  nodup := by show ([true, false] : List Bool).Nodup; decide
+  decEq := inferInstanceAs (DecidableEq Bool)
+  κ := fun _ => 0
+  g := fun _ => 4
+  tie := fun _ => Nat.zero_le _
+  counting := fun _ ps h _ => codes_bound _ ps h
+
+def tiedLop : Tied Lop where
+  univ := [none, some true, some false]
+  complete := by show ∀ x : Option Bool, x ∈ [none, some true, some false]; intro x; rcases x with _ | _ | _ <;> simp
+  nodup := by show ([none, some true, some false] : List (Option Bool)).Nodup; decide
+  decEq := inferInstanceAs (DecidableEq (Option Bool))
+  κ := fun _ => 0
+  g := fun _ => 8
+  tie := fun _ => Nat.zero_le _
+  counting := fun _ ps h _ => codes_bound _ ps h
+
+/-- The SAME layer `L0`, same cost and budget, with a second κ: only the
+    predicate its one method computes is cheap. -/
+def tiedL0hard : Tied L0 where
+  univ := [true, false]
+  complete := by show ∀ x : Bool, x ∈ [true, false]; intro x; cases x <;> simp
+  nodup := by show ([true, false] : List Bool).Nodup; decide
+  decEq := inferInstanceAs (DecidableEq Bool)
+  κ := fun p => if (p true && !p false) then 0 else 1
+  g := fun k => if k = 0 then 1 else 4
+  tie := fun _ => by show (if ((fun b : Bool => b) true && !(fun b : Bool => b) false) then 0 else 1) ≤ 0; decide
+  counting := by
+    intro k ps h hk
+    by_cases k0 : k = 0
+    · subst k0
+      have hs : ∀ c ∈ ps.map (fun p => ([true, false] : List Bool).map p), c ∈ [[true, false]] := by
+        intro c hc
+        obtain ⟨p, hp, rfl⟩ := List.mem_map.1 hc
+        have hk' := hk p hp
+        revert hk'
+        cases h1 : p true <;> cases h2 : p false <;> simp [h1, h2]
+      have := nodup_subset_length _ _ h hs
+      simpa using this
+    · have := codes_bound ([true, false] : List Bool) ps h
+      simp only [k0, if_false]; simpa using this
+
+/-! ### relabels: the refutations survive on tied layers, at unchanged cost -/
+
+/-- COROLLARY 10.1 UNDER `Tied`: still refuted, by `Lid` at its own cost. -/
+theorem cor10_1_under_tied :
+    ¬ (∀ (L : Layer) (_ : Tied L) (Ω : Lattice L),
+        ∃ x : L.Rep, ¬ Ω.Defined x ∧ L.undecidable (fun y => y = x)) := by
+  intro h
+  obtain ⟨x, _, hu⟩ := h Lid tiedLid Omid
+  exact hu x (Nat.le_refl 0) (fun y => decide_eq_true_iff)
+
+/-- COROLLARY 10.2 UNDER `Tied`: still refuted, by `Lop` at its own cost. -/
+theorem cor10_2_under_tied :
+    ¬ (∀ (L : Layer) (_ : Tied L) (_Ω : Lattice L) (large : (L.Rep → Prop) → Prop),
+        (∃ x : L.Rep, L.incompressible x) →
+        ∀ p : L.Rep → Prop, Broad L large p →
+          (∀ m : L.Method, L.available m → ¬ (∀ x, L.run m x = true ↔ p x))) := by
+  intro h
+  exact h Lop tiedLop Omop (fun _ => True) ⟨none, none_incompressible⟩
+    (fun x => x = some true) trivial () (Nat.le_refl 0) (fun x => decide_eq_true_iff)
+
+/-- §13's layer is tied at its own cost: `J0.L` is `L0`. -/
+noncomputable def J0_tied : Tied J0.L := tiedL0
+
+/-- s2, made visible: the same `L0` under κ ≡ 0 does NOT meet the hypothesis. -/
+theorem L0_trivial_no_fire : ¬ (tiedL0.g L0.budget < 2 ^ tiedL0.univ.length) := by decide
+
+theorem L0_hard_fires : ∃ p : L0.Rep → Prop, L0.undecidable p :=
+  inaccessible_exists L0 tiedL0hard (by decide)
+
+end RExiv
+
+/-! ### 37.1 Readout — target (xiv)
+
+    OUTCOME: (T+). Priors: mine T+ 75, the reviewer's T+ 60.
+      · `inaccessible_exists` is proved for every layer carrying a `Tied`
+        instance whose counting bound at the budget falls below 2^|Rep|.
+        `inaccessible_strong` also shows the predicate's price is above the
+        budget.
+      · `Lid`, `L0` and `Lop` are tied at their own cost and budget (κ ≡ 0,
+        g = 2^|Rep|). Corollaries 10.1 and 10.2, restated under `Tied`, are
+        still refuted by the same witnesses, and §13's layer is tied
+        (`J0_tied`). RELABEL: affordability constrains nothing about cheap
+        predicates. Theorem 10 is a theorem about cost left untied.
+      · POSITIVE CONTROL: the SAME layer `L0`, with the same cost and budget,
+        tied a second way (`tiedL0hard`, where only the predicate its one
+        method computes is cheap). Under κ ≡ 0 the hypothesis fails
+        (`L0_trivial_no_fire`); under the second κ it holds and the theorem
+        fires (`L0_hard_fires`). The verdict flips with κ alone. That is s2 made
+        visible: on a witness the stipulation relocates into (κ, g), and the
+        content is the theorem's generality. On `L0` the fired conclusion is
+        also plainly true of the method set, since its one method computes the
+        identity; the witness is a control, not a discovery.
+
+    GUARDS, observed. `Layer`'s kernel type is identical to the pre-§37
+    module's. Zero errors, zero warnings, zero `sorry`; check.sh OK. Field usage
+    by kernel closure: `inaccessible_strong` uses univ, nodup, decEq, κ, g, tie, counting, which includes both
+    `tie` and `counting`. `cor10_1_under_tied` uses none, since it only
+    passes an instance through. The closure tool's positive control finds
+    `FiniteChainS.positive` in `dob_partB`.
+
+    s1, SCORED FOR ME. `inaccessible_exists`, `inaccessible_strong`, every tied
+    instance and both relabels depend on [propext, Quot.sound], with no
+    `Classical.choice`. `J0_tied` is the exception: it depends on [propext, Classical.choice, Quot.sound],
+    inherited from `J0`. Getting there took two repairs, both recorded. Choice
+    entered only through core-library lemmas — `List.erase_eq_eraseP`, behind
+    the `List.erase` lemmas, and `Nat.self_eq_add_left`, behind `simp`'s length
+    rewriting in `code_predOf` — and a path-tracing audit named each. Both uses
+    were replaced by local choice-free proofs: `rm`, and explicit `length_cons`
+    steps. The reviewer's reading is adopted with its claim withdrawn:
+    constructive at the meta-level, inaccessible at the layer level, and the two
+    levels separate here. Scored as the reviewer's fifth wrong outcome prior.
+
+    WHAT THIS IS AND IS NOT — the reviewer's required paragraph.
+    `inaccessible_exists` is Shannon's 1949 counting argument in the frame's
+    terms. It establishes that cost, tied by a counting law, has content: the
+    existence of a predicate no affordable method decides is DERIVED, not
+    stipulated predicate by predicate. It contributes NOTHING toward separating
+    P from NP. The record contains no Boolean functions on n bits, no circuits,
+    no time bounds and no pseudorandom generators; its layers are finite, its κ
+    is abstract, and its counting bound is a hypothesis. Read as more than this,
+    it would be the misreading the file exists to prevent.
+
+    DECISION STATUS. Reading (c) passed its check and stays adopted in the loop.
+    It is still not manuscript text. Scope unchanged: `Tied` cannot be stated
+    on `Lpar` or `Lopc`, so Corollaries 10.3 and 10.4 were not re-examined. -/
 
