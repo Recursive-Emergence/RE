@@ -51,3 +51,22 @@ S2 and S3 can co-occur; the report states both if so. Under S2, (b)–(d) still 
 ## Ceiling
 
 A3 proves nothing. At best it locates finite second incompleteness in the weak/strong landscape and names its smallest open case. Under Flag S, that statement cannot hold for all P, so it cannot by itself be a route to NP ≠ coNP. The route to NP ≠ coNP stays the cross-form CON^N / RFN^N_1 chain (M5), whose strict-rung reflection instances A2 reduced to separations.
+
+## Amendment at the reviewer's acceptance (before any work)
+
+**The reviewer accepts.** Flag S is decisive, and the reviewer withdraws S1 as a live outcome. If (b) confirms from a statement that CF/EF p-prove their own reflection, S1 counts as the reviewer's ninth wrong outcome prior. Priors, reviewer: **S2 65 / S3 20 / S1 15**. My ceiling is adopted: the route to NP ≠ coNP stays CON^N / RFN^N_1 in cross form, i.e. "no optimal proof system". Flags O and T are adopted as written.
+
+**The deliverable is recentred: the divide is the result.** (b) is delivered as a **table**, one row per system, each row with its quantifier form and source:
+- where "P p-proves rfn_P" is **known**: CF and EF, from statements rather than l.799's summary; also Frege, bounded-depth Frege, Res(k);
+- where "P ⊬_poly rfn_P" is **known**: Res (AB) and CP (Pudlák 3.11);
+- where it is **open**: Pudlák's Problem 1 for F_d, and Res(2) per (c).
+
+**One labelled interpretive line, placed after the table and tested against it.** The reading: the systems that prove their own reflection are those with **extension**, i.e. naming subformulas or subcircuits by new variables. Extension is what lets a system evaluate its own proofs, the propositional analogue of Pudlák 1986's partial truth definition. It is also reusability, so the divide would be a reusability threshold.
+
+**Falsification test, fixed now.** The reading fails if the table shows either
+- a system *without* extension that p-proves its own reflection, or
+- a system *with* extension that does not.
+
+The report says which, if either. Frege, which has no extension variables, is the row to watch: Cook–Nguyen record that VNC¹ proves the soundness of Frege systems, and whether that yields Frege p-proving its own rfn must come from a statement (g10).
+
+**After A3.** The program's path statement becomes: the finite Gödel theorem, in its only form with content for all systems, is "no optimal proof system" (CON^N, ∀S∃T). A4 would map what is known toward that. A4 is drafted only after A3 has run.
