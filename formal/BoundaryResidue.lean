@@ -407,3 +407,55 @@ structure Bridge (L : Layer) (X : Substrate) where
     shared notation and not exhibited. Logged for M.10. -/
 
 end RE
+
+/-! ## 7. Problem 26's type-level half — PRE-REGISTRATION
+
+    Written 2026-09-09 BEFORE §8 exists, committed before it, not edited by it.
+
+    Problem 26 gives a candidate bridging law two success criteria. One is
+    mathematics and belongs to the future: does the induced potential reproduce
+    `R · ΔH · S` on the defined region. The other is a TYPE-LEVEL claim and is
+    testable now:
+
+      TOTALITY ABOVE, PARTIALITY BELOW — the induced potential is total in the
+      joined signature (`Substrate` + `Layer` + `Bridge`), and its restriction to
+      the layer's own vocabulary remains partial, with the boundary landing
+      exactly on `Defined`.
+
+    THE PROBE. Define the joined signature. Write the candidate induced potential
+    as fiber aggregation against `ρ_∞`, with the aggregation operator left
+    ABSTRACT — a stub, exactly as `large` is left abstract in §3, so that no
+    property of any particular aggregator can be smuggled in. Then attempt to
+    form the restriction to the layer's vocabulary AT AN UNDEFINED POINT.
+
+    TWO OUTCOMES, pre-registered:
+
+      (I) RESTRICTION ILL-FORMED FOR EVERY ABSTRACT AGGREGATOR. The constraint is
+          satisfiable by the candidate family's SHAPE, independent of which
+          aggregator is chosen. Problem 26's remaining work is then purely the
+          mathematics of product-reproduction, and the type-level criterion is
+          discharged in advance for the whole family.
+     (II) RESTRICTION FORMS ANYWAY. Totality leaks through the types regardless
+          of aggregator. The entire fiber-aggregation family then fails the
+          pre-registered constraint BEFORE a single integral is computed, and
+          Problem 26's obvious first candidate dies for the price of a compile.
+          Under the M.10 retention convention it would resolve, not vanish.
+
+    WHAT WOULD BE CHEATING, named in advance. An aggregator stub so weak that
+    NOTHING is formable anywhere would satisfy (I) vacuously — this is the
+    trivial-satisfaction failure Problem 26 already rejects. So the probe must
+    also witness the POSITIVE case: the induced potential must be formable at a
+    DEFINED point in the joined signature. A run that shows ill-formedness at
+    `Φ_G` without showing formability at a defined Φ has demonstrated nothing.
+
+    RECORDED PRIOR (mine, before writing §8). I expect (I), and I expect it for a
+    reason I may be wrong about: `Lattice.S` consumes `{x // Defined x}`, so any
+    expression that routes through `S` cannot be formed off the subtype, while an
+    expression that routes only through `Substrate.P` and the fiber never touches
+    `Defined` at all. If that is right, the interesting question is not whether
+    the restriction is ill-formed but WHERE the partiality actually comes from —
+    and the honest answer may be that it comes from `S` alone, in which case the
+    constraint is satisfied by Definition 3's typing rather than by anything the
+    bridging law does. That would make outcome (I) true but much less
+    informative than it sounds, and §8 must say so if it lands that way.
+-/
