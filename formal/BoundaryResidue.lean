@@ -567,4 +567,78 @@ def Joined.induced_at_boundary (J : Joined) (agg : Aggregator J)
     than three confirmations would have been, and it is the reason none of these
     sections is allowed to edit its own pre-registration. -/
 
+/-! ## 9. Problem 27 — PRE-REGISTRATION
+
+    Written 2026-09-09 BEFORE §10 exists and committed before it. Outcome space
+    and destinations drafted by the reviewer, who is not running the experiment;
+    the pre-commitment below is mine, and is the only part they left open.
+
+    THE QUESTION. Does type-level partiality imply method-quantified
+    inaccessibility? That is, given a lattice with an undefined point, does it
+    follow that no affordable method decides the relevant question there?
+
+    PRE-COMMITMENT: THE RELEVANT QUESTION IS DEFINEDNESS ITSELF. Three candidates
+    were on the table — identity with `x`, definedness, threshold clearance — and
+    they may behave differently, so one must be fixed before compiling.
+
+      · Threshold clearance is excluded by dependency: it is Problem 26's object
+        and needs the run/Val choice that is logged and unmade.
+      · Identity with `x` is what §4 happens to use, but it is a statement about
+        one element, not about the invariant.
+      · Definedness is the invariant. Definition 17's content is that the lattice
+        has no opinion about `Φ_G` and the layer cannot get one; its method-
+        relative form is therefore `L.undecidable Ω.Defined`, which typechecks
+        directly since `Ω.Defined : L.Rep → Prop` is exactly what
+        `Layer.undecidable` consumes.
+
+    So the statement under test is:
+
+      ∀ (L : Layer) (Ω : Lattice L), (∃ x, ¬ Ω.Defined x) → L.undecidable Ω.Defined
+
+    THREE OUTCOMES, WITH DESTINATIONS DECLARED IN ADVANCE (this is the point of
+    writing it down: a positive result must not be absorbable as cleanup).
+
+      (A) PROVABLE in the bare frame. Destination: M.8, as a NUMBERED THEOREM.
+          Per this file's header a discharged `sorry` is a mathematical event and
+          never a refactor. Consequence: the two implementations of Definition 17
+          reconcile, `S`-partiality is a sound if local presentation of the
+          invariant, and Problem 27's regrounding becomes a change of emphasis
+          rather than of content. Definition 17's history stays continuous.
+      (B) REFUTABLE by construction — a `Layer` and `Lattice` with an undefined
+          point AND an affordable method deciding definedness there. Destination:
+          M.8 also, as a constructed counterexample with the standing of a
+          theorem, PLUS a mandatory revision of Definition 17's text, since the
+          definition would then have rested since it was written on the strictly
+          weaker of two non-equivalent formulations. This is not a failure of the
+          framework; it is the strongest possible justification for Problem 27,
+          and by the retention convention the counterexample stays in this file
+          permanently as the reason the definition says what it then says.
+      (C) NOT STATEABLE without further choices. Destination: the choice is
+          logged with the usual annotation discipline, and Problem 27 acquires an
+          explicit dependency the way Problem 26 acquired one on Problem 27.
+
+    ANTI-TRIVIALITY GUARDS, BOTH ENDS, and the (A)-guard is to be built FIRST so
+    it cannot be retrofitted to whatever lands:
+      · (B) must not hold vacuously through `available` being unsatisfiable. The
+        counterexample must EXHIBIT an affordable method — `cost ≤ budget`
+        witnessed, not assumed.
+      · (A) must not hold vacuously through the frame making everything
+        method-inaccessible. The companion witness is an affordable method that
+        DOES decide the relevant question somewhere on the defined region.
+
+    RECORDED PRIORS. The reviewer expects (B), cheaply: nothing in the bare frame
+    constrains `run` relative to `Defined`, so a layer whose method computes
+    definedness exactly looks constructible in a few lines. I share that
+    expectation — and both of us are on notice from §8.1, where identifying a
+    mechanism was mistaken for predicting an outcome. The mechanism here
+    ("nothing constrains `run` relative to `Defined`") is not the outcome; the
+    compile decides.
+
+    AND THE RESIDUE TO WATCH IF (B) LANDS TRIVIALLY. Whether the counterexample
+    survives the run/Val choice once made. One that dies under the Boolean
+    threshold-query extension would mean the implication's truth depends on the
+    representation choice — a (C)-shaped finding hiding inside a (B), and it must
+    be reported as such rather than as a clean refutation.
+-/
+
 end RE
