@@ -556,6 +556,15 @@ def Joined.induced_at_boundary (J : Joined) (agg : Aggregator J)
     then predicted against it. The deflation the prior worried about was also
     real but landed elsewhere than expected: partiality does come from `S` alone,
     and the induced potential never routes through `S`, so `Defined` was never in
-    a position to make anything ill-formed. -/
+    a position to make anything ill-formed.
+
+    The instructive part is not that the prediction was wrong but HOW: mechanism-
+    identification and prediction ran as separate processes and neither checked
+    the other. Pre-registration is what makes that visible afterward instead of
+    laundering it into "as expected". The file's record now holds one confirmed
+    prior (§6, discriminator), one wrong prior (here), and — the same one — a
+    prior refuted by its own stated mechanism. That distribution is healthier
+    than three confirmations would have been, and it is the reason none of these
+    sections is allowed to edit its own pre-registration. -/
 
 end RE
