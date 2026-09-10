@@ -4182,3 +4182,70 @@ end RExii
     27′ (§13.1), (xi) (§31.1), and Theorem 13 via 14 (§31.1). Mine, over
     the same stretch: one premise wrong (the per-input framing above). My process
     slips are counted in the surface-text and order-of-operations entries. -/
+
+/-! ## 34. Target (xiii) — PRE-REGISTRATION: general Parts A and B, the cost-free sorries
+
+    Started on the user's go (2026-09-10). The only open statements in the
+    record: `REamend.general_partA` and `general_partB`. Their statements depend
+    on no cost (§33.2's closure), so this target waits on no manuscript decision.
+    LABEL: "(xiii)" has never been used in the record; if the cost probe ever
+    runs, it takes (xiv). Flagged for the reviewer's ruling.
+
+    WHAT IS TO BE PROVED — the statements AS THEY STAND. No field is added to
+    `FiniteChain`, and none of `FiniteChainU`, `PartA_concl`, `PartB_concl`,
+    `iterLaw`, `ExactKernel` or `RE4.psum` changes.
+
+    PLAN, from the definitions, before any code. Write a_t(x) for
+    `iterLaw univ step t start (· = x)`, r(x) for `ρ (· = x)`, p(x,y) for
+    `step x (· = y)`.
+      L1  iterLaw is additive over points at every t: iterLaw t start B =
+          Σ_y [B y]·a_t(y). At t = 0 by `complete`/`nodup`; at t + 1 by
+          `additive` plus `exact`, since each point term divides by 100.
+      L2  mass: Σ_x a_t(x) = 100, by L1, `stochastic` and `additive`.
+      L3  INVARIANCE IS EXACT, though stated with truncating division: write
+          Σ_x r(x)·p(x,y) = 100·r(y) + k_y with 0 ≤ k_y < 100; summing over y
+          and using `stochastic`, `total` and `measure` gives Σ_y k_y = 0, so
+          every k_y = 0. (A lemma the record does not yet have.)
+      L4  Doeblin, in integers. With e_t = a_t − r and m_y = min_x p(x,y) ≥ 1
+          (`positive`): Σ_x e_t(x) = 0, so
+          100·D_{t+1} ≤ (100 − M)·D_t, where D_t = Σ_y |e_t(y)| and M = Σ_y m_y
+          ≥ 1.
+      L5  DISCRETENESS: D_t is a natural number, so D_t > 0 forces
+          D_{t+1} < D_t. Since D_0 ≤ 200, a_t = r for every t ≥ 200.
+      B   for t > 200, iterLaw t start B = ρ B by L1 and `measure`; both strict
+          inequalities hold for every ε > 0.
+      A   from B: every term is ≤ 100, so |psum t − t·ρ B| ≤ 200·100 for all t;
+          choose T0 with T0·ε > 20000.
+
+    THE CEILING, pre-registered. What this proves is weaker than it sounds, and
+    the readout must say so. On the record's class — exact at scale 100,
+    strictly positive — convergence happens IN FINITE TIME, at most 200 steps,
+    and the proof gets its force from DISCRETENESS (L5), not from a contraction
+    rate. It is a lattice fact about integer kernels, not Doeblin's or
+    Perron–Frobenius's theorem in the display's sense, and it says nothing
+    about kernels that truncate. The appendix's notes on declared Harris and
+    declared exactness stand unchanged; this target cannot discharge either.
+
+    OUTCOMES.
+      (D1) Both proved from the hypotheses as they stand; the sorry count goes
+           from 2 to 0.
+      (D2) B proved and A not. Only the Cesàro bookkeeping could cause this.
+      (D3) A counterexample: a legal `FiniteChain` on which B fails. That would
+           mean a hole in L1–L5, most likely in L3.
+      (D4) Blocked on tooling. The Mathlib-free list, Int and absolute-value
+           lemmas cost more than the target is worth; recorded, then stop.
+
+    GUARDS.
+      g1  The statements' kernel types are identical to ff9a31b's.
+      g2  The six definitions listed above are code-identical to ff9a31b's.
+      g3  Audit: no `sorryAx` anywhere. `propext`, `Quot.sound` and
+          `Classical.choice` are allowed (`REamend` opens `Classical`).
+      g4  check.sh OK: the frame's six definitions stay axiom-free.
+      g5  Every earlier theorem still compiles, including the refutations of
+          the unamended predecessors, which use `FiniteChainU`.
+      g6  Not vacuous: `two_state_is_finite_chain` already inhabits
+          `FiniteChain`. The readout lists which fields the proof term actually
+          uses, found by kernel-term closure with a positive control.
+
+    PRIORS (mine): D1 70%, D4 20%, D2 8%, D3 2%. The step likeliest to bite is
+    L4: absolute values over list sums, in Int, without Mathlib. -/
