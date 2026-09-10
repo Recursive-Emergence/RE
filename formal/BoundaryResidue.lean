@@ -7,17 +7,23 @@
     A record of representation choices. Each choice is annotated with the open
     problem it decides. The payload is the annotations, not the theorems.
 
-  WHAT IT HAS BECOME (updated at merge, 2026-09-10). It began as the above and
-    is no longer only that. It proves results about the frame and about the
+  WHAT IT HAS BECOME (updated 2026-09-10). It began as the above and is no
+    longer only that. It proves results about the frame and about the
     manuscript's own theorems — among them a refutation of one of those
-    theorems as stated (Theorem 14) and of the unamended drafts of its
-    replacement — and it carries exactly two `sorry` sites, both general
-    statements the manuscript asserts by citation, each with its unamended
-    predecessor refuted and a proved instance in the same file. Between
-    2026-09-09 and this merge it carried none, a state reached by REMOVING false
-    statements; the two now present are the first to arrive shape-audited rather
-    than be removed. The contract below was broken once and recorded before it
-    was repaired. It is currently kept.
+    theorems as stated (Theorem 14), of the unamended drafts of its
+    replacement, and of the first general statements of that replacement's
+    Parts A and B — and it carries exactly two `sorry` sites, the amended
+    general statements of §23.
+
+    A CORRECTION, kept rather than deleted. An earlier version of this paragraph
+    said the two `sorry` sites present at 247a19a were "the first to arrive
+    shape-audited rather than be removed." They did arrive shape-audited, and
+    they were FALSE: the hypothesis list itself had dropped that the kernel is a
+    kernel, and the reviewer refuted both before the markers were a day old.
+    Shape-auditing a statement checks that it says what its hypotheses say; it
+    does not check that the hypotheses are the right ones. The contract below
+    has now been broken TWICE and recorded both times before repair. It is
+    currently kept.
 
   WHAT THIS IS NOT
     It was written to prove nothing, and the representation choices remain its
@@ -35,23 +41,25 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD (at merge, 2026-09-10). Lean 4.15.0 (commit 11651562caae),
-    bare toolchain, no Mathlib. Exit 0, zero errors. Warnings: exactly two, both
-    `declaration uses 'sorry'`, at `REgen.general_partA` and
-    `REgen.general_partB` — the file's only conjecture markers, each with a
-    proved instance beside it (`partA_instance`, `partB_instance`). The two
-    unused-variable warnings formerly at the Corollary 10.2 and 10.4 statements
-    are fixed, the unused binder renamed `_Ω`. `formal/check.sh` passes; it audits
-    only the six frame definitions and is not the authority on `sorry` sites —
-    this record is.
+  COMPILATION RECORD (branch kernel-is-a-kernel, 2026-09-10). Lean 4.15.0
+    (commit 11651562caae), bare toolchain, no Mathlib. Exit 0, zero errors.
+    Warnings: exactly two, both `declaration uses 'sorry'`, at
+    `REamend.general_partA` and `REamend.general_partB` — the file's only
+    conjecture markers, restated in §23 against the amended hypotheses, each
+    with a proved instance and a refuted predecessor. The false `REgen`
+    statements they replace are verified ABSENT, by Lean reporting them as
+    unknown constants — not by grep, whose prefix match once reported a second
+    declaration that was in fact `general_partA_refuted`. `formal/check.sh`
+    passes; it audits only the six frame definitions and is not the authority on
+    `sorry` sites — this record is.
 
-    REPRODUCED INDEPENDENTLY by the peer reviewer on 2026-09-10, from
-    `git show 66c08d5:formal/BoundaryResidue.lean`, byte-exact, in a separate
-    directory: exit 0, no `sorry`, audit matching line for line. A second machine
-    run, not a reading. That reproduction covers 66c08d5; §21 was added after it,
-    and the merge commit is owed a re-run.
+    REPRODUCTION HISTORY. The peer reviewer reproduced 66c08d5 and then 247a19a
+    independently, each byte-exact from `git show`, in a separate directory,
+    each matching the audit line for line — two machine runs, not readings. The
+    second run did more than reproduce: it REFUTED the two general statements
+    that 247a19a carried `sorry`'d (§22). This branch is owed a re-run.
 
-    Axiom audit at merge, as printed:
+    Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
       'RE.Layer.incompressible' does not depend on any axioms
       'RE.Layer.available' does not depend on any axioms
@@ -67,15 +75,21 @@
       'RE4.unamendedA_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
       'RE5.unamendedC_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REC.iii_singular_fails' depends on axioms: [propext, Quot.sound]
-      'REgen.two_state_is_finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REgen.two_state_is_finite_chainU' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REgen.partA_instance' depends on axioms: [propext, Classical.choice, Quot.sound]
       'REgen.partB_instance' depends on axioms: [propext, Classical.choice, Quot.sound]
-      'REgen.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
-      'REgen.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+      'REref.unamended_general_partA_false' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REref.unamended_general_partB_false' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REref.bad_is_finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.two_state_is_finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.bad_not_amended' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.stepBad_additive' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'REamend.general_partA' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+      'REamend.general_partB' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
 
     The six frame definitions report no axioms. `Classical.choice` elsewhere
     enters through declared representation choices (item 15 onward), never the
-    frame; `sorryAx` appears at exactly the two general statements.
+    frame; `sorryAx` appears at exactly the two amended general statements.
 
   NEGATIVE RESULTS. Two objections were anticipated in this file and the
     compiler declined both; see §1 (`Lattice.P` loose parameters) and §3
@@ -2399,9 +2413,13 @@ def ExactKernel {X : Type} (univ : List X) (step : X → (X → Prop) → Nat) :
     100 ∣ (univ.map (fun x => iterLaw univ step t start (fun y => y = x) * step x B)).sum
 
 open Classical in
-/-- Shared hypotheses of general A and B. `positive` is the DECLARED stand-in for
-    positive Harris recurrence, as in target (i). -/
-structure FiniteChain {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+/-- UNAMENDED — FROZEN COPY. The hypotheses general Parts A and B were first
+    stated against. Refuted in §22: no field makes `step` a kernel, so a
+    positive, exact kernel with unequal row totals satisfies every field and
+    never converges. Kept, not deleted, so the record shows the amendment of §23
+    was forced. `positive` is the DECLARED stand-in for positive Harris
+    recurrence, as in target (i). -/
+structure FiniteChainU {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
     (ρ : (X → Prop) → Nat) : Prop where
   complete  : ∀ x, x ∈ univ
   nodup     : univ.Nodup
@@ -2425,31 +2443,15 @@ def PartB_concl {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
     iterLaw univ step t start basin < ρ basin + ε ∧
     ρ basin < iterLaw univ step t start basin + ε
 
-/-- GENERAL PART A, finite state space. CONJECTURE, not proved here. The
-    manuscript asserts it by citing Harris and Birkhoff; the file has not derived
-    it. This is the first `sorry` in the file's history to arrive shape-audited,
-    kernel-derived, with its unamended predecessor refuted in the same file
-    (`RE4.unamendedA_refuted`) and a proved instance beside it
-    (`partA_instance`). -/
-theorem general_partA {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
-    (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
-    ∀ (start : X) (basin : X → Prop), PartA_concl univ step ρ start basin := by
-  sorry -- CONJECTURE: general Part A (Cesàro form) on exact, strictly positive
-        -- finite chains. Its proof needs a contraction argument (Doeblin) that
-        -- is not formalized in this Mathlib-free file.
-
-/-- GENERAL PART B, finite state space. CONJECTURE, not proved here: under
-    strict positivity a finite chain is mixing, and mixing is what Part B's
-    conclusion restates. Proved instance: `partB_instance`. -/
-theorem general_partB {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
-    (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
-    ∀ (start : X) (basin : X → Prop), PartB_concl univ step ρ start basin := by
-  sorry -- CONJECTURE: strict positivity ⇒ mixing (Perron–Frobenius / Doeblin),
-        -- not formalized here.
+/-! The general statements that first stood here — `general_partA` and
+    `general_partB` over `FiniteChainU` — were FALSE as stated and are removed,
+    not left `sorry`'d: a `sorry` on a false statement breaks the header's
+    contract. Their refutation is §22; their restatement, against the amended
+    hypotheses, is §23. -/
 
 /-! ### The instance check the reviewer asked for
 
-    The two-state chain satisfies every `FiniteChain` hypothesis, and its PROVED
+    The two-state chain satisfies every `FiniteChainU` hypothesis, and its PROVED
     theorems are instances of the general conclusions. These proofs use
     `partA_cesaro_two` and `partB_two`, NOT the sorry'd general theorems, so they
     check that the general statements have the right shape without borrowing
@@ -2465,7 +2467,7 @@ theorem stepTwo_exact : ExactKernel [true, false] stepTwo := by
         lawTwo_is_derived m start (fun y => y = false)]
     simp [lawTwo, stepTwo] <;> omega
 
-theorem two_state_is_finite_chain : FiniteChain [true, false] stepTwo rhoTwo where
+theorem two_state_is_finite_chainU : FiniteChainU [true, false] stepTwo rhoTwo where
   complete  := by intro x; cases x <;> simp
   nodup     := by decide
   exact     := stepTwo_exact
@@ -2494,3 +2496,194 @@ theorem partB_instance (start : Bool) :
     is its marker. -/
 
 end REgen
+
+/-! ## 22. The unamended general statements are false (refutation by the peer)
+
+    Supplied by the peer reviewer against 247a19a, verified here before being
+    appended, and adapted only by naming the frozen structure `FiniteChainU`.
+    The kernel below is positive and exact, and its rows total 50 and 150 — so
+    it is not a kernel. `FiniteChainU` has no field that says otherwise. -/
+namespace REref
+open Classical
+open REgen
+
+/-- A positive, exact kernel whose rows have different totals: the `false` row
+    is (25, 25) — total 50 — and the `true` row is (75, 75) — total 150. -/
+noncomputable def stepBad : Bool → (Bool → Prop) → Nat :=
+  fun x B => (if x then 75 else 25) * ((if B true then 1 else 0) + (if B false then 1 else 0))
+
+/-- The invariant measure (50, 50): it averages the two row totals to 100. -/
+noncomputable def rhoBad : (Bool → Prop) → Nat :=
+  fun B => (if B true then 50 else 0) + (if B false then 50 else 0)
+
+theorem lawBad_false : ∀ n : Nat, ∀ b : Bool,
+    RE.iterLaw [true, false] stepBad (n + 1) false (fun y => y = b) = 25 := by
+  intro n
+  induction n with
+  | zero => intro b; cases b <;> simp [RE.iterLaw, stepBad]
+  | succ n ih =>
+    intro b
+    rw [RE.iterLaw]
+    simp only [List.map, List.sum_cons, List.sum_nil]
+    rw [ih true, ih false]
+    cases b <;> simp [stepBad]
+
+theorem lawBad_true : ∀ n : Nat, ∀ b : Bool,
+    RE.iterLaw [true, false] stepBad (n + 1) true (fun y => y = b) = 75 := by
+  intro n
+  induction n with
+  | zero => intro b; cases b <;> simp [RE.iterLaw, stepBad]
+  | succ n ih =>
+    intro b
+    rw [RE.iterLaw]
+    simp only [List.map, List.sum_cons, List.sum_nil]
+    rw [ih true, ih false]
+    cases b <;> simp [stepBad]
+
+theorem stepBad_exact : ExactKernel [true, false] stepBad := by
+  intro t start B
+  simp only [List.map, List.sum_cons, List.sum_nil, Nat.add_zero]
+  cases t with
+  | zero =>
+    cases start <;> simp [RE.iterLaw, stepBad] <;>
+      by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2] <;>
+      first | decide | exact Nat.dvd_of_mod_eq_zero (by decide)
+  | succ n =>
+    cases start
+    · rw [lawBad_false, lawBad_false]; simp [stepBad]
+      by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2] <;>
+        first | decide | exact Nat.dvd_of_mod_eq_zero (by decide)
+    · rw [lawBad_true, lawBad_true]; simp [stepBad]
+      by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2] <;>
+        first | decide | exact Nat.dvd_of_mod_eq_zero (by decide)
+
+theorem bad_is_finite_chain : FiniteChainU [true, false] stepBad rhoBad := by
+  refine ⟨?_, ?_, stepBad_exact, ?_, ?_, ?_, ?_⟩
+  · intro x; cases x <;> simp
+  · simp
+  · intro x y; cases x <;> cases y <;> simp [stepBad]
+  · intro B; simp [rhoBad]
+  · simp [rhoBad]
+  · intro B; simp [stepBad, rhoBad]
+    by_cases h1 : B true <;> by_cases h2 : B false <;> simp [h1, h2]
+
+/-- Part B fails from `start = false` on the basin `{false}`: the law sits at 25
+    for every `t ≥ 1` while `ρ` gives 50. -/
+theorem general_partB_refuted :
+    ¬ (∀ (start : Bool) (basin : Bool → Prop),
+        PartB_concl [true, false] stepBad rhoBad start basin) := by
+  intro h
+  obtain ⟨T0, hT⟩ := h false (fun y => y = false) 1 (by omega)
+  have := (hT (T0 + 1) (by omega)).2
+  rw [lawBad_false] at this
+  simp [rhoBad] at this
+
+theorem psumBad : ∀ n : Nat,
+    RE4.psum (fun s => RE.iterLaw [true, false] stepBad s false (fun y => y = false)) (n + 1)
+      = 25 * n + 100 := by
+  intro n
+  induction n with
+  | zero => simp [RE4.psum, RE.iterLaw]
+  | succ n ih =>
+    show RE4.psum _ (n + 1) + _ = _
+    rw [ih]; dsimp only; rw [lawBad_false]; omega
+
+/-- Part A (Cesàro form) fails the same way: the running sum is `25t + 75`,
+    against `50t` demanded. -/
+theorem general_partA_refuted :
+    ¬ (∀ (start : Bool) (basin : Bool → Prop),
+        PartA_concl [true, false] stepBad rhoBad start basin) := by
+  intro h
+  obtain ⟨T0, hT⟩ := h false (fun y => y = false) 1 (by omega)
+  have := (hT (T0 + 4) (by omega)).1
+  have e := psumBad (T0 + 3)
+  simp only [show T0 + 3 + 1 = T0 + 4 from rfl] at e
+  rw [e] at this
+  simp [rhoBad] at this
+  omega
+
+/-- The unamended GENERAL Part A, as it stood `sorry`'d at 247a19a, is false. -/
+theorem unamended_general_partA_false :
+    ¬ (∀ (X : Type) (univ : List X) (step : X → (X → Prop) → Nat) (ρ : (X → Prop) → Nat),
+        FiniteChainU univ step ρ → ∀ start basin, PartA_concl univ step ρ start basin) :=
+  fun h => general_partA_refuted (h Bool _ _ _ bad_is_finite_chain)
+
+/-- The unamended GENERAL Part B, as it stood `sorry`'d at 247a19a, is false. -/
+theorem unamended_general_partB_false :
+    ¬ (∀ (X : Type) (univ : List X) (step : X → (X → Prop) → Nat) (ρ : (X → Prop) → Nat),
+        FiniteChainU univ step ρ → ∀ start basin, PartB_concl univ step ρ start basin) :=
+  fun h => general_partB_refuted (h Bool _ _ _ bad_is_finite_chain)
+
+end REref
+
+/-! ## 23. The amendment: the kernel is a kernel
+
+    Two fields, both logged. `stochastic` is `total` stated for every row of
+    `step`; `additive` is `measure` stated for every row. With both, `iterLaw`
+    is a genuine Markov iteration and general A and B become the standard finite
+    Doeblin statements — believed true, still `sorry`'d, and this time attacked
+    before commit.
+
+    THIS IS NOT A WEAKENING OF THE DISPLAY. The display's process is positive
+    Harris recurrent, hence a Markov process, hence one whose kernel is
+    stochastic and countably additive by definition. So these fields are not a
+    fourth narrowing alongside finite space, exactness and strict positivity:
+    they are the hypothesis the transcription dropped.
+
+    WHICH FIELD THE REFUTATION FORCES, stated precisely. The peer's witness FAILS
+    `stochastic` (`stepBad_not_stochastic`) — the compile-decidable sign the fix
+    is aimed correctly. It SATISFIES `additive` (`stepBad_additive`). So §22
+    forces `stochastic` and does not force `additive`. `additive` is justified by
+    an argument rather than a witness — without it, `stochastic` constrains
+    `step x univ` but not `Σ_y step x {y}`, so the single-point transition matrix
+    need not be stochastic — and no witness in the record forces it on its own. -/
+namespace REamend
+open Classical
+open RE RE4 REi REgen REref
+
+/-- AMENDED hypotheses of general A and B. -/
+structure FiniteChain {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) : Prop where
+  base       : FiniteChainU univ step ρ
+  stochastic : ∀ x, step x (fun _ => True) = 100
+  additive   : ∀ (x : X) (B : X → Prop),
+    step x B = (univ.map (fun y => if B y then step x (fun z => z = y) else 0)).sum
+
+/-- GENERAL PART A, amended. CONJECTURE: the finite Doeblin statement in the
+    record's Cesàro form. Its unamended predecessor is refuted in §22; its
+    two-state instance is proved (`REgen.partA_instance`); and this time it was
+    attacked before commit — the §22 witness is excluded by `stochastic`. -/
+theorem general_partA {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
+    ∀ (start : X) (basin : X → Prop), PartA_concl univ step ρ start basin := by
+  sorry -- CONJECTURE: needs a Doeblin contraction, not formalized here.
+
+/-- GENERAL PART B, amended. CONJECTURE: strict positivity on a finite
+    stochastic kernel gives mixing. Proved instance: `REgen.partB_instance`. -/
+theorem general_partB {X : Type} (univ : List X) (step : X → (X → Prop) → Nat)
+    (ρ : (X → Prop) → Nat) (_hC : FiniteChain univ step ρ) :
+    ∀ (start : X) (basin : X → Prop), PartB_concl univ step ρ start basin := by
+  sorry -- CONJECTURE: Perron–Frobenius / Doeblin, not formalized here.
+
+/-- The two-state chain satisfies the AMENDED hypotheses, so the proved
+    instances still witness the general statements' shape. -/
+theorem two_state_is_finite_chain : FiniteChain [true, false] stepTwo rhoTwo where
+  base       := two_state_is_finite_chainU
+  stochastic := by intro x; simp [stepTwo]
+  additive   := by intro x B; simp [stepTwo]
+
+/-- The peer's witness FAILS the amendment — the compile-decidable sign that the
+    fix is the right one. One row totals 50, not 100. -/
+theorem stepBad_not_stochastic : ¬ (∀ x, stepBad x (fun _ => True) = 100) := by
+  intro h; have := h false; simp [stepBad] at this
+
+theorem bad_not_amended : ¬ FiniteChain [true, false] stepBad rhoBad :=
+  fun h => stepBad_not_stochastic h.stochastic
+
+/-- …but it SATISFIES `additive`, so §22 forces `stochastic` only. -/
+theorem stepBad_additive : ∀ (x : Bool) (B : Bool → Prop),
+    stepBad x B = ([true, false].map (fun y => if B y then stepBad x (fun z => z = y) else 0)).sum := by
+  intro x B
+  cases x <;> by_cases h1 : B true <;> by_cases h2 : B false <;> simp [stepBad, h1, h2]
+
+end REamend
