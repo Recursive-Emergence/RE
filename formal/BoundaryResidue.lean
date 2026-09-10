@@ -41,7 +41,7 @@
     M.8 is the conjectures section and M.4 holds the theorems. Corrected when §10
     produced an actual theorem and the slip would have misfiled it.)
 
-  COMPILATION RECORD (branch target-ix, 2026-09-10). Lean 4.15.0
+  COMPILATION RECORD (at merge of target-ix, 2026-09-10). Lean 4.15.0
     (commit 11651562caae), bare toolchain, no Mathlib. Exit 0, zero errors.
     Warnings: exactly two, both `declaration uses 'sorry'`, at
     `REamend.general_partA` and `REamend.general_partB` — the file's only
@@ -64,7 +64,10 @@
     fourth independent run — with the §22.2 code lines diffed against the peer's
     original and found identical modulo docstrings. The commit that merges to
     main adds only this paragraph to ff5aef2; its code is the code reproduced. The target-ix branch adds §24 — the target (ix)
-    confirming instance — on top of that, and is owed a re-run.
+    confirming instance — on top of that. 7493679: reproduced — the FIFTH
+    independent run — including an independent check that the ff5aef2 →
+    02feeed diff is a single hunk before the first namespace. The commit that
+    merges target-ix adds only this sentence; its code is the code reproduced.
 
     Axiom audit, as printed:
       'RE.Layer.undecidable' does not depend on any axioms
