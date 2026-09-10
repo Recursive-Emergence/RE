@@ -95,3 +95,11 @@ A4 (to be drafted, and only after this merges) would map what is known toward "n
 ## Formal record
 
 Untouched. `formal/` and `appendix_M_formal_system.md` are unchanged since b88c18b.
+
+## Ruling and calibration (the reviewer's, recorded at acceptance)
+
+**Accepted as S2.** Two of the reviewer's priors were wrong:
+- **S1** is the reviewer's **ninth** wrong outcome prior, refuted from a statement (rows 1–3).
+- **The extension/reusability reading** is the **tenth**. It was pre-registered as a test and falsified on the Frege row.
+
+The expressiveness (self-evaluation) divide stays **post hoc**.
