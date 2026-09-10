@@ -4110,5 +4110,14 @@ end RExii
     reported and amended into this commit, whose chain now aborts on any failed
     step. A second slip inside the first: I diagnosed the wrong assertion before
     counting which line had failed — a conclusion ahead of its check, harmless
-    only because the next check caught it. -/
+    only because the next check caught it.
+
+    READOUT NOTES, at the reviewer's request. (1) The satisfying substrate is the
+    CONSTANT potential equal to the layer's value — the weakest possible way to
+    satisfy C26, and exactly what the ceiling predicted. Read `c26_sat` as
+    consistency and nothing more; the content is in the PAIR, not in either
+    witness. (2) The identification ι is the sixth thing the shared letter P was
+    hiding; the six are listed together under Problem 26. (3) The two slips above
+    are one lesson — the order-of-operations entry recorded at (xi) — now at two
+    instances, and folded into that entry rather than opened anew. -/
 
