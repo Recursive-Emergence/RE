@@ -139,3 +139,13 @@ Y2 proves nothing about P vs NP or OWF. It locates the door of LP23's holy grail
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y2a-as-known on the report.** Merge 61a684e; push on the author's standing go; then the final-page update.
+
+**Scoring.** The Allender–Hirahara citation was the reviewer's, from memory, and wrong: the **fourteenth premise miss**. GK24 is the source. **Observation O is the record's own contribution** (proved, ours, small).
+
+**Proposition H** stays a labelled conditional sketch, with its two unverified items named: SS22's error constant, and the depth of its queries.
+
+**Y3 (the adaptive question)** is named, on the author's go.
