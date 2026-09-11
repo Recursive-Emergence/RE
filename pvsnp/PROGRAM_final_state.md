@@ -92,7 +92,12 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
     - It is **proved safe from every tensor union**: the per-block factor is ≤ 0.94 at N = 2 and ≤ 0.805 for N ≥ 8, decreasing (X8).
     - It is **open only for unions with exponential row-type fragmentation**. By the **narrowing lemma** (the reviewer's; proof: the fragmentation bound m·√K·2^{1.5n} is ≤ 2^{1.75n} whenever K ≤ 2^{n/2}/m²), it holds unless some block's row-type count exceeds 2^{n/2}/poly(n).
     - **X9's restatement of the open lemma:** *the bias version of Pitassi–Shirley–Shraibman's Theorem 29 for conjunctions of m co-blocky constraints: a lower bound on m in terms of |Adv(IP2, C)| rather than |C|.* This is uniform discrepancy of IP2 against m-query Equality-oracle conjunctions.
-    - **Proved** (ours, from PSS Theorem 29 with the −1-rectangle theorem): covering either sign class of IP2 by blocky sets needs Ω(2^{n/2}) sets, so polynomially many constraints cannot make C monochromatic. The quantitative bias form is open.
+    - **Proved (corrected by X10; ours):** covering either sign class of IP2 by blocky sets needs Ω(2^{n/2}) sets (Z1), and the same holds for unions within ε ≤ 1/(8m) of an entire sign class (Z2). So polynomially many constraints cannot make C an entire sign class, or nearly one. **They *can* make C monochromatic:** disjointness, with m = n. (X9's earlier sentence "cannot make C monochromatic" is withdrawn, a joint miss.)
+    - **The live lemma is now the constant-bias lemma (X10):** a conjunction of m co-blocky constraints with |Adv(IP2, C)| ≥ c·4^n has m ≥ 2^{Ω(n)}.
+      - Z2's method fails there: once m ≳ 1/c, impure rectangles can hold all the −1 entries.
+      - The density increment cannot help: it delivers constant bias (it is proved to gain ≥ 4/3 per step for tensor families, and observed to gain for all tested families), not purity 1 − O(1/m).
+      - Second gap: the per-step gain is proved only for tensor families.
+      - X9's B(n, 2n) relative values, 0.45 (n = 6) and 0.26 (n = 8), are exploratory data on it.
     - **Methodological finding (X9):** at computable n the covering threshold 2^{(n−1)/2} lies below m, so numerics cannot test the loose Union Lemma; evidence must come from structure. The greedy B(n, m) values stay within a constant of 2^{1.75n}: 0.89, 1.04, 1.04 and 0.81 at m = n, for n = 4, 5, 6, 8. They exceed 3^n by 1.41 to 2.64. They are recorded with this design caveat.
     - No witness is known even there: block-Equality unions have K ≈ 2^n but advantage 0.
     - Lemma T′ (any f, m ≤ ½log(1/d)) and the fragmentation bound hold.
@@ -129,9 +134,11 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
-- **For (iv):** the bias version of PSS Theorem 29 for conjunctions of m co-blocky constraints: a lower bound on m in terms of |Adv(IP2, C)| (X9). Its natural route is named **X10** (not drafted, on the author's go only): **the bias-to-monochromatic bridge**, a density increment from bias A to a sub-cube of dimension n′ on which C is nearly monochromatic, where PSS applies.
-  - Kill tests: the AND family must give n′ ≲ 2·log₂n; the block-Equality family must give nothing.
-  - The reviewer's priors on record: the bridge fails at a named step 60 / nontrivial but below the threshold 25 / loose Union Lemma proved 15.
+- **For (iv):** the **constant-bias lemma**: a conjunction of m co-blocky constraints with constant relative bias against IP2 needs m ≥ 2^{Ω(n)}.
+  - Its route is named **X11** (not drafted, on the author's go only): a Lindsey-type statement for the −1 set of a *conjunction* of co-blocky constraints, i.e. that impure rectangles arranged by m constraints cannot align with H's sign pattern on a constant fraction.
+  - This is a structural statement about conjunctions, not about single rectangles, and no known tool has that shape.
+  - The kill tests are the AND and block-Equality families.
+  - X10 (the density-increment bridge) failed at its endpoint.
 
 Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such.
 
@@ -435,6 +442,28 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 >   - the block-Equality family (bias 0) must give nothing.
 > - *The reviewer's priors, on record:* the bridge fails at a named step 60 / nontrivial but below the threshold 25 / loose Union Lemma proved 15.
 
+
+### Additions from X10, extracted by script
+
+**Counts added:** the Flag Z joint miss. It is the reviewer's eleventh accepted-without-checking, and mine as the author of X9's sentence. The X8 practice applied again: the AND family was the smallest case, and the sentence was never set beside it.
+
+**X10 (ruling):**
+
+> **Accepted.** The following go in as stated:
+> - Z1 and Z2 (proved, ours);
+> - the corrected §3(iv) sentence;
+> - the per-step gain (≥ 4/3 for tensor families, with AND the slowest) and its numerics;
+> - the endpoint mismatch as the named failing step.
+>
+> **The live lemma is now the constant-bias lemma:** a conjunction of m co-blocky constraints with |Adv(IP2, C)| ≥ c·4^n has m ≥ 2^{Ω(n)}.
+> - Z2's method fails there: once m ≳ 1/c, impure rectangles can hold all the −1 entries.
+> - The increment cannot help: it delivers constant bias, not purity.
+> - The second gap is recorded: the per-step gain is proved only for tensor families.
+>
+> **X11 is named, not drafted, on the author's go only.** It needs a Lindsey-type statement for the −1 set of a *conjunction* of co-blocky constraints: that impure rectangles arranged by m constraints cannot align with H's sign pattern on a constant fraction of the matrix. The kill tests are the same two families.
+>
+> **The trail, in the reviewer's words:** "a measure that sees alternation" → the loose Union Lemma → its bias version of PSS Theorem 29 → the constant-bias lemma. Each step is a proved reduction or a refuted route.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -551,3 +580,19 @@ Nothing else.
   The table is inconclusive by design: the covering threshold is below m at these n.
 - **Proved (ours):** a monochromatic C needs 2^{Ω(n)} constraints, from PSS Theorem 29 with the −1-rectangle theorem.
 - **The stall:** X6's cross-type cancellation in the 2^m-term expansion. The missing lemma is the bias version of max-rect. X10 (the density-increment bridge) is named.
+
+**11. X10: the bias-to-monochromatic bridge** (`X10_bias_bridge_report.md`).
+- **The X9 correction:** Z1 and Z2, proved in full.
+- **Reading R1 refuted** by the AND family.
+- **The splitting identity:** Adv(C) = Σ_{branches} ±Adv(C_branch), so the best branch never lowers the relative bias. This holds for coordinate splits and for affine hyperplane pairs with u·w = 1.
+- **The gain, proved:** ≥ 4/3 per step for tensor families; AND is the slowest.
+- **The gain, measured** (n = 6, 8):
+
+| family | coordinate gain | hyperplane-pair gain |
+|---|---|---|
+| AND | 1.333 | 1.333 |
+| block-Equality complement | 2.0 | 3.0 |
+| random conjunctions | 2.3–24 | 3.3–39 |
+
+- **The named failing step, the endpoint mismatch:** the increment gives constant bias, while Z2 needs purity 1 − O(1/m). The remaining statement is the constant-bias lemma; X11 is named.
+- **The trail of the terminal object:** "a measure that sees alternation" → the loose Union Lemma → its bias version of PSS Theorem 29 → the constant-bias lemma. Each step is a proved reduction or a refuted route.
