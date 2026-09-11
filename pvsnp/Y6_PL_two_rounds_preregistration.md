@@ -66,3 +66,25 @@ Not reused here: "hidden ρ" (SS22 is public-coin); "no off-sample rows" (GS has
 - Mine: **Y6b 60 / Y6c 25 / Y6a 15.** Carrying the flags in:
   - Flag D2 points at an open problem stated in HMX, which makes Y6a unlikely.
   - Y6c is raised to 25 because the smart/loose distinction is standard, and some loose-access lowness statement may exist in the promise-problem literature that I have not read.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go.
+
+**Priors** moved to mine: Y6b 60 / Y6c 25 / Y6a 15.
+
+**§1's reformulation goes in as the page's statement of (PL):**
+
+> "(PL) is loose-access lowness of AM with respect to a promise AM ∩ coAM oracle where the prover both chooses the out-of-promise queries and supplies their answers."
+
+Grollmann–Selman's smart/loose definitions are to be **verified in the run and cited**. GGH17's smart-access condition is exactly what steering violates.
+
+**Ruling (1), if Flag D2 blocks.** The private-coin image-side upper bound needs a verifier-secret uniform sample from the post-selected set, which HMX l.300–307 state as open. Then Y6b is:
+
+> "(PL) at two rounds reduces to HMX's open problem, restricted to our setting"
+
+with the citation, and **that is the barrier arm's terminal**. State it so that a reader of HMX would recognize it.
+
+**Ruling (2), Flag S2.** Name the exact step of the GS86 conversion at which the sample becomes prover-visible, and say whether a hybrid (private coins inside round 1 only) is well defined when all randomness is the reduction's own (Theorem 14's setting). **If the hybrid is not even well defined, that is the finding**, and it is stated rather than attempted.
+
+**C2 and the smallest case (k₁ = k₂ = 1)** stand as drafted.
