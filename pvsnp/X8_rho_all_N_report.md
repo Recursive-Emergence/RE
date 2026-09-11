@@ -2,22 +2,21 @@
 
 *Run 2026-09-11 on branch `x8-rho-all-n`, on the author's go ("ya", after "X8 runs only if you give a separate go"). Against the pre-registration (1a46102) and its accepted amendment (09a4839): the reviewer's two-sided Lindsey candidate and prediction; priors undecided 70 / closes 15 / witness 15. A computation plus elementary bounds; scripts `x8_knap.py`, `x8_knap2.py`, `x8_knap3.py` and `x8_n32*.py` are in the job's scratch directory. `formal/` closed.*
 
-## 0. Outcome
+## 0. Outcome (revised during write-up; see §5)
 
-**Undecided for all N, as predicted, at the named O(√N) term. N = 32 and N = 64 are decided.**
+**The tight Union Lemma is FALSE.**
+- **The witness is at N = 2 (block size 1):** ρ(2) = (2 + E⁻(2))/2^{1.5} = 3/2.83 = **1.061 > 1**, since E⁻(2) = 1 (the single entry (1,1) of H₂).
+- **The corresponding tensor union is X4's own family of n AND-rectangles.** Adv(IP2, U) = 2^n − 3^n, and 3^n/2^{1.5n} = 1.061^n exceeds poly(m)·2^{1.5n} with m = n.
+- **Every one of X5–X8, and both sides, missed this** by starting the ρ table at N = 4 (§5).
+
+**The loose Union Lemma, the form the X4 recursion actually needs, cannot be broken by any tensor union, for any N (proved, §5).** It is the only form that matters for the threshold, and it stays open against non-tensor unions.
+
+**The computations of this run stand as stated,** and they now answer a question about the tight form only:
 - **ρ(32) ≤ 0.961 < 1, proved** by a knapsack using exact φ for small blocks.
-- **ρ(64) ≤ 1, proved** by the analytic knapsack (the bound equals the target exactly).
+- **ρ(64) ≤ 1, proved** (the analytic bound equals the target).
 - **ρ(128) ≤ 1.0027** (open).
-- **For general N**, the two-sided analytic bound exceeds the target by a lower-order term that grows like √N: **the reviewer's prediction, confirmed.**
-- **No witness** (ρ > 1) exists at any N where the question is now decided. The pre-registered search at N = 32 is moot, since ρ(32) < 1 is proved.
-- **The ρ table now reads:**
-  - N = 4: 1 (exact);
-  - N = 8: 0.928 (exact);
-  - N = 16: ≤ 0.969;
-  - N = 32: ≤ 0.961;
-  - N = 64: ≤ 1;
-  - N = 128: ≤ 1.0027 (open).
-- **Tensor unions with block size b ≤ 6 are therefore proved harmless** to the tight Union Lemma (b ≤ 5 strictly).
+- **For general N,** the two-sided analytic bound exceeds the target by O(√N), confirming the reviewer's prediction.
+- **The tight ρ table:** N = 2: **1.061**; 4: 1; 8: 0.928; 16: ≤ 0.969; 32: ≤ 0.961; 64: ≤ 1; 128: ≤ 1.0027.
 
 ## 1. The two-sided Lindsey bound (the reviewer's candidate; verified)
 
@@ -73,9 +72,34 @@
 |---|---|---|---|
 | reviewer (pre-reg → accepted) | 40 → 15 | 25 → 15 | 35 → 70 |
 | mine | 15 | 15 | 70 |
-| **outcome** | | | **undecided for all N; decided (ρ ≤ 1) for N ≤ 64** |
+| **outcome** | | **witness at N = 2 (tight form false; found in write-up)** | tight ρ ≤ 1 for 4 ≤ N ≤ 64 |
 
 No misses on pre-registered claims. The reviewer's two-sided prediction is confirmed quantitatively. The exact-small-block knapsack (not pre-registered as such; it extends X7's exact-φ method) is what decided N = 32.
+
+## 5. The finding during write-up: the tight form fails at N = 2, and the loose form is safe from tensor unions
+
+**The N = 2 witness (ours, elementary; verified numerically).**
+- H₂ = [[1, 1], [1, −1]]. The blocky set q = {(1,1)} has ⟨H₂, q⟩ = −1, so ⟨H₂, J − q⟩ = 3 > 2^{1.5}.
+- The tensor union U = complement of ⊗_{j≤n}(J − q) = ∪_j {x_j = y_j = 1} is n blocky rectangles, and Adv(IP2, U) = 2^n − 3^n.
+- Computed: |Adv|/2^{1.5n} = 1.54, 1.77, 2.01, 2.56, 3.25, 4.11 at n = 8, 10, 12, 16, 20, 24. That grows as 1.061^n, **faster than any poly(m) with m = n**.
+- **So the tight Union Lemma is false.** This is X5c/X6b retroactively, via the simplest tensor family.
+- **X4 had the numbers.** Its §4 check computed exactly this union ("2^n − 3^n ≈ 2^{1.585n}") but compared it only with the *loose* A ≈ 2^{1.75n+1}. The tight normalization entered in X5 (Flag N) and was never tested at the smallest block.
+
+**The loose form survives every tensor union (ours, proved).**
+- In loose normalization, a tensor union of blocks N = 2^b has |Adv(IP2, U)| ≤ 2^n + ∏_blocks (N + max(E⁻(N), E(N))) (from Adv(IP2, U) = 2^n − ∏⟨H_N, J − q_b⟩). The loose bound is A = 2^{1.75n+1} = 2·∏ N^{1.75}. Per-block factors:
+  - **N = 2:** exact E⁻ = 1, E = 2, so the factor is ≤ 4/2^{1.75} = 0.94 < 1.
+  - **N = 4:** exact E⁻ = 4, E = 6. |⟨H₄, J − q⟩| = |4 − ⟨H₄, q⟩| ≤ max(4 + 4, 6 − 4) = 8, so the factor is ≤ 8/4^{1.75} = 0.707.
+  - **N ≥ 8:** |⟨H_N, J − q⟩| ≤ N + N^{1.5} (Lemma T per block), and (N + N^{1.5})/N^{1.75} ≤ 0.805 < 1. The ratio decreases in N.
+- **So no tensor union, with any mix of block sizes, violates the loose Union Lemma.** ∎
+
+**What this changes.**
+- **The tight form is dead.** The ρ program (X7, X8) answered a question about a false lemma. Its numbers are correct, and they are now a description of *how* tensor unions approach the trace bound.
+- **The loose form is the live lemma.** It is safe from tensor unions and open against non-tensor unions. Lemma T′ (any f, m ≤ ½log(1/d)) and the fragmentation bound (tight, hence loose, when K ≤ poly(m)) still hold.
+- **The recursion's threshold question** (linear alternation depth via the loose UL, with re-absorption as the residual) **is unaffected in status: open.**
+
+**Miss, joint, scored on both sides.**
+- **Mine:** X4 compared this family only with the loose bound; X5 introduced the tight normalization without testing N = 2; X6 (Flag B), X7 and X8 all started at N = 4.
+- **The reviewer's:** it defined ρ and the tight-form target starting at N = 4.
 
 ## Formal record
 
