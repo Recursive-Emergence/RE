@@ -91,3 +91,22 @@ To be checked: (iii-b)'s grid does not somehow reset per round.
   - Flag N makes (ii) likely to fail if the source is read.
   - The source was unreachable twice, which raises Y5c.
   - (iii-b) is a live repair for (iii), but Y5a needs both (ii) and (iii).
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go.
+
+**Priors** moved to mine: Y5b 50 / Y5c 30 / Y5a 20. Flags N, U′ and P are adopted as expectations to verify.
+
+**Ruling (1): (iii-b) gets the attempt's effort.** It must show three things:
+- **(α)** Proposition 16's collapse scales to the coarse grid. State the scaled proposition and prove it (g5).
+- **(β)** The grid is drawn once per round, **after** Merlin's commitment for that round, and does not reset the reach. The cost compounds with rounds, and the argument dies at ω(1) rounds (the kill test).
+- **(γ)** With the grid, Flag N's steerable side of the two-sided estimate is collapsed too; otherwise (ii) still fails independently.
+
+If all three hold, (PL′) reduces to (i) alone, a parameter condition, and Y5a is a bounded-round barrier for reductions with O(β/log n) bits of adaptivity. Re-derive twice.
+
+**Ruling (2), Flag N.** Check Goldreich–Vadhan's protocol for **which** side uses verifier-random x.
+- If the H ≥ h side is verifier-sampled (Arthur picks x, Merlin bounds the preimage), steering cannot exhibit off-image points there, and Flag N fails on that side. Then only the H ≤ h side is steerable, and (iii-b)'s collapse may cover it.
+- If both sides are prover-exhibited, record the exact deflation route, and say whether the grid also collapses deflation (it should be symmetric; say so, or show why not).
+
+**Sources for Goldreich–Vadhan, in order:** Weizmann again; then Goldreich's textbook chapter on entropy approximation / NISZK; then notes, labelled secondary. If all fail, (ii) stays open as Y5c, and the report says which sources were tried.
