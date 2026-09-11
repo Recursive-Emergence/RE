@@ -82,14 +82,18 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - Sign-rank and discrepancy fail on Chattopadhyay–Mande's Equality list F_n.
   - Rectangle arguments fail because Equality violates the staircase lemma (CMMS Lemma 16).
   - What survives stops at linear length.
-- **The Union Lemma (X4–X7), which would push the known regime from o(n/log n) to ≈ 0.36n alternations,** with re-absorption as the residual beyond that. Its status in three forms:
-  - **Tight, for IP2** (|Adv(IP2, ∪_{j≤m} q_j)| ≤ poly(m)·2^{1.5n} for blocky q_j):
-    - *holds* for m ≤ n/4 (Lemma T);
-    - *holds* whenever the row-type fragmentation K ≤ poly(m) (X6);
-    - *harmless* tensor families for block size ≤ 4, since ρ(N) ≤ 1 for N ≤ 16 is proved, and saturated exactly at block size 2 (X7);
-    - *open* for non-tensor unions and for tensor blocks of ≥ 5 bits. The first open case is ρ(32) ∈ [0.845, 1.061].
-  - **Loose, any f:** holds for m ≤ ½·log₂(1/d) − O(1) (Lemma T′).
-  - **The alternation-threshold consequence:** still Θ(n/log n). All the gains are constant factors (Lemma S; batching).
+- **The Union Lemma (X4–X8).** It would push the known regime from o(n/log n) to ≈ 0.36n alternations, with re-absorption as the residual beyond that. Its status:
+  - **Tight, for IP2 (poly(m)·2^{1.5n}): FALSE.** Witness: the n AND-rectangles, with Adv = 2^n − 3^n, a ratio of 1.061^n (X8). The ρ table is kept as the record of the tight form's per-block factor, with N = 2 first:
+    - ρ(2) = 1.061;
+    - ρ(4) = 1 and ρ(8) = 0.928 (exact);
+    - ρ(16) ≤ 0.969, ρ(32) ≤ 0.961 and ρ(64) ≤ 1 (proved);
+    - ρ(128) ≤ 1.0027 (open).
+  - **Loose (poly(m)·2^{2n}√d, i.e. poly(m)·2^{1.75n} for IP2): the live lemma.**
+    - It is **proved safe from every tensor union**: the per-block factor is ≤ 0.94 at N = 2 and ≤ 0.805 for N ≥ 8, decreasing (X8).
+    - It is **open only for unions with exponential row-type fragmentation**. By the **narrowing lemma** (the reviewer's; proof: the fragmentation bound m·√K·2^{1.5n} is ≤ 2^{1.75n} whenever K ≤ 2^{n/2}/m²), it holds unless some block's row-type count exceeds 2^{n/2}/poly(n).
+    - No witness is known even there: block-Equality unions have K ≈ 2^n but advantage 0.
+    - Lemma T′ (any f, m ≤ ½log(1/d)) and the fragmentation bound hold.
+  - **The threshold consequence is unchanged:** linear alternation depth via the loose Union Lemma, with a re-absorption residual. Open. All gains so far are constant factors.
   - **What a proof must do (X6):** sum across row types before bounding. The operator-norm route is closed (X5, by the reviewer's counterexample), and every termwise bound is blind to cross-type cancellation.
 
 ## 4. The observation (a reading, not a theorem)
@@ -122,7 +126,7 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
-- **For (iv):** a blocky-matrix measure whose loss across alternations is additive rather than multiplicative (X3), i.e. the Union Lemma (X4), proved by summing across row types before bounding (X6). Within it, the one finite question is **ρ(N) < 1 for all N ≥ 8, or a witness N with ρ(N) > 1** (X7). That question is named as X8, for after the pause, on the author's go.
+- **For (iv):** a loose Union Lemma for unions of blocky matrices with per-block row-type count K > 2^{n/2}/poly(n) (exponential fragmentation), or a witness among them. It must defeat cross-type cancellation deliberately, since fragmentation alone does not (the block-Equality family). This is named **X9**, not drafted, on the author's go only.
 
 Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such.
 
@@ -364,6 +368,49 @@ The verbatim records follow, extracted by script from the phase documents. The s
 > - X8 (an analytic knapsack aimed at ρ(N) < 1 for all N ≥ 8, or a ρ(32) > 1 witness) is named for after the pause, on the author's go only.
 > - The reviewer's X8 priors, on record: bound closes for all N 40 / ρ(32) > 1 witness 25 / undecided 35.
 
+
+### Additions from X8, extracted by script
+
+**The practice it teaches** (the reviewer's wording): *every table starts at the smallest case, and "compared against which bound" is written next to every number.* X4 had 2^{1.585n} and never put it beside 2^{1.5n}.
+
+**Counts added:** a joint miss, scored on both sides (the tight form's N = 2 witness). The reviewer's two-sided prediction is confirmed by computation.
+
+**X8 (§5 and ruling):**
+
+> **The N = 2 witness (ours, elementary; verified numerically).**
+> - H₂ = [[1, 1], [1, −1]]. The blocky set q = {(1,1)} has ⟨H₂, q⟩ = −1, so ⟨H₂, J − q⟩ = 3 > 2^{1.5}.
+> - The tensor union U = complement of ⊗_{j≤n}(J − q) = ∪_j {x_j = y_j = 1} is n blocky rectangles, and Adv(IP2, U) = 2^n − 3^n.
+> - Computed: |Adv|/2^{1.5n} = 1.54, 1.77, 2.01, 2.56, 3.25, 4.11 at n = 8, 10, 12, 16, 20, 24. That grows as 1.061^n, **faster than any poly(m) with m = n**.
+> - **So the tight Union Lemma is false.** This is X5c/X6b retroactively, via the simplest tensor family.
+> - **X4 had the numbers.** Its §4 check computed exactly this union ("2^n − 3^n ≈ 2^{1.585n}") but compared it only with the *loose* A ≈ 2^{1.75n+1}. The tight normalization entered in X5 (Flag N) and was never tested at the smallest block.
+>
+> **The loose form survives every tensor union (ours, proved).**
+> - In loose normalization, a tensor union of blocks N = 2^b has |Adv(IP2, U)| ≤ 2^n + ∏_blocks (N + max(E⁻(N), E(N))) (from Adv(IP2, U) = 2^n − ∏⟨H_N, J − q_b⟩). The loose bound is A = 2^{1.75n+1} = 2·∏ N^{1.75}. Per-block factors:
+>   - **N = 2:** exact E⁻ = 1, E = 2, so the factor is ≤ 4/2^{1.75} = 0.94 < 1.
+>   - **N = 4:** exact E⁻ = 4, E = 6. |⟨H₄, J − q⟩| = |4 − ⟨H₄, q⟩| ≤ max(4 + 4, 6 − 4) = 8, so the factor is ≤ 8/4^{1.75} = 0.707.
+>   - **N ≥ 8:** |⟨H_N, J − q⟩| ≤ N + N^{1.5} (Lemma T per block), and (N + N^{1.5})/N^{1.75} ≤ 0.805 < 1. The ratio decreases in N.
+> - **So no tensor union, with any mix of block sizes, violates the loose Union Lemma.** ∎
+>
+> **What this changes.**
+> - **The tight form is dead.** The ρ program (X7, X8) answered a question about a false lemma. Its numbers are correct, and they are now a description of *how* tensor unions approach the trace bound.
+> - **The loose form is the live lemma.** It is safe from tensor unions and open against non-tensor unions. Lemma T′ (any f, m ≤ ½log(1/d)) and the fragmentation bound (tight, hence loose, when K ≤ poly(m)) still hold.
+> - **The recursion's threshold question** (linear alternation depth via the loose UL, with re-absorption as the residual) **is unaffected in status: open.**
+>
+> **Miss, joint, scored on both sides.**
+> - **Mine:** X4 compared this family only with the loose bound; X5 introduced the tight normalization without testing N = 2; X6 (Flag B), X7 and X8 all started at N = 4.
+> - **The reviewer's:** it defined ρ and the tight-form target starting at N = 4.
+
+> **Accepted.**
+> - The N = 2 witness stands. The joint miss is scored on both sides.
+> - The two-sided Lindsey prediction goes in as the reviewer's, verified by computation.
+> - **The practice it teaches** (for the pattern bullet): *every table starts at the smallest case, and "compared against which bound" is written next to every number.* X4 had 2^{1.585n} and never put it beside 2^{1.5n}.
+>
+> **The narrowing lemma (the reviewer's statement; the one-line proof checked here).** By the fragmentation bound, Adv(IP2, U) ≤ m·√K·2^{1.5n}. If K ≤ 2^{n/2}/m², this is ≤ 2^{1.75n} ≤ the loose bound.
+> - **So the loose Union Lemma is open only for unions whose per-block row-type count exceeds 2^{n/2}/poly(n): exponential fragmentation.**
+> - On the record's families, no witness is known even there. Block-Equality unions have K ≈ 2^n but advantage 0; random slice unions have small K.
+>
+> **X9 is named, not drafted:** unions with exponential fragmentation and non-cancelling advantage. Either construct one, which must defeat cross-type cancellation deliberately, or show that the type identity forces cancellation when K is exponential.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -456,3 +503,10 @@ Nothing else.
 | 32 | ≥ 121 | [0.845, 1.061] | search; analytic knapsack (open) |
 
   - Also proved (ours, elementary): the maximum all-(−1) rectangle of Sylvester H_N has area N/2.
+
+**9. X8: the tight form fails, and the loose form is safe from tensor unions** (`X8_rho_all_N_report.md`).
+- **The reviewer's two-sided Lindsey bound,** verified. Its excess over N^{1.5} − N is O(√N): +3.0, +8.0, +7.8 at N = 32, 64, 128.
+- **With parity and the "not all −1" cap:** ρ(64) ≤ 1.
+- **With exact φ for block sides ≤ 6:** ρ(32) ≤ 0.961.
+- **Found during write-up: ρ(2) = 1.061.** The n AND-rectangles (X4's own family) falsify the tight Union Lemma.
+- **The loose form is proved safe from all tensor unions.** By the narrowing lemma it is open only under exponential row-type fragmentation, which is X9 (named).
