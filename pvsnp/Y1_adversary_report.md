@@ -132,3 +132,15 @@ Y1′ proves nothing about P vs NP or OWF. It locates the gap between existing N
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y1′c on the report.** Merge b10f520; push on the author's standing go; then the final-page update.
+
+**Scoring.** A joint wrong premise (the YES side): the reviewer's thirteenth. My Flag D pointed at the NO side for deterministic reductions, and neither prior followed it. This is recorded as **the practice failing in a new way: a flag's implication was not carried into the prior.**
+
+**The finding, for the page's §3 and Y2's §0.** LP22's outputs are deep by design. Its hardness is "a t-time program must know the random location", and a hidden location is precisely K^t − K. So the mechanism by which the known reductions achieve NP-hardness (planted hidden structure) is the mechanism the low-depth promise Q^t_β excludes.
+- If that is general, it is a barrier for the holy grail via planted-structure reductions, and proving it would be a real theorem.
+- If it is not general, the escape is a reduction whose hardness does not come from hiding.
+
+**Y2 ("hiding is depth: barrier or construction")** is named, for the author's go, as a pre-registration for ruling.

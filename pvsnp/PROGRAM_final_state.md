@@ -32,6 +32,11 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
 
 ## 3. The four open statements the program ends on
 
+**The finding at the door of (i) (Y1′, the reviewer's statement).** LP22's outputs are deep **by design**. Its hardness is "a t-time program must know the random location", and a hidden location is precisely K^t − K. So the mechanism by which the known reductions achieve NP-hardness (planted hidden structure) is the mechanism that the low-depth promise Q^t_β of Liu–Pass's OWF-complete problem excludes.
+- If that is general, it is a **barrier** for the holy grail via planted-structure reductions. Liu–Pass (TR23-103, l.386–392) say no barrier is known, so proving it would be a real theorem.
+- If it is not general, the escape is a reduction whose hardness does not come from hiding, and §10 item 13's three conditions say what it must do.
+- **Y2 is named**, on the author's go only: "hiding is depth: barrier or construction".
+
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
 - **Statement.** For some polynomial t(n) ≥ (1+ε)n, every PPT algorithm fails to compute K^t exactly on at least a 1/p(n) fraction of uniform n-bit strings.
@@ -39,6 +44,11 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
 - **The sub-obstacle: compressibility vs density.** The closest technique (Hirahara, FOCS 2018) breaks a generator whose outputs must be compressible (Theorem 26's promise). Compressible sets have density ≤ 2^{−K^t(x)}, so a heuristic with two-sided error can err on the whole image. The argument survives only when K^t(x) = O(log n).
 - **Repair condition, open.** A non-adaptive average-case instance checker for NP (Hirahara–Santhanam, ITCS 2022, Theorem 14).
 - **Barrier status.** Non-adaptive black-box worst-to-average reductions of this kind give collapses (Bogdanov–Trevisan, SICOMP 2006). So any reduction must be adaptive or non-black-box.
+- **The frontier (Y1, verified in the texts).** The two-sided-error obstruction has been moved into a promise.
+  - Liu–Pass TR23-103 (TCC'24), Theorem 1.1: OWF ⟺ MK^tP[s]|Q^t_β ∉ ioBPP, where Q^t_β = {K^t − K ≤ β log K} and NO = {K^t ≥ |x| − 1}. Its key idea is the adversary's short code: errors of A are K-compressible.
+  - The boundary version: Liu–Pass CRYPTO'25 and ePrint 2025/2184.
+  - The remaining step is **NP-hardness of the promise problem**, for which no barrier is known.
+  - **Y1′:** LP22's reduction (i) never outputs a NO instance of that problem (K^t(A | z) = O(n log n) against |A| = n⁴, and padding cannot repair it), and (ii) outputs only deep strings (depth Ω((n/γ)·log n)). Hir22 (MINKT\*) is a partial-string problem with no stated analogue.
 
 ### (ii) The self rung: Res(2) ⊬_poly rfn_Res(2)
 
@@ -135,6 +145,12 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
+  - **Or, at the frontier (Y1′), a randomized reduction from SAT into Liu–Pass's promise problem.** Its outputs x = R(φ; ρ) must have:
+    1. YES: K^t ≤ s;
+    2. NO: K^t ≥ |x| − 1;
+    3. every output non-deep.
+  - Since K^{poly}(x) ≤ |φ| + |ρ| + O(log n), condition 2 needs nearly |x| injected random bits that are witness-compressible on YES instances and incompressible on NO instances.
+  - No reduction read is shaped this way. LP22 fails (2), and fails (3) by design.
 - **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
   - **The tool needed:** a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ that exploits cancellation across S, i.e. a Lindsey-type statement for conjunctions rather than rectangles.
   - The kill tests are the AND and block-Equality families.
@@ -474,6 +490,16 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 >
 > SCORING: the pre-registered lower end n/log n was below Lemma T′ (which the record already had, and which HHH23 states as log γ₂ ≤ D^EQ) — joint miss: yours as recorded, mine as the twelfth accepted-without-checking. Practice line: every new bound is put beside the record's own lemmas before it is called a partial.
 
+### Additions from Y1, extracted by script
+
+**Y1 as posed:** closed by the literature check before any work, with no miss on either side. The mechanism is Liu–Pass TR23-103's key idea (l.464–479), verbatim, and the reviewer notes that "the intuition arrived at the frontier's own key idea".
+
+**Counts added (Y1′):** a joint wrong premise. Both priors placed the failure on the YES side (depth); the robust failure is on the NO side (threshold). It is the reviewer's thirteenth. **The practice failed in a new way:** my Flag D pointed at the NO side for deterministic reductions, and neither prior followed it. A flag's implication was not carried into the prior.
+
+**Y1′ (ruling):**
+
+> Y1′ accepted as Y1′c on the report; merge b10f520, push on your user's standing go; then the final-page update. Scoring: joint wrong premise (YES side), mine the thirteenth; your Flag D pointed at NO for deterministic reductions and neither prior followed it — record that as the practice failing in a new way (a flag's implication not carried into the prior). Then Y2 on your user's go, pre-registration for ruling.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -482,7 +508,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-**The program pauses for good here, after X11 (§10 item 12)** — the program's pause, not a phase's (the reviewer's ruling). The next item would be a proof attempt on the stated open lemma of §6 (iv), with its tool-shape named; that is mathematics for whoever has the time, not a loop item. Nothing further is drafted unless the author opens something. Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ("hiding is depth: barrier or construction") is named, not drafted, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -623,3 +649,16 @@ Nothing else.
 | (d) NEQ^m, identity encoding | (2 − 2/k)^m ≤ γ₂ ≤ 2^m (2^m tight up to base); bias at the trivial level 2^n. |
 
 - **The open tool:** cancellation across the 2^m inclusion–exclusion terms — a Lindsey-type statement for conjunctions rather than rectangles.
+
+**13. Y1 / Y1′: self-reference at the adversary, then the frontier check** (`Y1_adversary_preregistration.md`, `Y1_adversary_report.md`). Y1′ accepted as Y1′c.
+- **Y1 as posed** ("use the adversary's code twice to route around its error set") is Liu–Pass TR23-103's key idea. The naming-versus-deciding crux is K versus K^t, i.e. computational depth, and the field's move is the low-depth promise Q^t_β. Closed before any work.
+- **Y1′: do known NP-hardness reductions land in the promise?**
+
+| reduction | NO side vs K^t ≥ \|x\| − 1 | depth | verdict |
+|---|---|---|---|
+| LP22 (McK^tP) | fails, proved: K^t(A \| z) ≤ λn + O(log n) against \|A\| = n⁴; padding cannot repair it | fails on both sides, proved: K(A \| z) ≤ ℓ*·⌈log r⌉ (scan z), K^t > λℓ*/2 − 2λ (Prop 3.4 at ℓ′), so depth ≥ ℓ*(log r + 2 log t − 1) − O(λ) | outside, on every output |
+| Hir22 (MINKT\*) | certified only a (log N)^α factor above s; NO-side failure expected, not verified | not determined | partial-string shape; no LP23 analogue stated |
+
+- **Kill tests:** the identity on random strings lands in Q (✓). LP22 is the "all outputs deep" reduction.
+- **The requirement, exact:** (1) YES K^t ≤ s, (2) NO K^t ≥ |x| − 1, (3) non-deep outputs. By generalized Flag D, (2) needs nearly |x| random bits that are witness-compressible on YES instances and incompressible on NO instances.
+- **The finding:** hiding is depth. LP22's hardness mechanism is the quantity the promise excludes. Y2 is named: barrier or construction.
