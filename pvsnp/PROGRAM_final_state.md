@@ -13,6 +13,12 @@ The author's question was whether reverse engineering (RE) plus Gödel gives a p
 
 The R-program shrank. The M-program located at the metamathematical layer. The A-program attempted at the bottom rung and then mapped the endpoint.
 
+**Amendment (N1): the intuition was mis-mapped, then corrected.** The program treated "folding" as **composition**: OWF chains, and R3's "fold". The author's intuition is **nesting**: problems fold into problems, a statement about a statement, one quantifier or one layer of depth per fold. Composition does not accumulate alternation; nesting does. The reviewer records this as its **ninth premise miss**. `N1_fold_accumulation_report.md` maps the corrected reading. Its outcome was N1a and N1c together:
+- **Accumulation is a theorem where the evaluator is unbounded.** Tarski, and the strict arithmetical hierarchy.
+- **Circuit depth, proved.** The AC⁰ depth hierarchy (Håstad; average case, Rossman–Servedio–Tan). The majority depth 2 → 3 fold holds on the inner product IP2.
+- **The bridge to PH is oracle-only.** It reaches the polynomial hierarchy only through oracle constructions: PH is infinite relative to some oracle, and relative to a random one (RST). Book's theorem transfers only *collapse* down from random oracles. So "folds accumulate" is proved in the black-box world, and its unrelativized form is PH strictness itself.
+- **The smallest open fold** is *IP2 has no polynomial-size LTF∘LTF circuits* (Kane–Williams, open question 2), which is at once a size lower bound and a depth separation.
+
 ## 2. What we proved
 
 Proved in these documents, with proofs in the reports (g5). None is about P vs NP.
