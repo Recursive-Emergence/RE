@@ -32,6 +32,9 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
 
 ## 3. The four open statements the program ends on
 
+**PATH (the convention: current item → steps ahead → P vs NP, each arrow labelled by what it needs).**
+`(i) worst-case hardness of MK^tP[s]|Q^t_β` →[LP23 Thm 1.1, **theorem**]→ `OWF` →[**theorem**, Arora–Barak Ex. 10.1]→ `P ≠ NP`; the program's live question is the reverse arrow `NP ⊄ BPP ⇒ MK^tP|Q ∉ ioBPP` (**the holy grail, open**), whose explicit-reduction routes are barred (GK24/SS22 via Observation O) and whose adaptive route ends on HMX's open problem (Y6). **The weakest arrow is the last one that remains after all of this: `NP ⊄ BPP` itself is open, and nothing on this branch addresses it** — so even total success here is conditional.
+
 **The finding at the door of (i) (Y1′, the reviewer's statement).** LP22's outputs are deep **by design**. Its hardness is "a t-time program must know the random location", and a hidden location is precisely K^t − K. So the mechanism by which the known reductions achieve NP-hardness (planted hidden structure) is the mechanism that the low-depth promise Q^t_β of Liu–Pass's OWF-complete problem excludes.
 - If that is general, it is a **barrier** for the holy grail via planted-structure reductions. Liu–Pass (TR23-103, l.386–392) say no barrier is known, so proving it would be a real theorem.
 - If it is not general, the escape is a reduction whose hardness does not come from hiding, and §10 item 13's three conditions say what it must do.
