@@ -83,3 +83,11 @@ These agree with the reviewer's independent enumeration (E(8) = 16, E⁻(8) = 13
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X7b, restricted to N ≤ 16.**
+- The knapsack relaxation is recorded as the method that closed N = 16. The MILP timeout is recorded as a method miss, not a result.
+- The −1-rectangle theorem (area ≤ N/2) goes in as proved: ours, elementary.
+- X8 (an analytic knapsack aimed at ρ(N) < 1 for all N ≥ 8, or a ρ(32) > 1 witness) is named for after the pause, on the author's go only.
+- The reviewer's X8 priors, on record: bound closes for all N 40 / ρ(32) > 1 witness 25 / undecided 35.
