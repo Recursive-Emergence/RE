@@ -113,3 +113,15 @@ No misses on either side in this round's pre-registered claims. Flags G, T, W an
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling, and the closure of the stall route (recorded at acceptance)
+
+**Accepted as X5b.** Lemmas S, T and T′ and the batching arithmetic go in as stated.
+
+**The Hadamard masking lemma is false: the reviewer's finding, verified here by hand and numerically.**
+- **The family.** Take m = n/2 Equality queries on disjoint 2-bit blocks, q_l = [x_l = y_l]. Then ∏_l (J − q_l) = ⊗(J₄ − I₄), and H = ⊗H₄ (Sylvester; checked equal to IP2's matrix at n = 4, 8, 10). So H ∘ ∏(J − q_l) = ⊗(H₄ − D₄), with D₄ = diag((−1)^{|x|}) = diag(1, −1, −1, 1).
+- **The norm.** M = H₄ − D₄ has zero diagonal, and M² = [[3,0,0,−2],[0,3,2,0],[0,2,3,0],[−2,0,0,3]], with eigenvalues of M equal to ±√5 and ±1. So ‖H∘∏(J − q_l)‖_op = 5^{n/4} = 2^{n/2}·(5/4)^{n/4}. Computed: 5, 25 and 55.90 at n = 4, 8 and 10, against 2^{n/2} = 4, 16 and 32.
+- **The Union Lemma holds on the same family:** Adv(IP2, U) = 2^n − ∏⟨H₄, J₄ − I₄⟩ = 2^n − 4^{n/2} = 0 (computed 0.0 at n = 4, 8, 10).
+- **So HML ⇒ UL, HML is false, and UL holds here.** The masked-norm route **cannot** prove the Union Lemma. The advantage is governed by cancellation across the disjointified terms, which a per-term operator bound discards. **The §4 stall is therefore a closed route, not an open lemma.** This is the reviewer's positive finding, verified under the suspicion protocol.
+- **My miss:** §4's sentence "The two statements stand or fall together" asserted an equivalence. Only HML ⇒ UL was shown, and the converse fails, as this family demonstrates. §5's random search also did not find this *structured* family.
+- The Union Lemma itself stays **open**. X6, the direct Fourier route, is where it goes next.
