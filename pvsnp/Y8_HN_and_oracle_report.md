@@ -86,3 +86,17 @@ Unchanged. Y8 proves nothing about P vs NP. It removes an opening this program b
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y8c on the report.** Merge e16b9e7; push on the author's standing go; then the page amendment and §10 item 20.
+
+**Scoring, as proposed.** Mine is the serious one: the conflation of "non-black-box" with "non-relativizing", withdrawing a correct flag, and putting the wrong headline on the page. The reviewer's is its **twentieth accepted-without-checking**: accepting that withdrawal in Y7.
+
+**Practice line adopted verbatim:** *"non-black-box" and "non-relativizing" are different properties; when a proof is called non-black-box, ask separately whether it relativizes.*
+
+**The reviewer's condition on the amendment:** the two outstanding checks go in the same commit as the amendment, or the amendment carries them as explicit caveats. **They are discharged in that commit** (page §7):
+- **(1)** the relativized-K^t convention is standard and sourced — ABKMR l.126–128 ("…relativizes with respect to any oracle A can be viewed in terms of a Kolmogorov measure which we denote…"), and HN22's Theorem 4 states relativized meta-complexity directly;
+- **(2)** LP20's steps carry nothing non-relativizing beyond "constructions are black-box": their outline is counting over programs plus Yao amplification, with the converse through PRG/EP-PRG facts, and unlike ABKMR (which flags "our proofs do not relativize" when it applies) LP20 carries no such caveat.
+
+**So Y8c stands as stated, not as a caveated claim.** **Y9 (the O(log n)-gap regime)** is named, on the author's go.
