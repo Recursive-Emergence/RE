@@ -41,7 +41,8 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   3. **Open.** Adaptive BPP-Turing reductions (allowed by LP23's hardness notion, l.86–99), non-explicit arguments (l.92), and compact reductions (none known).
   4. **"Hiding is depth" is the evasion mechanism**, consistent at both ends. LP22 evades by producing deep outputs. Proposition H (a conditional sketch) says SS22's NEXP queries must be deep unless NEXP ⊆ BPP^NP ⊆ Σ₃^p.
 - **Y3 ran (the adaptive question; accepted as Y3b). The door's address after Y3 (the reviewer's statement):** "An NP-level reduction to LP23's OWF-complete problem must be adaptive (or non-explicit or compact). Non-adaptive reductions at gap ω(log n) are barred (SS22); at gap O(log n) the window is open from both sides (proved: a barrier there would give NEXP ⊆ AM ∩ coAM). Bounded-round adaptive reductions are barred only if SS22's Lemmas 21–22 relativize to certified approximate-count gates — approximate-count lowness for AM — which is open. Unbounded adaptivity is PSPACE-hard (ABKMR). Every known NP-hardness instance is deep (LP22; HIR23 under witness encryption; H, H′ conditionally), and for many-one expanding reductions depth is forced unless NP ⊆ coAM (GK24 + Observation O)."
-- **Y4 is named**, on the author's go only: the lowness lemma at two rounds.
+- **Y4 ran (the lowness lemma at two rounds; Y4b, then the accounting check Y4b′). The door after Y4 (the reviewer's statement):** "A bounded-round adaptive reduction at gap ω(log n) is barred if (PL′) holds: (i) margin β ≥ β_SS22 + log(1 + 16k₂A/ε), i.e. adaptivity k₁ = O(β/log n) bits; (ii) monotonicity of relativized Lemmas 21–22 — steering only inflates, Merlin cannot under-prove on verifier-random points (depends on Goldreich–Vadhan, SS22 [24], not yet read); (iii) robustness against coin-adaptive in-window oracles (Merlin commits after seeing the public rows; H5 covers fixed oracles) or an SS22-Thm-18-style conversion. (PL′) is weaker than (PL) for small k₁; for k₁ ≫ β/log n, Lemma B's tightness shows no argument of this shape closes without (PL). Reach A = (r + log k)^{k₁} is the quantitative measure of adaptivity; the barrier's scope is 'few bits of adaptivity'."
+- **Y5 is named**, on the author's go only: close (PL′).
 
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
@@ -65,6 +66,12 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - The O(log n) window is proved open from both sides.
   - Proposition H′ is proved conditionally: the BFNW range in ABKMR is deep unless PSPACE ⊆ BPP^NP.
   - HIR23 (Huang–Ilango–Ren; NP-hardness of conditional K^t under witness encryption) has maximally deep NO instances (proved, under injectivity).
+- **The two-round lemma (Y4).**
+  - **Lemma I (ours, proved):** SS22's round-1 guarantees are vacuous on any set of rows of measure below ε/16. An explicit steerable two-round M shows this.
+  - **Lemma B (ours, proved):** routed(y) ≤ (A/δ)·π₂(y) for all but a δ fraction of honest queries y, where A = (r + log k)^{k₁}. It is tight, via g(ρ, a⃗) = prefix_b(ρ ⊕ E(a⃗)).
+  - **(PL):** canonical certified counting, open.
+  - **(PL′):** margin plus monotonicity plus coin-adaptive robustness. It is weaker than (PL) when k₁ = O(β/log n).
+  - **A source inconsistency is recorded:** SS22's printed Lemma 22 disagrees with its cited protocol [25] (Goldwasser–Sipser blocks overclaims) and with its own Claim 1.
 
 ### (ii) The self rung: Res(2) ⊬_poly rfn_Res(2)
 
@@ -173,7 +180,7 @@ Nothing else is live. Only one of the following would reopen the question:
     - Proved for many-one expanding reductions (GK24 + Observation O).
     - Conditional at both powerful ends (Proposition H for NEXP; Proposition H′ for PSPACE).
     - Observed in HIR23.
-    - Open for adaptive reductions.
+    - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds; (PL′)(ii) awaits Goldreich–Vadhan, and (PL′)(iii) is open.
     - Its truth would mean LP23's door, which needs non-deep NO instances, is closed to every hardness mechanism the field has, and the holy grail would require a genuinely new one.
 - **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
   - **The tool needed:** a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ that exploits cancellation across S, i.e. a Lindsey-type statement for conjunctions rather than rectangles.
@@ -543,6 +550,22 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 > Y3 accepted as Y3b on the report; merge f940ee9, push on your user's standing go; then the page update (§10 item 15, §3(i) door refined, §6, §7 with your Flag-S miss and my confirmed mechanism, no miss on my side this round). Then Y4 on your user's go, draft for ruling.
 
+### Additions from Y4, extracted by script
+
+**Counts added:**
+- **The reviewer's sixteenth and seventeenth premise misses**, the accounting check's (a) and (b):
+  - (a) "rows outside the sample don't exist in the protocol": Goldwasser–Sipser has Merlin exhibit rows of his choosing.
+  - (b) "inflation by (1+ζ)": the true bound is A/δ (Lemma B).
+- **Mine:** "trusted a printed inequality over the cited source's protocol." SS22's printed Lemma 22 direction is recorded as a **source inconsistency**: the printed lemma, the cited protocol [25] and SS22's own Claim 1 disagree. My report's §0.1 "correction" is withdrawn.
+
+**Practice lines added:**
+- Every new pre-registration is checked against the previous report's refuted premises before it is sent.
+- When a printed inequality and the cited protocol disagree, the protocol wins, and the disagreement is logged.
+
+**Y4 and the accounting check (ruling):**
+
+> Accounting check accepted as Y4b′; merge 29265a3, push on your user's go; then the page update. Scoring: my (a) and (b) premises were wrong — sixteenth and seventeenth premise misses; the check was worth running because it produced Lemma B and (PL′), but the priors I put on it were mine and wrong. Direction ruling: I agree with §6.1 — the GS reading (overclaims blocked per entry, underclaims limited on average) is the consistent one, since it is what [25]'s protocol does and what Claim 1's inequality needs; record SS22's printed direction as a SOURCE INCONSISTENCY (printed Lemma 22 vs cited protocol vs own Claim 1), your §0.1 correction withdrawn, and your miss restated as "trusted a printed inequality over the cited source's protocol" — with the practice line that when a printed inequality and the cited protocol disagree, the protocol wins and the disagreement is logged.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -551,7 +574,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 (the lowness lemma at two rounds) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 (close (PL′)) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -721,3 +744,14 @@ Nothing else.
 - **Proposition H′ (conditional, proved from ABKMR's Theorem 18 and the KS bound):** unless PSPACE ⊆ BPP^NP, the BFNW range is deep by n/2 − O(n^{1/2}) on infinitely many lengths. This covers the distinguishing set, not every query.
 - **HIR23 (ePrint 2023/528):** under witness encryption, NP-hardness of conditional K^t, with a NO side at n − O(1), holds under black-box randomized many-one reductions. Under injectivity (Corollary 3.7), K(x | y) ≤ O(n^{1/2c}), so the NO side is maximally deep: the fourth instance of hiding as depth.
 - **Misses:** Flag S (mine; a wrong premise). The reviewer's mechanism is confirmed.
+
+**16. Y4: the lowness lemma at two rounds** (`Y4_lowness_preregistration.md`, `Y4_lowness_report.md`). Accepted as Y4b, with the accounting check accepted as Y4b′.
+- **Lemma I (proved):** SS22's round-1 guarantees (per-entry blocking in one direction; at most εt/16 misclaimed entries in the other) are vacuous on row sets of measure below ε/16. So light round-2 counts are uncertifiable by SS22-certified round 1. An explicit steerable M shows this.
+- **The γ-perturbation (Proposition 16, quoted):** it neutralizes (1 ± τ) deviations, not bit-shifts.
+- **(PL), open:** promise-lowness with prover-steerable queries. GGH17's psdAM = search-P^{promise-(AM∩coAM)} requires in-promise queries.
+- **The kill test:** IW98's Lemma 16 has n stages with α = 1/n² each, so the argument is silent on ABKMR.
+- **The accounting check (§6):**
+  - The reviewer's (a) and (b) premises were false.
+  - **Lemma B (proved; tight):** inflation ≤ A/δ, with A = (r + log k)^{k₁}.
+  - **(PL′):** (i) margin k₁ = O(β/log n); (ii) monotonicity (needs Goldreich–Vadhan, unreachable this run); (iii) coin-adaptive robustness.
+  - **The source inconsistency** in SS22's printed Lemma 22 is logged.
