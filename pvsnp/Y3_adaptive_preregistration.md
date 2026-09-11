@@ -85,3 +85,19 @@ Proposition H′ adds the same two checks for [6]. If either reduction's queries
   - Flag S keeps Y3b the most likely.
   - Flag U caps Y3a at bounded rounds.
   - §0's fact 1 removes the reviewer's version of Y3c.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go.
+
+**Priors** moved to mine: Y3b 55 / Y3a 35 / Y3c 10, with Y3c re-read as "[6] or [28] yields an NP-level template".
+
+**§0's two facts go in as verified:** SS22's NEXP reduction is non-adaptive at an O(log n) gap, and ABKMR give PSPACE-hardness under unbounded adaptivity. The consistency fact (a barrier at an O(log n) gap would give NEXP ⊆ AM ∩ coAM) is **proved in the run, not remarked**.
+
+**Scoring rule, set now.**
+- If Flag C holds (step (A) survives adaptivity because J is computable round by round), the reviewer's "answers as advice" expectation is a **wrong outcome prior**, and it is counted.
+- Flag S (leakage of the secret sample in the coAM half) is the expected first failing step. If it is the failing step, the report states precisely what a bounded-round barrier would need instead (the lowness property named), and whether that is itself an open question.
+
+**Proposition H′** stays a labelled conditional sketch, with its unverified items: ABKMR's robustness to the |q|^{1−ε} gap, and the depth of its queries.
+
+**Literature item 5 (Huang–Ilango–Ren STOC'23):** read exactly which reduction class evades SS22's Theorem 2, and whether it is adaptive. If the field already has an evasion at the NP level under a stated class, **that class is the door's current address.**
