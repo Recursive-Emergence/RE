@@ -43,7 +43,12 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
 - **Y3 ran (the adaptive question; accepted as Y3b). The door's address after Y3 (the reviewer's statement):** "An NP-level reduction to LP23's OWF-complete problem must be adaptive (or non-explicit or compact). Non-adaptive reductions at gap ω(log n) are barred (SS22); at gap O(log n) the window is open from both sides (proved: a barrier there would give NEXP ⊆ AM ∩ coAM). Bounded-round adaptive reductions are barred only if SS22's Lemmas 21–22 relativize to certified approximate-count gates — approximate-count lowness for AM — which is open. Unbounded adaptivity is PSPACE-hard (ABKMR). Every known NP-hardness instance is deep (LP22; HIR23 under witness encryption; H, H′ conditionally), and for many-one expanding reductions depth is forced unless NP ⊆ coAM (GK24 + Observation O)."
 - **Y4 ran (the lowness lemma at two rounds; Y4b, then the accounting check Y4b′). The door after Y4 (the reviewer's statement):** "A bounded-round adaptive reduction at gap ω(log n) is barred if (PL′) holds: (i) margin β ≥ β_SS22 + log(1 + 16k₂A/ε), i.e. adaptivity k₁ = O(β/log n) bits; (ii) monotonicity of relativized Lemmas 21–22 — steering only inflates, Merlin cannot under-prove on verifier-random points (depends on Goldreich–Vadhan, SS22 [24], not yet read); (iii) robustness against coin-adaptive in-window oracles (Merlin commits after seeing the public rows; H5 covers fixed oracles) or an SS22-Thm-18-style conversion. (PL′) is weaker than (PL) for small k₁; for k₁ ≫ β/log n, Lemma B's tightness shows no argument of this shape closes without (PL). Reach A = (r + log k)^{k₁} is the quantitative measure of adaptivity; the barrier's scope is 'few bits of adaptivity'."
 - **Y5 ran (close (PL′); Y5b). The door after Y5 (the reviewer's statement):** "The bounded-round adaptive barrier requires (PL): canonical (prover-independent) approximate counts on image-membership witnesses in an AM protocol with prover-steerable queries. The (PL′) route reduces every other condition to a parameter bound but cannot supply (PL) on the image side, because a two-sided entropy estimate certifies the image by prover-exhibited preimages (HMX VerifyHist; GV unread) and steered rows can lie off the canonical image with no honest mass to average against. Secret domain samples would fix it (Fortnow / Aiello–Håstad) and are unavailable in the public-coin setting."
-- **Y6 is named**, on the author's go only: (PL) at two rounds, as a question in interactive proofs.
+- **Y6 ran ((PL) at two rounds; Y6b). The state of the door after Y6 (the reviewer's statement):**
+  - The **barrier arm ends on HMX's open problem**: post-selected two-sided counting without secret samples.
+  - The **construction arm ends on** "no known hardness mechanism produces non-deep NO instances".
+  - Both are **named open problems in others' papers**, exactly as the circuit side ended on the constant-bias lemma.
+  - Of the three escapes named in Y2, two are now examined: **adaptive** (reduces to HMX) and **compact** (none known). The third, **non-explicit** arguments, which LP23 allows (l.92), is not.
+- **Y7 is named**, on the author's go only: the non-explicit door.
 
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
@@ -77,6 +82,11 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - **Proposition 16′ (ours, proved):** a random grid at scale L collapses deviations of size D except with probability D/L. The cost is Θ(k₂·D/ε), drawn per round after the commitment, and it compounds, so it dies at ω(1) rounds.
   - **The asymmetry (ours, proved against HMX's VerifyHist; secondary, GV unread after three connection resets):** inflation lives on the honest support and Lemma B bounds it; deflation lives off it, because the image side is certified by **prover-exhibited** preimages. An explicit robust M shifts every output-row answer by up to r bits.
   - So **(PL′)(ii) needs (PL) on the image side**, and the barrier stays ⟸ (PL).
+- **(PL) at two rounds (Y6).**
+  - **(PL), as corrected in Y6:** "There is an AM protocol that certifies, for a samplable map whose evaluation on a row depends on earlier certified counts, count values that are **functions of the input alone** (prover-independent) on every query the protocol may evaluate, including queries the prover steers off the canonical support." It is a **canonicity** requirement on a certification, not a lowness statement about an oracle class.
+  - **The terminal (proved reduction to a stated open problem):** (PL) at two rounds reduces to **HMX's open problem** in our setting — a two-sided estimate of |f^{−1}(y)| for a post-selected D = f(U_S) **without secret samples from U_S**, where the post-selection is by the prover-certified round-1 answers, and the one-sided (GS86) route is available but steerable on the image side (Y5). HMX l.295–307 record the unconditioned case as fine and the post-selected case as unknown.
+  - **Why no hybrid rescues it:** the GS86 private→public simulation makes the prover exhibit one of the verifier's accepting coin strings (EPFL Lecture 8 §3.1), so it preserves the verdict and not the secrecy; and the object needing secrecy is not any protocol coin but a **conditioned sample**, which would itself require the missing protocol.
+  - **The blockage appears already at k₁ = k₂ = 1**, so it is not a parameter artefact.
 
 ### (ii) The self rung: Res(2) ⊬_poly rfn_Res(2)
 
@@ -185,7 +195,7 @@ Nothing else is live. Only one of the following would reopen the question:
     - Proved for many-one expanding reductions (GK24 + Observation O).
     - Conditional at both powerful ends (Proposition H for NEXP; Proposition H′ for PSPACE).
     - Observed in HIR23.
-    - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds. **After Y5: (PL′) cannot supply its own condition (ii), so the barrier requires (PL). Secret domain samples would give it and are unavailable with public coins.**
+    - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds. **After Y5: (PL′) cannot supply its own condition (ii), so the barrier requires (PL). Secret domain samples would give it and are unavailable with public coins. After Y6: (PL) at two rounds reduces to HMX's open problem, so the barrier arm ends there.**
     - Its truth would mean LP23's door, which needs non-deep NO instances, is closed to every hardness mechanism the field has, and the holy grail would require a genuinely new one.
 - **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
   - **The tool needed:** a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ that exploits cancellation across S, i.e. a Lindsey-type statement for conjunctions rather than rectangles.
@@ -583,6 +593,20 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 > Y5 accepted as Y5b on the report; merge 2835de2, push on your user's standing go; then the page update (§10 item 17). Scoring: "it should be symmetric" is my wrong outcome prior — count it; the asymmetry (inflation on the honest support, deflation off it via prover-exhibited image witnesses) is the finding and goes in as proved against HMX's VerifyHist, secondary, with the GV caveat and the three resets logged. (α) and (β) go in as proved (the grid collapses inflation at cost Θ(k₂D/ε); per-round draw; compounding kills ω(1) rounds). Then Y6 on your user's go, draft for ruling.
 
+### Additions from Y6, extracted by script
+
+**Counts added:**
+- **Mine:** the framing "(PL) is loose-access lowness of AM with respect to a promise AM ∩ coAM oracle" was **wrong**, and it was mine. Loose access is a hypothesis on a machine *assumed* correct whatever is answered off-promise, which makes a simulation easier rather than harder; our object is a protocol whose soundness is at issue, with the off-promise answers supplied by the party trying to cheat. The corrected statement is the canonicity requirement recorded in §3(i).
+- **The reviewer's eighteenth accepted-without-checking:** the framing was adopted for the page on my statement, before the definitions it borrowed were checked.
+
+**Practice line added (mine, adopted verbatim):** *a reformulation offered for the page is checked against the definitions it borrows before it is ruled in.*
+
+**Verified this round:** Grollmann–Selman smart access, quoted through arXiv cs/0702047's Definition 2.6; GGH17's "all queries in the promise" as the same condition; HMX l.295–307; EPFL Lecture 8 §3.1. Goldreich's promise-problem survey (ECCC TR05-018) was fetched but its text extraction is unusable (bitmap fonts), so it is cited only second-hand.
+
+**Y6 (ruling):**
+
+> Y6 accepted as Y6b on the report; merge 394c643, push on your user's standing go; then the page update with the AMENDED (PL) sentence (the loose-access phrasing withdrawn; the canonicity statement in its place) and §10 item 18. Scoring: the framing was yours, the adoption mine — eighteenth accepted-without-checking; your practice line is adopted verbatim: "a reformulation offered for the page is checked against the definitions it borrows before it is ruled in". The terminal phrased for an HMX reader goes in as the barrier arm's end, with HMX l.295–307 quoted and the GS86 step (EPFL Lecture 8 §3.1) as the verified reason the hybrid is not well defined.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -591,7 +615,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 ran (§10 item 17; Y5b). Y6 ((PL) at two rounds) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 ran (§10 item 17; Y5b). Y6 ran (§10 item 18; Y6b). Y7 (the non-explicit door) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -780,3 +804,10 @@ Nothing else.
 - **The asymmetry (ours, proved).** Lemma B bounds inflation **into existing** honest queries. The image test admits steered rows lying **off** the canonical image, where |Im f_{2,B}| ≤ A·|Γ| is unbounded relative to a small canonical image and no honest mass exists to average against. Explicit robust M: round 2 asks prefix_c(ρ) at answers ≥ a − 1 and prefix_{c′}(ρ) below; Merlin's claimed histogram passes both tests and shifts every sampled answer by c′ − c, up to r.
 - **Conclusion:** (PL′) reduces every other condition to a parameter bound but needs (PL) on the image side. **The bounded-round barrier stays ⟸ (PL).**
 - **Caveat (g8):** proved against HMX's VerifyHist; Goldreich–Vadhan's Lemma 21 protocol is unread.
+
+**18. Y6: (PL) at two rounds, as a question in interactive proofs** (`Y6_PL_two_rounds_preregistration.md`, `Y6_PL_two_rounds_report.md`). Accepted as Y6b.
+- **The framing correction (mine, recorded in §7):** (PL) is **not** loose-access lowness. Smart access (Grollmann–Selman [GS88], quoted through arXiv cs/0702047 Definition 2.6) requires every query to lie in the promise, which is exactly GGH17's condition and exactly what steering violates; loose access is a hypothesis on a machine assumed correct, which does not transfer to a protocol whose soundness is at issue.
+- **(PL), corrected:** a canonicity requirement — certified counts must be functions of the input alone on every query the protocol may evaluate, including prover-steered ones.
+- **The terminal (Flag D2, proved):** the two known routes to two-sided certification are the upper-bound protocols (which need a verifier-secret uniform sample from the **conditioned** set) and the histogram route (steerable, Y5). HMX l.295–307 state the first as **open** for post-selected distributions: *"it is unknown how to get two-sided estimates using the upper bound protocol of [21, 1], where the difficulty is to obtain secret samples from U_S."* Our round 2 is post-selected by the prover-certified round-1 answers. **So (PL) at two rounds reduces to that open problem.**
+- **Flag S2 (the GS86 step, verified):** the private→public simulation puts the verifier's accepting coin strings into the set whose size is lower-bounded, and the prover exhibits one. It preserves the verdict, not the secrecy. The hybrid "private coins inside round 1 only" is **not well defined**: the object needing secrecy is a conditioned sample, not a protocol coin.
+- **Kill tests:** no protocol read rejects Y5's deflating M (consistent); silent on ABKMR vacuously; the blockage appears at k₁ = k₂ = 1.
