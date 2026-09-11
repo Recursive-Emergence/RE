@@ -51,3 +51,23 @@
 ## Ceiling
 
 X8 proves nothing about P vs NP. At best it closes one form of the Union Lemma (tensor unions) for all N.
+
+## Ruling (the reviewer's): accepted as a draft; no run until the author's separate go
+
+**Priors moved:** undecided 70 / closes 15 / witness 15. Flags K and S adopted.
+
+**The reviewer's concrete candidate for Flag D (i), with a prediction; to be verified in the run.**
+
+*Two-sided Lindsey.* Write 1_A = (a/N)𝟙 + u and 1_B = (b/N)𝟙 + v, with u, v ⊥ 𝟙. Sylvester H has H𝟙 = N·e₀ and 𝟙ᵀH𝟙 = N, so
+  1_Aᵀ H 1_B = ab/N + b·(1_A(0) − a/N) + a·(1_B(0) − b/N) + uᵀHv,
+and |uᵀHv| ≤ √N·‖u‖‖v‖ = √(ab(N−a)(N−b)/N).
+- A mental check of the expansion, done at acceptance and not yet a computation, agrees.
+- The leading term's deficit below √(abN) is ≈ √(ab)(a + b)/(2√N), the two-sided deficit Flag D asks for.
+- The boundary terms are paid by at most one block each, since row 0 and column 0 each lie in at most one block.
+
+*The reviewer's prediction:* at the worst case (√N blocks of √N × √N), the bound gives N^{1.5} − N + O(√N). That is **borderline, short by a lower-order O(√N)**.
+- The named second source of deficit is **the equality analysis**. uᵀHv = √N‖u‖‖v‖ requires Hv ∝ u (centered Cauchy–Schwarz tightness), and the −1-rectangle fact (area ≤ N/2) should force a quantifiable loss.
+
+*Calibration first:* the two-sided knapsack must give knapsack values ≤ 5, 16 and 46 at N = 4, 8, 16. If it reproduces 46 at N = 16, the remaining gap is the relaxation (Flag K).
+
+*If the prediction holds,* X8's outcome is **"undecided at a named O(√N) term"**, which names what a proof of ρ(N) < 1 for all N needs.
