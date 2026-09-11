@@ -104,3 +104,12 @@ No misses on pre-registered claims. The fragmentation bound was pre-registered a
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X6a.** The following go in as proved or verified:
+- the exact type identity;
+- the fragmentation bound: the tight Union Lemma whenever K ≤ poly(m), the first structural sufficient condition beyond m ≤ n/4;
+- the N = 4 exhaustive result: the per-block factor equals N^{1.5} exactly.
+
+The reviewer proposes one more item before the pause, X7: the per-block extremal problem E⁻(N)/N^{1.5}. It decides whether tensor unions falsify the tight Union Lemma. It needs the author's go.
