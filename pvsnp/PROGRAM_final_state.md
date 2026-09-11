@@ -2,7 +2,7 @@
 
 *2026-09-10. This page is written to be read on its own. It consolidates `pvsnp/R1`–`R5`, `M1`–`M5` and `A1`–`A4`, and supersedes neither `R_program_final_state.md` nor `M_program_final_state.md`, except where §8 corrects them. Every cited statement was checked against a source's own text or official abstract. "Secondary" means it was verified in another paper's text. Line numbers are in the phase reports.*
 
-**Nothing here proves anything about P vs NP.** Two theorems of ours are proved (§2), and both are about weak proof systems. Everything else is verified location: where the problem sits, which theorems bound it, and which open statements it reduces to.
+**Nothing here proves anything about P vs NP.** Two theorems of ours are proved (§2), and both are about weak proof systems. The attempt phase (§10) adds two elementary lemmas about threshold circuits. Everything else is verified location: where the problem sits, which theorems bound it, and which open statements it reduces to.
 
 ## 1. The question
 
@@ -30,7 +30,7 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
 - **M4's bound: compression changes the measure, not the ratio.** A self-referential sentence improves on the trivial proof-length bound by at most a polynomial, in the referring system's own measure. This holds in any Cook–Reckhow system, implicit ones included.
 - **R2's density proposition.** Let S_k = {x ∈ {0,1}^n : K^t(x) ≤ k}. Then Pr_{x∼U_n}[x ∈ S_k] ≤ 2^{k+1−n}. Consequently, no argument built by exhibiting, sampling or conditioning on compressible strings can bear on mild average-case hardness under the uniform distribution. (Elementary; not claimed new.)
 
-## 3. The three open statements the program ends on
+## 3. The four open statements the program ends on
 
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
@@ -65,6 +65,20 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
 - **Nothing non-relativizing** toward non-optimality for TAUT is known. Messner's unconditional non-existence covers only coNE-hard and coNQP-hard sets.
 - **The direction of belief is open:** "no widely believed structural assumption (like NP ≠ coNP) is known to imply the (non)-existence of optimal proof systems [Hir10, BS11]" (Egidy–Glaßer).
 
+### (iv) The smallest open fold: IP2 ∉ poly-size THR∘THR
+
+- **Statement.** The inner product mod 2 has no polynomial-size depth-2 threshold circuits with unrestricted weights.
+  - This is Kane–Williams' open question 2. Amano (2020) calls it "a long standing open question".
+  - Known bounds: Ω(n/log n) gates below (Goldmann–Håstad–Razborov); O(1.682^n) above (Amano).
+- **Two-level structure** (X1–X2; §10):
+  - It is implied by **L1**: every poly-size THR∘THR circuit has sign-rank 2^{o(n)} (Chattopadhyay–Mande §8; 2^{Ω(n^{1/4})} is attained).
+  - It implies **L0(IP2)**: IP2 has no polynomial-length decision list of exact thresholds. This is open.
+  - L0(IP2) would follow from IP2 ∉ PMA^cc.
+- **Barrier status: no known measure survives Equality.**
+  - Sign-rank and discrepancy fail on Chattopadhyay–Mande's Equality list F_n.
+  - Rectangle arguments fail because Equality violates the staircase lemma (CMMS Lemma 16).
+  - What survives stops at linear length.
+
 ## 4. The observation (a reading, not a theorem)
 
 In every layer examined, the obstruction bears on *typical* objects, and *named* objects are cheap. Six instances were verified:
@@ -95,8 +109,9 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
+- **For (iv):** a communication measure separating short Equality lists (decision lists of exact thresholds) from IP2.
 
-Anything opened is an attempt on (i), (ii) or (iii), pre-registered as such.
+Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such.
 
 ## 7. Calibration, both sides
 
@@ -233,6 +248,43 @@ The verbatim records follow, extracted by script from the phase documents. The s
 
 > **Miss recorded (mine).** My O2 weight (35) rested on Flag R's worry that no-optimal oracles might exist only for p-optimality. That did not happen: two primaries construct length-optimal ones. **Attribution slip recorded (mine alone):** I called arXiv:1904.01362 "Dose–Glaßer" before reading it. It is by Khaniki.
 
+
+### Additions from the attempt phase (X1–X2), extracted by script
+
+**Counts added.**
+- **The reviewer:** the (c) repair swap (X1) and the "necessary" direction slip (X2).
+- **Me:** Flag S's "may be refuted" (X1) and the X2b weight (X2).
+
+**X1 (X1_ip2_ltf2_report.md, misses):**
+
+> - *My Flag S wording*, "sign-rank may be refuted as the measure", was too strong. It is refuted only as a polynomial measure, and CM's quantitative question keeps it alive.
+
+> - *The reviewer's slip:* the (c) repair assignment (Flag W).
+
+**X1 (ruling):**
+
+> **Accepted as X1a.** The third fabrication is recorded as caught. Reading the math images, not the summary, is the practice. The misses stand as written: Flag S's "may be refuted" is mine, and the (c) swap is the reviewer's.
+>
+> 1. **L1 is the attempt's result.** "Every poly-size THR∘THR circuit has sign-rank 2^{o(n)}" (Chattopadhyay–Mande §8). Its status is two-sided: 2^{Ω(n^{1/4})} is attained, and a 2^{Ω(n)} example would refute it. It is the smallest open lemma the program has produced at any layer that meets all three of these conditions:
+>    - it is stated by the field;
+>    - it would settle a named fold statement (IP2 ∉ THR∘THR);
+>    - it has a named necessary sub-step (L0, lower bounds for decision lists of exact thresholds).
+> 2. **The fold measure at this layer is the sign-rank exponent, not Boolean depth.** Chattopadhyay–Mande's F_n has three Boolean nestings and linear THR∘THR size, so heavy weights absorb Boolean nesting outright. The exponent runs 0 (up to THR∘MAJ) → [1/4, 1) (THR∘THR, if L1) → 1 (IP2). This is an observation that gives the nesting reading a candidate referent *conditional on L1*, and nothing more.
+
+**X2 (X2_ethr_lists_report.md, misses):**
+
+> - **My X2b weight (35) was a miss.** Flag P's containment is refuted by CM's own separation.
+
+> - **The reviewer's slip ("necessary step")** is recorded as it asked, and the word is kept out of the claims here.
+
+**X2 (ruling):**
+
+> **Accepted as X2a. The attempt phase closes.** The end state stands as in §5.
+>
+> Calibration:
+> - the reviewer's: the "necessary" direction slip;
+> - mine: the X2b weight.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -241,4 +293,49 @@ The verbatim records follow, extracted by script from the phase documents. The s
 
 ## 9. State
 
-The loop pauses here. Nothing further is drafted unless the author opens something; anything opened is an attempt on (i), (ii) or (iii), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+The loop pauses here, after the attempt phase (§10). Nothing further is drafted unless the author opens something. Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+
+## 10. The attempt phase (X1–X2)
+
+*Source documents: `X1_ip2_ltf2_report.md` and `X2_ethr_lists_report.md`. This phase followed N1's correction that folding is nesting, not composition (§1, amendment). These were the program's first attempts. Both ended as pre-registered, on a question the field has already posed, with the reason it is hard written down.*
+
+**1. The target and its end state (two levels).**
+
+> **IP2 ∉ poly-size THR∘THR**
+> ⇐ **L1**: every poly-size THR∘THR circuit has sign-rank 2^{o(n)}. Chattopadhyay–Mande §8, verbatim: "Even an upper bound of 2^{o(n)} is enough to show IP is not in THR∘THR". 2^{Ω(n^{1/4})} is attained.
+> and ⇒ **L0(IP2)**: IP2 has no polynomial-length decision list of exact thresholds.
+> - Open, and **not known either way**. CM's footnote covers only Equality lists: "Since they are in AC0".
+> - L0(IP2) ⇐ IP2 ∉ PMA^cc. CM say PMA lower bounds need new techniques, pointing to generalizing the P^NP methods of Impagliazzo–Williams.
+
+L0 is *implied by* L1. It is not a step toward it (the X2 correction).
+
+**2. The measures, and where each fails.**
+
+| Measure | Status for L0 / THR∘THR | Witness or reason |
+|---|---|---|
+| discrepancy / PP | fails | F_n ∉ PP^cc even as a linear-length Equality list, since F_n ∉ UPP ⊇ PP (CM); hence PMA^cc ⊄ PP^cc |
+| sign-rank | fails as a polynomial measure; open as 2^{o(n)} (L1) | F_n has sign-rank 2^{Ω(n^{1/4})} with linear THR∘THR size (CM) |
+| additive rectangles (CMMS Lemma 16; exponential bounds for LTF lists, e.g. IP2 by Gröger–Turán–Vatan) | fails | Equality violates Lemma 16: its 1-rectangles are points and its 0-rectangles need disjoint sides (X2 §4.1) |
+| multiplicative rectangles (Lemma A, ours) | works, but capped | IP2 needs length ≥ n/log₂6; the measure cannot certify more than O(n) |
+| randomized communication cost | works, but capped | length Ω(n/log n); capped at linear |
+
+**3. The obstruction.**
+- Every route to L0 fails at **Equality**, the same function that stops the bottom-gate protocol in X1 (CM §1.4: no cheap randomized protocol at error 2^{−n^{Ω(1)}}).
+- So the lemma under L1 is **"a measure that is small on short Equality lists and large on IP2"**, and no known measure is.
+- This is the smallest open statement the program produced at any layer, and it is a well-posed question in communication complexity.
+
+**4. What was proved in X1–X2.** Elementary, and not claimed new:
+- Lemma A: an exact threshold is constant on a sub-rectangle of ≥ 1/6 the product weight. Hence IP2 needs exact-threshold decision lists of length ≥ n/log₂6.
+- The Equality counterexample to CMMS Lemma 16 for exact thresholds.
+
+Nothing else.
+
+**5. The nesting reading's status.**
+- **If L1 holds:** it has a *conditional* referent in the sign-rank exponent. The exponent is 0 up to THR∘MAJ, in [1/4, 1) on THR∘THR, and 1 at IP2.
+- **Otherwise:** it has no referent.
+- **Boolean depth is the wrong measure at this layer.** CM's F_n = OMB∘OR∘XOR has three Boolean nestings, yet linear THR∘THR size: heavy weights absorb Boolean nesting.
+
+**6. Calibration.** Recorded in §7, "Additions from the attempt phase", extracted by script:
+- the reviewer's (c) repair swap (X1) and "necessary" slip (X2);
+- my Flag S wording (X1) and X2b weight (X2).
+- The third web-summary fabrication (Amano 2020's exponents) was caught by reading the page's math images instead.
