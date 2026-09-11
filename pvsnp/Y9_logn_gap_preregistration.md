@@ -62,3 +62,18 @@ Not reused: "hidden ρ" (Y3); "no off-sample rows", "(1+ζ) inflation" (Y4); "th
 **Priors.**
 - Reviewer: Y9b 50 / Y9c 35 / Y9a 15.
 - Mine: **Y9c 45 / Y9b 40 / Y9a 15.** Flag Z9 carried into the prior: the verbatim bound is stated for *any computable* generator, and the one in use is EXP^NP-computable, so "the outputs are deep" is not a guess about the technique — it is visible in the quoted step. I put Y9c above Y9b because the fifth-instance reading is the more informative way to record the same fact.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go. **Priors** moved to mine: Y9c 45 / Y9b 40 / Y9a 15 — the reviewer agrees that "the outputs are deep" is visible in the quoted step rather than guessed. **Flags Z9, R9 and T9 adopted.** R9 is the discipline: the relativization check comes first on anything that adapts, and **an adaptation that relativizes is thereby wrong.**
+
+**Ruling (1): Flag Z9 must become a proved statement about the specific generator, not a reading.**
+- One half is [28]'s own line: K(G_n(z)) ≤ s(n) + O(log n).
+- **The half to prove is the other one: that K^t(G_n(z)) is large for polynomial t.** That is what makes the outputs deep and places them outside Q^t_β.
+- **If K^t(G_n(z)) can be small for some z, the fifth instance is not established, and the report says so.**
+
+**Ruling (2): the drop-to-polynomial-time-generator arm must be stated precisely.**
+- State exactly what NO-side guarantee [28] needs from the generator's strength (EXP^NP-computability), and what a polynomial-time generator loses.
+- **If the loss is "the hitting-set property against the relevant class", name the class.** That is the precise reason the regime closes for K^t, and it is more useful than "weakens".
+
+**Kill tests** as drafted; **smallest case first.**
