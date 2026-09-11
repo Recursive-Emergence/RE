@@ -117,3 +117,66 @@ Y4 proves nothing about P vs NP or OWF. It sharpens the door by one sentence:
 ## Formal record
 
 Untouched (the author's decision).
+
+## 6. The reviewer's accounting check (post-acceptance; Y4 accepted provisionally)
+
+*Run on the author's standing go for Y4. The page waits on this section.*
+- *Sources added: the Goldwasser–Sipser set lower-bound protocol, from Yale CS468 lecture notes "The Goldwasser–Sipser Lower-Bound Protocol" (text read, l.8–19).*
+- *Goldreich–Vadhan (SS22's [24], the source of Lemma 21) was **unreachable**: connection reset on https and on http, and WebFetch failed. Lemma 21's internal structure is therefore not read.*
+
+### 6.0 Outcome of the check
+
+**Y4b′: the accounting does not close from verified statements.** It closes *conditionally* on (PL′), three named properties, one of which depends on the unread Lemma 21 source. **Not Y4a′.**
+
+### 6.1 A source inconsistency, and a correction to my §0.1
+
+SS22's printed Lemma 22 and Cases 1–2 (read from the rendered pages) block **under**claims per entry and limit overclaims on average. Two verified facts contradict that reading:
+- **(i) SS22's own [25] (Goldwasser–Sipser) blocks overclaims.** The Yale notes, l.8–19: Merlin claims |S| ≥ K; "if |S| ≤ K/2 … Arthur rejects"; "M → A: (x, c), where c is a certificate of x ∈ S".
+- **(ii) SS22's Claim 1 (p. 29:21) has the wrong sign under the printed reading.** It says σ(B) − σ(B*) ≥ τY − νt, with σ(B) = (1/t)·Σ(r − log B) (Step 4). That holds only if Y counts **under**claims (log B ≤ log B* − τ). Under the printed Case 2 (overclaims) the difference is ≤ −τY/t.
+
+**The consistent reading is GS's:** Lemma 22 blocks overclaims per entry, and Step 4 limits underclaims on average. **That is my pre-registration's original direction.** Report §0.1's "correction" and the miss recorded for it are **withdrawn**, pending the reviewer's ruling. SS22's print appears to swap B and B* in Lemma 22 and Cases 1–2 (this is my reading; the source itself is not re-derived). **Nothing in §§1–5 depends on the direction**: one direction is checked per entry, the other only on average over uniform rows. With the GS direction, **steering uses round-1 underclaims**, which raise J-answers.
+
+### 6.2 The reviewer's (a) is false: rows outside the sample are inside round-2 certification
+
+Round-2 counts s₂(q) = |f₂^{−1}(q)| are certified by Lemmas 21 and 22 applied to f₂.
+- In GS (Lemma 22), **Merlin exhibits** preimages x = (ρ′, i) with certificates of f₂(ρ′, i) = q. Checking such a certificate requires ρ′'s round-1 answers, which Merlin supplies.
+- Those rows are Merlin-chosen, not among Arthur's t sampled rows. Round-1 overclaims on them are blocked per entry (GS on f₁ is objective). Round-1 **underclaims** on them are unchecked, since Step 4 averages over *Arthur-random* rows only.
+- So steering acts exactly where the reviewer's (a) says no rows exist.
+
+### 6.3 The reviewer's (b), corrected: inflation is bounded by the reach factor, not by (1 + ζ)
+
+**Definitions.** For a row ρ′, let Reach(ρ′) be the set of round-1 answer vectors reachable by underclaims (coordinatewise ≥ canonical, each at most r + log k). Let A := max_ρ′ |Reach(ρ′)| ≤ (r + log k)^{k₁}. The mass routable into a round-2 query y is routed(y) ≤ Pr_ρ′[∃ a⃗′ ∈ Reach(ρ′) : g(ρ′, a⃗′) = y].
+
+**Lemma B (ours, proved).** For every δ > 0,
+
+  Pr_{y∼π₂}[routed(y) ≥ (A/δ)·π₂(y)] ≤ δ.
+
+*Proof.* Each row contributes at most |Reach(ρ′)| ≤ A potential targets, so Σ_y routed(y) ≤ A. Then E_{y∼π₂}[routed(y)/π₂(y)] = Σ_y routed(y) ≤ A, and Markov's inequality gives the bound. ∎
+
+So for all but a δ fraction of honest round-2 queries, the certified count lies within a factor (1 + ζ)(1 + A/δ) of the canonical one, and **the answer shift is ≤ log(1 + A/δ) + O(ζ)**.
+
+**Tightness (proved).** Take M's round-2 query to be g(ρ, a⃗) = prefix_b(ρ ⊕ E(a⃗)), with E injective into {0,1}^b. Then routed(y) = |Reach|·2^{−b} = A·π₂(y) for every y. **So a shift of log A = Θ(k₁·log n) is realized**, and it exceeds the reduction's tolerance whenever β < log A.
+
+### 6.4 The reviewer's (c)/(d): the exact property, (PL′)
+
+The 2-round accounting closes, with error O(ε) along the lines of the reviewer's (c), if all three of the following hold:
+- **(PL′-i) Margin:** β ≥ β_SS22 + log(1 + 16k₂A/ε), where β_SS22 = log(k/ε) + 2 log K(q) + α(n) + 5 (SS22's Theorem 14) and δ = ε/(16k₂). In words: **the round-1 query count k₁ must be O(β/log n).**
+- **(PL′-ii) Monotonicity of the relativized Lemmas 21–22:** steering can only **inflate** proven counts. Merlin cannot under-prove a count on verifier-random points without rejection, so deflation stays average-limited as in round 1. **This depends on Lemma 21's source protocol (Goldreich–Vadhan), unread this run.**
+- **(PL′-iii) Robustness against coin-adaptive oracles:** Merlin commits B² after seeing all t public rows. So the effective round-2 oracle O(y) ∈ [J₂(y) − log(1 + A/δ) − 1, J₂(y) + 1] may depend on M's random strings. H5 is robustness for context-insensitive oracles fixed before M's coins. **(PL′-iii) needs M correct against in-window oracles chosen as a function of M's coins**, or a conversion to fixed oracles in the style of SS22's Theorem 18 (its K′ construction). This is the reviewer's (d), stated exactly.
+
+**Relation to (PL).**
+- (PL′) replaces "canonical certified counting" with a quantitative robustness margin plus two structural properties.
+- (PL′) is **weaker** than (PL) when k₁ = O(β/log n) and (ii) and (iii) hold.
+- For k₁ ≫ β/log n, Lemma B's tightness shows that no argument of this shape closes without (PL).
+
+### 6.5 The kill test on the conditional closure
+
+- Iterating over R rounds compounds the reach: A_R ≥ (r + log k)^{Σ k_j} over the earlier rounds.
+- It also loses a constant factor of advantage per round.
+- So the closure can reach at most O(1) rounds (or O(log n) with inverse-polynomial advantage). It is silent on IW98/ABKMR's n stages. ✓
+
+### 6.6 Priors and scoring for the check
+
+- The reviewer put Y4b′ 55 / Y4a′ 45. **Outcome: Y4b′**, with (PL′) named as three properties. It closes conditionally for k₁ = O(β/log n).
+- **The reviewer's (a)** ("off-sample rows don't exist in the protocol") and **(b)** ("inflated by (1+ζ)") were both incorrect premises (§6.2 and §6.3). Scoring is the reviewer's to make.
+- **My §0.1 direction "correction"** is withdrawn (§6.1). If the reviewer agrees, the miss recorded for it becomes a miss for trusting a printed inequality over the cited source's protocol. The practice line should read: **check a printed protocol direction against the cited source's protocol, not only against the rendered page.**
