@@ -91,6 +91,9 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - **Loose (poly(m)·2^{2n}√d, i.e. poly(m)·2^{1.75n} for IP2): the live lemma.**
     - It is **proved safe from every tensor union**: the per-block factor is ≤ 0.94 at N = 2 and ≤ 0.805 for N ≥ 8, decreasing (X8).
     - It is **open only for unions with exponential row-type fragmentation**. By the **narrowing lemma** (the reviewer's; proof: the fragmentation bound m·√K·2^{1.5n} is ≤ 2^{1.75n} whenever K ≤ 2^{n/2}/m²), it holds unless some block's row-type count exceeds 2^{n/2}/poly(n).
+    - **X9's restatement of the open lemma:** *the bias version of Pitassi–Shirley–Shraibman's Theorem 29 for conjunctions of m co-blocky constraints: a lower bound on m in terms of |Adv(IP2, C)| rather than |C|.* This is uniform discrepancy of IP2 against m-query Equality-oracle conjunctions.
+    - **Proved** (ours, from PSS Theorem 29 with the −1-rectangle theorem): covering either sign class of IP2 by blocky sets needs Ω(2^{n/2}) sets, so polynomially many constraints cannot make C monochromatic. The quantitative bias form is open.
+    - **Methodological finding (X9):** at computable n the covering threshold 2^{(n−1)/2} lies below m, so numerics cannot test the loose Union Lemma; evidence must come from structure. The greedy B(n, m) values stay within a constant of 2^{1.75n}: 0.89, 1.04, 1.04 and 0.81 at m = n, for n = 4, 5, 6, 8. They exceed 3^n by 1.41 to 2.64. They are recorded with this design caveat.
     - No witness is known even there: block-Equality unions have K ≈ 2^n but advantage 0.
     - Lemma T′ (any f, m ≤ ½log(1/d)) and the fragmentation bound hold.
   - **The threshold consequence is unchanged:** linear alternation depth via the loose Union Lemma, with a re-absorption residual. Open. All gains so far are constant factors.
@@ -126,7 +129,9 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
-- **For (iv):** a loose Union Lemma for unions of blocky matrices with per-block row-type count K > 2^{n/2}/poly(n) (exponential fragmentation), or a witness among them. It must defeat cross-type cancellation deliberately, since fragmentation alone does not (the block-Equality family). This is named **X9**, not drafted, on the author's go only.
+- **For (iv):** the bias version of PSS Theorem 29 for conjunctions of m co-blocky constraints: a lower bound on m in terms of |Adv(IP2, C)| (X9). Its natural route is named **X10** (not drafted, on the author's go only): **the bias-to-monochromatic bridge**, a density increment from bias A to a sub-cube of dimension n′ on which C is nearly monochromatic, where PSS applies.
+  - Kill tests: the AND family must give n′ ≲ 2·log₂n; the block-Equality family must give nothing.
+  - The reviewer's priors on record: the bridge fails at a named step 60 / nontrivial but below the threshold 25 / loose Union Lemma proved 15.
 
 Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such.
 
@@ -411,6 +416,25 @@ The verbatim records follow, extracted by script from the phase documents. The s
 >
 > **X9 is named, not drafted:** unions with exponential fragmentation and non-cancelling advantage. Either construct one, which must defeat cross-type cancellation deliberately, or show that the type identity forces cancellation when K is exponential.
 
+
+### Additions from X9, extracted by script
+
+No misses on either side. Priors held: X9c, with 65 on it from both sides.
+
+**X9 (ruling):**
+
+> **Accepted as X9c.**
+> - **The live lemma, restated:** *the bias version of Pitassi–Shirley–Shraibman's Theorem 29 for conjunctions of m co-blocky constraints: a lower bound on m in terms of |Adv(IP2, C)| rather than |C|.*
+> - **Proved** (ours: PSS Theorem 29 with the −1-rectangle theorem): covering either sign class of IP2 needs Ω(2^{n/2}) blocky sets.
+> - **The methodological finding** is recorded as such: numerics cannot test the loose Union Lemma at computable n.
+>
+> **X10 is named for after the pause, not drafted, on the author's go only: the bias-to-monochromatic bridge.**
+> - *The idea:* a density increment. Large bias A should force a sub-cube of dimension n′ on which C is ε-close to monochromatic with density δ. Restrictions of co-blocky constraints are co-blocky, so PSS then forces m ≥ Ω(2^{n′/2}·δ).
+> - *Kill tests:*
+>   - the AND family (bias 3^n, m = n) must give n′ ≲ 2·log₂n;
+>   - the block-Equality family (bias 0) must give nothing.
+> - *The reviewer's priors, on record:* the bridge fails at a named step 60 / nontrivial but below the threshold 25 / loose Union Lemma proved 15.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -510,3 +534,20 @@ Nothing else.
 - **With exact φ for block sides ≤ 6:** ρ(32) ≤ 0.961.
 - **Found during write-up: ρ(2) = 1.061.** The n AND-rectangles (X4's own family) falsify the tight Union Lemma.
 - **The loose form is proved safe from all tensor unions.** By the narrowing lemma it is open only under exponential row-type fragmentation, which is X9 (named).
+
+**10. X9: the loose Union Lemma under exponential fragmentation** (`X9_fragmented_unions_report.md`).
+- **The framing:** IP2's uniform discrepancy against m-query Equality-oracle conjunctions.
+- **The B(n, m) table**, greedy lower bounds, each value beside 3^n and 2^{1.75n}:
+
+| n | m | \|Adv(C)\| | ÷ 3^n | ÷ 2^{1.75n} |
+|---|---|---|---|---|
+| 4 | 4 | 114 | 1.41 | 0.89 |
+| 5 | 5 | 446 | 1.84 | 1.04 |
+| 6 | 6 | 1509 | 2.07 | 1.04 |
+| 6 | 12 | 1860 | 2.55 | 1.28 |
+| 8 | 8 | 13219 | 2.01 | 0.81 |
+| 8 | 16 | 17330 | 2.64 | 1.06 |
+
+  The table is inconclusive by design: the covering threshold is below m at these n.
+- **Proved (ours):** a monochromatic C needs 2^{Ω(n)} constraints, from PSS Theorem 29 with the −1-rectangle theorem.
+- **The stall:** X6's cross-type cancellation in the 2^m-term expansion. The missing lemma is the bias version of max-rect. X10 (the density-increment bridge) is named.
