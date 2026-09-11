@@ -61,7 +61,7 @@ Since IP2 has O(n)-gate MAJ∘MAJ∘MAJ circuits, this says the third layer stri
 - **Known partial results, as stated in Kane–Williams §2:**
   - IP2 needs exponential size for MAJ∘LTF (Nisan) and for LTF∘MAJ (Forster et al.);
   - IP2 needs Ω(n/log n) gates for LTF∘LTF (Goldmann–Håstad–Razborov);
-  - PARITY needs o(n^{3/2}) wires … "nor can they have o(n^{1/2}) gates" (Impagliazzo–Paturi–Saks).
+  - LTF∘LTF circuits computing PARITY "cannot have o(n^{3/2}) wires, nor can they have o(n^{1/2}) gates" (Impagliazzo–Paturi–Saks), i.e. they need Ω(n^{3/2}) wires and Ω(n^{1/2}) gates.
 - **Where it sits.** This is below AC⁰[p] in the reviewer's list, and below the threshold depth-3 question.
 
 ## 5. (d) The barriers at the top
