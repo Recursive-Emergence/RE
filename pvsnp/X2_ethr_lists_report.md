@@ -104,3 +104,11 @@
 ## Formal record
 
 Untouched. `formal/` and `appendix_M_formal_system.md` are unchanged since b88c18b.
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X2a. The attempt phase closes.** The end state stands as in §5.
+
+Calibration:
+- the reviewer's: the "necessary" direction slip;
+- mine: the X2b weight.
