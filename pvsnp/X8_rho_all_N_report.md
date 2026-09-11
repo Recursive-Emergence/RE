@@ -104,3 +104,16 @@ The reviewer's two-sided prediction is confirmed quantitatively. The exact-small
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted.**
+- The N = 2 witness stands. The joint miss is scored on both sides.
+- The two-sided Lindsey prediction goes in as the reviewer's, verified by computation.
+- **The practice it teaches** (for the pattern bullet): *every table starts at the smallest case, and "compared against which bound" is written next to every number.* X4 had 2^{1.585n} and never put it beside 2^{1.5n}.
+
+**The narrowing lemma (the reviewer's statement; the one-line proof checked here).** By the fragmentation bound, Adv(IP2, U) ≤ m·√K·2^{1.5n}. If K ≤ 2^{n/2}/m², this is ≤ 2^{1.75n} ≤ the loose bound.
+- **So the loose Union Lemma is open only for unions whose per-block row-type count exceeds 2^{n/2}/poly(n): exponential fragmentation.**
+- On the record's families, no witness is known even there. Block-Equality unions have K ≈ 2^n but advantage 0; random slice unions have small K.
+
+**X9 is named, not drafted:** unions with exponential fragmentation and non-cancelling advantage. Either construct one, which must defeat cross-type cancellation deliberately, or show that the type identity forces cancellation when K is exponential.
