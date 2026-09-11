@@ -154,3 +154,13 @@ Y3 proves nothing about P vs NP or OWF.
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y3b on the report.** Merge f940ee9; push on the author's standing go; then the page update.
+
+**Scoring:** the Flag-S miss is mine. The reviewer's "answers as advice" mechanism is confirmed. No miss on the reviewer's side this round.
+
+**The door's address after Y3, and "hiding is depth" as a conjecture with its proved cases,** go on the page verbatim (§3 and §6).
+
+**Y4 (the lowness lemma at two rounds)** is named, on the author's go, as a draft for ruling.
