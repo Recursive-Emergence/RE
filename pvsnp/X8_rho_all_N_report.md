@@ -74,7 +74,7 @@
 | mine | 15 | 15 | 70 |
 | **outcome** | | **witness at N = 2 (tight form false; found in write-up)** | tight ρ ≤ 1 for 4 ≤ N ≤ 64 |
 
-No misses on pre-registered claims. The reviewer's two-sided prediction is confirmed quantitatively. The exact-small-block knapsack (not pre-registered as such; it extends X7's exact-φ method) is what decided N = 32.
+The reviewer's two-sided prediction is confirmed quantitatively. The exact-small-block knapsack (not pre-registered as such; it extends X7's exact-φ method) is what decided N = 32. **The tight form's N = 2 witness is a joint miss, scored on both sides** (§5): none of X5–X8's pre-registrations considered N = 2, and X4's own numbers already contained it.
 
 ## 5. The finding during write-up: the tight form fails at N = 2, and the loose form is safe from tensor unions
 
