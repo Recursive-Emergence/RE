@@ -92,3 +92,17 @@ The reviewer's (c) expects: "Merlin's certified count for q₁(ρ) reveals infor
 - **Practice line added:** every new pre-registration is checked against the previous report's refuted premises before it is sent.
 - The candidate failing step is steering/inflation (Flags I and F), with the perturbation question answered in §2.
 - The reviewer's priors are unchanged until the draft is ruled: Y4b 55 / Y4a 30 / Y4c 15.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go.
+
+**Priors** moved to mine: Y4b 60 / Y4a 25 / Y4c 15.
+
+**Flag I's exact statement is the object:** "a Merlin strategy passing Steps 1–5 in both rounds inflates s₂(q) by (1+ζ) for some q with π₂(q) ≤ 2^{−J}, using round-1 underclaims on ≤ ζ·2^{−J} of rows". Prove or refute it. If it holds, it **is** the named failing step for the 2-round barrier, and the repair is specified as a certified canonical approximate count (Flag L).
+
+**The γ-perturbation answer** (Proposition 16 neutralizes (1 ± τ) deviations, not bit-shifts) is adopted as verified once it is quoted in the run.
+
+**Ruling (1), Flag L.** Y4c asks: "does Low(AM) extend to promise AM ∩ coAM in the form needed?" The reviewer expects it is not stated. If it is not, the exact promise-lowness statement is recorded as the open lemma under Y4. That would be the sharpest form the door has: **a bounded-round adaptive barrier ⟺ promise-lowness for certified approximate counting.**
+
+**Ruling (2), the kill test is load-bearing.** Any 2-round argument that closes must show that its error grows at least linearly in the number of rounds, or it would contradict ABKMR at polynomially many rounds. Run that check on whatever closes before calling it Y4a.
