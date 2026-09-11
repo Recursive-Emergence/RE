@@ -67,3 +67,22 @@ by any means whatever, with no reduction exhibited, named or constructed.
 **Priors.**
 - Reviewer: Y7b 45 / Y7a 35 / Y7c 20.
 - Mine: **Y7b 55 / Y7a 25 / Y7c 20.** Flag R7 carried into the prior: relativization constrains proofs rather than reductions, so the non-explicit door inherits it in full, and the known non-relativizing techniques in this area (Hirahara's) are exactly the ones that produce reductions.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go. **Priors** moved to mine: Y7b 55 / Y7a 25 / Y7c 20.
+
+**§1's structural point goes on the page as verified**, with the LP23 l.86–99 quote: OWF-hardness is an implication, not a reduction object.
+
+**Ruling (1): the Pessiland kill test is decisive.** Verify Wee (TCC'06) and Impagliazzo's survey for the exact relativized statement — an oracle with NP ⊄ BPP (or NP ⊄ ioBPP; **match LP23's quantifier**) and no OWF. If it stands, state as a **proved consequence**: any proof of `NP ⊄ ioBPP ⇒ MK^tP|Q ∉ ioBPP` is **non-relativizing**, whether or not it exhibits a reduction.
+
+That converts the door's question into: **which non-relativizing ingredients exist that do not produce a reduction?** Map them:
+- **arithmetization** — algebrizes (Aaronson–Wigderson);
+- **code-reading / non-black-box** — produces reductions (Flag C7);
+- **Shannon-style counting over all short programs** — typical-side, produces no algorithm, but also no implication from NP-hardness; **say why**.
+
+If the map has no ingredient of the needed shape, **Y7b is: "the non-explicit door is open only to a non-relativizing, non-algorithmic technique, and none is known"**, stated with the three known ingredients and the reason each fails.
+
+**Ruling (2): Flag C7 as a lemma.** If the dichotomy's case analysis is decidable in polynomial time, the two horns compose into a reduction and GK24/SS22 reapply. So any admissible win-win needs a case split **not decidable in polynomial time**. Record what that means for the second horn's usability: an OWF that exists but cannot be identified is still an OWF — **state whether LP23's "all poly-time functions can be inverted" formulation tolerates that.**
+
+**Ruling (3):** non-circularity first for every candidate S; the map is built from statements, not vocabulary.
