@@ -82,6 +82,15 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - Sign-rank and discrepancy fail on Chattopadhyay–Mande's Equality list F_n.
   - Rectangle arguments fail because Equality violates the staircase lemma (CMMS Lemma 16).
   - What survives stops at linear length.
+- **The Union Lemma (X4–X7), which would push the known regime from o(n/log n) to ≈ 0.36n alternations,** with re-absorption as the residual beyond that. Its status in three forms:
+  - **Tight, for IP2** (|Adv(IP2, ∪_{j≤m} q_j)| ≤ poly(m)·2^{1.5n} for blocky q_j):
+    - *holds* for m ≤ n/4 (Lemma T);
+    - *holds* whenever the row-type fragmentation K ≤ poly(m) (X6);
+    - *harmless* tensor families for block size ≤ 4, since ρ(N) ≤ 1 for N ≤ 16 is proved, and saturated exactly at block size 2 (X7);
+    - *open* for non-tensor unions and for tensor blocks of ≥ 5 bits. The first open case is ρ(32) ∈ [0.845, 1.061].
+  - **Loose, any f:** holds for m ≤ ½·log₂(1/d) − O(1) (Lemma T′).
+  - **The alternation-threshold consequence:** still Θ(n/log n). All the gains are constant factors (Lemma S; batching).
+  - **What a proof must do (X6):** sum across row types before bounding. The operator-norm route is closed (X5, by the reviewer's counterexample), and every termwise bound is blind to cross-type cancellation.
 
 ## 4. The observation (a reading, not a theorem)
 
@@ -113,7 +122,7 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
-- **For (iv):** a blocky-matrix measure whose loss across alternations is additive rather than multiplicative (X3). This sharpens "a communication measure separating short Equality lists from IP2".
+- **For (iv):** a blocky-matrix measure whose loss across alternations is additive rather than multiplicative (X3), i.e. the Union Lemma (X4), proved by summing across row types before bounding (X6). Within it, the one finite question is **ρ(N) < 1 for all N ≥ 8, or a witness N with ρ(N) > 1** (X7). That question is named as X8, for after the pause, on the author's go.
 
 Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such.
 
@@ -308,6 +317,53 @@ The verbatim records follow, extracted by script from the phase documents. The s
 >
 > The spec-clause (3) miss ("additive", where the literature's parameter is alternation) is **joint, and scored on both sides**.
 
+
+### Additions from X4–X7, extracted by script
+
+**Counts added.**
+- **The reviewer:** its tenth premise miss (X4: the queued X5 premise); its positive finding (X5: the HML counterexample, verified).
+- **Me:** the X4a weight (X4), the "stand or fall together" equivalence (X5), and the MILP method miss (X7).
+
+**X4:**
+
+> **My miss:** the X4a weight (55). Flag K was pre-registered without checking *which* distribution the small discrepancy is under. Theorem 45's measure is uniform; BVW's is the hardest distribution.
+
+> **Accepted as X4b** (3bdc0e1 + 07c0953).
+> - The §5 correction to the queued X5 premise is accepted. The reviewer had assumed the witnesses share IP2's *uniform* discrepancy, when they share only hardest-case discrepancy. **This is the reviewer's tenth premise miss.** X5 as then framed is withdrawn.
+> - The self-check correction (the Union Lemma gives linear depth ≈ 0.36n, not every depth, with re-absorption as the residual) is accepted.
+> - X5 is re-framed as the Union Lemma.
+
+**X5:**
+
+> **Accepted as X5b.** Lemmas S, T and T′ and the batching arithmetic go in as stated.
+>
+> **The Hadamard masking lemma is false: the reviewer's finding, verified here by hand and numerically.**
+> - **The family.** Take m = n/2 Equality queries on disjoint 2-bit blocks, q_l = [x_l = y_l]. Then ∏_l (J − q_l) = ⊗(J₄ − I₄), and H = ⊗H₄ (Sylvester; checked equal to IP2's matrix at n = 4, 8, 10). So H ∘ ∏(J − q_l) = ⊗(H₄ − D₄), with D₄ = diag((−1)^{|x|}) = diag(1, −1, −1, 1).
+> - **The norm.** M = H₄ − D₄ has zero diagonal, and M² = [[3,0,0,−2],[0,3,2,0],[0,2,3,0],[−2,0,0,3]], with eigenvalues of M equal to ±√5 and ±1. So ‖H∘∏(J − q_l)‖_op = 5^{n/4} = 2^{n/2}·(5/4)^{n/4}. Computed: 5, 25 and 55.90 at n = 4, 8 and 10, against 2^{n/2} = 4, 16 and 32.
+> - **The Union Lemma holds on the same family:** Adv(IP2, U) = 2^n − ∏⟨H₄, J₄ − I₄⟩ = 2^n − 4^{n/2} = 0 (computed 0.0 at n = 4, 8, 10).
+> - **So HML ⇒ UL, HML is false, and UL holds here.** The masked-norm route **cannot** prove the Union Lemma. The advantage is governed by cancellation across the disjointified terms, which a per-term operator bound discards. **The §4 stall is therefore a closed route, not an open lemma.** This is the reviewer's positive finding, verified under the suspicion protocol.
+> - **My miss:** §4's sentence "The two statements stand or fall together" asserted an equivalence. Only HML ⇒ UL was shown, and the converse fails, as this family demonstrates. §5's random search also did not find this *structured* family.
+> - The Union Lemma itself stays **open**. X6, the direct Fourier route, is where it goes next.
+
+**X6:**
+
+> **Accepted as X6a.** The following go in as proved or verified:
+> - the exact type identity;
+> - the fragmentation bound: the tight Union Lemma whenever K ≤ poly(m), the first structural sufficient condition beyond m ≤ n/4;
+> - the N = 4 exhaustive result: the per-block factor equals N^{1.5} exactly.
+>
+> The reviewer proposes one more item before the pause, X7: the per-block extremal problem E⁻(N)/N^{1.5}. It decides whether tensor unions falsify the tight Union Lemma. It needs the author's go.
+
+**X7:**
+
+> **Miss (mine, a method miss):** I expected the MILP to close N = 16. It did not (gap 45 vs 88). The exact-φ knapsack relaxation, not pre-registered, is what decided N = 16. That is recorded here as a change of method during the run.
+
+> **Accepted as X7b, restricted to N ≤ 16.**
+> - The knapsack relaxation is recorded as the method that closed N = 16. The MILP timeout is recorded as a method miss, not a result.
+> - The −1-rectangle theorem (area ≤ N/2) goes in as proved: ours, elementary.
+> - X8 (an analytic knapsack aimed at ρ(N) < 1 for all N ≥ 8, or a ρ(32) > 1 witness) is named for after the pause, on the author's go only.
+> - The reviewer's X8 priors, on record: bound closes for all N 40 / ρ(32) > 1 witness 25 / undecided 35.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -376,3 +432,27 @@ Nothing else.
   - **Podolskii–Prior's recursive blocky discrepancy survives up to alternation depth o(n/log n)**.
 - **C, the SAT-algorithm route** (Impagliazzo–Paturi–Schneider; Chen–Santhanam–Srinivasan; Alman–Chan–Williams). The gap is **scale** (n^{1+ε} wires or subquadratic bottom gates, against any polynomial) and **target** (the route yields NEXP-type functions, not IP2).
 - **Outcome: X3a, restricted.** The lemma under the lemma is a blocky-matrix measure whose loss across alternations is additive. The end state in item 1 is refined accordingly: L0(IP2) is known for alternation depth o(n/log n) and open above it.
+
+**8. X4–X7: the Union Lemma** (`X4_additive_loss_report.md` … `X7_per_block_extremal_report.md`).
+- **X4 (X4b).**
+  - The multiplicative step in Podolskii–Prior's Theorem 45 is that each layer-i query is charged all earlier opposite-value coverage.
+  - The additive repair needs the **Union Lemma**. Even with it, coverage grows Fibonacci-fast across alternations, which gives a threshold of ≈ 0.36n, with **re-absorption** as the residual.
+  - The ODD-MAX-BIT∘AND kill test failed for the *uniform* measure (Disc_U ≥ 1/4). It does refute any depth-independent bound via arbitrary-distribution discrepancy.
+- **X5 (X5b).**
+  - The γ₂ route dies: the complement of m block-Equalities has γ₂ ≈ 2^m, yet zero IP2 advantage.
+  - Lemmas S, T and T′ (ours, elementary).
+  - **The Hadamard masking lemma is false** (the reviewer's counterexample, verified). With 2-bit block Equalities, ‖H∘∏(J − q_l)‖ = 5^{n/4} while Adv(IP2, U) = 0. So the operator-norm route cannot prove the Union Lemma.
+- **X6 (X6a).**
+  - The exact identity Adv = 2^n·Σ_τ ⟨1_{A_τ}, \hat{1_{U_τ}}⟩.
+  - The fragmentation bound m·√K·2^{1.5n} (ours, proved).
+  - The stall is **cross-type cancellation**.
+- **X7 (X7b, restricted to N ≤ 16).** The per-block tensor factor ρ(N) = (N + E⁻(N))/N^{1.5}:
+
+| N | E⁻(N) | ρ(N) | method |
+|---|---|---|---|
+| 4 | 4 | 1.000 | exhaustive (exact) |
+| 8 | 13 | 0.928 | exhaustive over 21,146 column families; MILP optimal (exact) |
+| 16 | 45 or 46 | [0.953, 0.969] | search lower bound; exact-φ knapsack upper bound (proved < 1) |
+| 32 | ≥ 121 | [0.845, 1.061] | search; analytic knapsack (open) |
+
+  - Also proved (ours, elementary): the maximum all-(−1) rectangle of Sylvester H_N has area N/2.
