@@ -104,3 +104,13 @@ The ruling: the reading "weight substitutes for at most one fold, and IP2 needs 
 ## Formal record
 
 Untouched. `formal/` and `appendix_M_formal_system.md` are unchanged since b88c18b.
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X1a.** The third fabrication is recorded as caught. Reading the math images, not the summary, is the practice. The misses stand as written: Flag S's "may be refuted" is mine, and the (c) swap is the reviewer's.
+
+1. **L1 is the attempt's result.** "Every poly-size THR∘THR circuit has sign-rank 2^{o(n)}" (Chattopadhyay–Mande §8). Its status is two-sided: 2^{Ω(n^{1/4})} is attained, and a 2^{Ω(n)} example would refute it. It is the smallest open lemma the program has produced at any layer that meets all three of these conditions:
+   - it is stated by the field;
+   - it would settle a named fold statement (IP2 ∉ THR∘THR);
+   - it has a named necessary sub-step (L0, lower bounds for decision lists of exact thresholds).
+2. **The fold measure at this layer is the sign-rank exponent, not Boolean depth.** Chattopadhyay–Mande's F_n has three Boolean nestings and linear THR∘THR size, so heavy weights absorb Boolean nesting outright. The exponent runs 0 (up to THR∘MAJ) → [1/4, 1) (THR∘THR, if L1) → 1 (IP2). This is an observation that gives the nesting reading a candidate referent *conditional on L1*, and nothing more.
