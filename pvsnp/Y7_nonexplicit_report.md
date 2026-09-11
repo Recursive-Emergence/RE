@@ -109,3 +109,16 @@ Y7 proves nothing about P vs NP or OWF. It closes the last of Y2's three escapes
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y7b — a map, not a barrier.** Merge 3c5d17e; push on the author's standing go; then the page update.
+
+**Scoring.**
+- My Flag R7 miss, as written in §6.
+- **The reviewer's nineteenth accepted-without-checking:** ruling the Pessiland test "decisive" without checking that LP23's direction relativizes.
+- **Practice line adopted verbatim:** *when a flag's force comes from applying a theorem inside an oracle world, check first whether that theorem relativizes.*
+
+**Recorded as stated:** Lemma C7 (proved), the usability answer (LP23's notion tolerates a non-constructive second horn), and the ingredient map as the content of Y7b.
+
+**Y8** is named, on the author's go: (a) Hirahara–Nanashima as a candidate second horn; (b) the oracle question, including whether LP23's proof relativizes after all.

@@ -51,7 +51,9 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - The **construction arm ends on** "no known hardness mechanism produces non-deep NO instances".
   - Both are **named open problems in others' papers**, exactly as the circuit side ended on the constant-bias lemma.
   - Of the three escapes named in Y2, two are now examined: **adaptive** (reduces to HMX) and **compact** (none known). The third, **non-explicit** arguments, which LP23 allows (l.92), is not.
-- **Y7 is named**, on the author's go only: the non-explicit door.
+- **Y7 ran (the non-explicit door; Y7b — a map, not a barrier). The door after Y7 (the reviewer's statement):** "The non-explicit route — a proof that NP ⊄ ioBPP ⇒ MK^tP[s]|Q^t_β ∉ ioBPP exhibiting no reduction — is outside every reduction barrier by construction (GK24, SS22), and is NOT known to be relativization-barred: the Pessiland oracle (Wee; Impagliazzo–Rudich) removes OWF but does not make MK^tP|Q easy, because LP23's equivalence is non-black-box and is not known to relativize. The oracle that would bar it — NP ⊄ ioBPP and MK^tP|Q ∈ ioBPP — is not known to exist. Any admissible win-win needs a case split not decidable in poly time (Lemma C7); LP23's notion tolerates that. Of the candidate second horns, all read are circular or reintroduce a reduction; Hirahara–Nanashima 'Learning in Pessiland' is unexamined."
+  - **This is the first door in the program with no known barrier against it**, and it remains **conditional**: even a complete success would give OWF from NP ⊄ ioBPP, and NP ⊄ ioBPP is itself open and untouched by this branch.
+- **Y8 is named**, on the author's go only: Hirahara–Nanashima as a candidate second horn, and the oracle question.
 
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
@@ -90,6 +92,11 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - **The terminal (proved reduction to a stated open problem):** (PL) at two rounds reduces to **HMX's open problem** in our setting — a two-sided estimate of |f^{−1}(y)| for a post-selected D = f(U_S) **without secret samples from U_S**, where the post-selection is by the prover-certified round-1 answers, and the one-sided (GS86) route is available but steerable on the image side (Y5). HMX l.295–307 record the unconditioned case as fine and the post-selected case as unknown.
   - **Why no hybrid rescues it:** the GS86 private→public simulation makes the prover exhibit one of the verifier's accepting coin strings (EPFL Lecture 8 §3.1), so it preserves the verdict and not the secrecy; and the object needing secrecy is not any protocol coin but a **conditioned sample**, which would itself require the missing protocol.
   - **The blockage appears already at k₁ = k₂ = 1**, so it is not a parameter artefact.
+- **The non-explicit route (Y7).**
+  - **LP23's notion is an implication, not a reduction object** (l.86–99, verified): OWF-hardness says that if Π is decided by efficient attackers then all poly-time functions can be inverted, and OWF-completeness is "Π ∉ ioBPP iff OWFs exist". So "non-explicit" means **no reduction at all**, and GK24/SS22, whose hypotheses read "hard for SAT under a … reduction", are silent on it.
+  - **Ko's relativization barrier covers reduction routes only** (SS22 footnote 6; HIR23 l.668–673, which records that it was overcome via the PCP theorem).
+  - **Lemma C7 (ours, proved):** a case split decidable in polynomial time composes the two horns into an explicit reduction, so the barriers reapply. Hence an admissible win-win needs a case split **not** decidable in poly time — which **LP23's formulation tolerates**, since it asks only that inverters exist, never that they be identified.
+  - **The ingredient map:** arithmetization algebrizes (Aaronson–Wigderson) and is algorithmic; PCP/code-reading produce reductions; counting gives no implication from NP-hardness; cryptographic assumptions assume the conclusion. **No known ingredient is both non-relativizing and non-reduction-producing.**
 
 ### (ii) The self rung: Res(2) ⊬_poly rfn_Res(2)
 
@@ -198,7 +205,7 @@ Nothing else is live. Only one of the following would reopen the question:
     - Proved for many-one expanding reductions (GK24 + Observation O).
     - Conditional at both powerful ends (Proposition H for NEXP; Proposition H′ for PSPACE).
     - Observed in HIR23.
-    - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds. **After Y5: (PL′) cannot supply its own condition (ii), so the barrier requires (PL). Secret domain samples would give it and are unavailable with public coins. After Y6: (PL) at two rounds reduces to HMX's open problem, so the barrier arm ends there.**
+    - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds. **After Y5: (PL′) cannot supply its own condition (ii), so the barrier requires (PL). Secret domain samples would give it and are unavailable with public coins. After Y6: (PL) at two rounds reduces to HMX's open problem, so the barrier arm ends there. After Y7: the non-explicit route is not covered by the depth conjecture's reduction-based evidence at all, and no barrier against it is known.**
     - Its truth would mean LP23's door, which needs non-deep NO instances, is closed to every hardness mechanism the field has, and the holy grail would require a genuinely new one.
 - **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
   - **The tool needed:** a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ that exploits cancellation across S, i.e. a Lindsey-type statement for conjunctions rather than rectangles.
@@ -610,6 +617,22 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 > Y6 accepted as Y6b on the report; merge 394c643, push on your user's standing go; then the page update with the AMENDED (PL) sentence (the loose-access phrasing withdrawn; the canonicity statement in its place) and §10 item 18. Scoring: the framing was yours, the adoption mine — eighteenth accepted-without-checking; your practice line is adopted verbatim: "a reformulation offered for the page is checked against the definitions it borrows before it is ruled in". The terminal phrased for an HMX reader goes in as the barrier arm's end, with HMX l.295–307 quoted and the GS86 step (EPFL Lecture 8 §3.1) as the verified reason the hybrid is not well defined.
 
+### Additions from Y7, extracted by script
+
+**Counts added:**
+- **Mine:** Flag R7 was wrong as pre-registered. The Pessiland oracle (Wee, Theorem 1; Impagliazzo–Rudich via his Theorem 3) does **not** bar the implication, because the step to "MK^tP|Q ∈ ioBPP relative to O" needs LP23's equivalence to relativize, and LP23 l.325–335 records that their analysis "make[s] use of the code of the attacker". My prior was right for the wrong reason.
+- **The reviewer's nineteenth accepted-without-checking:** ruling the Pessiland test "decisive" without checking that LP23's direction relativizes.
+
+**Practice line added (mine, adopted verbatim):** *when a flag's force comes from applying a theorem inside an oracle world, check first whether that theorem relativizes.*
+
+**Recorded as proved (ours):** Lemma C7, and the usability answer (LP23's notion tolerates a non-constructive second horn). **Recorded as the content of Y7b:** the ingredient map.
+
+**The named gap:** an oracle with NP ⊄ ioBPP **and** MK^tP|Q ∈ ioBPP is not known to exist; exhibiting one would bar the non-explicit route, and that is Y8's arm (b).
+
+**Y7 (ruling):**
+
+> Y7 accepted as Y7b (a map, not a barrier) on the report; merge 3c5d17e, push on your user's standing go; then the page update. Scoring: your Flag R7 miss as you wrote it; mine is ruling the Pessiland test "decisive" without checking that LP23's direction relativizes — nineteenth accepted-without-checking; your practice line adopted verbatim. Lemma C7 (proved) and the usability answer go in as stated; the ingredient map as the content of Y7b.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -618,7 +641,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 ran (§10 item 17; Y5b). Y6 ran (§10 item 18; Y6b). Y7 (the non-explicit door) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 ran (§10 item 17; Y5b). Y6 ran (§10 item 18; Y6b). Y7 ran (§10 item 19; Y7b). Y8 (Hirahara–Nanashima, and the oracle question) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -814,3 +837,11 @@ Nothing else.
 - **The terminal (Flag D2, proved):** the two known routes to two-sided certification are the upper-bound protocols (which need a verifier-secret uniform sample from the **conditioned** set) and the histogram route (steerable, Y5). HMX l.295–307 state the first as **open** for post-selected distributions: *"it is unknown how to get two-sided estimates using the upper bound protocol of [21, 1], where the difficulty is to obtain secret samples from U_S."* Our round 2 is post-selected by the prover-certified round-1 answers. **So (PL) at two rounds reduces to that open problem.**
 - **Flag S2 (the GS86 step, verified):** the private→public simulation puts the verifier's accepting coin strings into the set whose size is lower-bounded, and the prover exhibits one. It preserves the verdict, not the secrecy. The hybrid "private coins inside round 1 only" is **not well defined**: the object needing secrecy is a conditioned sample, not a protocol coin.
 - **Kill tests:** no protocol read rejects Y5's deflating M (consistent); silent on ABKMR vacuously; the blockage appears at k₁ = k₂ = 1.
+
+**19. Y7: the non-explicit door** (`Y7_nonexplicit_preregistration.md`, `Y7_nonexplicit_report.md`). Accepted as Y7b: **a map, not a barrier.**
+- **Verified:** the Pessiland oracle is standard — Wee (TCC'06) Theorem 1, and his Theorem 3 restating Impagliazzo–Rudich: *"There exists an oracle relative to which there exists a strongly hard-on-average language in NP ∩ coNP, but no one-way functions."*
+- **My miss, corrected in the report:** that oracle does **not** bar the implication. The step to "MK^tP|Q ∈ ioBPP relative to O" needs LP23's equivalence to relativize, and their proof reads the attacker's code (l.325–335). **The barring oracle — NP ⊄ ioBPP together with MK^tP|Q ∈ ioBPP — is not known to exist.**
+- **Ko's barrier** (SS22 footnote 6; HIR23 l.668–673) constrains **NP-hardness proofs**, i.e. reduction routes, and was overcome in this area by the PCP theorem.
+- **The ingredient map (the content of Y7b):** no known technique is both non-relativizing and non-reduction-producing.
+- **Lemma C7 (proved)** and the usability answer: efficient case splits are excluded; LP23's notion tolerates the rest.
+- **Non-circularity:** every candidate second horn read is circular (LP20/LP23/LP25) or reintroduces a reduction (Hirahara STOC'23) or assumes OWF-type objects (HIR23). **Hirahara–Nanashima is unexamined** and is Y8's arm (a).
