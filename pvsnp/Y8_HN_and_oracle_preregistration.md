@@ -62,3 +62,26 @@ Not reused: "hidden ρ" (Y3); "no off-sample rows", "(1+ζ) inflation" (Y4); "th
 - Reviewer: Y8b 45 / Y8c 30 / Y8a 25.
 - Mine: **Y8b 40 / Y8c 25 / Y8a 15, with 20 on a fourth outcome the reviewer's list does not contain: "HN is circular *and* the barring oracle is not constructed here" — i.e. arm (a) fails and arm (b2) stalls at the self-reference step, leaving the door open and unbarred exactly as Y7 left it.** Flag O is the reason: the one relativized construction in this area gives meta-complexity *hardness*, not easiness.
 - **The reviewer is asked to rule on whether that fourth outcome is admissible**, since on my reading it is the most likely single outcome and the reviewer's Y8b presumes the oracle gets built.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go. **Y8d is admissible**, coded as proposed: HN circular **and** the barring oracle not constructed here, so the door stays open and unbarred as Y7 left it. **Priors** moved to mine: Y8b 40 / Y8c 25 / Y8d 20 / Y8a 15.
+
+**The ruling also asks that Y8d's content be stated now**, since Flag H already contains it. It is stated as Lemma D below, **to be recorded in the report whichever outcome lands**.
+
+### Lemma D (no dichotomy shortcut through a learning/compression second horn)
+
+*Stated at pre-registration from verified quotes; to be re-checked and recorded in the run.*
+
+Suppose an argument for `NP ⊄ ioBPP ⇒ MK^tP[s]|Q^t_β ∉ ioBPP` has the dichotomy shape: **either** MK^tP|Q is average-case hard (hence OWF, by LP20/LP23), **or** a learning/compression object of the HN23 family exists. Then:
+
+1. **The second horn is the first horn's negation, not an alternative route.** HN23's Theorems 2.3, 2.4 and 2.10 state those objects' existence as **equivalent to ¬io-OWF**.
+2. **Converting it to the target is exactly the goal.** One would need "those objects ⇒ NP easy on average", and HN23 §1 (verified): *"The major open problem of ruling out Pessiland is equivalent to proving that there exists a heuristic algorithm that solves NP on average under the non-existence of a one-way function."*
+3. **Lemma C7 does not exclude HN** — their learners run in exponential time in computational depth, so the case split is not poly-time decidable. The exclusion is (1) + (2), not C7.
+4. **A correction to the reviewer's phrasing.** The ruling says an HN-based argument "could not supply Y7's needed ingredient anyway". That is right as stated about *ingredients*, but it must not be read as "a relativizing argument cannot establish the target": **Y7 found no barrier**, so whether the target needs a non-relativizing ingredient is **open**. The honest form: HN23 §4.2 (verified) says *"all the proofs in this work are relativizing"*, so an HN-based argument would prove the implication **relative to every oracle**; its success would therefore entail that **no barring oracle exists**, which is arm (b2)'s question. It is a coupling between the arms, not an impossibility.
+
+**Conclusion (to record):** no dichotomy whose second horn is an HN-family learning or compression object shortcuts the door — the second horn is Pessiland's negation, i.e. the goal itself. **So the route must be a direct non-relativizing, non-algorithmic proof of `NP ⊄ ioBPP ⇒ MK^tP|Q ∉ ioBPP`**, unless the run finds an HN theorem of a different shape (which would be Y8a).
+
+**Arm (b), as ruled.**
+- **(b1)** walk LP23's code-reading step with the oracle's description included; expected: the K-bound does not survive, so Y7 stands.
+- **(b2)** with Flag O recorded as **evidence that the barring oracle is hard to build**: HN22's oracle makes meta-complexity **hard** (GapMINKT^O ∉ pr-SIZE^O[2^{o(n/log n)}]) exactly where DistNP^O is easy — the opposite direction. **The expected stall, named:** Q^t_β is defined via **unbounded K relative to O**, so making MK^tP|Q^O easy while NP^O stays hard requires the oracle to answer K-questions about itself. If the attempt stalls there, the report must say **whether that is an obstruction or merely where this attempt stops.**
