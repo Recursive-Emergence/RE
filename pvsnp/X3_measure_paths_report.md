@@ -106,3 +106,11 @@ By Book's transfer, the general fold hierarchy needs a non-relativizing ingredie
 ## Formal record
 
 Untouched. `formal/` and `appendix_M_formal_system.md` are unchanged since b88c18b (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X3a, restricted.** Both misses of mine are recorded as written:
+- X2's "only known lower bound";
+- the X3b weight.
+
+The spec-clause (3) miss ("additive", where the literature's parameter is alternation) is **joint, and scored on both sides**.
