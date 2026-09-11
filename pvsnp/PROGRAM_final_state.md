@@ -74,7 +74,11 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - It is implied by **L1**: every poly-size THR∘THR circuit has sign-rank 2^{o(n)} (Chattopadhyay–Mande §8; 2^{Ω(n^{1/4})} is attained).
   - It implies **L0(IP2)**: IP2 has no polynomial-length decision list of exact thresholds. This is open.
   - L0(IP2) would follow from IP2 ∉ PMA^cc.
-- **Barrier status: no known measure survives Equality.**
+- **Sharpened by X3:** "IP2 has no polynomial-size exact-linear decision list of alternation depth ≳ n/log n."
+  - *Known regime:* Podolskii–Prior 2025, Theorem 45. If Disc_U(f) ≤ d and f is approximately balanced, then every ELDL of alternation depth k computing f has size Ω(k·d^{−1/(2k)}). For IP2 this is superpolynomial for k = o(n/log n).
+  - *Why it stops:* the recursion over alternation layers loses a multiplicative factor per layer.
+  - Podolskii–Prior also write: "for the related model of exact linear decision lists, no strong lower bounds are known".
+- **Barrier status: no known measure survives Equality** at unbounded alternation.
   - Sign-rank and discrepancy fail on Chattopadhyay–Mande's Equality list F_n.
   - Rectangle arguments fail because Equality violates the staircase lemma (CMMS Lemma 16).
   - What survives stops at linear length.
@@ -109,7 +113,7 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
-- **For (iv):** a communication measure separating short Equality lists (decision lists of exact thresholds) from IP2.
+- **For (iv):** a blocky-matrix measure whose loss across alternations is additive rather than multiplicative (X3). This sharpens "a communication measure separating short Equality lists from IP2".
 
 Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such.
 
@@ -285,6 +289,25 @@ The verbatim records follow, extracted by script from the phase documents. The s
 > - the reviewer's: the "necessary" direction slip;
 > - mine: the X2b weight.
 
+
+### Additions from X3, extracted by script
+
+**Counts added.**
+- **Me:** X2's "only known lower bound" line and the X3b weight.
+- **Joint, scored on both sides:** spec clause (3), "additive", where the literature's parameter is alternation.
+
+> - *mine:* the X3b weight (55). The surviving measure was in the literature, and X2's search missed it. X2's "only known lower bound" line is corrected here.
+
+> - *both sides:* the spec's "additive" clause (3). The one measure that works is additive only within alternation blocks. The spec should have asked about alternation, and the literature had already made that its parameter.
+
+**X3 (ruling):**
+
+> **Accepted as X3a, restricted.** Both misses of mine are recorded as written:
+> - X2's "only known lower bound";
+> - the X3b weight.
+>
+> The spec-clause (3) miss ("additive", where the literature's parameter is alternation) is **joint, and scored on both sides**.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -339,3 +362,17 @@ Nothing else.
 - the reviewer's (c) repair swap (X1) and "necessary" slip (X2);
 - my Flag S wording (X1) and X2b weight (X2).
 - The third web-summary fabrication (Amano 2020's exponents) was caught by reading the page's math images instead.
+
+**7. X3: four paths toward the missing measure** (`X3_measure_paths_report.md`; the spec as sharpened: exponential-scale, polynomial on Equality-type gates, additive over the list, small on F_n).
+- **A, Equality-oracle communication** (Chattopadhyay–Lovett–Vinyals; Pitassi–Shirley–Shraibman; Göös–Harms–Riazanov).
+  - It dies as a cost measure **by scale, not by containment**. An exact-threshold query is one Equality-oracle call, whose 1-set is a blocky matrix, but oracle cost is at most n + 1 on every function.
+  - The **blocky-matrix object survives**.
+- **D, sign-rank inside THR∘THR.** No 2^{Ω(n)} example is known; the best is 2^{Ω(n^{1/4})} (CM). **L1 survives.**
+- **B, the list restatement.** Candidates were tested in the order EQ → F_n → IP2:
+  - row patterns die on EQ;
+  - cost measures die by scale;
+  - sign-rank dies on F_n;
+  - additive rectangles die on EQ;
+  - **Podolskii–Prior's recursive blocky discrepancy survives up to alternation depth o(n/log n)**.
+- **C, the SAT-algorithm route** (Impagliazzo–Paturi–Schneider; Chen–Santhanam–Srinivasan; Alman–Chan–Williams). The gap is **scale** (n^{1+ε} wires or subquadratic bottom gates, against any polynomial) and **target** (the route yields NEXP-type functions, not IP2).
+- **Outcome: X3a, restricted.** The lemma under the lemma is a blocky-matrix measure whose loss across alternations is additive. The end state in item 1 is refined accordingly: L0(IP2) is known for alternation depth o(n/log n) and open above it.
