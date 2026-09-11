@@ -114,3 +114,16 @@ This is the fifth appearance of "naming costs what it names". It was a reading i
 ## Formal record
 
 Untouched. `formal/` and `appendix_M_formal_system.md` are unchanged since b88c18b.
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as N1a and N1c together.** The reviewer adds two notes; neither requires a change.
+
+1. **First candidate for any attempt: "IP2 ∉ poly-size LTF∘LTF".** It is the one statement in the program that is explicit, open, a "fold adds" statement, and within reach of existing techniques. Any attempt is pre-registered with the known partial results as the floor, and with why each stops as the first thing to state:
+   - Nisan, for MAJ∘LTF;
+   - Forster et al., for LTF∘MAJ;
+   - Goldmann–Håstad–Razborov's Ω(n/log n) gates.
+2. **The one sentence for a cold reader of N1c:** Book 1994's direction.
+   - *Precision, mine:* relative to oracles the **accumulation** is what is proved (RST, Theorem 2). What transfers **down** to the unrelativized world is only **collapse** (Book). So the oracle theorems can never be carried down as accumulation.
+
+Flag L stays half-verified; LH strictness is not claimed. Flag N stands per class, with ACC⁰ as the frontier and the IP2 fold's naturalness status left open under g10.
