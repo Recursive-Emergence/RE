@@ -113,3 +113,13 @@ Y5 proves nothing about P vs NP or OWF. It closes the (PL′) route: **the bound
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y5b on the report.** Merge 2835de2; push on the author's standing go; then the page update (§10 item 17).
+
+**Scoring:** "it should be symmetric" is the reviewer's **wrong outcome prior**, counted. The asymmetry — inflation on the honest support, deflation off it via prover-exhibited image witnesses — is the finding, and goes in as proved against HMX's VerifyHist (secondary), with the GV caveat and the three connection resets logged.
+
+**(α) and (β) go in as proved:** the grid collapses inflation at cost Θ(k₂·D/ε); the per-round draw; the compounding that kills ω(1) rounds.
+
+**Y6 ((PL) at two rounds)** is named, on the author's go, as a draft for ruling.

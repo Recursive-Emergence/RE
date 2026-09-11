@@ -42,7 +42,8 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   4. **"Hiding is depth" is the evasion mechanism**, consistent at both ends. LP22 evades by producing deep outputs. Proposition H (a conditional sketch) says SS22's NEXP queries must be deep unless NEXP ⊆ BPP^NP ⊆ Σ₃^p.
 - **Y3 ran (the adaptive question; accepted as Y3b). The door's address after Y3 (the reviewer's statement):** "An NP-level reduction to LP23's OWF-complete problem must be adaptive (or non-explicit or compact). Non-adaptive reductions at gap ω(log n) are barred (SS22); at gap O(log n) the window is open from both sides (proved: a barrier there would give NEXP ⊆ AM ∩ coAM). Bounded-round adaptive reductions are barred only if SS22's Lemmas 21–22 relativize to certified approximate-count gates — approximate-count lowness for AM — which is open. Unbounded adaptivity is PSPACE-hard (ABKMR). Every known NP-hardness instance is deep (LP22; HIR23 under witness encryption; H, H′ conditionally), and for many-one expanding reductions depth is forced unless NP ⊆ coAM (GK24 + Observation O)."
 - **Y4 ran (the lowness lemma at two rounds; Y4b, then the accounting check Y4b′). The door after Y4 (the reviewer's statement):** "A bounded-round adaptive reduction at gap ω(log n) is barred if (PL′) holds: (i) margin β ≥ β_SS22 + log(1 + 16k₂A/ε), i.e. adaptivity k₁ = O(β/log n) bits; (ii) monotonicity of relativized Lemmas 21–22 — steering only inflates, Merlin cannot under-prove on verifier-random points (depends on Goldreich–Vadhan, SS22 [24], not yet read); (iii) robustness against coin-adaptive in-window oracles (Merlin commits after seeing the public rows; H5 covers fixed oracles) or an SS22-Thm-18-style conversion. (PL′) is weaker than (PL) for small k₁; for k₁ ≫ β/log n, Lemma B's tightness shows no argument of this shape closes without (PL). Reach A = (r + log k)^{k₁} is the quantitative measure of adaptivity; the barrier's scope is 'few bits of adaptivity'."
-- **Y5 is named**, on the author's go only: close (PL′).
+- **Y5 ran (close (PL′); Y5b). The door after Y5 (the reviewer's statement):** "The bounded-round adaptive barrier requires (PL): canonical (prover-independent) approximate counts on image-membership witnesses in an AM protocol with prover-steerable queries. The (PL′) route reduces every other condition to a parameter bound but cannot supply (PL) on the image side, because a two-sided entropy estimate certifies the image by prover-exhibited preimages (HMX VerifyHist; GV unread) and steered rows can lie off the canonical image with no honest mass to average against. Secret domain samples would fix it (Fortnow / Aiello–Håstad) and are unavailable in the public-coin setting."
+- **Y6 is named**, on the author's go only: (PL) at two rounds, as a question in interactive proofs.
 
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
@@ -72,6 +73,10 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - **(PL):** canonical certified counting, open.
   - **(PL′):** margin plus monotonicity plus coin-adaptive robustness. It is weaker than (PL) when k₁ = O(β/log n).
   - **A source inconsistency is recorded:** SS22's printed Lemma 22 disagrees with its cited protocol [25] (Goldwasser–Sipser blocks overclaims) and with its own Claim 1.
+- **(PL′) is closed (Y5).**
+  - **Proposition 16′ (ours, proved):** a random grid at scale L collapses deviations of size D except with probability D/L. The cost is Θ(k₂·D/ε), drawn per round after the commitment, and it compounds, so it dies at ω(1) rounds.
+  - **The asymmetry (ours, proved against HMX's VerifyHist; secondary, GV unread after three connection resets):** inflation lives on the honest support and Lemma B bounds it; deflation lives off it, because the image side is certified by **prover-exhibited** preimages. An explicit robust M shifts every output-row answer by up to r bits.
+  - So **(PL′)(ii) needs (PL) on the image side**, and the barrier stays ⟸ (PL).
 
 ### (ii) The self rung: Res(2) ⊬_poly rfn_Res(2)
 
@@ -180,7 +185,7 @@ Nothing else is live. Only one of the following would reopen the question:
     - Proved for many-one expanding reductions (GK24 + Observation O).
     - Conditional at both powerful ends (Proposition H for NEXP; Proposition H′ for PSPACE).
     - Observed in HIR23.
-    - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds; (PL′)(ii) awaits Goldreich–Vadhan, and (PL′)(iii) is open.
+    - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds. **After Y5: (PL′) cannot supply its own condition (ii), so the barrier requires (PL). Secret domain samples would give it and are unavailable with public coins.**
     - Its truth would mean LP23's door, which needs non-deep NO instances, is closed to every hardness mechanism the field has, and the holy grail would require a genuinely new one.
 - **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
   - **The tool needed:** a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ that exploits cancellation across S, i.e. a Lindsey-type statement for conjunctions rather than rectangles.
@@ -566,6 +571,18 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 > Accounting check accepted as Y4b′; merge 29265a3, push on your user's go; then the page update. Scoring: my (a) and (b) premises were wrong — sixteenth and seventeenth premise misses; the check was worth running because it produced Lemma B and (PL′), but the priors I put on it were mine and wrong. Direction ruling: I agree with §6.1 — the GS reading (overclaims blocked per entry, underclaims limited on average) is the consistent one, since it is what [25]'s protocol does and what Claim 1's inequality needs; record SS22's printed direction as a SOURCE INCONSISTENCY (printed Lemma 22 vs cited protocol vs own Claim 1), your §0.1 correction withdrawn, and your miss restated as "trusted a printed inequality over the cited source's protocol" — with the practice line that when a printed inequality and the cited protocol disagree, the protocol wins and the disagreement is logged.
 
+### Additions from Y5, extracted by script
+
+**Counts added:** the reviewer's expectation that the coarse grid "should be symmetric" is a **wrong outcome prior**, counted. The asymmetry is the finding: inflation sits on the honest support, where Lemma B's Markov argument applies; deflation sits off it, through prover-exhibited image witnesses.
+
+**Recorded as proved (ours):** Proposition 16′ and its cost Θ(k₂·D/ε); the per-round draw; the compounding that kills ω(1) rounds; the image-side asymmetry with its explicit M.
+
+**Source status logged:** Goldreich–Vadhan (SS22's [24]) unread after three connection resets, with Goldreich's textbook not freely reachable and Watson's survey failing TLS verification. Arm (ii) is settled against HMX's VerifyHist, **secondary**, with the caveat that GV's protocol could differ on the H ≥ h side.
+
+**Y5 (ruling):**
+
+> Y5 accepted as Y5b on the report; merge 2835de2, push on your user's standing go; then the page update (§10 item 17). Scoring: "it should be symmetric" is my wrong outcome prior — count it; the asymmetry (inflation on the honest support, deflation off it via prover-exhibited image witnesses) is the finding and goes in as proved against HMX's VerifyHist, secondary, with the GV caveat and the three resets logged. (α) and (β) go in as proved (the grid collapses inflation at cost Θ(k₂D/ε); per-round draw; compounding kills ω(1) rounds). Then Y6 on your user's go, draft for ruling.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -574,7 +591,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 (close (PL′)) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 ran (§10 item 17; Y5b). Y6 ((PL) at two rounds) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -755,3 +772,11 @@ Nothing else.
   - **Lemma B (proved; tight):** inflation ≤ A/δ, with A = (r + log k)^{k₁}.
   - **(PL′):** (i) margin k₁ = O(β/log n); (ii) monotonicity (needs Goldreich–Vadhan, unreachable this run); (iii) coin-adaptive robustness.
   - **The source inconsistency** in SS22's printed Lemma 22 is logged.
+
+**17. Y5: close (PL′)** (`Y5_close_PLprime_preregistration.md`, `Y5_close_PLprime_report.md`). Accepted as Y5b.
+- **Ruling (2) answered:** in HMX's VerifyHist, **neither** side of the two-sided entropy estimate is verifier-sampled. The preimage test and the image test are both Goldwasser–Sipser lower bounds on prover-exhibited witnesses (HMX l.505–530, verified). Two-sided estimates by the Fortnow / Aiello–Håstad upper bound need secret domain samples, unavailable here (HMX l.300–307).
+- **Proposition 16′ (ours, proved):** for ϕ_{L,θ}(s) = θ + L·⌈(log(|Γ|/s) − θ)/L⌉ and |log s − log t| ≤ D, Pr_θ[ϕ_{L,θ}(s) ≠ ϕ_{L,θ}(t)] ≤ D/L. Collapsing the output row's k₂ answers forces L ≥ 16k₂D/ε, so the window cost is **Θ(k₂·D/ε)**: polynomial for inverse-polynomial advantage, and affordable only at constant ε with k₂ = O(1).
+- **The grid is drawn per round after that round's commitment**, the reach does not reset, and the costs compound, so the argument dies at ω(1) rounds. The kill test passes: silent on IW98's n stages.
+- **The asymmetry (ours, proved).** Lemma B bounds inflation **into existing** honest queries. The image test admits steered rows lying **off** the canonical image, where |Im f_{2,B}| ≤ A·|Γ| is unbounded relative to a small canonical image and no honest mass exists to average against. Explicit robust M: round 2 asks prefix_c(ρ) at answers ≥ a − 1 and prefix_{c′}(ρ) below; Merlin's claimed histogram passes both tests and shifts every sampled answer by c′ − c, up to r.
+- **Conclusion:** (PL′) reduces every other condition to a parameter bound but needs (PL) on the image side. **The bounded-round barrier stays ⟸ (PL).**
+- **Caveat (g8):** proved against HMX's VerifyHist; Goldreich–Vadhan's Lemma 21 protocol is unread.
