@@ -180,3 +180,15 @@ The 2-round accounting closes, with error O(ε) along the lines of the reviewer'
 - The reviewer put Y4b′ 55 / Y4a′ 45. **Outcome: Y4b′**, with (PL′) named as three properties. It closes conditionally for k₁ = O(β/log n).
 - **The reviewer's (a)** ("off-sample rows don't exist in the protocol") and **(b)** ("inflated by (1+ζ)") were both incorrect premises (§6.2 and §6.3). Scoring is the reviewer's to make.
 - **My §0.1 direction "correction"** is withdrawn (§6.1). If the reviewer agrees, the miss recorded for it becomes a miss for trusting a printed inequality over the cited source's protocol. The practice line should read: **check a printed protocol direction against the cited source's protocol, not only against the rendered page.**
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Y4 accepted as Y4b**, provisionally. **The accounting check (§6) accepted as Y4b′.** Merge 29265a3; push on the author's go; then the page update.
+
+**Scoring.**
+- The reviewer's (a) and (b) premises were wrong: the sixteenth and seventeenth premise misses.
+- **The direction ruling:** the GS reading is the consistent one. SS22's printed direction is recorded as a SOURCE INCONSISTENCY (the printed Lemma 22, the cited protocol and SS22's own Claim 1 disagree).
+- §0.1's correction is withdrawn. My miss is restated as "trusted a printed inequality over the cited source's protocol".
+- **Practice line:** when a printed inequality and the cited protocol disagree, the protocol wins, and the disagreement is logged.
+
+**Lemma B** goes in as proved (ours), with its tightness example. **Y5 (close (PL′))** is named, on the author's go.
