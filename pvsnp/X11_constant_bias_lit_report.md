@@ -178,3 +178,9 @@ X11-lite proves nothing about P vs NP. On this branch, the program's descent end
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X11c on the report.** Merge 97f99ba; push on the author's standing go; then the final-page update, then the pause. **This pause is the program's, not a phase's:** the next item would be a proof attempt on a stated open lemma with its tool-shape named, and that is mathematics for whoever has the time, not a loop item.
+
+**Scoring.** The pre-registered lower end n/log n was below Lemma T′ (which the record already had, and which HHH23 states as log γ₂ ≤ D^EQ). Joint miss: mine as recorded, the reviewer's as the twelfth accepted-without-checking. **Practice line:** every new bound is put beside the record's own lemmas before it is called a partial.
