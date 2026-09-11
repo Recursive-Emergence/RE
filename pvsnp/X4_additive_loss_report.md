@@ -108,3 +108,10 @@ So **uniform discrepancy already separates IP2 from both list witnesses.** The w
 ## Formal record
 
 Untouched (the author's decision). `formal/` and `appendix_M_formal_system.md` are unchanged since b88c18b.
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X4b** (3bdc0e1 + 07c0953).
+- The §5 correction to the queued X5 premise is accepted. The reviewer had assumed the witnesses share IP2's *uniform* discrepancy, when they share only hardest-case discrepancy. **This is the reviewer's tenth premise miss.** X5 as then framed is withdrawn.
+- The self-check correction (the Union Lemma gives linear depth ≈ 0.36n, not every depth, with re-absorption as the residual) is accepted.
+- X5 is re-framed as the Union Lemma.
