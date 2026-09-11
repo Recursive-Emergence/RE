@@ -47,7 +47,7 @@ Method: greedy removal of the blocky set maximizing the gain in |Adv(C)|. Each s
   - The theorem is stated for **any** 0/1 matrix, so it applies to IP2 (mod 2), not only to Integer Inner Product (the function of their separation).
 - **X7's theorem:** IP2's largest −1 rectangle has area N/2, and its largest +1 rectangle has area N.
 - **Hence:**
-  - covering IP2's −1 set (α ≈ N²/2, β = N/2) needs ≳ (N²)/(√(N/2)·2N) = √(N/2)/… = Ω(2^{n/2}) blocky sets;
+  - covering IP2's −1 set (α ≈ N²/2, β = N/2) needs ≳ 2·(N²/2)/(√(N/2)·2N) = √(N/2) = Ω(2^{n/2}) blocky sets;
   - covering the +1 set (β = N) needs Ω(2^{n/2}) as well.
 - So a monochromatic C of either sign, with |C| ≈ 2^{2n−1}, needs m = 2^{Ω(n)}. ∎ (The constants are not optimized.)
 
@@ -56,7 +56,7 @@ Method: greedy removal of the blocky set maximizing the gain in |Adv(C)|. Each s
 - **Exact:** Adv(IP2, C) = Σ_{S⊆[m]} (−1)^{|S|}·Adv(IP2, ∩_{j∈S} q_j), with ∩_{j∈S} q_j blocky, each term ≤ 2^{1.5n} (Lemma T).
 - **Tests (as ruled):**
   - *Block-Equality family:* by X5–X6, Adv(C) = 2^n, so Adv(U) = 0. The 2^m terms cancel to exact balance.
-  - *AND family:* the terms are the subcube rectangles {x_S = y_S = 1}, with Adv = 2^{n−|S|}·2^{|S|}… summing to Adv(C) = 3^n (computed).
+  - *AND family:* the terms are the subcube rectangles {x_S = y_S = 1}. On each, IP2 = |S| + IP2(rest), so Adv(∩_{j∈S} q_j) = (−1)^{|S|}·2^{n−|S|}. The alternating sum is Σ_S 2^{n−|S|} = 3^n, with no cancellation: every term enters with the same sign (also computed).
 - **The stall:** a bound of poly(m)·2^{1.75n} needs the 2^m-term alternating sum to cancel down to poly(m) terms' worth.
   - This is the reviewer's expectation: the same cross-type cancellation as X6, now written as the inability to bound the high-order terms of ∏(J − q_j) without inclusion–exclusion.
   - The covering bound (§3) controls only the *monochromatic* extreme. **A bias version of Pitassi–Shirley–Shraibman's max-rect argument is the named missing lemma:** a lower bound on m in terms of |Adv(IP2, C)| rather than |C|.
