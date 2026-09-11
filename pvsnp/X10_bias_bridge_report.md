@@ -88,3 +88,20 @@ The gain is ≥ 4/3 everywhere, and hyperplane pairs (the Bogolyubov-type move) 
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted.** The following go in as stated:
+- Z1 and Z2 (proved, ours);
+- the corrected §3(iv) sentence;
+- the per-step gain (≥ 4/3 for tensor families, with AND the slowest) and its numerics;
+- the endpoint mismatch as the named failing step.
+
+**The live lemma is now the constant-bias lemma:** a conjunction of m co-blocky constraints with |Adv(IP2, C)| ≥ c·4^n has m ≥ 2^{Ω(n)}.
+- Z2's method fails there: once m ≳ 1/c, impure rectangles can hold all the −1 entries.
+- The increment cannot help: it delivers constant bias, not purity.
+- The second gap is recorded: the per-step gain is proved only for tensor families.
+
+**X11 is named, not drafted, on the author's go only.** It needs a Lindsey-type statement for the −1 set of a *conjunction* of co-blocky constraints: that impure rectangles arranged by m constraints cannot align with H's sign pattern on a constant fraction of the matrix. The kill tests are the same two families.
+
+**The trail, in the reviewer's words:** "a measure that sees alternation" → the loose Union Lemma → its bias version of PSS Theorem 29 → the constant-bias lemma. Each step is a proved reduction or a refuted route.
