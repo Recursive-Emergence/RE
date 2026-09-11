@@ -13,7 +13,7 @@
 - **The additive repair fails at one named step** (§4). The advantage bound of Lemma 44 holds for a *single* blocky system. A layer's queries form a *union* of blocky matrices; the union bound gives PP25's factor s_i, and inclusion–exclusion gives 2^{s_i}.
 - **The sharpened lemma under the lemma, the Union Lemma:**
   > for f with Disc_U(f) ≤ d, the advantage of f on any union of m blocky matrices is at most poly(m) · 2^{2n}·√d.
-  - With it, Theorem 45's recursion becomes additive, and L0(IP2) would follow at every alternation depth (§4).
+  - With it, the per-query charge disappears. The recursion still grows geometrically across alternations (a Fibonacci rate), so L0(IP2) would follow up to alternation depth ≈ 0.36·n, not at every depth. The residual obstruction is re-absorption (§4).
 - **A correction for the queued X5 frame** (§5): under the *uniform* distribution the three witnesses do **not** agree on discrepancy.
 
 ## 1. Sources read in this run
@@ -49,14 +49,22 @@ The proof of Theorem 45, as a numbered sequence (PP25 p. 20):
 
 **The repair (pre-registered: a sum, not a product).** Let U_i be the region newly covered by layer i, where the list outputs b, so f ≡ b there. Aim for
   P_i ≤ P_{i−1} + poly(s_i)·A, with A = 2^{2n+1}√d,
-where P_i is the coverage so far. This gives P_k ≤ k·P₀ + poly(s)·A. With balance, poly(s) ≥ Ω(d^{−1/2}/k): a depth-independent bound, polynomial in 1/d.
+where P_i is the coverage so far. The pre-registered hope was a depth-independent bound. As §4 shows, even the repaired recursion is not depth-independent.
 
 **Attempt.** U_i ⊆ ∪_{q∈layer i} q, and U_i is disjoint from the earlier coverage. Its b-entries are
   |U_i| ≤ |∪_q q ∩ f⁻¹(b)| = |∪_q q ∩ f⁻¹(¬b)| + Adv(f, ∪_q q),
 and |∪_q q ∩ f⁻¹(¬b)| ≤ P_{i−1}, since the ¬b-entries inside the union were all covered earlier, where the list is correct. This term is charged **once**, not s_i times. The additive form therefore holds **iff**
   **Adv(f, ∪_{q∈layer i} q) ≤ poly(s_i)·A.**
 
-**The first step where it fails to go through:** Lemma 44 bounds advantage on a *single blocky system*. The union of s_i blocky matrices is not a blocky system. The two known ways to bound it:
+**What the Union Lemma buys, and what it does not (ours, elementary; corrected in self-check before submission).**
+- Split the coverage by output value: B_i for the b-entries covered through layer i, N_i for the ¬b-entries.
+- A b-layer's ¬b-overlap lies in the ¬b-coverage N_{i−1}, since earlier b-layers cover only b-entries. So, with the Union Lemma, B_i ≤ B_{i−1} + N_{i−1} + poly(s_i)·A, and N_i = N_{i−1}; symmetrically for ¬b-layers.
+- Across alternations the totals grow like Fibonacci numbers: T_k ≤ F_{k+2}·poly(s)·A. With balance, T_k ≥ Ω(4^n), so poly(s) ≥ 2^{n/4 − (log₂φ)·k − O(1)} for IP2 (d = 2^{−n/2}).
+- This is superpolynomial for k ≤ (n/4 − ω(log n))/log₂φ ≈ 0.36·n.
+- **So the Union Lemma would move the threshold from o(n/log n) (Theorem 45) to ≈ 0.36·n: linear alternation depth, but not every depth.**
+- **The residual obstruction beyond that is re-absorption.** A later layer's queries may overlap *all* earlier opposite-value coverage and re-cover an equal amount of the other value. The advantage bound cannot prevent this, because it controls only the *difference* of the two counts inside a query.
+
+**The first step where the repair fails to go through:** Lemma 44 bounds advantage on a *single blocky system*. The union of s_i blocky matrices is not a blocky system. The two known ways to bound it:
 - **the union bound**, Adv(∪) ≤ Σ_q (¬b-overlap + A), which re-charges P_{i−1} per query. That is exactly step 4, the multiplicative loss.
 - **inclusion–exclusion**, Adv(∪) = Σ_{∅≠S} (−1)^{|S|+1}·Adv(∩_S q), which gives |Adv(∪)| ≤ (2^{s_i} − 1)·A.
   - *Ours, elementary:* an intersection of blocky matrices is blocky. {a(x) = b(y)} ∩ {a′(x) = b′(y)} = {(a, a′)(x) = (b, b′)(y)}.
