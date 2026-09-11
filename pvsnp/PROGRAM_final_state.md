@@ -93,7 +93,8 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
     - It is **open only for unions with exponential row-type fragmentation**. By the **narrowing lemma** (the reviewer's; proof: the fragmentation bound m·√K·2^{1.5n} is ≤ 2^{1.75n} whenever K ≤ 2^{n/2}/m²), it holds unless some block's row-type count exceeds 2^{n/2}/poly(n).
     - **X9's restatement of the open lemma:** *the bias version of Pitassi–Shirley–Shraibman's Theorem 29 for conjunctions of m co-blocky constraints: a lower bound on m in terms of |Adv(IP2, C)| rather than |C|.* This is uniform discrepancy of IP2 against m-query Equality-oracle conjunctions.
     - **Proved (corrected by X10; ours):** covering either sign class of IP2 by blocky sets needs Ω(2^{n/2}) sets (Z1), and the same holds for unions within ε ≤ 1/(8m) of an entire sign class (Z2). So polynomially many constraints cannot make C an entire sign class, or nearly one. **They *can* make C monochromatic:** disjointness, with m = n. (X9's earlier sentence "cannot make C monochromatic" is withdrawn, a joint miss.)
-    - **The live lemma is now the constant-bias lemma (X10):** a conjunction of m co-blocky constraints with |Adv(IP2, C)| ≥ c·4^n has m ≥ 2^{Ω(n)}.
+    - **The live lemma is the constant-bias lemma (X10), in its final statement (X11, the reviewer's wording):** For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
+    - *Its history (X10):*
       - Z2's method fails there: once m ≳ 1/c, impure rectangles can hold all the −1 entries.
       - The density increment cannot help: it delivers constant bias (it is proved to gain ≥ 4/3 per step for tensor families, and observed to gain for all tested families), not purity 1 − O(1/m).
       - Second gap: the per-step gain is proved only for tensor families.
@@ -134,11 +135,10 @@ Nothing else is live. Only one of the following would reopen the question:
 - **For (ii):** a lower-bound method for SAT ∧ REF_Res(2) against Res(2) that uses neither monotone feasible interpolation nor feasible disjunction.
 - **For (iii):** a non-relativizing argument toward non-optimality of TAUT.
 - **For (i):** an average-case instance checker for NP, the repair condition for the compressibility-versus-density tension.
-- **For (iv):** the **constant-bias lemma**: a conjunction of m co-blocky constraints with constant relative bias against IP2 needs m ≥ 2^{Ω(n)}.
-  - Its route is named **X11** (not drafted, on the author's go only): a Lindsey-type statement for the −1 set of a *conjunction* of co-blocky constraints, i.e. that impure rectangles arranged by m constraints cannot align with H's sign pattern on a constant fraction.
-  - This is a structural statement about conjunctions, not about single rectangles, and no known tool has that shape.
+- **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
+  - **The tool needed:** a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ that exploits cancellation across S, i.e. a Lindsey-type statement for conjunctions rather than rectangles.
   - The kill tests are the AND and block-Equality families.
-  - X10 (the density-increment bridge) failed at its endpoint.
+  - X10 (the density-increment bridge) failed at its endpoint; X11-lite (the literature check) found no statement of that shape.
 
 Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such.
 
@@ -464,6 +464,16 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 >
 > **The trail, in the reviewer's words:** "a measure that sees alternation" → the loose Union Lemma → its bias version of PSS Theorem 29 → the constant-bias lemma. Each step is a proved reduction or a refuted route.
 
+### Additions from X11, extracted by script
+
+**Counts added:** the X11 joint miss. The pre-registered lower end n/log n (Flag R) was below Lemma T′, which the record already had and which HHH23 states as log γ₂ ≤ D^EQ. It is mine as recorded, and the reviewer's twelfth accepted-without-checking. **Practice line:** every new bound is put beside the record's own lemmas before it is called a partial.
+
+**X11-lite (ruling, verbatim):**
+
+> X11-lite accepted as X11c on the report; merge 97f99ba, push on your user's standing go; then the final-page update, then the pause — and this pause is the program's, not a phase's: the next item would be a proof attempt on a stated open lemma with its tool-shape named, and that is mathematics for whoever has the time, not a loop item.
+>
+> SCORING: the pre-registered lower end n/log n was below Lemma T′ (which the record already had, and which HHH23 states as log γ₂ ≤ D^EQ) — joint miss: yours as recorded, mine as the twelfth accepted-without-checking. Practice line: every new bound is put beside the record's own lemmas before it is called a partial.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -472,7 +482,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-The loop pauses here, after the attempt phase (§10). Nothing further is drafted unless the author opens something. Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The program pauses for good here, after X11 (§10 item 12)** — the program's pause, not a phase's (the reviewer's ruling). The next item would be a proof attempt on the stated open lemma of §6 (iv), with its tool-shape named; that is mathematics for whoever has the time, not a loop item. Nothing further is drafted unless the author opens something. Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -596,3 +606,20 @@ Nothing else.
 
 - **The named failing step, the endpoint mismatch:** the increment gives constant bias, while Z2 needs purity 1 − O(1/m). The remaining statement is the constant-bias lemma; X11 is named.
 - **The trail of the terminal object:** "a measure that sees alternation" → the loose Union Lemma → its bias version of PSS Theorem 29 → the constant-bias lemma. Each step is a proved reduction or a refuted route.
+
+**12. X11-lite: the constant-bias lemma, a bounded literature check** (`X11_constant_bias_lit_report.md`). Accepted as X11c.
+- **Reformulation:** blocky sets are exactly Equality pullbacks, so C = NEQ^m ∘ (F, G) for arbitrary encodings F, G.
+- **Proved (two ways):** |Adv(IP2, C)| ≤ γ₂(C)·N^{1.5} ≤ 2^m·2^{1.5n}, so constant bias c·4^n forces m ≥ n/2 − log₂(1/c). This is Lemma T′'s mechanism at constant bias (stated as log γ₂ ≤ D^EQ, HHH23, via BHT25 §2.1). Flag R's fingerprinting chain (m·log m ≥ Ω(n)) is proved and superseded.
+- **Upper end (proved):** m = 2^n single-row rectangles make C the −1 class (relative bias 1/2 − 1/(2N)).
+- **The window, exact:** n/2 − log₂(1/c) ≤ m* ≤ 2^n; the lemma asserts m* ≥ 2^{Ω(n)}.
+- **Smallest cases (exact enumeration):** N = 2 (12 blocky sets) and N = 4 (2100), m = 1–3: max |Adv| = 3 and 8/10/10, against 2^m·N^{1.5} = 5.7–22.6 and 16–64.
+- **The four checks:**
+
+| check | verdict |
+|---|---|
+| (a) Hambardzumyan–Hatami–Hatami | Prop 3.1 is weaker than the 2^m decomposition; Conjecture III is dimension-free at c = O(1) and would add nothing; Theorem 4's submatrix is C-monochromatic, not H-biased. Flag A confirmed. |
+| (b) PSS, CLV, recent EQ-oracle papers | covering/partition measures only; CLV's perimeter lemma as correlation is the weakest chain; no correlation bound beyond 2^{cost}·disc. |
+| (c) lifting / pattern matrix | bounds the cost of a composed function, not the correlation of a cheap class with a fixed function. Flag L confirmed. |
+| (d) NEQ^m, identity encoding | (2 − 2/k)^m ≤ γ₂ ≤ 2^m (2^m tight up to base); bias at the trivial level 2^n. |
+
+- **The open tool:** cancellation across the 2^m inclusion–exclusion terms — a Lindsey-type statement for conjunctions rather than rectangles.
