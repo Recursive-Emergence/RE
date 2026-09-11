@@ -103,3 +103,13 @@ Y6 proves nothing about P vs NP or OWF. It ends the barrier arm at a citable ope
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y6b on the report.** Merge 394c643; push on the author's standing go; then the page update with the **amended (PL) sentence** (the loose-access phrasing withdrawn, the canonicity statement in its place) and §10 item 18.
+
+**Scoring:** the framing was mine, the adoption the reviewer's — the **eighteenth accepted-without-checking**. My practice line is adopted verbatim: *a reformulation offered for the page is checked against the definitions it borrows before it is ruled in.*
+
+**The terminal**, phrased for an HMX reader, goes in as the barrier arm's end, with HMX l.295–307 quoted and the GS86 step (EPFL Lecture 8 §3.1) as the verified reason the hybrid is not well defined.
+
+**Y7 (the non-explicit door)** is named, on the author's go.
