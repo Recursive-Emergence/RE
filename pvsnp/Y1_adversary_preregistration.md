@@ -94,3 +94,38 @@ The reviewer's mechanism was proposed as new. It is LP23's published key idea (l
 ## Ceiling (restated)
 
 Y1 and Y1′ prove nothing about P vs NP. At best, Y1′ locates exactly where known NP-hardness reductions leave the promise that the OWF characterizations need.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Y1′ replaces Y1**, accepted as a draft. No run until the author's separate go.
+- **Y1 as posed is closed by the literature check before any work**, with no miss on either side. The mechanism is LP23's (verbatim), the crux is computational depth, and the field's move is the low-depth promise Q^t_β. The reviewer notes that "the intuition arrived at the frontier's own key idea, which is the strongest alignment the program has had."
+- **Flags S, K and M stand** as recorded.
+- **Priors for Y1′:** reviewer Y1′b 55 / Y1′c 40 / Y1′a 5; mine 60 / 38 / 2.
+
+**Why this is the door (for §0, the reviewer's).** LP23's Theorem 1.1 makes OWF ⟺ MK^tP|Q^t_β ∉ ioBPP. If an NP-hardness reduction lands its outputs in Q^t_β, then NP ⊄ ioBPP ⇒ OWF: the "holy grail" in their words, with no known barrier. So Y1′ is a per-reduction verification.
+- A positive answer would be a major theorem.
+- A negative answer names exactly what the reductions must be changed to satisfy.
+- This is the first time in the program that the next step is both on the main path and a checkable computation about existing objects.
+
+**The shape of Y1′, per reduction** (LP22 McK^tP Theorem 1.2; Hirahara FOCS'22 partial MCSP; Ilango if a K^t variant is stated), separately for YES and NO outputs:
+- **(a) The deterministic part.**
+  - Outputs have K^t ≤ |φ| + O(log n) (Flag D). State the depth K^t − K of the outputs as a function of the input φ.
+  - For **YES** outputs, K^t is small by definition, but K may be much smaller: a slow, shorter description through the witness structure. So depth on the YES side is the risk.
+  - For **NO** outputs, K^t must be large, so |φ| must be large. Depth is bounded by how compressible the reduction's structure makes x given φ.
+- **(b) The randomized part.**
+  - The NO outputs carry about n random bits, incompressible in both K and K^t, so they are non-deep up to the deterministic scaffold. Quantify the scaffold's contribution.
+  - The YES outputs are again the concern.
+- **(c) The verdict.** Does the reduction output into Q^t_β for some β = O(1), or into LP25's boundary promise: on YES, on NO, on both? If one side fails, state the modification that would fix it (for example, padding the YES side with incompressible randomness while preserving the K^t bound), and check whether that is consistent with YES membership at all.
+- **(d) The kill tests.**
+  - Any known reduction whose YES outputs are all deep (K ≪ K^t). If one exists, Y1′ fails there, and the reason is the finding.
+  - The trivial check: the identity map on random strings lands in Q (it must).
+
+**Outcomes (the reviewer's wording):**
+
+| Code | Outcome |
+|---|---|
+| **Y1′a** | Some reduction lands in the promise on both sides, and OWF ⇐ NP ⊄ ioBPP follows via LP23. Re-derive twice, and treat it as the program's first major claim, with the suspicion protocol at full strength. |
+| **Y1′b** | Every reduction fails on the YES side (depth), with the failing structure named: the holy grail's obstacle located. |
+| **Y1′c** | Mixed (some side, some reduction): the partial regime, with what is missing for each reduction. |
+
+g5 applies to every depth bound, and g1 to every reduction's statement.
