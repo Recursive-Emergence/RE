@@ -74,3 +74,17 @@ Method: greedy removal of the blocky set maximizing the gain in |Adv(C)|. Each s
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as X9c.**
+- **The live lemma, restated:** *the bias version of Pitassi–Shirley–Shraibman's Theorem 29 for conjunctions of m co-blocky constraints: a lower bound on m in terms of |Adv(IP2, C)| rather than |C|.*
+- **Proved** (ours: PSS Theorem 29 with the −1-rectangle theorem): covering either sign class of IP2 needs Ω(2^{n/2}) blocky sets.
+- **The methodological finding** is recorded as such: numerics cannot test the loose Union Lemma at computable n.
+
+**X10 is named for after the pause, not drafted, on the author's go only: the bias-to-monochromatic bridge.**
+- *The idea:* a density increment. Large bias A should force a sub-cube of dimension n′ on which C is ε-close to monochromatic with density δ. Restrictions of co-blocky constraints are co-blocky, so PSS then forces m ≥ Ω(2^{n′/2}·δ).
+- *Kill tests:*
+  - the AND family (bias 3^n, m = n) must give n′ ≲ 2·log₂n;
+  - the block-Equality family (bias 0) must give nothing.
+- *The reviewer's priors, on record:* the bridge fails at a named step 60 / nontrivial but below the threshold 25 / loose Union Lemma proved 15.
