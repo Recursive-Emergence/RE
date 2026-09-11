@@ -40,7 +40,8 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   2. **Immune.** The top threshold s = n − 2 (OWF-complete, LP23 Theorem 1.1, second bullet) and LP25's boundary promise. Both have a K-gap of O(log n), exactly the gap at which SS22 shows randomized reductions reach NEXP.
   3. **Open.** Adaptive BPP-Turing reductions (allowed by LP23's hardness notion, l.86–99), non-explicit arguments (l.92), and compact reductions (none known).
   4. **"Hiding is depth" is the evasion mechanism**, consistent at both ends. LP22 evades by producing deep outputs. Proposition H (a conditional sketch) says SS22's NEXP queries must be deep unless NEXP ⊆ BPP^NP ⊆ Σ₃^p.
-- **Y3 is named**, on the author's go only: the adaptive question. SS22 calls it "an interesting open question", and it is now the holy grail's exact location.
+- **Y3 ran (the adaptive question; accepted as Y3b). The door's address after Y3 (the reviewer's statement):** "An NP-level reduction to LP23's OWF-complete problem must be adaptive (or non-explicit or compact). Non-adaptive reductions at gap ω(log n) are barred (SS22); at gap O(log n) the window is open from both sides (proved: a barrier there would give NEXP ⊆ AM ∩ coAM). Bounded-round adaptive reductions are barred only if SS22's Lemmas 21–22 relativize to certified approximate-count gates — approximate-count lowness for AM — which is open. Unbounded adaptivity is PSPACE-hard (ABKMR). Every known NP-hardness instance is deep (LP22; HIR23 under witness encryption; H, H′ conditionally), and for many-one expanding reductions depth is forced unless NP ⊆ coAM (GK24 + Observation O)."
+- **Y4 is named**, on the author's go only: the lowness lemma at two rounds.
 
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
@@ -58,6 +59,12 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - **Observation O (ours, proved, small):** for s ≤ n − 2 − β·log n, a reduction into MK^tP[s]|Q^t_β is a reduction into MKP with the same failure probability.
   - So Goldberg–Kabanets (APPROX/RANDOM 2024, Theorems 5–6) and Saks–Santhanam (CCC 2022, Theorem 3) bar many-one reductions with tiny error, and honest non-adaptive reductions at an ω(log n) gap. Both conclude NP ⊆ coAM.
   - Untouched: the top threshold s = n − 2, LP25's boundary promise (an O(log n) K-gap), and adaptive or non-explicit reductions.
+- **The adaptive question (Y3).**
+  - 2-round adaptivity breaks SS22's proof at the input of its Lemmas 21–22: a circuit C_f for the query map. Round-2 queries need approximate counts that only Merlin supplies.
+  - The missing lemma is approximate-count lowness for AM. Low(AM) = AM ∩ coAM covers languages only.
+  - The O(log n) window is proved open from both sides.
+  - Proposition H′ is proved conditionally: the BFNW range in ABKMR is deep unless PSPACE ⊆ BPP^NP.
+  - HIR23 (Huang–Ilango–Ren; NP-hardness of conditional K^t under witness encryption) has maximally deep NO instances (proved, under injectivity).
 
 ### (ii) The self rung: Res(2) ⊬_poly rfn_Res(2)
 
@@ -161,6 +168,13 @@ Nothing else is live. Only one of the following would reopen the question:
   - Since K^{poly}(x) ≤ |φ| + |ρ| + O(log n), condition 2 needs nearly |x| injected random bits that are witness-compressible on YES instances and incompressible on NO instances.
   - No reduction read is shaped this way. LP22 fails (2), and fails (3) by design.
   - **After Y2:** at thresholds s ≤ n − 2 − β log n, such a reduction, if many-one with tiny error or non-adaptive and honest, collapses NP into coAM (GK24/SS22, via Observation O). **So it must target the top threshold s = n − 2, or LP25's boundary, or be adaptive or non-explicit.**
+  - **After Y3:** bounded-round adaptive reductions are open, pending approximate-count lowness for AM. Unbounded adaptivity is PSPACE-hard for K (ABKMR).
+  - **Conjecture: hiding is depth** (the reviewer's statement). "NP-hardness of K^t-type problems requires deep instances."
+    - Proved for many-one expanding reductions (GK24 + Observation O).
+    - Conditional at both powerful ends (Proposition H for NEXP; Proposition H′ for PSPACE).
+    - Observed in HIR23.
+    - Open for adaptive reductions.
+    - Its truth would mean LP23's door, which needs non-deep NO instances, is closed to every hardness mechanism the field has, and the holy grail would require a genuinely new one.
 - **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
   - **The tool needed:** a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ that exploits cancellation across S, i.e. a Lindsey-type statement for conjunctions rather than rectangles.
   - The kill tests are the AND and block-Equality families.
@@ -518,6 +532,17 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 > Y2 accepted as Y2a-as-known on the report; merge 61a684e, push on your user's standing go; then the final-page update. Scoring: the Allender–Hirahara citation was mine from memory and wrong — fourteenth premise miss; GK24 is the source and Observation O is the record's own contribution (proved, ours, small). Proposition H stays a labelled conditional sketch with its two unverified items named. Then Y3 on your user's go.
 
+### Additions from Y3, extracted by script
+
+**Counts added:**
+- **My miss:** Flag S (a secret sample leaking in a coAM upper-bound protocol) was a wrong premise. SS22's coAM side is Corollary 26: flip the failure output of a public-coin protocol. The protocol was in a file already read in Y2.
+- **The reviewer's "answers as advice" mechanism is confirmed**, located in step (B).
+- No miss on the reviewer's side this round.
+
+**Y3 (ruling):**
+
+> Y3 accepted as Y3b on the report; merge f940ee9, push on your user's standing go; then the page update (§10 item 15, §3(i) door refined, §6, §7 with your Flag-S miss and my confirmed mechanism, no miss on my side this round). Then Y4 on your user's go, draft for ruling.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -526,7 +551,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; accepted as Y2a-as-known). Y3 (the adaptive question) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 (the lowness lemma at two rounds) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -688,3 +713,11 @@ Nothing else.
 - **The door:** barred / immune / open, as in §3's statement.
 - **Proposition H (conditional sketch; two unverified items: SS22's error constant, and the depth of its queries):** the O(log n)-gap NEXP reductions must query deep strings unless NEXP ⊆ BPP^NP.
 - **Citation correction:** the reviewer's fourteenth premise miss (§7).
+
+**15. Y3: the adaptive question** (`Y3_adaptive_preregistration.md`, `Y3_adaptive_report.md`). Accepted as Y3b.
+- **The named step:** SS22's Lemmas 21 (entropy estimation) and 22 (lower bound) take a circuit C_f for the query map (ρ, i) ↦ q_i(ρ). Under 2-round adaptivity the round-2 queries need J[γ] on the round-1 queries, which are approximate counts that only Merlin supplies. So the tested map becomes f_B.
+- **Needed:** Lemmas 21–22 relativized to certified approximate-count gates, with per-round perturbation, i.e. approximate-count lowness for AM. Low(AM) = AM ∩ coAM (Arvind's column) covers languages only. Open.
+- **Proved:** a barrier at any window within the tolerance of SS22's non-adaptive NEXP reduction would give NEXP ⊆ AM ∩ coAM. So the O(log n) window is open from both sides.
+- **Proposition H′ (conditional, proved from ABKMR's Theorem 18 and the KS bound):** unless PSPACE ⊆ BPP^NP, the BFNW range is deep by n/2 − O(n^{1/2}) on infinitely many lengths. This covers the distinguishing set, not every query.
+- **HIR23 (ePrint 2023/528):** under witness encryption, NP-hardness of conditional K^t, with a NO side at n − O(1), holds under black-box randomized many-one reductions. Under injectivity (Corollary 3.7), K(x | y) ≤ O(n^{1/2c}), so the NO side is maximally deep: the fourth instance of hiding as depth.
+- **Misses:** Flag S (mine; a wrong premise). The reviewer's mechanism is confirmed.
