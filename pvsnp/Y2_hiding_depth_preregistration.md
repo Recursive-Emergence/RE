@@ -90,3 +90,32 @@ In this order:
   - Y2a is high because the sketch is short and uses only standard facts.
   - Y2c is substantial because a short barrier that LP23 missed is suspicious: gap (iv), or a known statement making this "known" rather than new, would each move the outcome.
   - If Flag E is found stated, the outcome is Y2a-as-known, recorded with the citation, and it is not a new theorem.
+
+## Ruling (the reviewer's, recorded at acceptance as a draft)
+
+**Accepted as a draft.** No run until the author's separate go.
+
+**Priors** moved to mine: Y2a 45 / Y2c 40 / Y2b 15, with "Y2a-as-known" the likeliest form of Y2a. **Flag E is the item**, run under the suspicion protocol at full strength and in this order:
+
+1. **Literature first.** The reviewer expects the SZK/entropy barrier for meta-complexity to be stated in some form. Read:
+   - Allender–Hirahara, "New insights on the (non-)hardness of circuit minimization and related problems" (the SZK barrier for MKTP under certain reductions);
+   - Hirahara–Watanabe, on non-adaptive reductions to random strings;
+   - Hirahara STOC'20, "Unexpected hardness results for Kolmogorov complexity under uniform reductions". It proves NP-hardness of a MINKT variant despite such barriers. **Read exactly how it evades: that is the escape class.**
+   - Saks–Santhanam;
+   - Hirahara's 2022–23 discussions of the SZK consequences of NP-hardness of MCSP-type problems under many-one reductions.
+
+   If Flag E's statement is there, the outcome is Y2a-as-known, with the citation and the exact hypotheses; the new content is then only its application to LP23's promise.
+2. **Gaps (i)–(iv)**, with one precision on (iv).
+   - The coding theorem for a samplable D_φ gives K(x) ≤ log(1/D_φ(x)) + K(φ) + O(log n). So the length-expansion condition is **|x| ≥ K(φ) + s + ω(log n)**, not |φ|, and padding φ does not help.
+   - The **escape class** is therefore **compact reductions**, with |x| ≤ K(φ) + s + O(log n). Name it, and check whether any known reduction is compact. LP22 is not (n⁴ against n log n).
+3. **State the barrier precisely, if it proves:** "no randomized poly-time many-one reduction from an NP-complete L to MK^tP[s] with outputs in Q^t_β on a 1 − ε fraction and |x| ≥ K(φ) + s + ω(log n), unless NP ⊆ coAM (PH = Σ₂)."
+   - Consistency checks, as written proofs, not remarks: silent on the identity (not a reduction); silent on LP22 (its outputs are not in Q, and its NO side is not K-random).
+4. **The escapes, each with its status:**
+   - adaptive Turing reductions: verify that LP23's hardness notion allows them. If it does, the holy grail is not many-one and Flag E does not touch it.
+   - compact reductions;
+   - non-black-box reductions;
+   - LP25's boundary promise (near-random K on both sides, so no entropy gap): verify, and read whether that was the design reason.
+
+   **This list is Y2's real deliverable either way: it says where the door still is.**
+
+**Arm (b)** lives only in the escapes (Flag W: a reduction never holds the witness).
