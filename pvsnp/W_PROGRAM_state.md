@@ -138,7 +138,8 @@ Three premises that both the reviewer and I had been arguing from were struck ag
 | hubs plus arity-2 residual with small rows | W30.1 | proved (class) |
 | arity-2 with coarse rows, bounded coarse-triple multiplicity | W31.1 | proved (class) |
 | **all fan-in 2** | **W32.1: `c(D*)·N`** | **proved, unconditional (W34, bacbed4); proof-of-shape constant** |
-| arity `k ≥ 3` with coarse slices | -- | **open**; any W31-style bound is vacuous at `k = polylog N` |
+| arity 3 (W35, d782bb5) | string-to-input assignment plus split payment | **open, named**: capacity collisions among heavy strings' splits at shared payers (bounded multiplicity, about `16D*` per window) |
+| arity `k ≥ 4` with coarse slices | -- | **open**: hitting sets over `(k − 2)`-tuple keys; any W31-style bound is vacuous at `k = polylog N` |
 | **polynomial fan-in, general glue (Korten Problem 1 at depth 1)** | -- | **open** |
 
 **The adversary's toolkit as it now stands.** Wilson's clean-pin adversary with an extendability invariant (W28); counting over hints to choose `y` (W25-W29); pre-pinning hubs against the hint (W29); the protected set, an independent set whose coarse incidences are paid by partners with capacity `c = 1` (W32-A); random load-oblivious give-ups, whose losses multiply per window (W32-A §12). **Both sides' costs matter:** every device that removes values for extension removes strings for hosting (W30).
@@ -260,7 +261,8 @@ door (C_1): E^NP ⊄ SIZE[2^{o(n)}]  ⟹  Avoid ∈ FP^NP        [Korten; minima
           `-- Definition 9, depth 1:
                  W28.1 (small rows) · W29.2 (hub + unary) · W30.1 · W31.1 (bounded multiplicity)
                  W32.1: all fan-in 2, unconditional (W34 density count)
-                 OPEN: coarse slices at arity k (payment only) · the constant
+                 W35: arity 3 reduced to split-payment collisions (bounded multiplicity)
+                 OPEN: arity-3 collisions · arity >= 4 tuple-key hitting sets · the constant
 ```
 
 **The weakest arrow is the one from the black-box sub-line to the door**, and it is weak three times over. (1) Black-box lower bounds constrain one **technique** (stretching by oracle calls with glue), not `FP^NP`. (2) By Flag H7 they die under randomisation at this stretch. (3) Korten's Problem 1 asks for depth `d` against `log_α β`; **W24-W32 are all at depth 1**, and even a complete depth-1 answer at polynomial fan-in would be one instance of it. **Every result in §3.4 sits below that arrow.**
