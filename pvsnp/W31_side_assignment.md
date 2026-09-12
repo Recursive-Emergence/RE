@@ -108,3 +108,7 @@
 
 **Mine:** §1(a)'s "forced exclusions only help" (true on one side only; caught by the incidence data). **Reviewer's:** none new this round; its greedy-cascade warning about the proof is what produced the coin-then-repair decomposition.
 **Practice line: A GREEDY STEP THAT IS CORRECT IN CODE CAN BE UNPROVABLE -- SPLIT IT INTO INDEPENDENT RANDOMNESS PLUS A DETERMINISTIC REPAIR WHOSE DAMAGE YOU COUNT.**
+
+## §10. Remark under (C1), added on the reviewer's ruling -- the counted form of `p_cap`
+
+**Must-exclude is defined by COLLISION, not by size.** A row needs exclusion only if it cannot coexist with the other rows into its `u′`. The reviewer's size rule (rows larger than half the capacity) turns every projection row into an exclusion, which is the EXCL rule that loses to a zero-query Q at every hint. The failure is a maximum (one string, `y >> 1`, at every input), not the per-`(u, v)` sum a Markov step bounds; recorded as the reviewer's eleventh miss, in its words. **Counted bound.** Call a set of coarse rows into `u′` a **collision edge** if it does not fit. Then `p_cap(u′) ≤ Σ_{collision edges} β^{|edge|} ≤ #edges · β^{min edge size}`. For complementary halves the minimal edges are pairs, so `p_cap ≤ β²·C(D_in, 2)`. On projections (`D_in = 1`) there are no edges and `p_cap = 0`.
