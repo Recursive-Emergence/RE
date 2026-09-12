@@ -71,3 +71,12 @@ Outcomes:
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §5A. Amendment -- Flag A26 discharged (after the priors commit da60556, before any run)
+
+**Read from the committed pages** (W8 §2 quotes Definition 9 and Theorem 12's adversary verbatim; W12's statements via W14's summary line):
+- Definition 9: *"may choose at each step a DNF D over the variables {α_i}, and receive its value"*; *"the 'width complexity' of Q is the maximum width of a DNF it queries"*. Theorem 12's adversary extends `ρ : [N] → [M]` *"on at most w additional inputs"* per true term.
+- **So width counts inputs**, and a membership query `OR_x [α_x = v]` has width 1: **the membership model is Definition 9 at `w = 1`, and the DNF lower bounds transfer DOWN.** *One wording gap, recorded:* W8's model line says *"width-w DNF over the oracle's bits"*. If the variables are bits, `[α_x = v]` has width `n + 1`, and the transferred bound loses a `log N` factor. **Either way `q = Ω̃(N)` at `k = 1`**, so the reviewer's other horn ("W8.1's model is stronger than membership") does not hold.
+- **The `k = 1` endpoint is W12.2, not W8.1.** W8.1 is only the template `(C(x), h(x))`. W12.2 (one input per coordinate, arbitrary per-coordinate glue, `qw ≥ N/9`) covers general fan-in-1 glue -- **and more: coordinates may read DIFFERENT inputs, so W12.2 already reaches total fan-in `n + 2 = log N + 2` under the per-coordinate one-input restriction.** So for that structured class, `q = Ω̃(N)` holds at `k = Θ(log N)`, which is inside the line's `k = poly(n)` range.
+
+**Consequences, exactly as §2(b) registered.** F2 and F3 are **dead as tight forms** (they sit below `Ω(N)` at `k = 1`) and survive only as loose lower bounds. **The live question at the line's scale:** does `q = Ω̃(N)` survive when a window of `k = polylog N` inputs is read by **joint** glue, not per-coordinate projections? W12.2 is the per-coordinate case; W25.3 shows joint glue at `k = N` collapses `q` to `O(1)`. **Where between `k = log N` (joint) and `k = N` the collapse starts is the tradeoff.**
