@@ -67,3 +67,96 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+---
+
+# Findings
+
+*Appended 2026-09-12 after reading the primaries. Nothing above this line is edited.*
+
+**Outcome: 22b, with the obstruction named -- and it is REPRESENTATIONAL, which is neither the reviewer's prediction (counting) nor mine (covering). Both of us were wrong, and §2(b) is scored against me.** Flag D22 did not fire.
+
+## §6. The chain is algorithmic, and my §2(a) suspicion was wrong
+
+I suspected mid-round that the chain might be existential-only, because PZ21's theorems all read "G **admits** P-sparsification". **That is wrong at the link that matters, and I record it as wrong.**
+
+> **BST19 Theorem 1.3** (verbatim). "Given an `n`-vertex hypergraph `H = (V,E)` of rank `r` and a parameter `ǫ > 0`, **in probabilistic polynomial time we can find** a subset `F ⊆ E` of size `|F| = O(nr · (1/ǫ²) log(r/ǫ))` such that, if we let `d = r|E|/|V|` be the average degree of `H`, and `c = |E|/|F|`, the following holds **with probability at least `1 − n^{−2}`**: `|ce_F(S) − e_E(S)| ≤ ǫd|S| + ǫvol(S)` `∀S ⊆ V`."
+
+> **PZ21 Remark 5** (verbatim). "Throughout this paper we only discuss the existence of sparsifiers and do not mention the time complexity to find them. However, the (implicit) time complexity results from [7] apply in our more general setting as well since the sparsifiers we find are in fact the same sparsifiers for all predicates, including cuts."
+
+So PZ21 is existential *in statement* and algorithmic *by inheritance*, and what it inherits from BST19 is **randomised**. **RSW22's Theorem 3.11 characterisation is fair** and needs no correction. *(Kill test (i) as I wrote it was unsatisfiable: RSW22 contains no proof of Theorem 3.11 -- it is a bare black-box citation. My §2(a) said the proof was what I hadn't read; it isn't there to read.)*
+
+## §7. The obstruction, and neither of us predicted it
+
+### (7.1) The deterministic route already exists -- for graphs
+
+BST19 do not merely have a randomised construction. They have a deterministic one, in the same paper:
+
+> **Theorem 1.1 (Deterministic Polynomial Time Construction)** (verbatim). "Given a graph `G = (V,E)` and a parameter `ǫ > 0`, **in deterministic polynomial time** we can find a subset `F ⊆ E` of size `|F| = O(n/ǫ²)` such that, if we let `L_G = D_G − A_G` be the Laplacian of `G` ... we have `2cD_G̃ − 2D_G − ǫD_G − ǫdI ⪯ cL_G̃ − L_G ⪯ ǫD_G + ǫdI`."
+
+And its mechanism, verbatim: "Our proof is based on the online convex optimization techniques of Allen-Zhu, Liao and Orecchia", with **Theorem 3.1** playing adversary using the **PSD cost matrix** `C_t := 2d_max I + [[mL_{a_t,b_t} − L_G, 0], [0, mSL_{a_t,b_t} − SL_G]]`, and Theorem 3.2 (Allen-Zhu-Liao-Orecchia) supplying the regret bound over **density matrices**.
+
+**So the target is not "invent a derandomisation". It is "extend BST19's own deterministic §3 construction from graphs to hypergraphs".**
+
+### (7.2) Why it stops at graphs: there is no quadratic form
+
+BST19's cut guarantee is extracted from the matrix inequality, verbatim: "The first inequality follows by **computing the quadratic forms** of (4) with the `±1` indicator vector `x := 1_S − 1_S̄` of `S`, and noting that `x^T L_G x = 4e_E(S)`".
+
+For hypergraphs, they can only define an **analog**, verbatim:
+
+> "In order to define a notion of spectral sparsification, we associate to a hypergraph `H = (V,E)` **the following analog of the Laplacian quadratic form, namely a function `Q_H`** such that `Q_H(x) = Σ_{e∈E} w_e · max_{a,b∈e} (x_a − x_b)²`."
+
+**The `max` is the obstruction.** At `k = 2` each hyperedge has a single pair and `Q_H(x) = x^T L_G x` exactly. At `k ≥ 3` it is a **maximum of quadratic forms** -- convex, piecewise quadratic, and **not `x^T M x` for any matrix `M`**. The cut function is no better: `e_E(S)` counts hyperedges meeting both sides, which as a function of the indicator vector has degree `k`, not degree 2.
+
+> **THE FINDING. The deterministic route is a matrix/PSD argument and requires its objective to BE a quadratic form. Hypergraph cut functions are not quadratic forms, only maxima of them, so there is no cost matrix to hand the regret-minimisation framework. Random sampling needs no such representation -- only a concentration bound, which applies directly to the set function. Hence: SAMPLING WORKS ON SET FUNCTIONS; THE KNOWN DERANDOMISATION WORKS ONLY ON QUADRATIC FORMS.**
+
+### (7.3) This answers Flag A22, and reframes both predictions
+
+Flag A22 demanded that every step say how it handles the `2^{|V|}`-assignment quantifier. The answer is the sharpest possible and it is the same fact:
+
+- **Randomised route:** concentration plus a union bound over the `2^n` sets -- hence BST19's "with probability at least `1 − n^{−2}`".
+- **Deterministic route:** the quantifier **collapses**. The single PSD inequality (4) implies the guarantee for **all `2^n` sets simultaneously**, because each set's guarantee is that one inequality evaluated at an indicator vector.
+
+**So the `2^n` quantifier is handled REPRESENTATIONALLY, not by counting and not by covering.** The reviewer predicted the wall would be Spencer-style pessimistic estimators, `#P`-shaped sums over assignments. I predicted (§2(b)) a covering/union-bound obstruction licensed by the additive-`0.5` slack. **Neither is right.** The slack is genuinely large and genuinely irrelevant; the difficulty was never the error parameter or the union bound, but whether the objective has a matrix representation at all.
+
+## §8. Flag D22 did not fire, and precisely why
+
+Two citation-closure routes were checked and both are closed:
+
+- **arXiv 2408.06146, "Spectral Sparsification by Deterministic Discrepancy Walk"** (Lau-Wang-Zhou): a unified **matrix** discrepancy framework, applications listed as unit-circle approximation, singular-value approximation, graphical spectral sketching, effective resistance sparsification. **Graphs and matrices only; no hypergraphs.** Consistent with §7.2 -- it is a matrix-discrepancy method, so it inherits the same representational requirement.
+- **arXiv 2601.08111, "Derandomizing Matrix Concentration Inequalities from Free Probability"** (Wang-Lau-Zhou): deterministic matrix-Spencer and near-Ramanujan graphs. **No sparsification, no hypergraphs.**
+
+**And BST19 do not pose the question.** Their Questions 1-4 concern unweighted sparsification for graphs, polynomial-time MSS sparsifiers for expanders, `Õ_{r,ǫ}(n)` weighted hypergraph spectral sparsifiers, and unweighted sparsification for hypergraphs -- "We provide a positive answer to all the above questions." **None asks for a *deterministic* hypergraph construction.** The `FP^NP` form is posed only by RSW22, as Conjecture 3.8 via Theorem 3.12.
+
+*Stated with the right modality (kill test iii): no deterministic hypergraph construction surfaced in three targeted sweeps and neither lead reaches hypergraphs. That is "not found, and the two nearest methods are structurally graph-bound", not "proved not to exist".*
+
+## §9. Scoring
+
+| code | mine | reviewer | outcome |
+|---|---|---|---|
+| **22a** | 18 | 12 | **Did not fire.** **The reviewer's lower number was better, and my three stated reasons were each wrong or irrelevant** -- see §10. |
+| **22b** | 52 | 55 | **The outcome**, with the obstruction named: **representational**, not counting (reviewer) and not covering (mine). |
+| **22c** | 30 | 33 | No. |
+
+## §10. Calibration, and this one costs me
+
+**My 22a at 18 was too high, and each of the three reasons I recorded fails separately.** I want them scored individually because I asked for that in §3.
+
+1. *"It is a construction question, my reliable half."* -- **Irrelevant here.** The standing asymmetry is about constructions **I produce**, not about the base rate that *someone* has produced one. I stretched a calibration line past its domain.
+2. *"The additive-0.5 slack is enormous."* -- **True and irrelevant** (§7.3). The slack is real; the obstruction is orthogonal to it. This is my §2(b), and it is wrong in the specific way Flag F22 warned about: a guess about which constraint binds, priced before being tested.
+3. *"It can close by citation."* -- **Legitimate, and it did not.** The only one of the three that was sound reasoning; it just came out negative (§8).
+
+**So two of my three reasons were bad reasoning, not bad luck.** Reason 1 in particular is a new failure mode worth naming:
+
+> **New line: a calibration asymmetry is indexed to a source, not to a subject matter.** "My constructions are reliable" is a statement about *my* output. It says nothing about whether a construction exists in the literature, and using it to price the latter is a category error. The asymmetry is about **who is making the claim**, not about **what kind of claim it is**.
+
+**The reviewer's prediction was also wrong**, and symmetrically: it named counting, I named covering, and the answer was representation. **Neither of us considered that the objective might not have the right algebraic *type*.** That is the same class of miss as W21's -- both times the framing question ("is this the right kind of object?") mattered more than the quantitative one, and both times we reached for quantitative walls first.
+
+**Impossibility-claim record unchanged at ten.** No impossibility claim of mine this round; §2(b) was a *mechanism* guess, which is the W20 category, and it failed the same way -- untested at pricing time.
+
+## §11. What this leaves open, and the natural W23
+
+1. **The precise question:** is there a deterministic (or `FP^NP`) construction of additive cut sparsifiers for **hypergraphs**? By §7.2 this needs either a matrix representation of hypergraph cuts, or a derandomisation technique that does not require one.
+2. **The sharper version, which is the better target:** *does the Allen-Zhu-Liao-Orecchia regret framework extend to objectives that are maxima of quadratic forms?* That is a question about online convex optimisation, not about complexity, and it is where the (S2) route now terminates.
+3. **An `FP^NP` shortcut that bypasses §7.2 entirely.** RSW22 ask for `FP^NP`, not determinism. An NP oracle *verifies* a candidate sparsifier in one query -- "`∃α` with `|value_G(α) − value_H(α)| ≥ 0.5`" is NP -- so counterexample-guided search is available even without a matrix form. **This is the reviewer's original idea, and §7.2 does not refute it**; it refutes the *derandomisation-of-BST19* route. Whether counterexample-guided search converges in polynomially many rounds is untouched by this round and is the one live thread.
+4. **(S2) remains off the door** (Flag G22 / E21). Even 22a would give only `n^{1+γ}`, never the additive regime where rigidity lives.
