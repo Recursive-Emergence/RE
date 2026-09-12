@@ -48,3 +48,85 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+---
+
+# W28 Findings
+
+*Appended after the reviewer audited the corrected count and accepted Lemma W28.1. Nothing above is revised.*
+
+## §4. Ceiling
+
+**Definition 9 model (width-`w` DNF queries), deterministic, depth 1, `n′ = n`.** A structural theorem about black-box depth-1 templates. **Not Korten's Problem 1** (depth `d`), nothing randomised, nothing about P vs NP. **(H_t) is a worst-case-over-settings hypothesis**, including settings the adversary's own pins create. Relaxing it to an average case is the first thing a structured template would exploit, and that is where W14's coupling lives.
+
+## §5. Outcome against priors
+
+| code | mine / reviewer (reviewer later) | outcome |
+|---|---|---|
+| **28a** locality lemma and theorem | 50 / 40 (45) | **achieved -- Theorem W28.1, with the threshold corrected to `N/(D+1)`** |
+| 28b stronger hypothesis needed | 35 / 40 | -- |
+| 28c nothing | 15 / 20 | -- |
+
+The reviewer's proposed conclusion (`qw < N/2`) was wrong. The correction is in §1(iii), made **before** priors and accepted by the reviewer (its eighth miss, recorded in its words).
+
+## §6. Theorem W28.1 -- the hub-or-coarse dichotomy (headline)
+
+> **Theorem W28.1.** *In Korten's Definition 9 model, let a depth-1 template from stretch `n ↦ n+1` to `n ↦ n+2` have maximum input degree `D` (windows per input). For a hint `y`, let `t_y` be the largest forbidden set: over every window, every position, and every setting of the window's other positions, the number of values at that position giving `g = y`. If `D·t_y < 2N`, then `y` is valid and every deterministic back-mapping correct on `y` has* **`qw ≥ N/(D + 1)`**. *Hence a total depth-1 back-mapping with `qw < N/(D+1)` must have* **`t_y ≥ 2N/D` at EVERY hint `y`**: *its glue is coarse everywhere, or else `D ≥ N/(qw) − 1` (a hub).*
+
+*Proof.* **Adversary:** answer YES and pin a term iff it is consistent with the pins `P` and `P` plus the term is **clean** (no fully pinned window has `g = y`); otherwise answer NO.
+**(NO is sound.)** A consistent but non-clean extension contains a violated full window, so it is false on every `C` with `y ∉ range(C′)` extending `P`. An inconsistent term is false on every extension. Non-cleanness is monotone, so later pins keep earlier NO answers sound.
+**(Clean ⟹ extendable, `D·t_y < 2N`.)** Fill the free inputs in any order. When `u` is filled, only windows whose other positions are all set constrain it, each excluding `≤ t_y` values. So at most `D·t_y < 2N` values are excluded and a value remains. Cleanness is preserved throughout. With `P = ∅`, `y` is valid.
+**(Hosting.)** After `q` queries, `|P| ≤ qw`. A window is **almost-full** if all its positions but one are pinned. Each contains a pin, so there are `≤ qwD` of them, and `≤ qwD` free inputs lie in one. If `N − qw > qwD`, some free `u` lies in none. Then `P + (u := v)` is clean for Q's output `v`, whatever it is, hence extendable: `C` has `y ∉ range(C′)`, `v ∈ range(C)`, and every answer is honest. ∎
+
+**Corollary (random-like joint glue).** For random glue of fan-in `k`, `t = O(k log N / log log N)` and `D = O(k + log N)` with high probability, so **`qw = Ω(N/(k + log N))`**. That is F1's shape from W26, **now in Definition 9, at the line's scale**. *(The high-probability bounds are the standard Chernoff-plus-union estimates, checked numerically in §7, not written out in full here.)*
+
+**Consistency table.** Each known template is excluded by the right parameter:
+
+| template | D | t | lemma applies? | known result |
+|---|---|---|---|---|
+| control `(C(x), x&1)` | 1 | ≤ 1 | yes: `qw ≥ N/2` | W8.1: `N − 1` (stronger, bespoke) |
+| hub | N | -- | no (D) | W24: validity-first beats it by pre-pinning |
+| one-input-per-coordinate (W12.2) | small | ≈ N | no (t) | W12.2: `N/9`, by products |
+| W25.3 hypergraph (fan-in N) | N | -- | no (D) | total at 5 queries |
+
+## §7. Numerics and the executable check
+
+**Flag B28, exact `t` and `D` for random glue** (hint `y = 0`; tables uniform):
+
+| k | N | t | D | `D·t < 2N`? | N/(D+1) |
+|---|---|---|---|---|---|
+| 2 | 8 | 3 | 5 | yes (15 < 16) | 1.3 |
+| 2 | 16 | 4 | 5 | yes | 2.7 |
+| 2 | 32 | 4 | 5 | yes | 5.3 |
+| 2 | 64 | 4 | 5 | yes | 10.7 |
+| 2 | 128 | 6 | 7 | yes | 16.0 |
+| 2 | 256 | 6 | 11 | yes | 21.3 |
+| 3 | 8 | 4 | 4 | **no** (16) | 1.6 |
+| 3 | 16 | 6 | 8 | **no** (48 > 32) | 1.8 |
+| 3 | 32 | 7 | 6 | yes | 4.6 |
+
+**The hypothesis holds for fan-in 2 at every size tried and for fan-in 3 from N = 32.** `t` and `D` grow slowly, as predicted. *Not reached: N up to 1024, which the reviewer asked for; exact `t` at fan-in 3 is cubic in `2N` per window.*
+
+**Executable check of the proof.** The adversary was run against an aggressive Q: it places terms next to existing pins, to manufacture almost-full windows, and outputs the string most often forbidden by them. The final `C` was **built** by step (ii)'s greedy fill and verified: `y ∉ range(C′)`, output in range, every YES term satisfied, every NO query false. Random fan-in-2 glue, `qw` below `N/12`:
+
+| N | w | q | qw | result over 30 seeds |
+|---|---|---|---|---|
+| 64 | 1 | 5 | 5 | adversary wins 30/30 |
+| 64 | 2 | 2 | 4 | 30/30 |
+| 128 | 2 | 5 | 10 | 30/30 |
+| 256 | 3 | 7 | 21 | 30/30 |
+
+**The reviewer's game search at n = 3 was not run.** At N = 8 the bound is `qw < 1.3`, and fan-in 3 fails the hypothesis there, so the search is vacuous by Flag C28's own weighting. The executable check replaces it at sizes where the bound has content. **Recorded as a substitution, not hidden.**
+
+## §8. W14 cross-check (Flag F28)
+
+W14's four choices were: (1) a valid non-certifying hint, (2) a sparse free set, (3) forced values chosen after the hint, (4) hosts for the dangerous strings. **Under locality, (2) and (3) are unnecessary**: any clean pin set extends, there are no forced values, and the free set is everything unpinned. **(1) and (4) survive with explicit counts**: (1) through `t_y` (any `y` with `D·t_y < 2N` is valid and non-certifying), and (4) through the free input carrying no almost-full window (exists while `qw(D+1) < N`). **This matches the reviewer's advance prediction.** W14's dangerous strings are non-local objects: they exist only where (H_t) or (H_D) fails.
+
+## §9. Errors and misses
+
+**Reviewer's:** the min-over-sets radius (seventh miss); the `qw < N/2` threshold (eighth). **Mine:** none new in the proof; one substitution (§7, the vacuous game search replaced by an executable check), and the N up to 1024 numerics not reached.
+**Practice line: A DEFINITION QUANTIFIED OVER EVERYTHING IS USUALLY TOO STRONG FOR AN ADVERSARY THAT ONLY NEEDS WHAT IT CHOOSES** (radius over all sets vs clean sets), **AND A CONCLUSION QUANTIFIED OVER THE ADVERSARY'S CHOICES MUST ALSO SURVIVE THE OPPONENT'S** (hosting vs Q's aimed output).
+
+## §10. Next: W29 candidate, degree reduction by pre-pinning (the reviewer's, registered here, not run)
+
+If a template has `h` high-degree inputs, pin them **first**, to values chosen against `y`, and apply W28.1 to the residual template. This would extend §6 to **"either MANY high-degree inputs, or coarse glue"** and fold W24's validity-first in as the `h = 1` case. **The step that can fail:** pinning a hub may enlarge the forbidden sets of the windows through it, so (H_t) breaks, which is W14's coupling again. Positive control: hub (`h = 1`, residual `D = 1`). First test: two-hub.
