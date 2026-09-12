@@ -160,6 +160,66 @@ Standing record: ten consecutive wrong impossibility claims; my constructions ho
 
 **Priors on (A) unchanged** from B5.9 (mine 16/59/25; reviewer now 15/60/25).
 
+## §5D. Pre-registration AMENDMENT 4 -- lazy hosting, the single crux, and the commitment-count census -- committed BEFORE that census runs
+
+*Appended 2026-09-12. Revises nothing above, moves no prior. **Unlike §5A-§5C, two results are ALREADY SEEN and are disclosed here so this amendment is honest about what it knows.***
+
+**(D5.1) Results already seen -- both from runs pre-registered at §5B.10 and §5C.8, and run only after those amendments committed.**
+
+*The (A) kill test* (`w24_deferral.py`, single-query-form membership model, `n = 3`, **not** full Definition 9 DNF):
+
+| template | robust: certified / survives | naive: certified / survives |
+|---|---|---|
+| CONTROL(C,0) | 4 / 28 | 4 / 28 |
+| succ | 0 / 32 | 0 / 32 |
+| **hub** | **0 / 32** | **3 / 29** |
+| rand | 0 / 32 | 0 / 32 |
+
+**Hub is where host placement matters**: naive placement lets `Q` certify on 3 hints; robust (lookahead-3 damage-minimising) placement holds it to 0 -- the reviewer's predicted positive/negative control split. **Correction to my own earlier report**: I had told the reviewer "my negative control failed to be negative" because hub was inert in the *static* census. That was premature; hub is exactly the discriminating template in the *dynamic* game. Withdrawn. *Weight: a 3-hint gap on one template at `n = 3`, and "robust" is not a literal t-cover.*
+
+*The sparse census at `|F| = 2`* (labelled "the `δ ≥ 1/2` regime" when run -- **that label is WRONG and corrected here before commit: with `|F| = 2` every string has `|A| ≤ 2`, "0 or ≥ 2" collapses to "both or neither", and a t-cover with `t ≥ 2` is impossible; at `n = 3`, `√N ≈ 2.8 < t + 2`, so `δ ≥ 1/2` is degenerate for the cover. The reviewer caught it. The `D_F`/`U_F` measurements stand; the regime label does not.*): rand acquires a **dangerous string on one hint** (`D_F ≠ ∅`), and the near-dangerous tail rises sharply (`T(1)` = 0.75, 0.97, 1.81 for succ, hub, rand) -- **so the half-free census was optimistic, as C5.3 warned.** **But `U_F` stays empty on every template.** *This is the up-front framing with a pre-chosen sparse set, which lazy hosting (below) does not use, so it does not bear on the `δ ≥ 1/2` subsumption prediction.*
+
+**(D5.2) The reviewer retracts up-front hosting in favour of LAZY hosting.** Under (A) the adversary never hosts `D(y)` before `Q` runs. It maintains one invariant -- *"every string Q could name is hostable in some completion that respects validity and every answer given so far"* -- and hosts **on demand**. Order: `y` → **validity** (the one universal, `y`-dependent commitment: no `x` produces `y`) → `Q` runs, each query answered by the minimal commitment keeping the invariant → output hosted. **The reviewer also records "choose `y` last" as incoherent -- `Q` reads `y` as its input, so `y` is first by definition -- and counts it as its third miss this round.**
+
+**(D5.3) Consequences, recorded.** C5.4's dependency cycle is an artefact of up-front hosting and **dissolves under lazy hosting**: nothing `y`-dependent is committed beyond validity, which is the same for every strategy. C5.5's forced-side cascade is **void**: `D(y)` is never hosted up front. **`w24_deferral.py` already implements lazy hosting** -- it answers TRUE and commits only when `Q` queries a hostable candidate -- so D5.1's kill test is a lazy-hosting result.
+
+**(D5.4) THE SINGLE CRUX -- the reviewer's reduction.** The adversary answers TRUE whenever the queried set contains a hostable string (a *local* commitment); FALSE only when it is entirely unhostable (a *universal* commitment). If `U(y)` is empty, the only FALSE `Q` can extract is "is `y ∈ range(C′)`", which it already knows. **So choice (1) under lazy hosting reduces to: CAN `q` LOCAL COMMITMENTS MAKE `U(y)` NONEMPTY?** -- the tail-mass question at a polynomial threshold, the same residue as C5.6's mid-run-dangerous count. **Two cruxes become one, by reduction rather than by coincidence of hypotheses.**
+
+**(D5.5) The reviewer's three pre-registration points, with my audit.**
+
+- **(i) Is hostability decidable by the adversary's bookkeeping in poly time per query? -- MY AUDIT: THIS IS NOT A SCARCE RESOURCE.** A black-box query lower bound (Wilson Theorem 12; W8.1) uses an **unbounded** adversary. It is a proof device exhibiting a hard instance, not an algorithm that must run. Its bookkeeping need not be efficient. The question would matter only for a *constructive* adversary, which the theorem does not require.
+- **(ii) Is a TRUE answer's minimal commitment always one input? -- ONE for membership queries** (as in the harness). **For Definition 9 DNF queries, W16.1 §11.2 verbatim: "A width-w DNF term can name up to w/n preimages of P at once"** -- so **≤ w/n inputs** per TRUE answer, and the t-cover budget becomes **≤ (w/n)(q+1)**.
+- **(iii) The invariant's failure mode is `|U(y)| > 0` after some query**, and the tail mass is its price. Agreed.
+
+**(D5.6) The reviewer's prediction on `δ ≥ 1/2`, recorded.** Under lazy hosting there are no forced hosts to be disjoint from `Q`'s footprint, only validity, so **`δ ≥ 1/2` should NOT appear**. *"If it does appear in the data, that is evidence lazy hosting is missing something."*
+
+**(D5.7) The commitment-count census, pre-registered now.** Start all-free (`|U_0(y)| = |E(y)|`, W14's record); apply on-demand commitments in `Q`'s candidate order, each committing one input to one value; after each `t = 0..q`, measure **`U_t(y) = {v : no uncommitted input u admits C(u) = v given all commitments}`**. Robust and naive placement. **Report per template the maximum `|U_t|` over hints at each `t`, and whether `|U_t| > 0` ever occurs** (the invariant's failure). *Prediction (mine, before running): `|U_t| = 0` for all `t ≤ q` on succ and rand under both placements, and on hub under robust placement only -- because D5.1 already shows hub's naive failures.*
+
+**Priors on (A) unchanged** (mine 16/59/25; reviewer 15/60/25). **Routing: reviewer 35, mine 25.**
+
+## §5E. Pre-registration AMENDMENT 5 -- mask-share, a designed resisting template -- committed BEFORE it runs
+
+*Appended 2026-09-12. Revises nothing above, moves no prior. No mask-share computation has been run.*
+
+**(E5.1) Why `hub` failed to resist -- the reviewer's diagnosis, accepted.** Allowedness is a property of the **output map per input**: `v` is blocked at `x` iff `h(v, x) = y`. Input multiplicity cannot make many strings blocked at one input; only a **many-to-one** output map can, and sharing across inputs needs a **shared fibre**. That is the `(C,0)` control's mechanism, which is why it was the only nonzero row.
+
+**(E5.2) The reviewer's design, mask-share.** Group `G ⊆ F` of all but two free inputs: `h(v, x) = v AND M` (mask with `z` zero bits, `2^z`-to-one shared fibre). The two remaining inputs `a, b`: `h(v, a) = v XOR e_a`, `h(v, b) = v XOR e_b`, with `e_a ≠ e_b` unit vectors inside the masked positions. The XOR, not identity, is what keeps the hint non-certifying while the cascade is present.
+
+**(E5.3) MY AUDIT -- A TYPE ERROR in the design as stated.** `v` is a `C`-output (`n+1` bits); `h(v, x)` is compared against the hint `y`, a `C′`-output (`n+2` bits). The design then places **"y itself"** in the fibre and argues the hint is non-certifying because the XOR "keeps `y` allowed at `a` and `b`". **A hint is not a candidate output**, so that step is ill-typed. **Repair**: embed `h_x(v) = (…) << 1` into `n+2` bits and let **`v₀ := y >> 1`** play `y`'s role. The fibre structure then survives exactly: `{v : v AND M = v₀}` has `2^z` strings (when `v₀`'s low `z` bits are zero), `v₀ ⊕ e_a` and `v₀ ⊕ e_b` sit at `|A| = 1`, the rest at `|A| = 2`. **Non-certification must be re-derived with correct types, not inherited** -- and it does hold: non-fibre strings are allowed at every `G` input, and every fibre string is allowed at `a` or `b`.
+
+**(E5.4) A property that makes this cheap and exact.** mask-share is a **single-call** template -- `C′(x) = h_x(C(x))` depends only on `C(x)`. So admissibility is **per-input independent**: a partial assignment is extendable iff every pinned value avoids `y`. **No backtracking is needed**, so `n = 5` (32 inputs) is exhaustive and fast.
+
+**(E5.5) PREDICTIONS, registered before running.**
+
+- **Positive control for the row**: on the attack hints, `E_all(y) = ∅` (non-certifying at all-free) and tail `T(2) = 2^z − 2` at `t = 0`. If `E_all` is nonempty, `y` is being blocked and the template is not resisting; if `T(2) = 0`, the mask is not shared.
+- **Mask-share DEFEATS lazy hosting on its attack hints.** With `F` = all inputs and `G` = all but `{a, b}`: `Q` asks about `v₀ ⊕ e_a`, allowed only at `b`, so the adversary **must** commit `b`; then `v₀ ⊕ e_b`, now allowed only at `a`, so it **must** commit `a`; then `v₀`, blocked at every `G` input with `a, b` committed -- **unhostable, so `Q` certifies**. **Predicted `|U₂| = 2^z − 2`.** Placement cannot help: every host is forced.
+- **BUT ONLY ON A `2^{−(z+1)}` FRACTION OF HINTS.** The attack needs `y`'s low bit zero and `v₀`'s `z` masked bits zero. On every other hint the fibre is empty and the adversary wins. **So mask-share is `(C,0)`-shaped -- it certifies on some hints -- not a total reduction, and the adversary escapes by hint choice.**
+- **Consequence, predicted: choice (1) is LOAD-BEARING, not closed.** This runs *against* D5.4's hope that lazy hosting reduces choice (1) to a tail-mass question: a designed template makes `U` nonempty on the hints it targets, and only the freedom to pick a different hint saves the adversary.
+
+**(E5.6) A rescue variant, testing the reviewer's unspecified forced side.** The design left forced inputs as "whatever". **`U` depends on them.** So a second variant adds one extra input `c` with `h_c(v) = (v XOR e_c) << 1`, `e_c` **outside** the mask: it blocks only `v₀ ⊕ e_c`, which is not in the fibre. **Predicted: `U` stays EMPTY** -- the fibre is hosted at `c`. **So whether mask-share resists is decided entirely by whether some non-`G` input has a map that does not block the fibre.** An identity map at `c` would **not** rescue: it blocks `v₀`, leaving `U = {v₀}`.
+
+**(E5.7) Runs, fixed now.** `n = 3` (`z = 2`) as the harness check, then `n = 5` (`z = 2` and `z = 3`). For each: the certifying-hint fraction (predicted `2^{−(z+1)}`), `E_all` and `T(2)` on attack hints (the positive control), and `|U_t|` for `t = 0..3` under an **adversarial `Q`** querying `v₀ ⊕ e_a`, `v₀ ⊕ e_b`, `v₀` -- for both the tight and the rescue variant.
+
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
