@@ -263,3 +263,61 @@ With Lemma W16.1 the reviewer's adversary goes through as specified: S is 2-cove
 4. **Constraint (d)** holds as the reviewer states — the adaptive algorithm walks a lex-first chain to a stalled block below a surviving x and outputs it — and the tree stalls because no block below S has a preimage, so f stays outside the tree's range and W16.0(1)'s hardness survives.
 
 **Outcome: 16a for the lemma and the theorem's statement, with §10.4 as the honest remainder.** *(Prior 25; the reviewer's 45–50 was better calibrated, and the direction of my error is again the one my calibration note predicts.)*
+
+---
+
+# §11. Lemma W16.1 corrected and strengthened; Theorem W16.2
+
+## 11.1 The gap was real, and the fix makes the lemma deterministic
+
+**The reviewer's counterexample defeats §10.2 as written.** Π_k = {a, b} and Π_ℓ = {b, c} with c ∈ E: adding a makes Π_k a singleton, whose only repair is b, which makes Π_ℓ a singleton, whose only repair is c ∈ E — unrepairable. **My availability bound was computed against the random draw and said nothing about the chain of deliberate additions.** Accepted.
+
+**The fix (the reviewer's).** Close a set **Bad** under: *while some property has exactly one element outside C ∪ E ∪ Bad, mark that element Bad.* Each property marks at most once — afterwards it has no free element — so **|Bad| ≤ q**, and the closure terminates in ≤ q steps.
+
+**And the fix is stronger than stated: the lemma becomes deterministic.** The closure's fixpoint says
+
+> **every property has 0 or ≥ 2 elements outside C ∪ E ∪ Bad,**
+
+which is a statement about Π, C, E, Bad **alone — independent of S**, hence preserved however S grows. So with S drawn (arbitrarily, not randomly) from the free non-Bad elements:
+- a property with no free non-Bad element has **S ∩ Π = ∅**, since S avoids C ∪ E ∪ Bad;
+- a property with ≥ 2 has, whenever |S ∩ Π| = 1, **a second free non-Bad element not in S** — available by the fixpoint.
+
+**The reviewer's residual probability q·m/2ⁿ is therefore unnecessary: the event it bounds — S₀ hitting a property all of whose free elements are Bad — cannot occur.** No randomness enters Lemma W16.1 at all.
+
+## 11.2 Lemma W16.1 (2-cover), final form, with tuple properties
+
+**Queries mention tuples, not single elements.** A width-w DNF term can name up to w/n preimages of P at once (e.g. "∃ x, x′ ∈ S with x ⊕ x′ = c"), so each queried property is a set of **tuples** over S, and the right notion is:
+
+> **S is 2-covered for {Π_i} if for every queried tuple-property with a witness in S, and every x ∈ S, some witness avoids x.**
+
+**Construction.** Let **E** = the strings *essential* to some property (belonging to every witness of it); |E| ≤ q·w/n. Close **Bad** as in §11.1. Take S of size m from outside C ∪ E ∪ Bad, and repair: while some property's witnesses in S all use a single x, add a second witness disjoint from the first, drawn from free non-Bad elements (≤ w/n new elements).
+
+**Termination.** Repairs are monotone — a property once possessing two disjoint witnesses keeps them as S grows — so each is repaired at most once: **≤ q repairs, |S| ≤ m + q·w/n.** ∎
+
+**Consequence used by the adversary.** Deleting any single x ∈ S changes no answer: every "true" answer retains a witness avoiding x, and "false" answers cannot become true as S shrinks. ∎
+
+**The reduction to properties of S.** Every query is a DNF over A₂'s bits. Fix the Wilson commitments for all bits outside the chain and S **first**; since every other node on the realised chains has a unique preimage, each term's truth then depends only on the tuple of S-elements it mentions. **So the queries really are tuple-properties over S**, which is what §10.4(2) left unverified.
+
+## 11.3 The stalled blocks must be forbidden values (§10.4(3), resolved)
+
+The algorithm can ask *"∃ x ∈ S ∃ z : G(z) = block(x)"*. **Wilson's plain rule would answer TRUE** — a free z exists — **and un-stall the tree**, destroying f's hardness and with it constraint (d).
+
+**Fix (the reviewer's, reusing W8.1).** Answer these **FALSE** inside the family **F = {G : no input outside the commitments takes a value in {block(x) : x ∈ S}}** — W8.1's forbidden-value family, with m forbidden values out of 2^{n+1}, trivially completable. The tree then stays stalled below S, f stays outside the tree's range, and W16.0(1)'s hardness survives.
+
+**Consistency with the deletion trick.** After the algorithm outputs y = block(x), delete x from S (uncommit G(x) = P) and give y a fresh preimage. The earlier FALSE answer to *"∃ x with G(x) = P and ∃ z : G(z) = block(x)"* **remains correct, because x is no longer a preimage of P.** For any other named y, either "∃ z : G(z) = y" was answered TRUE with a Wilson commitment, or y is fresh — **either way y ∈ range(G) and the algorithm is wrong.** ∎
+
+## 11.4 Theorem W16.2
+
+> **Theorem W16.2.** Relative to the oracle A of Lemma W16.0, **Avoid ∈ FP^{NP^A}** and **Avoid ∉ FP^{NP^A}_tt**.
+
+*Proof.* (C₁) holds relative to A: Lemma W16.0(1) supplies a language in E^{NP^A} of plain A-circuit complexity 2^{Ω(n)} at every length, so Korten's reduction — which relativizes, and reads f only at length Θ(log|G|) where the certificates are polynomially accessible — solves Avoid adaptively. (D2) fails: against any poly-time one-round algorithm, Lemma W16.1 supplies a 2-covered S at the tied node, §11.3 keeps the tree stalled, and the deletion trick places the output inside range(G) without disturbing a single answer. ∎
+
+**Consequence.** **Any proof that E^NP ⊄ SIZE[2^{o(n)}] implies Avoid ∈ FP^NP_tt — Ren–Williams Question 5.3 — must be non-relativizing.**
+
+**And the separation is exactly one round against adaptivity.** Lemma W16.1 is **false against adaptive queries, and must be**: an adaptive algorithm chooses Π_{i+1} after learning whether S ∩ Π_i ≠ ∅, which is precisely Korten's prefix search. The gap is between **one round** and **O(n + log T) rounds** (RW26 Theorem 3.1).
+
+## 11.5 Scoring, and the calibration record
+
+**Outcome 16a. Priors: reviewer 45, me 25 — the reviewer was better calibrated, and in the same direction as every other miss this round.** My errors in W16 were: the syntax/black-box "obstruction" (§2, withdrawn in §9.1), "the union bound cannot deliver claim (1)" (§6, withdrawn in §8), "a twenty-year-old open question's relativized form should not fall out easily" (§7, withdrawn in §8), and this prior. **Four instances, all predicting a construction would fail.** Against that, the two places I was right — refuting the two-chain adversary (§9.2) and dropping the circular threshold (§10.1) — were both **positive** technical findings, not doubts.
+
+**The pattern is now unambiguous: my doubts are unreliable and my constructions are not.** That is the calibration fact to carry forward, and it is worth more than either lemma.
