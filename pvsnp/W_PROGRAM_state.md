@@ -40,7 +40,7 @@ The parenthetical is not an aside — **it is the boundary of §4**, stated by t
 
 ## §3. Results
 
-**Branches and commits.** `w5-counting-form` 18caadc; `w6-round-complexity` 5aef6d7; `w7-black-box-depth` b36ed25; `w8-depth-one-lemma` 659a442; `w9-projection-glue` 3f1f1e4; `w10-projection-closed` 4eec008; `w11-nc0-glue` 044d224; `w12-one-input-glue` f2231d6; `w13-depth-one-general` 50fd900; `w14-dangerous-strings` 242e2b3; `w15-isolation-from-hardness` 224d6af; `w16-relativized-separation` bc60bd8; `w17-residue-supplies-randomness` f8e78a6; `w18-loss-exponent` 4150bb8; `w19-program-state` (this page). **w5-w14 are pushed to origin** (w14 ahead by 242e2b3); **w15-w18 are local and unpushed, awaiting the user's go.** The reviewer's `w1-range-avoidance` 267b85e (W1-W4) is its own branch and remains local by its call. **Nothing is merged; `main` is unchanged.**
+**Branches and commits.** `w5-counting-form` 18caadc; `w6-round-complexity` 5aef6d7; `w7-black-box-depth` b36ed25; `w8-depth-one-lemma` 659a442; `w9-projection-glue` 3f1f1e4; `w10-projection-closed` 4eec008; `w11-nc0-glue` 044d224; `w12-one-input-glue` f2231d6; `w13-depth-one-general` 50fd900; `w14-dangerous-strings` 242e2b3; `w15-isolation-from-hardness` 224d6af; `w16-relativized-separation` bc60bd8; `w17-residue-supplies-randomness` f8e78a6; `w18-loss-exponent` 4150bb8; `w19-program-state` c810c94 (this page); `w20-history-hardness` 13cb4b7 (priors at fd081c1 and ecf5475; findings at 13cb4b7). **w5-w14 are pushed to origin** (w14 ahead by 242e2b3); **w15-w20 are local and unpushed, awaiting the user's go.** The reviewer's `w1-range-avoidance` 267b85e (W1-W4) is its own branch and remains local by its call. **Nothing is merged; `main` is unchanged.**
 
 ### 3.1 The black-box sub-line (W7-W14), closed
 
@@ -118,10 +118,15 @@ This is where the line has arrived from every direction it has taken. **Five ind
 | **(S2)** | `NC^0_3`-Avoid in the window `(n + n^{2/3}, n^{1.4})` | open; not attacked by this line |
 | **(D1)** | approximate counting in `P^NP` | **NOT smaller than the door.** W5 correction: (D1) *implies* (C_1) and is not known to follow from it, since (C_1) is provably minimal. Instrument: SU05 Thm 3.6 / Cor 3.7, hypothesis = SVN hardness |
 | **(D2)** | = RW26 **Question 5.3**: weakest lower bound giving `Avoid ∈ FP^NP_tt` | open, and now **barriered**: W16.2 says any proof from plain-circuit hardness must be non-relativizing. The gap located in W15: the isolation-failure test is **coNP-type** (Π_1), and plain hardness is not known to fool coNP |
-| **(D3)** | a history-hardness notion whose failure is NP-certifiable | open; **the W20 target**, RW26's own words below |
+| **(D3)** | a history-hardness notion whose failure is NP-certifiable | **NARROWED** by W20 (13cb4b7) -- split into two variants, one closed within the framework and one open; see below |
 | **Korten Problem 1** | black-box depth lower bound for the stretching reduction | open. At **depth 1** reduced to the dangerous-string residue (§3.1); glue-class-restricted form (NC^0/AC^0) is the sharpened target from W7 |
 
-**(D3) verbatim, RW26 §5, immediately after Question 5.3** -- this is the W20 statement:
+**(D3) after W20, in two variants that must be kept apart.** *Status: **narrowed**, not closed -- the word is chosen deliberately and the distinction is the ceiling.*
+
+- **(D3-door)** [`FP^NP` reconstruction]: **closed within the RW26/CHR framework.** It is equivalent there to deterministic polynomial-time CAPP for the verifier family `{V^C}` on `polylog(t)` coins (W4 §2, quantified in W20 §7), and both known sources of such an algorithm are closed: a hard string inside the win-win (**Theorem W18.1**) and a plain-hardness hypothesis (dominated by **Korten Theorem 10**). **This is not an impossibility theorem.** A new framework, or an unconditional CAPP algorithm for that family, would reopen it.
+- **(D3-RW)** [MA reconstruction, hard `⇒ FP^NP_tt`]: **open**, and equal to RW26's Question as stated -- with **W16.2**'s constraint that the "hard `⇒ FP^NP_tt`" step from plain-circuit hardness must be non-relativizing.
+
+**(D3) verbatim, RW26 §5, immediately after Question 5.3** -- the statement both variants come from:
 
 > "It is conceivable that with a better hardness-randomness tradeoff than Jeřábek-Korten, we will be able to obtain a better uniform reconstruction algorithm, hence a better near-maximum circuit lower bound. Let Π be an encoded computational history, then either Π is 'hard enough' to solve AVOID, or Π is 'easy' so that one can 'reconstruct' Π efficiently. **Is there a suitable definition of 'hardness' so that any 'hard enough' Π can be used to solve AVOID in `FP^NP_tt`, while Π being 'easy' implies an efficient MA algorithm for reconstructing Π?**"
 
