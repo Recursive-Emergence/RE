@@ -57,3 +57,15 @@ W26's two lines bind first: **the obstruction may be the model's, not the proble
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §5A. Amendment -- Flag F27, the W12 re-read (after the priors commit 095e58d, before any computation)
+
+**Read from `w12-one-input-glue`, §1 and §3.** W12.1 and W12.2 use two separate moves. **Move 1, a count that chooses ONE hint:** `Σ_y Σ_v #{x : G_x(v) = y} = N·2^{n+1}`, averaged over the valid hints, gives a `y` with `M(y) ≤ 2N/3`. **Move 2, Wilson's adversary for that `y`:** for one-input glue, "`y ∉ range(C′)`" is the **product** `F_y = ∏_u A_u`, so the adversary runs *"with no bookkeeping"*, and positional pins are harmless.
+
+**§2(b)(i) is WITHDRAWN as stated.** A lower bound needs one bad hint. The count can fix `y` first and the adversary pins positions for that `y` only, so no cross-hint consistency is ever required. **My "shared distribution destroyed" obstacle came from insisting that count and adversary be one argument.** It is the same shape of error as my W25 lazy-hosting reading, one level up. §2(b)(ii) stands only for that single-argument route.
+
+**The obstacle, restated:** for joint glue of fan-in `k ≥ 2`, **`F_y` is not a product.** Whether a "true" term is still completable becomes a global CSP question over overlapping windows. That is W13/W14's wall, returning as W26's practice line predicts.
+
+**W27's question, restated for the reviewer's ruling:** can a W26.1-style count choose a hint `y` for which `F_y` contains a large **product subfamily** `∏_u B_u`, one closed under Wilson's true-answers? That is W10/W12's forced-value-plus-free-set architecture, with the hint chosen by precision counting.
+
+**Priors are not revised.** Half of 27c's stated reasoning leaned on the withdrawn (b)(i); what remains is the non-product wall, where the line has failed four times.
