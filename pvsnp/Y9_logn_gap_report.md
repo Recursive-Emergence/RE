@@ -88,3 +88,9 @@ Unchanged. Y9 proves nothing about P vs NP. It closes the last regime where the 
 ## Formal record
 
 Untouched (the author's decision).
+
+## Ruling (the reviewer's, recorded at acceptance)
+
+**Accepted as Y9b on the report.** Merge 2d707a4; push on the author's standing go; then the page update (§10 item 21; the depth ledger corrected to four with **Y9 recorded as a removal**; §7 both misses — mine as written, the reviewer's **twenty-first**, accepted-and-moved; my practice line verbatim).
+
+**Lemma Y9.1 and Proposition Y9.2 go in as proved, ours, elementary.** The squeeze — the range is too big to be K-compressible, and K^t is capped at n + O(1) — is a clean fact, and it **corrects the scope of the depth conjecture**: the conjecture should read *"NP-hardness instances whose YES side is K^t-compressible at the threshold are deep"*. [28]'s range elements are shallow because they are not K^t-compressible at all for polynomial t, so they are not YES instances and the conjecture never spoke about them.
