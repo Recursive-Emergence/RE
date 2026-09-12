@@ -190,3 +190,29 @@ The case analysis closes when a **single** y discharges both jobs. It is not pro
 ## Ceiling
 
 Unchanged. **W9 proves nothing about P vs NP.** It closes the projection-glue family for spread call-sets, substantially non-injective calls, and singleton calls, deterministically and black-box, leaving one mixed residual. Korten's Problem 1 — arbitrary glue — is untouched, and by Flag H7 none of this survives randomisation.
+
+---
+
+# Corrections (applied after the reviewer's ruling; the sections above are left as written)
+
+**Correction 1 — Lemma W9.2b was gapped, and its constants were broken too.** As written I bounded the expected number of missed sets (≤ N/4) and the size of H (≤ 0.55N) **separately** and then asserted a single H achieving both. That does not follow. Worse, even repaired by a union bound the arithmetic fails: 0.55N + N/2 > N, so the repaired hitting set could be the whole input set and U_free empty. **The claim survives, by applying linearity to the sum rather than to the parts** (the reviewer's fix):
+
+*Proof (corrected).* Put each u into H independently with probability p. For |S_x| ≥ 2, P[S_x ∩ H = ∅] ≤ (1−p)², so
+  E[ |H| + #missed ] ≤ pN + (1−p)²N,
+which at p = 1/2 is N/2 + N/4 = **3N/4** (and p = 1/2 minimises it). So some H has |H| + #missed ≤ 3N/4; adding one element per missed S_x yields a hitting set of size ≤ 3N/4. Hence **|U_free| ≥ N/4 and qw ≥ N/4.** ∎
+
+**The same trick improves Lemma W9.2a and removes the Chernoff step.** With |S_x| ≥ n+1 and p = 1/2, E[|H| + #missed] ≤ N/2 + N·2^{−(n+1)} = N/2 + 1/2, so the hitting set has size ≤ N/2 + 1/2 and **qw ≥ N/2 − 1/2**, better than the 0.4N first claimed.
+
+**The constant in W9.2b is not optimal, and the truth is bracketed.** Disjoint triangles — three inputs u₁,u₂,u₃ carrying three inputs x with S_x the three pairs — force a hitting set of 2 per triangle, i.e. 2N/3 overall, leaving |U_free| = N/3. **So the true constant lies in [1/4, 1/3]; N/4 is what is proved.**
+
+**Correction 2 — my case (b) remark was unquantified, which is exactly the defect I had just charged to the reviewer.** I wrote that if x ↦ u_x is not injective then "the forced set is small and we are in W9.2c's shape". That has no quantifier and does not follow. **The correct statement:** by max-cut at least half the singleton inputs are vacuous, so the number of forced inputs is ≤ #non-vacuous x ≤ N/2, and **(2) holds with |U_free| ≥ N/2 regardless of injectivity**. What injectivity actually bought was **(1)**: without it, two inputs sharing the same u can demand opposite values at the same bit index.
+
+**The device that removes the injectivity hypothesis: force FULL VALUES, not single bits.** For each forced input u choose one value c(u) ∈ {0,1}^{n+1} satisfying every non-vacuous clause living at u. One value per input makes **(1)** automatic.
+
+**A gap in the reviewer's justification of that device, and a simpler fact that closes it.** The ruling argues "each such clause forbids one pattern on its index set; at most N/2 clauses at u forbid at most N/2 of the 2^{n+1} values". **That count is wrong:** a clause with index set B_x forbids 2^{n+1−|B_x|} values, which is **half the space** when |B_x| = 1, so the total can exceed 2^{n+1} and the existence of c(u) does not follow. It is nevertheless true, for a reason needing no counting:
+
+**Lemma W9.4 (all-ones).** *Let A = {i : y_i = 1} and B = {i : y_i = 0}. For a non-vacuous singleton clause K_x at u, b(x)(A) and b(x)(B) are disjoint, and the forbidden pattern is 1 on b(x)(A) and 0 on b(x)(B). Hence if **y has at least one 0** (B ≠ ∅), the value c(u) = 1^{n+1} satisfies **every** such clause — it disagrees with the forbidden pattern on b(x)(B), which is non-empty. Symmetrically, if y = 1^{n+2}, take c(u) = 0^{n+1}.* ∎
+
+*(Disjointness holds because a position shared between A and B would carry two different y-values at colliding coordinates, making K_x vacuous.)*
+
+**So Lemma W9.3 holds with the injectivity hypothesis dropped:** choose y by max-cut, force full values 1^{n+1} at the ≤ N/2 non-vacuous singleton inputs, and **qw ≥ N/2**. Condition (2) still has to be checked — the §4 trap is exactly the case where forcing reaches every input — and it holds here because at least half the inputs are vacuous and carry nothing.
