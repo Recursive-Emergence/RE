@@ -37,3 +37,60 @@ At a dense hint, each window `w` has heavy strings `H_w` (at most about `16D*` a
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+---
+
+# W36 Findings
+
+*Appended after the reviewer's A36 rulings (36a). Nothing above is revised.*
+
+## §4. Ceiling
+
+**Definition 9, deterministic, depth 1, `n′ = n`, fan-in `≤ 3`, arbitrary glue.** The constant is proof-of-shape, at astronomical `N`. **Arity `≥ 4` is open** (hitting sets over tuple keys). Everything else is as in W32.1's ceiling: nothing randomised, nothing beyond depth 1, **nothing across the weakest arrow** (W33 PATH).
+
+## §5. Outcome against priors
+
+| code | mine / reviewer | outcome |
+|---|---|---|
+| **36a** arity-3 theorem at fixed `D*` | 45 / 35 | **achieved -- Theorem W36.1** |
+| 36b | 35 / 45 | -- |
+| 36c | 20 / 20 | -- |
+
+**Reviewer's correction recorded:** its target "`Ω(|P|/poly(D*))`" is `Ω(|P|·D*^{−O(D*)})`, the same slip as at W32-A §12.
+
+## §6. Theorem W36.1
+
+> **Theorem W36.1.** *Definition 9, deterministic, depth 1, `n′ = n`. Every template in which each C′-input reads at most three C-inputs, with arbitrary glue, satisfies* **`qw ≥ c₃(D*)·N` for `N ≥ N₀(D*)`**, *with `c₃(D*) = D*^{−O(D*)}`.* **Proof-of-shape.**
+
+**Ledger: what each round supplies.**
+
+| ingredient | source |
+|---|---|
+| exhaustion, forced chains, `M_res` | **density** (W34): dense hint `≥ 0.7`, density-maximising hub branch |
+| bounded degree | pre-pinning inputs of degree `> D*` (W29, W32-A) |
+| strong independence with `c = 1` | protected inputs every fifth input in a ring (marginal about `1/(kD*)²` in general) (W32-B, W36 §1(c)) |
+| normal strings | string-to-input assignment with unary partner exclusions, `p ≤ 1/(58D*)` (W35) |
+| heavy strings (`|B_v| ≈ 2N`) | split payment with per-`(u, payer)` coordination (W35 §3A, W36 §1(c)) |
+| capacity (§7) | W34's `1.4N` values per input at the dense branch |
+| survival of a heavy string | `≥ (16D*)^{−2D*}` per protected input (W36 §1(a)) |
+| concentration | McDiarmid over order and coins, union over strings, as in W32-A §12 |
+
+## §7. The capacity check (the reviewer's arithmetic, with one correction)
+
+At a payer: a split costs `N`; cheap-key exclusions from its protected neighbour cost `≤ p·16D*N ≤ N/58`; fine mass costs `≤ N/8`. The total `N + N/58 + N/8 ≈ 1.142N < 1.275N`. **Correction:** the reviewer concluded that the split's kept class "keeps at least `0.73N`". **But the kept class can also contain the input's unary-forbidden values**, up to `0.6N` at the dense branch, since W34 guarantees only `1.4N` usable values overall. The worst case is therefore **`N − 0.6N − N/8 − N/58 ≈ 0.26N`**. That is **still above the `D*·s = N/8` needed for W28.1's extension**, so the conclusion stands: **a cheap exclusion cannot empty a split's class, and the interaction is benign**, at a smaller margin than stated. Cheap exclusions concentrating on the kept class beyond their expectation is ruled out by the union bound over payers, as in W32-A §12.
+
+## §8. Kill template (measured, combinatorial)
+
+Two incompatible heavy strings at every window; ring; protected `u` with payers `u − 2, u − 1, u + 1, u + 2`. Minimum over the two strings of the paid fraction: **per-payer coin** 0.058-0.064 at `|P| = 10⁴` (exactly `1/16`: all four payers must agree), the wrong granularity; **per-`u` coin** (valid under `c = 1`) **0.491-0.499 at `|P| = 10⁴`**. A constant fraction for each string. **Passes.**
+
+## §9. The black-box sub-line rests
+
+**Final ledger** (all deterministic, depth 1, stretch `n ↦ n+1` to `n ↦ n+2`, below the weakest arrow):
+- **W26.1** (membership model, any fan-in): `(q + 1)·k ≥ 0.58√N`.
+- **W28.1** (Definition 9, small rows): `qw ≥ N/(D + 1)`.
+- **W29.2** (hub plus unary): `qw ≥ N/4 − h`.
+- **W32.1** (fan-in 2, unconditional after W34): `qw ≥ c(D*)·N`.
+- **W36.1** (fan-in 3): `qw ≥ c₃(D*)·N`.
+- **Open:** arity `≥ 4` (tuple-key hitting sets); constants; randomisation; depth `> 1`; Korten's Problem 1 at polynomial fan-in.
+
+**No W37 is opened.** The next move (the door, or rest) is the user's.
