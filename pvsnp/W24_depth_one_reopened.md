@@ -95,6 +95,42 @@ Standing record: ten consecutive wrong impossibility claims; my constructions ho
 - **(B)-branch:** W16.1's Bad-closure over all-`v` properties at `n = 3`; the **tail mass** `Σ_v [|A(v,y)| ≤ j]` as a function of `j`, to see whether it is geometric (cascade polynomial) or flattenable (cascade exponential).
 - **(A)-branch:** the fixpoint under Q-dependent indexing, with a **simulated deterministic `Q`**, checking whether single-deletion invariance suffices.
 
+## §5B. Pre-registration AMENDMENT 2 -- reformulation (A) authorised; the t-cover; separate priors -- committed BEFORE any (A) run
+
+*Appended 2026-09-12. Revises none of §0-§5A and moves none of §3's priors.*
+
+**(B5.1) The harness crash, recorded because it bears on integrity.** My first combined (A)/(B) harness **crashed on a Python `TypeError` before printing any result** (`dict(seen, **{u: vstar})` requires string keys). **No output of any kind was seen before this amendment**, so the pre-registration is intact.
+
+**(B5.2) Reformulation (A) authorised -- the sentence the reviewer asked to be pre-registered, verbatim:**
+
+> "(A) is the sub-line's NATIVE model (W8.1's statement), and W14's switch to `E(y) = empty` was a device to escape the fixpoint, not part of the question. Returning to (A) is not moving the goalposts; a theorem under (A) is a theorem about the depth-1 problem as W7/W8 posed it."
+
+**Recorded here so that the reformulation cannot later be read as a weakening.** W8.1's own statement is Q-dependent ("such that **Q's output** satisfies `y′ ∈ range(C)`"); W14's `E(y) = ∅` was the stronger device.
+
+**(B5.3) The reviewer's framing: under (A) the 2-cover is a DEFERRAL principle, not a selection principle.** Under (B) every hosting decision is made before `Q` runs, for every string at once, which is why (4) coupled back onto (3) and (2). Under (A) the invariance lets the adversary **defer (4) until `Q`'s output is known** -- "not a rule for choosing, but a licence to choose last".
+
+**(B5.4) The one-sided caveat (the reviewer's), and its resolution.** W16.1's invariance is one-sided, verbatim: *"false answers cannot become true as S shrinks."* Hosting `v` puts it into `range(C)` and **can flip a false answer to true**. A `Q` that asks "is `v ∈ range(C)`?" before outputting `v` defeats a naive after-the-fact host. **Resolution: host mid-run**, answering TRUE to membership queries on hostable candidates and committing forced values as queries arrive.
+
+**(B5.5) The t-cover.** Up to `q` mid-run hosts plus one at the end, each imposing `≤ 2k` forced constraints (W14 §2(d)), gives a free-side deletion budget of `≤ 2k(q+1)`. Required: a **t-cover** with **`t = 2k(q+1) + 1`**, marking rule *"a property with `≤ t` free non-Bad elements marks them all"*. **My pre-read, stated before any run: the fixpoint argument generalises mechanically** -- each property still marks at most once, so `|Bad| ≤ t·q = O(kq²)`; the fixpoint becomes "0 or `≥ t+1`", so `≤ t` deletions leave a witness. **Prior that it is mechanical: 85, matching the reviewer. The crux is not here.**
+
+**(B5.6) MY AUDIT, POINT 1 -- a conflation in "hosting is an addition".** The 2-cover's ground set is the **free** inputs. Hosting at a **forced** input -- which is where W14 hosts (A5.1) -- **does not touch the free set at all**. Hosting at a **free** input commits it, which is a **DELETION** from the free set. **The false-to-true answer flip is real in both cases, but the 2-cover's invariance protects against the free-input case only.** Which kind of host the construction needs is unaudited.
+
+**(B5.7) MY AUDIT, POINT 2 -- the deferral framing does not address choice (1), and W13's wall likely survives under (A).** Deferral handles (4); the t-cover handles (2). **Choice (1), the hint, is untouched.** Under (B) the constraint was a hint outside `∪_v Y_v`. **Under (A) it becomes the fixpoint `y ∉ Y_{v*(y)}`**, where `v*(y)` is `Q`'s output on hint `y`. Each `|Y_v| ≤ 2k` is small -- but **W13's own bound, verbatim, is `Σ_v |Y_v| ≤ 2k · 2^{n+1} = k · 2^{n+2}` against only `2^{n+2}` hints**, which does **not** prevent an adversarial `Q` from routing every hint `y` into its own `Y_{v*(y)}`. Such a `Q` is exactly a certifying reduction. **So W13's wall plausibly persists under (A), in fixpoint form.** Verified premise (the bound is W13's); unaudited consequence (whether `Q` can actually route that way) -- **priced at a few points only, per the W23 line.**
+
+**(B5.8) The reviewer's expected crux, recorded.** Forced-neighbourhood disjointness -- W14 §2(c), verbatim, *"poly(n) only when δ ≥ 1/2"* -- between the `≤ q+1` hosts and against the hint's validity constraint. Its expected landing: a **partial** theorem, *"Theorem W24.1 (conditional on t-cover, δ ≥ 1/2)"*. **B5.7 adds a second, independent candidate crux: choice (1).**
+
+**(B5.9) SEPARATE PRIORS on the (A)-reformulated codes -- a different proposition, so its own priors, as in W20.**
+
+| code | outcome under (A) | reviewer | **mine** |
+|---|---|---|---|
+| **24a(A)** Theorem W24.1: a deterministic depth-1 black-box lower bound under (A) via t-cover deferral, possibly conditional on δ ≥ 1/2 | 20 | **16** |
+| **24b(A)** the t-cover deferral works but a named step fails -- disjointness, the one-sided flip, or hint selection | 55 | **59** |
+| **24c(A)** other | 25 | **25** |
+
+**Why 24a(A) is 16, four below.** Up: t-cover mechanical (B5.5), deferral genuinely handles (4) (B5.3), and W14 itself called δ ≥ 1/2 "harmless for the target". Down: **B5.7 -- choice (1) is unaddressed and W13's counting bound transfers to the fixpoint form.** That down force is a verified premise with an unaudited consequence, so it is worth a few points and no more. **24c(A) matches at 25: no audited mechanism.**
+
+**(B5.10) Run order and kill test, fixed now.** **(A) first; (B)'s tail-mass only if time remains.** At `n = 3`: a deterministic `Q` that **queries membership "is `v ∈ range(C)`?" of its own candidate before outputting `v`**. **Positive control:** a t-cover free set under which the adversary hosts mid-run and **all `q` answers stay consistent**. **Negative control:** `t = 2` (single-deletion), where **the second mid-run host must break an answer**. *Modality: membership queries are NP-type and closer to Definition 9 than W14's value queries, but this is still a single-query-form simulation at `n = 3`, not the full DNF model; labelled as such.*
+
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
