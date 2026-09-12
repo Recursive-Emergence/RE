@@ -93,3 +93,25 @@ W26's two lines bind first: **the obstruction may be the model's, not the proble
 **(b) as run:** heuristic local search at n = 3 (N = 8, 16 values) for the product maximising `L` = min over `v` of `#{u : v ∈ B_u}`, per hint. Templates: control, hub, two-hub, split-reader, validity-split, random fan-in 2 and 3 (two seeds each). **Evidence only; heuristic, and a lower estimate of the true maximum.**
 
 **Predictions.** *Reviewer's (its message, before the run):* the maximising product forces about one value per window, and the `N/9` shape appears only where a product of size about `N` exists, which overlapping joint glue shrinks. *Mine (stated in session before the run started, committed now, before reading output):* at n = 3, products with **large** `L` (at least `N/2`) exist for the best hint on every template tried, random joint glue included. If that holds, **Route B's product condition is not where joint glue bites at small n.** The wall must then be asymptotic, or lie in templates built to shrink products. **The split-reader shape removes `v` from any product at `u`, exactly as it does exhaustively.**
+
+## §5D. Amendment -- (b) at n = 3, the E_y audit, and the scaling prediction (registered before the n = 3/4/5 scaling run is read)
+
+**(b) results** (heuristic lower estimates; predictions committed at 40387cf before output). `L` = best over hints of the max-placeability product inside `F_y`:
+
+| template | L (N = 8) |
+|---|---|
+| control (fan-in 1) | 4 |
+| hub | 7 |
+| two-hub | 7 |
+| split-reader | 4 |
+| validity-split | 6 |
+| random fan-in 2 (two seeds) | 5, 5 |
+| **random fan-in 3 (two seeds)** | **3, 3** (most hints 2) |
+
+**My prediction ("`L ≥ N/2` everywhere") FAILED at fan-in 3**; it held at fan-in 2. **The reviewer's direction (products shrink) is what the data shows**, driven at n = 3 by fan-in rather than overlap. The templates the line studied (hub, two-hub) are the easy ones for products.
+
+**Scaling heuristic, UNCHECKED, registered before the scaling run.** For random glue, a `k`-window's `y`-preimages have density `1/(4N)` in the `k`-cube. At `k = 2` they form about `N` edges in a `2N × 2N` bipartite graph, so a vertex cover removes a constant fraction and `L = Θ(N)`. At `k ≥ 3`, the largest box avoiding a random `k`-partite hypergraph of density `1/(4N)` has side about `N^{1/k}` (up to logs), so `L ≈ N^{1/k}`. **Prediction: at fan-in 2, `L/N` stays roughly constant over n = 3, 4, 5; at fan-in 3, `L/N` falls.** If it holds, **product families give only `qw ≳ N^{1/k}`, vacuous at `k = polylog N`**, and Route B by products cannot reach the line's scale.
+
+**E_y audit (the reviewer's Route A repair, filed as Route A's residue).** (i) `E_y ⊆ {y ∈ range(C′)}` holds for `F_y` too, so `E_y`'s only added content is excluding detecting transcripts. (ii) It excludes **exact** detection only; near-detecting transcripts (`Pr[invalid | τ] = 1 − δ`) stay in, so the per-window bound must price suspicion. (iii) **(Q2'') is misstated:** on valid pairs a total Q is correct, so `E_y` never occurs there. `Pr[E_y]` lives on invalid `C` with valid-looking transcripts, and cheap detection drives it toward 0, which makes the count vacuous rather than contradicted.
+
+**Practice line for Route A's death (the reviewer's): PRICE A MECHANISM AGAINST THE ADVERSARY IT ACTUALLY FACES.** Influence was priced against untargeted queries; Q chooses its queries knowing the template.
