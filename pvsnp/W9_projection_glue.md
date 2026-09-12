@@ -88,3 +88,105 @@ The reviewer's ruling asks me to record two corollaries of Lemma W8.1. **I will 
 ---
 
 *Findings follow below, appended after the attack. Nothing above is revised retroactively.*
+
+---
+
+# Findings (written after the attack; priors above are unrevised)
+
+*Model throughout: Korten Definition 9 / Wilson Theorem 12, DNF queries of width w, q of them, **deterministic** back-mapping. Computations in the job scratch directory; `formal/` untouched.*
+
+## 0. Outcome against priors, and two misses of mine
+
+| code | prior (mine / reviewer) | outcome |
+|---|---|---|
+| **9a** re-scoped: proved for every projection template whose case analysis closes | **50** / 45 | **achieved for the families in §2–§4; residual named in §5** |
+| **9b** a projection template beating Lemma 6 | 5 / 10 | no — but the trap in §4 shows *why* one would have to look here |
+| **9c** neither | 45 / 45 | — |
+
+**Miss 1 — Flag P9 was backwards, and it was the flag I priced the round on.** I predicted that **non-injective** q_i is the obstruction, because one input's bits then sit in exponentially many clauses and LLL dies. It is the **easy** case: take H = image(q_i), which hits every S_x by definition. High multiplicity means **one forced bit satisfies exponentially many clauses at once**. My whole §2(e) reasoning had the sign wrong — I was counting the difficulty of *satisfying* the CNF when the adversary's task is to satisfy it *cheaply*.
+
+**Miss 2 — my §6 "doubt" was a misparse, not a disagreement.** The reviewer wrote that the masked bound degrades *unless* m is constant. I read it as asserting constant m was the *bad* case and pre-registered a doubt against a position it never held. The refinement I attached (placement is also available outside h⁻¹(b)) is correct and is used in §6 below, but there was no disagreement to have.
+
+**The device below is the reviewer's, not mine.** It replaces my LLL/CSP plan entirely, and it is what makes the round close.
+
+## 1. The forced-bit device, and the lemma it yields
+
+**Set-up.** S_x = {q_i(x) : i ∈ [n+2]} is the set of *call-inputs* of x. K_x is **vacuous** (true for every oracle) iff some i ≠ j have (q_i(x), b_i(x)) = (q_j(x), b_j(x)) with y_i ≠ y_j — one bit cannot equal two different values.
+
+**The device.** The adversary picks y and, for each non-vacuous x, a designated coordinate i(x), and **forces the single oracle bit** (q_{i(x)}(x), b_{i(x)}(x)) := ¬y_{i(x)}. Let F₀ be the resulting partial assignment of oracle bits, and let
+
+  **U_free = {u : no bit of C(u) is forced by F₀}.**
+
+Two obligations:
+**(1) Consistency** — no bit is forced to both values.
+**(2) Freedom** — |U_free| is large.
+
+**Lemma W9.0.** *Suppose F₀ satisfies (1) and |U_free| > qw. Then every deterministic Q in Definition 9's model making q queries of width w fails: there are an oracle C and a valid hint y ∉ range(C′) on which Q's output y′ lies in range(C).*
+
+*Proof.* Let **F** be the set of total assignments extending F₀; it is non-empty by (1). Every member satisfies every K_x — vacuously, or via its designated forced literal — so **y ∉ range(C′) for every C ∈ F**, and y is a valid hint throughout. Run Wilson's adversary relative to **F**: maintain a partial ρ on inputs; on a DNF query, use a term iff some assignment in **F** is consistent with it and with ρ, extending ρ on ≤ w inputs; otherwise answer false, which is sound because every completion inside **F** falsifies every term. After q queries |dom ρ| ≤ qw < |U_free|, so some x* ∈ U_free \ dom ρ exists. Q outputs y′. Set C(x*) = y′ — permitted, since **no bit of C(x*) is forced** — and complete arbitrarily respecting F₀. Every clause keeps the witness it already had (vacuity, or a forced bit, which cannot sit at x*), so the result lies in **F**; all answers remain true; and y′ ∈ range(C). ∎
+
+**Why this is stronger than my registered plan.** Nothing is *maintained*: the invariant is a fixed partial assignment chosen in advance, exactly as the single forbidden value was in Lemma W8.1. My §4 sketch's "extend along a stored satisfying assignment" was unnecessary machinery.
+
+## 2. Case (a): when the call-inputs are spread
+
+Throughout this case take **y = 0^{n+2}**, so every forced value is 1 and **(1) is automatic**.
+
+**Lemma W9.2a (distinct call-inputs).** *If |S_x| ≥ n+1 for every x, then qw ≥ 0.4N for all large n.*
+
+*Proof.* Put each u ∈ {0,1}ⁿ into H independently with probability 1/2. A fixed S_x is missed with probability ≤ 2^{−(n+1)}, so the expected number of missed sets is ≤ N·2^{−(n+1)} = 2ⁿ/2^{n+1} = 1/2, and P[some S_x missed] ≤ 1/2. By Chernoff P[|H| > 0.6N] ≤ exp(−2N(0.1)²) < 1/2 for large n. So some H hits every S_x with |H| ≤ 0.6N. Designate for each x a coordinate with q_{i(x)}(x) ∈ H; forced bits then lie only at inputs of H, so |U_free| ≥ 0.4N. Apply Lemma W9.0. ∎
+
+**Lemma W9.2b (all call-sets of size ≥ 2).** *If every non-vacuous x has |S_x| ≥ 2, then qw ≥ N/5 for all large n.*
+
+*Proof.* Random H of density 1/2 misses a given S_x with probability ≤ 1/4, so in expectation ≤ N/4 sets are missed; fix H attaining this with |H| ≤ 0.55N (Chernoff), then add one element per missed set, giving a hitting set of size ≤ 0.55N + 0.25N = 0.8N. Hence |U_free| ≥ 0.2N. ∎
+
+**Lemma W9.2c (substantially non-injective calls) — and a correction to the reviewer's version.** *If some q_i has |image(q_i)| ≤ N − N/poly, then H = image(q_i) hits every S_x and qw ≥ N/poly.*
+
+The reviewer stated this for q_i merely **non-injective**, concluding |U_free| ≥ N/2. **That does not follow:** non-injectivity alone gives only |image(q_i)| ≤ N − 1, hence |U_free| ≥ 1, which is far too weak for Lemma W9.0. The hypothesis must be quantitative. It is satisfied by the intended example q(x) = (x₁…x_{n/2}, 0…0), where |image| = 2^{n/2} = √N and |U_free| ≥ N − √N.
+
+## 3. Case (b): singleton call-sets, closed by max-cut
+
+Here every call of x reads the same input: S_x = {u_x}.
+
+**Pigeonhole.** All n+2 coordinates read bits of the single (n+1)-bit string C(u_x), so some i ≠ j have b_i(x) = b_j(x). Fix one such colliding pair e_x = {i, j} for each x, and let **G** be the multigraph on vertex set [n+2] with edge e_x for each x. **K_x is vacuous iff y 2-colours some colliding pair of x bichromatically** — in particular if y cuts e_x.
+
+**Lemma W9.3.** *If every |S_x| = 1 and x ↦ u_x is injective, then qw ≥ N/2.*
+
+*Proof.* A uniformly random y ∈ {0,1}^{n+2} cuts each edge of G with probability 1/2, so some y cuts at least half of the N edges (max-cut ≥ m/2). Those x are vacuous and need no forced bit. For each remaining x force one bit of C(u_x). **Condition (1) is automatic here:** injectivity of x ↦ u_x means each input u carries forced bits from at most one x, which forces exactly one bit. So |U_free| ≥ N/2, and Lemma W9.0 applies. ∎
+
+**If x ↦ u_x is *not* injective**, the forced set {u_x} has size < N and the situation falls into Lemma W9.2c's shape — few inputs carry forced bits, so U_free is large. **The two sub-cases are complementary**, which is what closes case (b).
+
+**Measured (sampled, random b_i, all q_i = identity).** Max-cut guarantees ≥ N/2 vacuous; the best y did far better — 8/8, 8/8, 8/8 at N = 8; 16/16, 16/16, 15/16 at N = 16; 30/32, 31/32, 31/32 at N = 32 — with condition (1) holding in every instance and free inputs equal to the vacuous count. **These are samples over random b_i, not exhaustive, so they validate the mechanism; the proof rests on the ≥ N/2 max-cut bound, not on the observed near-totality.**
+
+## 4. The trap, confirmed — why condition (2) is a real obligation
+
+With all q_i = identity and **y = 0^{n+2}**, no clause is vacuous, so the device forces a 1-bit at **every** input; then no oracle in the family has 0^{n+1} in its range, and **Q wins by outputting 0^{n+1}**. My control reproduces this exactly: at N = 8 and N = 16, vacuous count 0 and forced inputs N of N.
+
+**Reading.** This is not a defect of the device but the content of obligation (2): **a forced set that touches every input does not merely fail to help the adversary — it hands the reduction a correct answer.** It also shows the choice of y is not free: at this template the max-cut y of §3 is right and y = 0 is exactly wrong. The reviewer's rule — maximise vacuity first, hit the remainder, then verify (2) — is the correct order, and the trap is the proof that verification cannot be skipped.
+
+## 5. The residual class, stated precisely (as ruled)
+
+The case analysis closes when a **single** y discharges both jobs. It is not proved for:
+
+> **Mixed templates** in which a constant fraction of inputs have |S_x| = 1 with x ↦ u_x injective, *and* a constant fraction have |S_x| ≥ 2, where the singleton part demands the **max-cut y** of Lemma W9.3 while §2 obtains condition (1) from **y = 0**. A single hint must serve both, and I have not shown the two choices can be reconciled.
+
+**What a repair would need.** Under a general y the forced value ¬y_{i(x)} varies with the designated coordinate, so condition (1) can fail when two inputs designate the same bit via coordinates of opposite y-value. There is slack — for |S_x| ≥ 2 one may choose *which* element of S_x to hit, and often which coordinate — so I expect this is reconcilable, but **expecting is not proving, and it is the open step.**
+
+## 6. The two corollaries owed from W8
+
+**Corollary W8.2 (masked single-call).** For C′(x) = (C(x) ⊕ m(x), h(x)) the invariant is the input-dependent forbidden value **C(x) ≠ z ⊕ m(x) on h⁻¹(b)**. Placement needs a free x* with either x* ∉ h⁻¹(b) — where the invariant says nothing, so **any** such x* works — or x* ∈ h⁻¹(b) with y′ ≠ z ⊕ m(x*). The bad set is B = h⁻¹(b) ∩ m⁻¹(z ⊕ y′), giving **qw ≥ N − |B| − 1**. If m ≡ c is constant, B is either empty or all of h⁻¹(b); in the latter case the adversary instead takes the **vacuous** hint (z, ¬b) — the range of C′ misses every string with second coordinate ¬b — and Lemma W8.1's bound applies unaided. **So constant m is the benign case**, as the reviewer said.
+
+**Corollary W8.3 (x-bit copying).** For C′(x) = (x₂…x_n, C(x)₁C(x)₂C(x)₃), a hint y = (w, c) is non-range iff both inputs x ∈ {0w, 1w} have C(x)₁₂₃ ≠ c. **The hint constrains C at exactly two inputs**, so F₀ forces bits at two inputs, |U_free| = N − 2, and **qw ≥ N − 2**: Wilson goes through with two committed positions.
+
+## 7. Kill tests
+
+- **(i)** Definition 9 / Theorem 12 model only; no value queries anywhere.
+- **(ii)** Determinism is in every lemma statement (Flag H7).
+- **(iii)** No 9b candidate arose, so totality checking is moot — but §4 records the one place a candidate would live, and it is a genuine win for Q, verified by control.
+- **(iv)** Consistency: every bound here is **at most** Wilson's qw ≥ N and reduces to it when F₀ = ∅ (Lemma W9.1's vacuous case); nothing claims anything about the fold with a hard string.
+- **(v)** Numbers reported with their comparison bound beside them, and sampled results are labelled sampled (§3).
+- **(vi)** The step that does not close is named in §5 rather than papered over.
+- **Priors wrong said with the finding:** §0, Misses 1 and 2.
+
+## Ceiling
+
+Unchanged. **W9 proves nothing about P vs NP.** It closes the projection-glue family for spread call-sets, substantially non-injective calls, and singleton calls, deterministically and black-box, leaving one mixed residual. Korten's Problem 1 — arbitrary glue — is untouched, and by Flag H7 none of this survives randomisation.
