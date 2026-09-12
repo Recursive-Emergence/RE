@@ -63,3 +63,67 @@ together with `D_res·t_res < 2(N − h)` for extendability (step (ii) runs unch
 **Both corrections are needed:** `M_res` (missing from the specification; the hub with its non-kill value breaks the uncorrected proof step) and `D′` (my over-count). **Parity-hub prediction REVISED:** every residual window is unary, so `D′_res = 0`, and the adversary chooses the hub value leaving the smaller live half (`N/2 − 1` inputs), so `M_res = N/2 − 1` and **`qw ≥ N/2`**. **The reviewer's original `≈ (N − 1)/2` was right; my `N/4` came from my over-count, not the phenomenon.** Matching exploiter: one query for the hub bit, pins on the `N/2` dead inputs, then output `y >> 1`, so `qw = N/2 + 1`. Hub and two-hub predictions unchanged (`M_res = 0` at the kill value; `(N − 1)`, `(N − 2)` with `D′ = 0`, strictly above the §1 figures).
 
 **Recorded sentence (the reviewer's request): `M_res` is W14's dangerous string made quantitative, and the adversary's choice of `a_H` is the forced-bit invariant on the read structure, minimising `M_res`.**
+
+---
+
+# W29 Findings
+
+*Appended after the reviewer audited every step of Theorem W29.2 and scored the round. Nothing above is revised.*
+
+## §4. Ceiling
+
+**Korten's Definition 9 model (width-`w` DNF queries), deterministic, depth 1, `n′ = n`.** W29.2's class: **every window reads at most one input outside a fixed set `H` of `h` inputs.** Not Korten's Problem 1; nothing randomised; nothing about P vs NP.
+
+## §5. Outcome against priors
+
+| code | mine / reviewer (reviewer later) | outcome |
+|---|---|---|
+| **29a** W29.1 proved, controls landing | 35 / 45 (40) | **achieved -- W29.1 with both corrections, controls exact, C29 tight to within one, and Theorem W29.2 answering the kill test** |
+| 29b coupling template shows the residual hypothesis fails | 50 / 40 (45) | -- **in the unary-residual class, no coupling template can exist (§8)** |
+| 29c nothing | 15 / 15 | -- |
+
+**The resolution is not the pre-registered one in the direction I leaned.** I put 29b at 50 because `M_res` looked attackable by a coupling template. The count over hints (Move 1) shows such a template cannot exist whenever the residual is unary.
+
+## §6. Lemma W29.1 (as it stands)
+
+*Pre-pin `H` to clean `a_H`. Extension holds if `D_res·t_res < 2(N − h)`. Hosting holds if* **`qw < (N − h − M_res)/(D′_res + 1)`**, *with `M_res = max_v #{u ∉ H : some unary residual window at u forbids v}` and `D′_res` = max over free inputs of the residual windows of arity `≥ 2` through them.*
+
+**Why `M_res` is there (the hub example).** Pre-pin the hub to its **non-kill** value. It is clean, `t_res = 1`, `D_res = 1`, yet every unary residual window forbids `y >> 1`, and a zero-query Q outputting `y >> 1` cannot be hosted by that adversary. This breaks the **proof** of the uncorrected count, though not necessarily its conclusion. **`M_res` is W14's dangerous string made quantitative**, and the adversary's choice of `a_H` is the forced-bit invariant on the read structure, minimising `M_res`. **Why `D′`:** a unary residual window is already almost-full and its forbidden set is fixed, so Q's pins make new almost-full windows only through arity `≥ 2`. *Corrections:* `M_res` was missing from the reviewer's specification (its ninth miss: "killing is not required" was wrong); `D′` corrects my own over-count, and my `N/4` parity-hub prediction is withdrawn.
+
+## §7. Controls and C29
+
+**Exact residual parameters** (N = 8 and 16, hints 0-3, best and worst `a_H`):
+
+| template | best `a_H`: t, D, D′, M -> bound | worst `a_H`: M -> bound |
+|---|---|---|
+| hub | 0, 1, 0, 0 -> **N − 1** | N − 1 -> 0 |
+| two-hub | 0, 1, 0, 0 -> **N − 2** | N − 2 -> 0 |
+| parity-hub | 1, 1, 0, N/2 − 1 -> **N/2** | N/2 -> N/2 − 1 |
+
+Every prediction of §1 and §3A landed on every hint.
+
+**C29 (executable).** (a) Hub, non-kill `a_H`, zero-query Q outputting `y >> 1`: **the adversary cannot host at N = 64 and 256**; with the kill value it can. This is the positive control for the `M_res` term. (b) Parity-hub, best `a_H`, the exploiter (hub-bit query, then pins on the dead half, then output `y >> 1`): **Q first wins at `qw = 33` (N = 64) and `qw = 129` (N = 256), against the bound `qw < N/2`.** **The hosting count is tight to within one on this template**, a data point that the count is exact on unary residuals.
+
+## §8. Theorem W29.2 -- hub-plus-unary templates
+
+> **Theorem W29.2.** *In Definition 9, let `H` be a set of `h` inputs such that every window reads at most one input outside `H`. Then every deterministic back-mapping correct on all valid hints has* **`qw ≥ N/4 − h`**, *for any glue values and any width.*
+
+*Proof.* Fix **any** `a_H`. Each of the `N` windows is either H-internal (arity 0, outputs one hint) or unary at one free input `u`. For a unary window `w`, let `F_w(y) = {v : g_w(v) = y}`.
+- **bad_clean:** `a_H` is non-clean for `y` iff an H-internal window outputs `y`, so at most (#H-internal windows) hints.
+- **bad_ext:** at `u`, the value set is exhausted for `y` only if `Σ_{w ∈ W_u} |F_w(y)| ≥ 2N`. Summed over `y` this is `|W_u|·2N`, so at most `|W_u|` hints at `u`, and at most (#unary windows) overall. **Each window lies in exactly one bullet, so bad_clean + bad_ext `≤ N`.**
+- **bad_M:** `c(y, v) = #{u : v ∈ ∪_{w ∈ W_u} F_w(y)}`. `Σ_y Σ_v c(y, v) ≤ Σ_u |W_u|·2N ≤ 2N²`, and `M_res(y) ≤ Σ_v c(y, v)`, so at most `8N/3` hints have `M_res ≥ 3N/4`.
+
+So **at least `4N − N − 8N/3 = N/3` hints** are clean, extendable, and have `M_res < 3N/4`. For such a `y`, run the adversary with `a_H` as initial pins. A term is clean iff its free pins are non-forbidden and its H-pins agree with `a_H`; otherwise it is false on every completion, so **NO is sound**. Extension is per input (unary windows do not interact). **Hosting:** Q's output is forbidden at `< 3N/4` inputs and `≥ N − h − qw` are free, so a host exists when `qw < N/4 − h`. Complete the rest; `y` is valid (clean, and extendable at `P = ∅`). ∎
+
+**Audited by the reviewer, every step, plus a fifth point it checked: `a_H` is ARBITRARY**, so no optimisation over hub values is needed, and that removes the kill-value requirement entirely.
+
+**What it says.** (a) **In this class the coupling template of D29 cannot exist**: the count over hints always finds a clean, extendable hint with a small dangerous set. **Move 1, the count over hints, here does the work W14 assigned to choices (1) and (4) jointly. It is the selection principle W14 said did not exist, for this class.** (b) At `h = poly(n)`: `qw = Ω(N)` for every hub-plus-unary template. (c) `h = 0` is W12.1's single-block class (W12.1: `N/3`; W29.2: `N/4`, consistent and weaker). The control, hub, two-hub and parity-hub all have `h ≤ 2`. **It is the line's second theorem for a general class, after W28.1.**
+
+## §9. Residue -- W30
+
+**Residual windows of arity `≥ 2` after pinning the hubs.** There `bad_clean` and `bad_M` should count as here, and hosting should follow W28's almost-full count with `D′`. **The crux is extension:** for arity `≥ 2`, a free input's forbidden set depends on the other positions' current values. A count over hints controls the **average** over settings, while the adversary faces the settings Q's pins create, **the worst case**.
+
+## §10. Practice lines
+
+- **A PROOF STEP CAN FAIL WHILE THE CONCLUSION HOLDS; KEEP THE TWO APART** (the hub with its non-kill value).
+- **CHECK YOUR OWN CORRECTION WITH THE SAME AUDIT YOU GAVE THE ORIGINAL** (§3A withdrew half of §1).
