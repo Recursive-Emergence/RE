@@ -135,3 +135,28 @@
 **Priors on (H_mass) closing:** reviewer 35; **mine 45**. Up, because the multiplicative version has a clean count behind `m`. Down from higher, because the compounding with `U_v` and the random-`P` independence under a give-up rule that **depends on loads** (and so on `P`) are unverified. **The load-dependent rule breaks the independence of `P` from the give-up pattern that the McDiarmid step needs; a load-OBLIVIOUS rule (give up uniformly at random among candidates) may be required.**
 
 **Measure first (reviewer's instruction):** at N = 16, a rotating two-string heavy template, measure per-string give-up fractions under (i) load-balanced and (ii) uniform-random give-ups, against `(m − 1)/m`.
+
+## §12. Discharge of (H_mass) -- W32.1 now rests on (H_casc) only
+
+*On the reviewer's rulings: the multiplicative form accepted; the RANDOM give-up rule for the theorem; and its correction that the survival factor is a product over a protected input's windows.*
+
+**Correction to §6-§7 (the reviewer's, accepted).** "Polynomial in `D*`" is WRONG. A string `v` survives at protected `u` only if it is not given up at **any** of `u`'s `≤ D*` windows where it is a candidate. With independent per-window choices that is a product, `≥ Π_w (1/m_w) ≥ M^{−D*}`. A coordinated per-input choice does not help: disjoint candidate sets make the union bound vacuous, and coincident ones reduce to one window. **The protected set removed the coin's `2^{−inc}`, and the give-up rule reintroduces a product over the windows of a protected input.** Since `D*` is a fixed constant, **the survival factor `M^{−D*} = D*^{−O(D*)}` is a constant, not polynomial.**
+
+**Measurement recorded** (combinatorial, two-string template; max over the two strings of the give-up fraction): `|P| = 8`: balanced 0.500, random mean 0.636 / max 1.000; `|P| = 64`: balanced 0.500, random 0.549 / 0.734; `|P| = 1024`: balanced 0.500, random 0.512 / 0.556. **The random rule concentrates at `(m − 1)/m` only for large `|P|`**; balanced is the measured ideal and is not used in the proof.
+
+**Order of choices.** (1) Hint `y` good (all counts of §6-§11, including at most `J` super-heavy windows, so `m_w ≤ M = 32000·D*³` at the windows used). (2) `a_H` = lightest values, fixed. (3) `P` = random-order greedy independent set with `c = 1` (a payer serves one protected input), **independent of `a_H`**; marginal `Pr[u ∈ P] ≥ 1/(D*² + 1)` for every eligible `u`. (4) Give-ups uniform at random among each window's candidates, **independent given `P`**.
+
+**The triple intersection, written out.** Let `U_v` be the eligible inputs where no unary residual window forbids `v` (fixed by step 2; `|U_v| ≥ N − h − M_res − 2J ≥ N/50`). Then
+  `E|P ∩ U_v ∩ Surv(v)| = Σ_{u ∈ U_v} Pr[u ∈ P] · Pr[v survives at u | u ∈ P] ≥ |U_v| · 1/(D*² + 1) · M^{−D*}`,
+because survival at `u` depends only on the give-up coins of `u`'s own windows, which are independent of the order given `u ∈ P`.
+**Concentration.** The variables are the order (`N` positions) and the coins (`≤ N·D*`). Changing one position moves `≤ D*² + 1` inputs in or out of `P`; changing one coin changes `v`'s survival at one input. McDiarmid gives
+  `Pr[|…| < E/2] ≤ exp(−E²/(2N((D*² + 1)² + D*)))`,
+and a union over `2N` strings closes when **`N ≥ N₀(D*) = D*^{O(D*)}·log N`**, i.e. `|P| ≫ M^{D*} log N`.
+
+> **Theorem W32.1 (as it now stands).** *Definition 9, deterministic, depth 1, `n′ = n`. Every template in which each C′-input reads at most two C-inputs, with arbitrary glue, satisfies* **`qw ≥ c(D*)·N` for `N ≥ N₀(D*)`**, *with `c(D*) = D*^{−O(D*)}` and `N₀ = D*^{O(D*)} log N`, under **(H_casc)** alone (`D* = 20`).*
+
+**This is proof-of-shape at astronomical `N`, and the page says so.** The shape (`Ω(N)` for all fan-in-2 glue, arbitrary values) is unaffected, because `D*` is constant.
+
+**Coverage sentence, corrected:** *all fan-in-2 depth-1 glue in Definition 9, modulo the cascade hypothesis, with a proof-of-shape constant.* **Score stays 32b** (the cascade).
+
+**Carried to W32-B:** at arity `k` the product runs over the `k·D*` windows of a protected input, so the survival factor is `M^{−kD*}`, **a constant only for fixed `(k, D*)`**. At the line's scale, `k = polylog N`, that is `N^{−ω(1)}`, and the bound is vacuous. **The polynomial question is retired to the residue; W32-B's target is a constant for fixed `(k, D*)`.**
