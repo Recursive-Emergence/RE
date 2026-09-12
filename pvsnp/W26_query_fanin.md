@@ -80,3 +80,71 @@ Outcomes:
 - **The `k = 1` endpoint is W12.2, not W8.1.** W8.1 is only the template `(C(x), h(x))`. W12.2 (one input per coordinate, arbitrary per-coordinate glue, `qw ≥ N/9`) covers general fan-in-1 glue -- **and more: coordinates may read DIFFERENT inputs, so W12.2 already reaches total fan-in `n + 2 = log N + 2` under the per-coordinate one-input restriction.** So for that structured class, `q = Ω̃(N)` holds at `k = Θ(log N)`, which is inside the line's `k = poly(n)` range.
 
 **Consequences, exactly as §2(b) registered.** F2 and F3 are **dead as tight forms** (they sit below `Ω(N)` at `k = 1`) and survive only as loose lower bounds. **The live question at the line's scale:** does `q = Ω̃(N)` survive when a window of `k = polylog N` inputs is read by **joint** glue, not per-coordinate projections? W12.2 is the per-coordinate case; W25.3 shows joint glue at `k = N` collapses `q` to `O(1)`. **Where between `k = log N` (joint) and `k = N` the collapse starts is the tradeoff.**
+
+---
+
+# W26 Findings
+
+*Appended after the reviewer audited every step of the proof and accepted it. Nothing above is revised.*
+
+## §6. Ceiling -- FIRST
+
+**Membership-query model only, deterministic, depth 1, `n′ = n` (stretch `n ↦ n+1` to `n ↦ n+2`).** A membership query is *"is `v ∈ range(C)`?"* = `OR_x [α_x = v]` with **one** value `v` at every `x`.
+
+**Correction to §5A, the reviewer's.** §5A said "the membership model **is** Definition 9 at `w = 1`". **Too strong.** A width-1 DNF may name a **different value at each input**, `OR_x [α_x = v_x]`. A "no" to such a query excludes no single string, so it is not a win for Q, and W25.2's all-yes collapse fails for it. Correctly: **the membership model is the single-value subclass of width-1 DNFs.** Definition 9 lower bounds transfer **down** to it (§5A's conclusion about the `k = 1` endpoint stands). **W26.1 does not transfer up, not even to width 1.** It says nothing about NP^C queries, hence nothing about `FP^NP`, and nothing about Korten's Problem 1 as posed. Nothing randomised (Flag H7).
+
+## §7. Outcome against priors
+
+| code | mine / reviewer | outcome |
+|---|---|---|
+| **26a** a proved tradeoff | 12 / 15 | **achieved -- Theorem W26.1, in a form on nobody's list** |
+| 26b located between forms | 58 / 60 | -- |
+| 26c nothing | 30 / 25 | -- |
+
+Forms: F1 35 / 45 (reviewer later 30), F2 5 / 30, F3 2 / 15, **other 58 / 10 (reviewer later 63)**. **The proved form, `q·k = Ω(√N)` ("F4"), falls under "other".** The mechanism is not the one I pre-registered: I registered a placement argument (§2(c)) and no lower-bound mechanism, and the proof came from pricing the reviewer's precision idea exactly. **The placement sketch was a detour.** The reviewer's position-pair count (`≤ N·C(k,2)` co-located pairs for ANY window system) shows hubs cannot raise co-location, and the proof never needs co-location at all.
+
+## §8. Theorem W26.1
+
+> **Theorem W26.1.** *In the membership-query model, let `C′` be a depth-1 template from stretch `n ↦ n+1` to `n ↦ n+2` (`N = 2ⁿ`) whose every C′-input applies ARBITRARY glue to at most `k` values of `C`. If a deterministic back-mapping with `q` membership queries is correct on every hint, then*
+>
+>   **`(q + 1) · k ≥ 0.58 · √N`.**
+
+*Proof.* Let `s = q + 1`.
+
+**(1) Static sets.** By W25.2, a total Q has, for each hint `y`, a set `V(y)` of `≤ s` strings (its queries plus its output under all-yes) such that **every `C` with `V(y) ⊆ range(C)` has `y ∈ range(C′)`.** This holds for **any** total Q, not only an optimal one: if some `C` had `V(y) ⊆ range(C)` and `y ∉ range(C′)`, all-yes would be truthful for that `C` and Q's output would lie in the range. **Pad `V(y)` to size exactly `s`**; the implication survives. **The implication holds for all `4N` hints**, vacuously for a never-valid one.
+
+**(2) Distribution and coverage.** Let `C` be a uniformly random injection onto a uniformly random `N`-subset `R` of the `2N` strings, and `p_s = Pr[fixed s-set ⊆ R] = Π_{i<s} (N−i)/(2N−i)`. Summing the implication over hints, and using that each window outputs exactly one hint per view:
+  `4N · p_s ≤ Σ_y Pr[y ∈ range(C′), V(y) ⊆ R] ≤ Σ_{x′} E_view[ Pr[V(g_{x′}(view)) ⊆ R | view] ]`.
+
+**(3) Precision, exact.** Let `S` be the set of values in the view and `j = |V(y) ∩ S|`. Given the view, `R \ S` is a uniform `(N−k)`-subset of the `2N − k` unseen strings, so the other `s − j` elements all lie in `R` with probability `Π (N−k−i)/(2N−k−i) ≤ 2^{−(s−j)}`. Hence each window contributes `≤ 2^{−s} · E[max_y 2^{j_y}]`.
+
+**(4) A window seldom sees two elements.** Pointwise, `max_y 2^{j_y} ≤ 2 + Σ_{y : j_y ≥ 2} 2^{j_y}`. `S` is a uniform `k`-subset of `[2N]` (repeated inputs only shrink it), so `Pr[j_y ≥ j] ≤ C(s,j)(k/2N)^j`. By Abel summation, `E[2^{j_y} 1(j_y ≥ 2)] ≤ Σ_{j≥2} C(s,j)(k/N)^j = (1 + k/N)^s − 1 − sk/N ≤ (sk/N)²` for `sk ≤ N` (from `e^t ≤ 1 + t + t²` on `[0,1]`). Over `4N` hints: `E[max_y 2^{j_y}] ≤ 2 + 4s²k²/N`.
+
+**(5) Combine.** `2^{−s}/p_s = Π (2N−i)/(2N−2i) ≤ exp(s²/2N)` for `s ≤ N/2`. So
+  **`4N ≤ (2N + 4s²k²) · e^{s²/2N}`.**
+Split at `s² = 0.34N`. If `s² ≤ 0.34N`, then `4s²k² ≥ 4N·e^{−0.17} − 2N`, so `sk ≥ 0.586√N`. Otherwise `sk ≥ s > 0.583√N`. If `sk > N` the claim is trivial. ∎
+
+*(The audited version used 3N valid hints and a split at `N/5`, giving 0.42. The 4N strengthening is the reviewer's.)*
+
+**Audit record.** The reviewer audited every step, including my three self-attacks: repeated inputs (harmless), the valid-hint step (sound, and superseded by the vacuous case), and padding under adaptivity (preserved, for any total Q). **Monte Carlo check of step 4**, the only inexact step (3000 views each; random and clustered `V`; `N` up to 1024, `k` up to 16): the bound held in all 12 cells. The random-hypergraph templates sat at `E[max] ≈ 2.4`, **below what totality needs**, consistent with the theorem. **At `s = 1`, step 4's true value is 2 (`j ≤ 1`), which recovers W25.1 exactly for every `k`.**
+
+## §9. What it says
+
+- **At the line's scale, `k = poly(n) = polylog N`:** `q ≥ √N / polylog N = 2^{n/2 − O(log n)}`. **In the membership model, no polynomial-query deterministic depth-1 back-mapping exists for any poly-fan-in joint glue.** It is the first theorem of the black-box line for **general joint glue**, and it comes from a count, not an adversary.
+- **Relation to W12.2:** W12.2 (per-coordinate one-input glue, reaching total fan-in `log N + 2`) gives `q ≥ N/9` in its class. W26.1 is weaker there (`√N`) but covers the whole joint class.
+- **Relation to W25.3:** at `k = N`, `q = O(1)` is achievable, and W26.1 permits `q = O(1)` only once `k ≳ √N`. **Consistent.**
+- **Relation to W13/W14:** W14 ended on "no selection principle" for four interacting choices. **That obstruction belonged to the DNF model.** In the membership model the transcript is a function of `y` alone (W25.2), so there is nothing to select.
+
+## §10. Tightness -- W26's open residue
+
+**Tight at neither endpoint; the `√N` comes from the count, not the problem.** At `k = 1` the truth is `Θ(N)` (W12.2 transfers down). At `k ≈ √N` the theorem allows `s = O(1)`, but W25.3's hypergraph construction does not localise: a `√N`-window contains a fixed 6-set with probability about `(1/(2√N))^6`. **So the truth there is probably higher.** **Residue: at `k = polylog N`, is the membership-model truth of order `N` or `√N`?** In particular, does per-coordinate structure (W12.2) buy the missing `√N`? Any localised `O(1)`-query construction needs `k ≳ √N`. **By the reviewer's ordering, this is pursued only if W27's DNF extension stalls at its first step.**
+
+## §11. Errors and misses
+
+**Reviewer's (its words: fifth miss in W24-W26):** priced the precision mechanism at 45 on its endpoints without computing its middle. Its re-derivation bounded `2^j ≤ 2^{q+1}` uniformly, which cancelled the `q`-dependence and gave only `q ≥ log(N/k²)`. **Mine:** §5A's "membership **is** Definition 9 at `w = 1`" (corrected in §6); a placement sketch (§2(c)) priced as the likely shape, which was a detour; and the pre-registered construction search was never run, because the proof arrived first (**recorded, not hidden**). The W25 n = 3 rows were never obtained: the constant-PP run timed out, and I killed the count run by an over-broad process match that also killed a page append (caught before commit, nothing lost).
+
+**Practice line (the reviewer's wording): THE OBSTRUCTION WAS THE MODEL'S, NOT THE PROBLEM'S.** W13/W14 found no selection principle because their model needs one; the membership model has none to find. **A companion line, mine: PRICE A MECHANISM AGAINST THE PROBABILITY OF EACH CASE, NOT AGAINST ITS WORST CASE.** The `2^j` gain was affordable because seeing `j` elements costs `(k/2N)^j`.
+
+## §12. Closing
+
+**W26 proves nothing about P vs NP**, nothing about `FP^NP`, nothing about the DNF model, and nothing randomised. It proves Theorem W26.1: **in the membership model, depth-1 black-box stretch increase with poly fan-in needs `2^{n/2 − O(log n)}` queries.** **Next, W27** (`pvsnp/W27_dnf_extension.md`): extend toward Definition 9, where a query may name different values at different inputs and the transcript depends on `C`. The §10 residue waits behind it.
