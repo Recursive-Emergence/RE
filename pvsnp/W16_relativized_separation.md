@@ -96,3 +96,21 @@ Not reused: "odd cycles break the coupled device" (W11, mine); "differing σ bre
 **Consequence for this round, stated before attempting anything.** Lemma W16.0 asks for a *relativized* separation of exactly that boundary. That is not a lemma one expects to fall out of a staged diagonalisation written in a single round — **and if it did fall out easily, the right response would be suspicion, not celebration**, since it would be a twenty-year-old open question's relativized form settled in passing. **I am therefore lowering my own expectation further: within 16c, I now put the split at 30 (W16.0 closes, adversary open) / 35 (W16.0 does not close this round), against the 40/25 registered in §6.** *(Recorded as a revision with its reason, before the work, not after.)*
 
 **What would still be worth having even so:** the *statement* of W16.0 as the precise relativized form of SU05's open question, with the certificate construction as a candidate and its diagonalisation obstacle named. That is a 16c deliverable of real value — it says what a barrier for Q5.3 would have to prove, and why the obvious oracle does not supply it.
+
+## §8. Correction to §6, before the findings: the union bound DOES deliver claim (1)
+
+**I registered in §6 that claim (1) could not be had by a union bound. That is wrong**, and the error is precise: I compared the circuit count against a **single input's** mark-finding probability.
+
+**The correct accounting.** A plain A-circuit C of size 2^{εn} must be correct on **all 2ⁿ inputs**. Fix x. C(x) queries at most 2^{εn} of the 2^{2εn} candidate certificate locations, so
+
+  **P[C(x) finds x's mark] ≤ 2^{εn}/2^{2εn} = 2^{−εn}.**
+
+Failing that, the block's parity is uniform and independent of C's view, so **P[C(x) = T(x)] ≤ 1/2 + 2^{−εn}**. Certificate locations and contents are drawn independently for distinct x, and C is a fixed circuit, so these events are independent across inputs:
+
+  **P[C correct on every x] ≤ (1/2 + 2^{−εn})^{2ⁿ} = 2^{−Ω(2ⁿ)}.**
+
+Against the **2^{O(2^{εn}·εn)}** circuits of that size, the union bound gives 2^{O(2^{εn}·εn)}·2^{−Ω(2ⁿ)} ≪ 1 **for every ε < 1**. **Claim (1) holds, with no staged diagonalisation.** *(L ∈ E^A ⊆ E^{NP^A}: scanning 2^{2εn} locations and reading a 2^{√n} block is 2^{O(n)} time. The certificates for other inputs and machines encode other values and are independent, so they do not help.)*
+
+**And my §7 pessimism was a second error, of inference rather than arithmetic.** I reasoned that because the plain-vs-SVN boundary is a twenty-year-old open question, its relativized form should not fall out easily. **That does not follow:** a relativized separation shows only that *relativizing techniques* cannot settle the question — it does not settle it. W16.0 being reachable is fully consistent with SU05's question standing open since 2005. **The reframing in §7 stands; the revised split I drew from it (30/35) does not, and I withdraw it.**
+
+**Two self-corrections in one round, both in the same direction — the construction is better than I claimed.** Together with the four cross-input-coupling misses of W9–W13, **my errors are not randomly distributed: they cluster on predicting that a construction will fail.** That is a calibration fact about me, not about the constructions, and it belongs on the record next to the results.
