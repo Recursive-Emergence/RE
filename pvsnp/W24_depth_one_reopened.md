@@ -258,6 +258,45 @@ ROBUST step 0: Q asks "is 0 in range?"  hostable at: [0..7]  -> TRUE, host at u=
 
 **Priors on (A) unchanged** (mine 16/59/25; reviewer now 18/57/25).
 
+## §5G. Pre-registration AMENDMENT 7 -- results seen, Lemma W24.1, and variants four and five -- committed BEFORE they run
+
+*Appended 2026-09-12. Revises nothing above, moves no prior. **Several results are already seen and are disclosed as such.***
+
+**(G5.1) Mask-share (§5E), seen -- the construction holds to the hint.** Attack hints 4 / 16 / 8 against predicted 4 / 16 / 8; TIGHT certifies on exactly those; `E_all = ∅` on every attack hint; **`|U₂| = 2^z − 2` exactly** (`[0,0,2,2]` at `z = 2`, `[0,0,6,6]` at `z = 3`).
+
+**(G5.2) TWO OF MY PREDICTIONS WERE WRONG, with one shared cause.**
+- **E5.6, "RESCUE keeps `U` empty" -- WRONG.** `U₃ = 2^z − 3`. The adversary's own greedy hosting **consumed the rescue input** to host `v₀` on `Q`'s third query. RESCUE certified 0 only because the adversarial `Q` stops at three queries. **One extra input buys exactly one extra query; it does not rescue.**
+- **D5.7, "hub keeps `|U_t| = 0` under robust placement" -- WRONG.** Hub robust `[0,1,1,1,1]` on **12** hints, naive on **15** -- yet robust certified on **zero** in the kill test. **Robust keeps `Q`'s query path clear; it does not keep `U` empty.** `Q`'s fixed order never reaches the served string. I conflated *no string serves* with *`Q` does not find one*.
+- **Shared cause: I did not track the side effects of the adversary's own commitments.**
+- *Also mine:* the control tail reads `2^z` against a label of `2^z − 2`, because the script counts `1 ≤ |A| ≤ 2` while the label counts `|A| = 2`. The construction is consistent; the label was wrong.
+
+**(G5.3) The three-way cover test (§5F), seen -- EVERY ROW MATCHED.** On hub: **cover-literal `[2, 4, 6]`, cover-recompute=1 `[2, 4, 6]`, cover-recompute≤1 `[]`**, zero fallbacks. **Both independent causes confirmed**: single-deletion arithmetic misses the hazard, and with the arithmetic fixed the exactly-one threshold still misses the jump to zero. **By the reviewer's criterion, W16.1's single-deletion invariant is not the right invariant for high-multiplicity templates.**
+
+**(G5.4) The reviewer's framing of that finding, adopted verbatim in substance.** *In a multi-read template a commitment is NOT a deletion of one element from each property; it deletes every witness INCONSISTENT with the committed value. W16.1's single-deletion hypothesis is a property of the W16 oracle, where a witness is a POINT; it does not transfer to templates whose witnesses are PARTIAL ASSIGNMENTS.* **W16's kill test (v) -- "different model, does not transfer" -- came true inside the line.**
+
+**(G5.5) LEMMA W24.1 (the reviewer's) -- one-input templates, membership-query model.** In a single-call template `C′(x) = h_x(C(x))`, say `v` **serves** `y` if `h_x(v) = y` at every uncommitted `x`. **Then a string serves at most one hint, so at most `2^{n+1}` of the `2^{n+2}` hints certify, and the adversary always has a non-certifying valid hint.**
+
+*My audit, all three points:*
+- **(a)** "Hostable at uncommitted `x` iff `h_x(v) ≠ y`" is exactly right **for valid hints**: single-call makes `C(x) = v` admissible iff `h_x(v) ≠ y` and every other input can avoid `y`, which fails only if some `h_{x′}` is constantly `y` -- i.e. invalidity.
+- **(b) The pigeonhole is subtler than stated, but holds.** Hints `y` and `y′` come from **different runs with different commitment sets**. Each commits `≤ q` inputs, so the uncommitted sets meet in `≥ N − 2q` inputs, where `h_x(v)` would equal both. **Requires `2^n > 2q`**, or `2^n > 2(w/n)(q+1)` under Definition 9.
+- **(c)** `(C,0)` is tight: each `v` serves exactly `v << 1`, giving **16 of 32** -- W14's number, reproduced with no harness. Mask-share's `2^{−(z+1)}` fraction (G5.1) is its second data point.
+
+**What it is and is not**: not a new lower bound -- W12.2 already holds `N/9` in the DNF model for one-input patterns -- but a **one-line mechanism**, and the candidate to generalise.
+
+**(G5.6) Its multi-read question was already measured -- disclosed, not pre-registered.** The §5D census counted exactly "hints on which some string serves" for hub, before the question was asked: **12 robust, 15 naive**. Both are **under the one-input bound of 16** although the proof does not apply, and **placement changes the count** -- consistent with placement mattering only for multi-read. `n = 3`, one template: a consistency check, not evidence.
+
+**(G5.7) Variant four, COVER-WITNESS -- the reviewer's ground-set fix.** A witness for "`v` hostable at `x`" is the partial assignment `{C(x) = v}` together with every input the glue reads at `x`; a commitment deletes every inconsistent witness; the cover requires every property to retain a witness after any `t` commitments. *Implementation limit, stated: the full "any `t`" condition is combinatorial even at `n = 3`, so this runs as a **bounded two-step lookahead** over the adversary's plausible next hosts, and is labelled an approximation of the witness cover, not the condition itself.* **Prediction (reviewer's): agrees with cover-recompute≤1 on hub at `n = 3`, and diverges from it on a two-step-collapse template.**
+
+**(G5.8) The two-step-collapse template (the reviewer's).** Two hub inputs, `C′(x) = (C(x), C(0)₁ ⊕ C(1)₁)`: no single commitment collapses a property, the second can.
+
+**(G5.9) Variant five, VALIDITY-FIRST -- the reviewer's move, which is W14's forced-bit invariant used as a validity commitment.** Before any hosting, commit each **shared** input's read bits **against** the hint. On hub, `y = 2` needs hub bit 0, so forcing `C(0)`'s low bit to 1 makes `y` unreachable through every `x`. **Reviewer's prediction: certifies on `[]` on hub; changes nothing on one-input templates. MY SHARPER PREDICTION: `U_t = 0` on EVERY hub hint** -- after the forcing no string is blocked at any `x ≠ 0` -- which is **strictly stronger than robust**, since robust certified `[]` while leaving `U > 0` on 12 hints (G5.2).
+
+**(G5.10) The landing this implies for multi-read, recorded.** Validity-first is a forced-bit invariant on the **read structure** -- exactly W14 §2(b)-(c) -- and for general multi-read glue those forced neighbourhoods must be disjoint from the hosts' commitments: **the `δ ≥ 1/2` condition has reappeared under lazy hosting.** D5.6 predicted it would not. **The reason it did: lazy hosting removed the *hosting*-side coupling, but `y ∉ range(C′)` is universal over `x′` in both models, so the *validity*-side forced bits on shared inputs are the same universal requirement as in (B).** The condition now prices **validity on the read structure**, not hosting -- and the one-input lemma needs no condition because there is no read structure.
+
+**(G5.11) Proposition wording, agreed:** "**there exists** a valid hint on which `U_t(y)` stays empty". The per-hint "iff" is false on mask-share by construction (F5.7).
+
+**Priors on (A) unchanged** (mine 16/59/25; reviewer now 18/57/25).
+
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
