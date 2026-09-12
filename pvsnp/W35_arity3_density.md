@@ -34,3 +34,7 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §3A. Correction to §1(c), mine, before any computation or ruling
+
+**"Payment by cover is impossible on PROJ3" is WRONG.** Split payment does not need one payer to absorb a vertex cover. It needs restrictions `B` at `u₂` and `C` at `u₃` with `B × C` avoiding `S_v`. For `S = {b₀ ⊕ c₀ = y₀}`, take `B = {b₀ = 0}` and `C = {c₀ = 1 ⊕ y₀}`. Every pair in `B × C` has `b₀ ⊕ c₀ = 1 ⊕ y₀ ≠ y₀`. **Cost: `N` values at each payer**, which fits W34's capacity of `1.275N`. The minimum vertex cover of `2N` is the **total** across the two payers, not a single payer's load. **This is exactly the split payment of W32-B §1(b), which I then failed to apply to my own kill template.** What remains of §1(c): each payer loses a whole parity class, so **strings of that class are unhostable at the payers**, and with protected inputs at one third of the inputs, **hosting of those strings falls to the protected third plus unaffected payers**. That is the W30 two-sided cost, not a failure. **§1(b)'s "mass versus cover" point stands in general** (a matching slice needs a cover as large as itself). But PROJ3 is not its example, and **a kill template for (b) needs a slice with a large cover that no two-sided product split avoids cheaply.** The priors are not revised; the correction is recorded before the reviewer's audit.
