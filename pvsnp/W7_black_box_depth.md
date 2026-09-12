@@ -67,3 +67,117 @@ The reviewer asks whether the NP^C oracle may be used **while building** C′. *
 ---
 
 *Findings follow below, appended after the attack. Nothing above is revised retroactively.*
+
+---
+
+# Findings (written after the attack; priors above are unrevised)
+
+*Sources read as text this run: Korten, Bull. EATCS 145 (2025), §4.1 (Definition 4, Lemma 6), §6.2 (Theorem 12), §8.1 (Problems 1–2), bibliography; **Miles–Viola**, "On the complexity of constructing pseudorandom functions (especially when they don't exist)", J. Cryptology 2013 — the journal version of Korten's [36] (see §1 on identification), §1, §4, §5. Computations run in the job scratch directory; `formal/` untouched.*
+
+## 0. Outcome against priors
+
+| code | prior (mine / reviewer) | outcome |
+|---|---|---|
+| **7a** proved impossible black-box | 30 / 35 | not achieved |
+| **7b** a depth-1 construction found | 15 / 20 | not achieved |
+| **7c** neither; obstruction named | **55** / 45 | **this is the outcome** |
+
+**Registered flags:** H7 **confirmed** (§4). J7 **confirmed** (§3). The §3 model prediction (prior 70) **confirmed** (§2).
+
+**The finding I did not anticipate (§1): the PRG analogue is not uniformly open. It is *solved at both extremes* — impossible for projection post-processing, possible for affine post-processing — and open in between. That reshapes the Avoid question from "is depth 1 possible?" to "possible *with which glue?*"**
+
+## 1. Q1 — prior art, and a bibliographic correction I had to make twice
+
+**Identification, stated because I got it wrong mid-run.** Korten's **[36]** is cited as *Miles–Viola, "On the complexity of non-adaptively increasing the stretch of pseudorandom generators", TCC 2011, pp. 522–539*. The file Viola serves at `papers/stre.pdf` (`stre` = stretch) carries the **different** title *"On the complexity of constructing pseudorandom functions (especially when they don't exist)"* and is dated 2013 — I first concluded it was a different paper. Viola's own homepage settles it: that entry reads *"With Eric Miles. J. of Cryptology, pp. 1-24, 2013. **Preliminary version in Theory of Cryptography Conf. (TCC), 2011**."* **The paper was retitled between conference and journal.** So what I read is [36] in journal form. **I did not see the TCC proceedings version itself**, so theorem numbers below are the journal version's.
+
+*(A search engine twice told me `stre.pdf` was the TCC paper under its TCC title. It was right by accident and wrong in its reasoning; the resolution came from Viola's listing, not the summary.)*
+
+**What is known — and it is a dichotomy, not an open void.**
+
+**Possible, with affine post-processing. Theorem 1.3** (verbatim): *"For every constant c = O(1), there is a poly(n)-time oracle algorithm H: {0,1}^n → {0,1}^{n^c} that makes n^c **non-adaptive** oracle queries and satisfies the following: for some ℓ = Θ(√n) and every one-bit-stretch PRG G: {0,1}^ℓ → {0,1}^{ℓ+1}, H^G(·) is a PRG for infinitely many input lengths."* Its form is given explicitly as an **affine** function of the answers: *"H^G(x) := ⟨G(q₁(x)), r₁(x)⟩ ⊕ t₁(x) ∘ … ∘ ⟨G(q_{n^c}(x)), r_{n^c}(x)⟩ ⊕ t_{n^c}(x)"*.
+
+**Impossible, with projection post-processing. Theorem 1.4** (verbatim): *"For all sufficiently large ℓ and for n ≤ 2^√ℓ, there is no fully black-box construction H: {0,1}^n → {0,1}^{n+s} of a generator with stretch s ≥ 5n/log n and error ε ≤ 1/4 from any one-bit-stretch generator G … of the form H^G(x) := G(q₁(x))_{b₁(x)} ∘ … ∘ G(q_{n+s}(x))_{b_{n+s}(x)} where q_i specifies the i-th query and b_i specifies the bit of the i-th answer to output."*
+
+**And in the primitive black-box setting it becomes a separation. Theorem 4.3:** same form, *"and the q_i and b_i are computable by poly(n)-sized circuits, then **NP/poly ≠ P/poly**."*
+
+**Their own summary of the dichotomy** (line 228): *"linear-stretch constructions require either adaptive queries or post-processing the answers in a more sophisticated way than projecting."* **And it reaches AC⁰** (line 230): *"It was pointed out to us by Benny Applebaum that Theorem 1.4 can be strengthened to rule out even AC⁰ post-processing."*
+
+**Second prior-art item, identified:** [BJP11] = *Bronson, Juma, Papakonstantinou, "Limits on the stretch of non-adaptive constructions of pseudo-random generators", TCC 2011* — concurrent, and Miles–Viola call its results *"incomparable to ours"*. **Not read this run;** recorded as located.
+
+**So Korten's "almost completely unsolved" is fair and I am not contradicting it:** what is settled are the two extremes of the post-processing class. The general case — arbitrary polynomial-time glue — is open, and that is the case his Problem 1 asks about for Avoid.
+
+## 2. Q1 — the model, decided
+
+**Lemma 6 does not use the NP oracle while building C′.** Its proof builds *"an instance C′ … computable with depth d calls to C"* and uses the oracle only afterwards: *"given any solution to C′ Avoid we can find one for C in polynomial time with an NP-oracle."* So the model is: **C′ is a fixed template of C-gates plus glue; the NP^C oracle appears only in the back-mapping.** My pre-registered reading (prior 70) is confirmed.
+
+**Would allowing NP^C while building C′ change the question? Yes, and the depth notion stops meaning anything.** Depth is defined as *"the depth of the longest chain of oracle calls C′ makes to C"*; its purpose (his line 715) is that *"if C is given as a circuit of depth d₀, and we construct C′ by a reduction with depth complexity d, then C′ will be computed by an (explicitly given) circuit of depth d₀ · d"*. An NP^C query inside C′ is not a C-gate and destroys that accounting — C′ would no longer be a circuit built from C at all. **So the Lemma 6 model is the right one, and I answer for it.**
+
+## 3. Q2/Q3 — the attack, and what the computation does and does not show
+
+**The instance.** Δ_d(n+1|n) = n+d (§1 above, arithmetic pre-registered), so Lemma 6 reaches stretch n ↦ n+2 only at depth 2; a **depth-1** reduction from n ↦ n+1 to n ↦ n+2 beats it.
+
+**Zero-query back-mappings: dead, but trivially so.** For a hint y, a back-mapping that ignores C exists iff the intersection, over all C with y ∉ range(C′), of the complements of range(C), is non-empty. Exhaustively over all 4096 functions C at n = 2, this intersection is **empty for every one of the 16 hints, for all four templates tested**. But the reason is trivial and I record it rather than dress it up: "y ∉ range(C′)" constrains C only on the inputs the template actually consults for that output value, leaving some input free to take **any** value, so every candidate y′ is killed by some consistent C. **This says nothing about depth.**
+
+**The real measurement: how many queries the back-mapping needs.** Model: the back-mapping sees y, then adaptively asks for C(x) at inputs of its choice, then outputs y′; it must be correct for every C consistent with the hint and the answers.
+
+**Controls first — the harness is validated.** Korten's depth-1 base cases must come out at 0, and they do:
+
+| template | n | queries needed | bound to compare |
+|---|---|---|---|
+| CONTROL identity C′ = C | 2 | **0** | must be 0 |
+| CONTROL truncation C′ = C ≫ 1 | 2 | **0** | must be 0 |
+| A: C(x) ∘ parity(x) | 2 | **4** | N = 4 |
+| B: C(x) ∘ lowbit(C(x+1)) | 2 | **4** | N = 4 |
+| C: C(x) ∘ highbit(C(x+1)) | 2 | **4** | N = 4 |
+| D: xor-glue of two calls | 2 | **4** | N = 4 |
+
+*(n = 2 rows are **exhaustive** over all 4096 functions C — exact, not sampled.)*
+
+**n = 3 (N = 8), sampled — and only the sound direction is used.** A sampled consistent set is a *subset* of the true one, so the back-mapping's task on a sample is **easier**; therefore a failure at q on the sample is a genuine failure at q, while success on a sample proves nothing. Reported accordingly:
+
+| sample size | A: parity glue | D: xor glue | sound conclusion |
+|---|---|---|---|
+| 4 000 | fails at q = 2 | fails at q = 2 | true q ≥ 3 |
+| 40 000 | fails at q = 3 | fails at q = 3 | **true q ≥ 4** |
+| 200 000 | fails at q = 3 | fails at q = 3 | true q ≥ 4 (saturated) |
+
+**What this does NOT establish, stated plainly.**
+1. **N = 4 gives q = 4, and 4 is also the trivial maximum at N = 4** — reading all of C always suffices. So the n = 2 row alone cannot distinguish "needs everything" from "needs four". It was only the n = 3 row that gave the measurement any content, and it gives q ≥ 4 at N = 8 — **consistent with growth, and not proof of it.** I am not claiming a q = Ω(N) pattern from two points, one of which is degenerate.
+2. **The query model is weaker than Korten's**, and this is the limitation that matters most. My back-mapping asks *value* queries ("what is C(x)?"). The real model grants **NP^C** queries — existential questions about C, which is what Wilson's DNF formulation captures. **A lower bound in a weaker query model does not transfer upward**, so none of these numbers bound the real question. They characterise the natural templates under value queries and nothing more.
+
+**Why I did not reach 7a.** The adversary argument I sketched at pre-registration needs, at the end, to extend the partial C so that the back-mapping's output y′ **is** in range(C) while keeping y ∉ range(C′). Those two demands are coupled through the template, and in the truncation case the coupling is exactly what makes the reduction *correct*. I could not find the step that forces the contradiction for "up" templates in general, and — per the pre-registered honesty rule — I am not going to present the computation as if it were that step.
+
+## 4. Q4 — relativization sanity, and Flag H7 confirmed
+
+- **Consistent with Wilson.** Korten §6.2 **Theorem 12**: *"If Q … has query complexity q and width complexity w and solves the [N] → [M] Avoid problem, then qw ≥ N. Hence Avoid ∉ FP^NP relative to some oracle."* That is Avoid **with no hint**; nothing here contradicts it, and nothing here extends it, because the hint is precisely what his adversary does not face.
+- **Consistent with the unconditional fold.** With a hard truth table the fold works at depth log(T/n) (W6, RW26 Thm 3.1). Nothing above claims otherwise; the claim under test is only about **increasing stretch black-box at depth 1**.
+- **Flag H7 confirmed, and it limits every possible outcome here.** At stretch n ↦ n+1 at least half the codomain is outside range(C), and "y′ ∈ range(C)?" is one NP^C query, so **guess-and-test solves this in FZPP^{NP^C} at depth 0.** Any depth lower bound in this model is about **deterministic** reductions, and Wilson's Theorem 12 is stated for a deterministic query algorithm. **The black-box form of "hiding is depth" does not survive randomisation at this stretch.** I registered this before attacking so it could not be quietly dropped, and it stands.
+
+## 5. The named obstruction (the deliverable for 7c)
+
+**Why the PRG impossibility does not transfer to Avoid, precisely.**
+
+Miles–Viola's Theorem 1.4 is driven by an oracle generator that **reveals most of its input**: Theorem 4.1 item 2, *"For every input x ∈ {0,1}^ℓ, G(x)|_T = x₁x₂ ⋯ x_{ℓ−d}."* Against a projection-only construction this hands the adversary a **distinguisher** — their A accepts the set of strings matching H^G(x)|_{I_x}, which a poly-size non-deterministic circuit can guess and check (Theorem 4.3's proof). **The entire argument is a pseudorandomness argument: it defeats a *security reduction*.**
+
+**Avoid has no security reduction and no distinguisher.** Its back-mapping carries a **total correctness** obligation — for *every* y ∉ range(C′), produce y′ ∉ range(C) — and it is handed an NP^C oracle to do it. There is nothing for a "reveals-its-input" oracle to break, because there is no pseudorandomness to break. **That is the obstruction: the one technique that settles the PRG analogue at this extreme is inapplicable, and Wilson's technique — the right one for Avoid — has no hint in it.**
+
+**The smallest statement that would decide it, sharpened by the prior art.** Korten's Problem 1 leaves the glue unrestricted, and the PRG dichotomy says the glue class is exactly what decides the analogous question. So the useful next target is **Problem 1 with the glue class fixed**:
+
+> *Is there a depth-1 black-box reduction from Avoid at stretch n ↦ n+1 to stretch n ↦ n+2 whose glue is **NC⁰** (equivalently, is ruled out for AC⁰ as in Applebaum's strengthening of Theorem 1.4), with back-mapping in poly time with an NP^C oracle?*
+
+This is strictly smaller than Problem 1, it is the exact mirror of the one PRG case that **is** settled, and — unlike Problem 1 — it names the parameter that the prior art says is decisive. **Recorded as the W7 deliverable.**
+
+## 6. Kill tests
+
+- **Determinism stated on every line** (H7): done, §4.
+- **Trivial-hint attack applied before calling anything a candidate** (J7): done — it kills the zero-query case outright, §3.
+- **Wilson's template checked for what carries over**: done — it has no hint, §4 and §5. Not asserted to transfer.
+- **Numbers reported with the bound beside them**: done, both tables in §3, including the admission that 4 = N is degenerate at n = 2.
+- **Sampling used only in the sound direction**: stated in §3 and enforced — success on a sample is never reported as a result.
+- **Computation never presented as proof of an asymptotic claim**: §3 item 1.
+- **`formal/` untouched; scripts live in the job scratch directory only.**
+- **A prior wrong is said with the finding**: no prior was refuted this round; the bibliographic error in §1 is mine and is recorded where it happened.
+
+## Ceiling
+
+As pre-registered, and it did not move. **W7 proves nothing.** It identifies the prior art precisely, fixes the model, kills the natural depth-1 templates under value queries, and explains why the technique that settles the PRG mirror cannot be borrowed. **The question Korten asked remains open, and is now asked in a smaller and better-aimed form.**
