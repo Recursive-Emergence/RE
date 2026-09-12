@@ -78,3 +78,60 @@ And the older ones: framing audit before pricing any mechanism, and it can *be* 
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §5A. Amendment -- the framing audits, discharged in writing before any template is counted
+
+*Appended after the priors commit (4fc6f61) and after two reviewer messages that CROSSED it: the first sharpened the statement and said "read this before committing priors"; it arrived after the commit. **The §3 priors were set against the fan-in-`r` statement and are not revised.** Supplementary priors against the sharpened statement are registered below, labelled as set after the reviewer's argument but before any data.*
+
+### A25(i) -- stretch bookkeeping: DISCHARGED, and the §0 statement is retired
+
+From my own committed pages, not the reviewer's reading: W7 §1 (Korten Problem 1 verbatim; Lemma 6 keeps the input length, `Δ₂(n+1|n) = n+2`; the instance is depth 1 from `n ↦ n+1` to `n ↦ n+2`), and W8's model line: *"C′ : {0,1}ⁿ → {0,1}^{n+2} is a fixed template of C-gates ... depth 1"*. **So `n′ = n` in the instance.** The reviewer's `s > 1 + log r` parametrisation excludes only `r < 2` at `s = 1` -- W24.1 again -- and is **retired on the reviewer's own concession**. Padding `C′(x, i) = (C(x), i)` is `n+1 ↦ n+2`: the same additive stretch, excluded by input length, not by a stretch threshold. §2(b)'s down-force is discharged: the statement is well-posed.
+
+**The sharpened statement (the reviewer's), which W25 now tests:**
+
+> **Lemma W25.1 (candidate, sharpened).** Membership-query model, deterministic, depth 1, **any glue fan-in**, under the constant-reader characterisation of blocking: certifying hints `≤ 2^{n′+1}(1 + o(1))`; hence at `n′ = n` no template is total.
+
+**The argument, re-derived by me, and it checks -- on a product domain.** If reader `x′` is constant on slices at two positions `i ≠ j` (constants `y_i(v)`, `y_j(v′)`), the point with `v` at `i` and `v′` at `j` forces `y_i(v) = y_j(v′)` for all such pairs: **a reader alive at ≥ 2 positions serves one hint in total** (covering ≤ `r` inputs); a reader alive at one position serves ≤ `2^{n+1}` (hint, input) pairs. With `r ≤ 2ⁿ`, pairs ≤ `2^{n′} · 2^{n+1}`, and a certifying hint needs `2ⁿ − q` of them. **The step that uses "product": the other positions range over ALL values independently.**
+
+### A25(ii) -- "single-call": the reviewer's ruling is CORRECTED from the committed page
+
+The reviewer ruled that in the line's vocabulary "single-call" means one call to the Avoid oracle. **W8 says otherwise**: *"Single-call template C′(x) = (C(x), h(x))"* -- **one C-gate per C′-input** -- contrasted in Flag L8 with *"k parallel calls with projection glue"*. So in the line's vocabulary:
+- **single-call** = one C-gate per C′-input (W8.1's family);
+- **one-input** = fan-in-1 glue (W12.2 / W24.1);
+- **every template in the line is one Avoid instance `C′` with one hint** -- that is the depth-1 setting itself, not a template class.
+
+**W25 is the MULTI-CALL (k-call, fan-in k) depth-1 case -- W13's "depth one general".** The two-axis sentence the reviewer asked for is above, with the axis names taken from W8 rather than from the ruling.
+
+### A25(iii) -- codes: ACCEPTED as amended by the reviewer
+
+25a = some unconditional count holds, giving **"at `n′ = n` no depth-1 template of any fan-in is total"** in the membership model; 25b = crux exhibited and no count survives unconditionally; 25c = neither. The original `1 + log r` wording is scored only as a footnote.
+
+### PRIOR ART the round must not contradict silently -- W13 §2 and W14 kill test (v)
+
+W13 §2: *"no averaging argument over hints alone can produce a free hint"*; W14 kill test (v): *"any argument that appears to finish by averaging alone is wrong, since W13 proved averaging cannot."* **The sharpened Lemma W25.1 is a count over hints. So either it has a hole, or W13's sentence is broader than what W13 proved.** What W13 proved is narrower: ITS bound (`|Y_v| ≤ 2k` with a **sparse** free set, each reader carrying ≤ 1 free position) is vacuous, `Σ_v |Y_v| ≤ k · 2^{n+2}` against `2^{n+2}` hints. **The sharpened count uses a different lever -- the full free set, where readers keep ≥ 2 free positions and the cross-position argument bites.** So there is no contradiction of what W13 *proved*; there is a contradiction of what W13 *wrote*. **Per the W23 line (a verified premise does not license its consequence), W13's general sentence is the suspect**, and if the sharpened count survives, W13/W14's sentence must be corrected in the findings, not quietly bypassed.
+
+### The hole I expect, registered BEFORE data: admissibility is not a product
+
+"Blocked at `x` for `y`" quantifies over **admissible** completions -- those with `y ∉ range(C′)` -- and that set is **not a product** of per-position domains. The cross-position argument needs the product. **So the constant-reader characterisation must say which domain it is constant over, and the two readings differ:**
+- **constant-P** (unrestricted product): the reviewer's argument applies, the count holds, but blocking can occur with no constant-P reader;
+- **constant-A** (admissible slice only): characterises more blocking, but the cross-position argument fails, because the admissible set depends on `y`.
+
+**A second cold kill template, mine, built to separate them -- VALIDITY-SPLIT.** Reader A reads `x` and `z`: outputs `y` iff `C(x) = v` and `C(z)₁ = 0`. Reader B reads only `z`: outputs `y` iff `C(z)₁ = 1`. Then `y` is valid (take `C(z)₁ = 0`, `C(x) ≠ v`), `v` is blocked at `x`, **no reader of `x` is constant-P on the slice**, yet A **is** constant-A -- because B's validity constraint removed the other half. **This is split-reader with one half moved OUTSIDE `x`'s readers**, so even the reviewer's Q3 pattern definition (covering by `x`'s readers) needs its weights measured on admissible completions.
+
+**Q3's weighted count, arithmetic done now rather than priced.** With a `y`-independent measure (uniform on the product), a reader's pattern mass at position `i`, value `v`, summed over `y`, is exactly 1; over `v` and `i`, `r · 2^{n+1}`. Summed over `2^{n′}` readers and divided by the `2ⁿ − q` units a certifying hint needs: **certifying ≤ `r · 2^{n′+1}(1+o(1))` -- vacuous at `n′ = n` for every `r ≥ 2`.** So the union-bound version of Q3 is dead by arithmetic; any surviving Q3 must use **admissible-measure** weights, which are `y`-dependent and break the per-reader budget. **That is why I do not expect Q3 to rescue the count.** Reported to the reviewer as arithmetic, not as a prediction.
+
+### Definitions fixed for the computation (before any number)
+
+At history `H` (q = 0 unless stated): **exhaustive-blocked** `(x, v, y)` iff no admissible `C` has `C(x) = v`. **constant-P** iff some reader of `x` has glue constantly `y` on `C(x) = v` over all values of its other positions. **constant-A** iff some reader of `x` equals `y` on every admissible completion with `C(x) = v`. A hint **certifies at slack q** iff it is valid and some `v` is exhaustive-blocked at ≥ `N − q` inputs. Reported per template: #valid hints; #certifying at q = 0, 1, 2; the counts of blocked triples under each of the three definitions; and every triple blocked exhaustively but not constant-P.
+
+Templates, in order: **(1) positive control** -- a fan-in-1 reader per input, where all three definitions must coincide; **(2) hub, (3) two-hub** -- labelled NOT cold; **(4) split-reader, (5) validity-split** -- cold.
+
+### Supplementary priors, against the sharpened statement (set after the reviewer's argument, before data)
+
+| | reviewer | **mine** |
+|---|---|---|
+| count holds under constant-P (product domain) | 80 | **85** -- I re-derived it |
+| the crux: blocking ⟺ constant-P, or a count that survives split-reader AND validity-split | 25 | **15** -- validity-split is built to break it, and the Q3 union bound is vacuous by the arithmetic above |
+| **25a (amended)** / 25b / 25c | 20 / 55 / 25 | **13 / 62 / 25** |
+
+**Prediction scored in advance:** exhaustive > constant-P on split-reader and on validity-split; constant-A = exhaustive on validity-split but constant-A < exhaustive on split-reader; all three equal on the positive control.
