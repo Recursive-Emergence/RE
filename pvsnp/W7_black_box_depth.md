@@ -22,7 +22,7 @@ Not reused: "(PL) is loose-access lowness" (Y6); "the Pessiland oracle does not 
 
 **The smallest instance, and its arithmetic (done now, not later).** Take n₁ = n+1. Then Δ₁(n+1|n) = n+1, and for n > 2, Δ₂(n+1|n) = ⌊(n+1)/n⌋·1 + (n+1) = **n+2**, and inductively Δ_d(n+1|n) = n+d. So Lemma 6 reaches stretch n ↦ n+2 only at **depth 2**. **A depth-1 reduction from stretch n ↦ n+1 to stretch n ↦ n+2 would beat it.** That is the instance.
 
-**What depth 1 already does, and why it only goes down.** Korten's proof records the base case: *"Avoid can always be reduced downward in stretch by ignoring some output bits. In the case d = 1, n₂ ≤ n₁, and so by this observation there is nothing to prove."* Truncation works because if y ∉ range(C↾ first n₂ bits) then **every** extension of y is outside range(C) — the back-mapping is padding. **So the question is exactly whether depth 1 can go UP by one bit.**
+**What depth 1 already does, and why it only goes down.** Korten's proof records the base case: *"Avoid can always be reduced downward in stretch by ignoring some output bits. In the case d = 1, n₂ ≤ n₁, and so by this observation there is nothing to prove."* Truncation works because if y ∉ range(C truncated to its first n₂ output bits) then **every** extension of y is outside range(C) — the back-mapping is padding. **So the question is exactly whether depth 1 can go UP by one bit.**
 
 ## §2. Two facts I am registering now, because they constrain every outcome
 
