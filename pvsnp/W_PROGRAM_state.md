@@ -138,7 +138,7 @@ Three premises that both the reviewer and I had been arguing from were struck ag
 | hubs plus arity-2 residual with small rows | W30.1 | proved (class) |
 | arity-2 with coarse rows, bounded coarse-triple multiplicity | W31.1 | proved (class) |
 | **all fan-in 2** | **W32.1: `c(D*)·N`** | **proved, unconditional (W34, bacbed4); proof-of-shape constant** |
-| arity 3 (W35, d782bb5) | string-to-input assignment plus split payment | **open, named**: capacity collisions among heavy strings' splits at shared payers (bounded multiplicity, about `16D*` per window) |
+| **all fan-in 3** (W35 d782bb5, W36) | **W36.1: `c₃(D*)·N`** | **proved at fixed `D*`, proof-of-shape** (density + assignment + split payment with per-(u, payer) coordination) |
 | arity `k ≥ 4` with coarse slices | -- | **open**: hitting sets over `(k − 2)`-tuple keys; any W31-style bound is vacuous at `k = polylog N` |
 | **polynomial fan-in, general glue (Korten Problem 1 at depth 1)** | -- | **open** |
 
@@ -262,9 +262,12 @@ door (C_1): E^NP ⊄ SIZE[2^{o(n)}]  ⟹  Avoid ∈ FP^NP        [Korten; minima
                  W28.1 (small rows) · W29.2 (hub + unary) · W30.1 · W31.1 (bounded multiplicity)
                  W32.1: all fan-in 2, unconditional (W34 density count)
                  W35: arity 3 reduced to split-payment collisions (bounded multiplicity)
-                 OPEN: arity-3 collisions · arity >= 4 tuple-key hitting sets · the constant
+                 W36.1: all fan-in 3 at fixed D*
+                 OPEN: arity >= 4 tuple-key hitting sets · the constant
 ```
 
 **The weakest arrow is the one from the black-box sub-line to the door**, and it is weak three times over. (1) Black-box lower bounds constrain one **technique** (stretching by oracle calls with glue), not `FP^NP`. (2) By Flag H7 they die under randomisation at this stretch. (3) Korten's Problem 1 asks for depth `d` against `log_α β`; **W24-W32 are all at depth 1**, and even a complete depth-1 answer at polynomial fan-in would be one instance of it. **Every result in §3.4 sits below that arrow.**
 
 **W34 note:** the reviewer chose (a) under the standing rule, subject to the user's override, and W34 closed it (fan-in 2 unconditional). The user's choice between further black-box rounds and the door stands. **The decision as written at W33:** After W33 the line either (a) **attacks forced chains** directly (the fan-in-2 case's last open object, sharply stated, with a clean kill template), or (b) **returns to the door**, where §4's boundary and §5's (D2)/(D3) rows stand as W19-W20 left them. The reviewer will put the choice to the user with this page. **Nothing is merged, and w15-w33 are unpushed.**
+
+**W36: THE BLACK-BOX SUB-LINE RESTS.** Final ledger: **W26.1** (membership model, any fan-in, `(q+1)k ≥ 0.58√N`); **W28.1** (Definition 9, small rows, `N/(D+1)`); **W29.2** (hub plus unary, `N/4 − h`); **W32.1** (fan-in 2, unconditional, `c(D*)·N`); **W36.1** (fan-in 3, `c₃(D*)·N`). **Open:** arity `≥ 4` (tuple-key hitting sets), the constants, randomisation, depth `> 1`. Everything is deterministic, depth 1, and below the weakest arrow. **The next move -- the door, or rest -- is the user's; no W37 is opened.**
