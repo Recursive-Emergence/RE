@@ -41,3 +41,16 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §3A. Amendment -- A30 and C30 data (before findings)
+
+**A30, residual split-reader, exhaustive.** N = 8. Window `(0, 2)` has glue `(a << 1) | b₀`; window `(1, 2)` has glue `(a << 1) | (b₀ ⊕ 1)`; the other inputs have odd unary glue. **For every hint tested, the pins `{0 := y >> 1, 1 := y >> 1}` are clean and non-extendable**: input 2 is dead, and no window is violated. That is 31 of the 32 hints. Hint 1 was excluded only by the checker's crude fill of inputs 3-7 with the value 0, which equals `y >> 1` there; this is an artefact of the check, not of the template. **Clean ⟹ extendable fails at arity 2, as §1(b) predicted.**
+
+**C30, hub plus random pair windows** (window `x` reads `(x, p(x), hub)`, random glue). Pinning the hub makes every residual window arity 2, so `M_res = 0` and `D′ = D_res`. Exact residual parameters, best hub value, three hints:
+
+| N | D_res = D′ | t_res | D·t vs 2(N − 1) | bound `qw <` |
+|---|---|---|---|---|
+| 16 | 3 | 3 | 9 < 30 | 3.8 |
+| 32 | 5 | 3-4 | 15-20 < 62 | 5.2 |
+
+**The residual meets W28.1's hypothesis at every hub value tested**, whereas the un-pinned template has hub degree `N − 1` and W28.1 is vacuous. **So the combination closes for this template under (H_t), as §1(d) predicted: 30b's shape.** The bounds are small at these sizes only because the maximum random degree `D` is 3-5.
