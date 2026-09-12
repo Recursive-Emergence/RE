@@ -2,6 +2,8 @@
 
 *W19, a consolidation round set by the reviewer. Documents only, no new attack. Written 2026-09-12 on branch `w19-program-state`. `formal/` closed. LOCAL commit only, no push.*
 
+*W33, the second consolidation, also set by the reviewer, 2026-09-12 on branch `w33-consolidation`: adds W24-W32 (§3.4), updates the ceiling, ledger, open statements, practice lines and PATH. Nothing earlier on the page is revised except where marked "W33".*
+
 **No priors are registered for this round.** Pre-registration exists to stop me fitting a prediction to a result; a consolidation page predicts nothing. Every statement below is quoted from its own page or its own primary, and where a statement could not be verified it is marked rather than smoothed.
 
 ---
@@ -14,6 +16,8 @@ Two standing caveats that apply to everything below:
 
 - **Flag H7 (deterministic-only).** Every bound in §3.1 is against *deterministic* back-mappings. Guess-and-test sits in `FZPP^{NP^C}` at depth 0, so the black-box form of "hiding is depth" **dies under randomisation**. The sub-line's four theorems do not survive it.
 - **Korten's Problem 1 is untouched.** The sub-line closed at depth 1 with generality unreached, by a stopping rule agreed in advance.
+
+**W33 addition to the ceiling.** W24-W32 reopened depth 1 and produced more lower bounds **of the same kind**: deterministic, black-box, depth 1, stretch `n ↦ n+1` to `n ↦ n+2`. **Two of them are in the weaker membership-query model** (the single-value subclass of width-1 DNFs, which does **not** include NP^C queries). **The Definition 9 results are for restricted template classes, and the fan-in-2 theorem is conditional.** Nothing here reaches Korten's Problem 1 at polynomial fan-in, nothing survives randomisation, and **the door is unmoved.**
 
 ---
 
@@ -41,6 +45,8 @@ The parenthetical is not an aside — **it is the boundary of §4**, stated by t
 ## §3. Results
 
 **Branches and commits.** `w5-counting-form` 18caadc; `w6-round-complexity` 5aef6d7; `w7-black-box-depth` b36ed25; `w8-depth-one-lemma` 659a442; `w9-projection-glue` 3f1f1e4; `w10-projection-closed` 4eec008; `w11-nc0-glue` 044d224; `w12-one-input-glue` f2231d6; `w13-depth-one-general` 50fd900; `w14-dangerous-strings` 242e2b3; `w15-isolation-from-hardness` 224d6af; `w16-relativized-separation` bc60bd8; `w17-residue-supplies-randomness` f8e78a6; `w18-loss-exponent` 4150bb8; `w19-program-state` c810c94 (this page); `w20-history-hardness` 13cb4b7 (priors at fd081c1 and ecf5475; findings at 13cb4b7). **w5-w14 are pushed to origin** (w14 ahead by 242e2b3); **w15-w20 are local and unpushed, awaiting the user's go.** The reviewer's `w1-range-avoidance` 267b85e (W1-W4) is its own branch and remains local by its call. **Nothing is merged; `main` is unchanged.**
+
+**W33 ledger update.** `w21-nc03-window` (findings 8d7f7d7, page update 61114ec); `w22-sparsifiers` 374d097; `w23-cegis` 4c40c25; `w24-depth-one-reopened` f42275c; `w25-read-count` ff2f888; `w26-query-fanin` 99029ab; `w27-dnf-extension` 064811f; `w28-extendability` 54cdc5b; `w29-prepinning` c81d84d; `w30-residual-arity` 6765871; `w31-side-assignment` 6f67a20 (findings 24013f5; §10 bd3ca7b; **erratum §11 56e31c7**; gloss correction §12 6f67a20); `w32-correlated-assignment` 8c0fe2b (W32-A in `W32_fanin2.md`: pre-registration c97502b, findings 2749280, §10 946ce1e, §12 70d146e, residue §13 8c0fe2b; W32-B in `W32B_arity_k.md`, bounded round, 8c0fe2b); `w33-consolidation` (this update). **Only w5-w14 are on origin; w15-w33 are local and unpushed, awaiting the user's go. Nothing is merged.**
 
 ### 3.1 The black-box sub-line (W7-W14), closed
 
@@ -88,6 +94,57 @@ Cost: witness length `O(T)` against RW26 Theorem 3.1's `n`. Removes exactly W6's
 
 Three premises that both the reviewer and I had been arguing from were struck against RW26's text: the base is **brute force** ("`r_0 = 0, s_0 = 0` ... `BF_0` ... enumerates every string in `{0,1}^{n_0}`"), so there is no hard base string; **Arthur evaluates** Merlin's circuit; and RW26's `s_i` is the **NP-query witness length** (`s_{i+1} := max{s_i, n_{i+1}}`), not a hardness threshold. **From here: `s_i` = query length, `h_i` = hardness threshold.**
 
+### 3.4 The black-box sub-line reopened (W24-W32) -- W33
+
+**Setting throughout:** deterministic back-mappings, depth 1, stretch `n ↦ n+1` to `n ↦ n+2`, `n′ = n`, `N = 2ⁿ`, glue fan-in `k` (the number of C-inputs a C′-input reads). **Two models, which must never be merged.** The **membership model** has queries "is `v ∈ range(C)`?" (a single value at every input); a "no" answer is a win for Q. **Definition 9** has width-`w` DNF queries, and a single query can check "is `y ∈ range(C′)`" at width `k`.
+
+**3.4.1 Membership model.**
+
+> **Lemma W24.1** (f42275c; one-input templates). "A string serves at most one hint, so at most `2^{n+1}` of the `2^{n+2}` hints certify, and the adversary always has a non-certifying valid hint." *Not a new lower bound (W12.2 already holds); a one-line mechanism.*
+
+> **Lemma W25.1** (ff2f888; q = 0, any glue, any fan-in). Certified hints `≤ 2N`, tight; at least `N` valid hints are non-certifying.
+
+> **Finding W25.2** (ff2f888). A "no" answer is a win, so the transcript is all-yes and Q's queries plus its output form a set `V(y)` determined by `y` alone. Totality is **static set certification**. *Membership model only.*
+
+> **Finding W25.3** (ff2f888). **At fan-in `N` depth 1 is easy**: `K_{4,4}` gives a total one-query template at n = 2 (verified over all 4096 `C`), and random 6-uniform hypergraphs give five-query totality for all `N ≥ 16`. **The fan-in bound is load-bearing for the whole black-box line.**
+
+> **Theorem W26.1** (99029ab; any joint glue of fan-in `k`). **`(q + 1)·k ≥ 0.58·√N`.** Proof: a first moment under a random injection, with the precision gain `2^j` priced against `Pr[a window sees j elements] ≤ C(s, j)(k/2N)^j`. At `k = polylog N`: `q ≥ 2^{n/2 − O(log n)}`. **Tight at neither end.**
+
+**3.4.2 Definition 9.**
+
+> **W27** (064811f; negative). **Counting routes on invalid instances are vacuous at `w ≥ k`**: "is `y ∈ range(C′)`" is one width-`k` DNF, so a template-aware Q detects invalidity in one query. Targeted width-1 queries have influence 1/2 on the windows that read their positions.
+
+> **Theorem W28.1** (54cdc5b; the hub-or-coarse dichotomy). Let `D` be the maximum input degree and `t_y` the maximum forbidden set, worst case over settings. If `D·t_y < 2N`, then `y` is valid and **`qw ≥ N/(D + 1)`**. *Hence a total template with small `qw` needs, at every hint, a hub or coarse glue.* Corollary: random joint glue needs `qw = Ω(N/(k + log N))`.
+
+> **Theorem W29.2** (c81d84d; hub-plus-unary). If every window reads at most one input outside a set `H` of `h` inputs, then **`qw ≥ N/4 − h`**, for any pinned hub values, by a count over hints that is **the selection principle W14 said did not exist, for this class**. *Supporting:* Lemma W29.1 (pre-pinning, with the dangerous-string term `M_res` and the arity-≥2 degree `D′`).
+
+> **Theorem W30.1** (6765871; class `D_res·t_res < 2(N − h)`). W29.1's hosting count with W28.1's extension on the residual. **Negative:** counting extension is impossible at arity 2 (a coarse row present at every hint), and clean pins need not be extendable.
+
+> **Theorem W31.1** (24013f5, **erratum 56e31c7**; coarse rows at **bounded coarse-triple multiplicity**). Biased coin plus deterministic repair: **`qw ≥ (Nμ/4 − M_res)/(D′ + 1)`**, `μ = β^{D_out}(1 − β)^{D_in}`, under (C1) `D_in·p_cap ≤ μ/16` and (C2). *The erratum:* (C1) as first written (`μ/8`) left the proof with zero margin.
+
+> **Theorem W32.1** (2749280, §12 70d146e; **all fan-in-2 glue, CONDITIONAL**). Pre-pin inputs of degree `> D*` with the lightest values; protected set (payers absorb coarse structure); random give-ups where payers cannot. **Under (H_casc): `qw ≥ c(D*)·N` for `N ≥ N₀(D*)`, `c = D*^{−O(D*)}`, `N₀ = D*^{O(D*)} log N`**, a proof-of-shape constant. The mass hypothesis was discharged in §12; the multiplicity gap closed via the protected set (star template, exact at N = 16: protected set `N/2` hosts at every hint, fair coin 0).
+
+> **W32-B** (8c0fe2b; arity `k`, one bounded round, 32B-b). Strong independence is necessary under pre-committed payment. Paying every nonempty slice is destructive at arity 3 (exact at N = 9); **the survival product `M^{−kD*}` is vacuous at `k = polylog N`.**
+
+**Coverage table (Definition 9, deterministic, depth 1):**
+
+| glue class | result | status |
+|---|---|---|
+| single-call `(C(x), h(x))` | W8.1: `qw ≥ N − 1` | proved |
+| projection | W10.3: `N/8` | proved |
+| single-block / one-input per coordinate | W12.1 `N/3`, W12.2 `N/9` | proved |
+| any fan-in, small worst-case forbidden sets | W28.1: `N/(D + 1)` | proved (class hypothesis checkable) |
+| hub plus unary | W29.2: `N/4 − h` | proved |
+| hubs plus arity-2 residual with small rows | W30.1 | proved (class) |
+| arity-2 with coarse rows, bounded coarse-triple multiplicity | W31.1 | proved (class) |
+| **all fan-in 2** | **W32.1: `c(D*)·N`** | **conditional on (H_casc)** |
+| arity `k ≥ 3` with coarse slices | -- | **open**; any W31-style bound is vacuous at `k = polylog N` |
+| **polynomial fan-in, general glue (Korten Problem 1 at depth 1)** | -- | **open** |
+
+**The adversary's toolkit as it now stands.** Wilson's clean-pin adversary with an extendability invariant (W28); counting over hints to choose `y` (W25-W29); pre-pinning hubs against the hint (W29); the protected set, an independent set whose coarse incidences are paid by partners with capacity `c = 1` (W32-A); random load-oblivious give-ups, whose losses multiply per window (W32-A §12). **Both sides' costs matter:** every device that removes values for extension removes strings for hosting (W30).
+
+**THE open object of the black-box sub-line: FORCED CHAINS** (W32-A §13). An exhausted input with a single allowed value whose row at the next window has size `2N − 1`, forcing the next input, and so on, for `N/2` inputs at every hint. **This is consistent with every count on the page and exactly tight on the link budget.** The hint budget is spent (about `0.4N` good hints remain), and recursing on the chain breaks `|U_v| ≥ N − h − M_res`. **Such templates probably remain non-total** (range elements certify no non-range string), **so the gap is in the construction, not known to be in the truth.**
+
 ## §4. The boundary: plain circuits vs single-valued nondeterministic circuits
 
 This is where the line has arrived from every direction it has taken. **Five independent arrivals:**
@@ -119,7 +176,7 @@ This is where the line has arrived from every direction it has taken. **Five ind
 | **(D1)** | approximate counting in `P^NP` | **NOT smaller than the door.** W5 correction: (D1) *implies* (C_1) and is not known to follow from it, since (C_1) is provably minimal. Instrument: SU05 Thm 3.6 / Cor 3.7, hypothesis = SVN hardness |
 | **(D2)** | = RW26 **Question 5.3**: weakest lower bound giving `Avoid ∈ FP^NP_tt` | open, and now **barriered**: W16.2 says any proof from plain-circuit hardness must be non-relativizing. The gap located in W15: the isolation-failure test is **coNP-type** (Π_1), and plain hardness is not known to fool coNP |
 | **(D3)** | a history-hardness notion whose failure is NP-certifiable | **NARROWED** by W20 (13cb4b7) -- split into two variants, one closed within the framework and one open; see below |
-| **Korten Problem 1** | black-box depth lower bound for the stretching reduction | open. At **depth 1** reduced to the dangerous-string residue (§3.1); glue-class-restricted form (NC^0/AC^0) is the sharpened target from W7 |
+| **Korten Problem 1** | black-box depth lower bound for the stretching reduction | open. At **depth 1** reduced to the dangerous-string residue (§3.1); glue-class-restricted form (NC^0/AC^0) is the sharpened target from W7. **W33:** at depth 1, Definition 9, fan-in 2 is closed **modulo forced chains** (W32.1); polynomial fan-in with coarse slices is open; the membership-model analogue has the lower bound `q = Ω̃(√N)` at poly fan-in (W26.1), truth `N` vs `√N` open. |
 
 **(D3) after W20, in two variants that must be kept apart.** *Status: **narrowed**, not closed -- the word is chosen deliberately and the distinction is the ceiling.*
 
@@ -146,6 +203,24 @@ This is where the line has arrived from every direction it has taken. **Five ind
 8. **Succinctness cuts both ways: name the scale and the time budget before asserting what a verifier contains.** *(W17 it shrank the verifier and killed Lemma W17.1; W18 it forced circuit evaluation and killed my refutation. Same property, same construction, opposite directions.)*
 9. **The premise you did not think to write down is the one that breaks.** *(W18: Flag X18 caught the reviewer's premise and missed my own unstated `ℓ_i = n_i`.)*
 
+**W33: practice lines earned in W20-W32**, with the error behind each:
+
+10. **Name the scarce resource before ruling on a component; the framing audit must precede the mechanism's pricing.** *(W20.)*
+11. **Suspect a version split before an error when two careful readers disagree.** *(W19/W21.)*
+12. **A calibration asymmetry is indexed to a source, not a subject matter.** *(W22.)*
+13. **A verified premise does not license its consequence.** *(W23.)*
+14. **A lower bound is a statement about `U`, not about one `Q`'s path; track the side effects of your own commitments.** *(W24.)*
+15. **Price every resource a statement quantifies over before counting under it.** *(W25: fan-in independence was the reason the count stopped at q = 0.)*
+16. **The obstruction may be the model's, not the problem's; price a mechanism against the probability of each case, not its worst case.** *(W26.)*
+17. **Price a mechanism against the adversary it actually faces; a heuristic search's failure to find is not a measurement of absence.** *(W27: targeted queries; the "products shrink at fan-in 3" artefact.)*
+18. **A definition quantified over everything is usually too strong for an adversary that needs only what it chooses, and a conclusion quantified over the adversary's choices must survive the opponent's.** *(W28: the radius; the `N/2` threshold.)*
+19. **A proof step can fail while the conclusion holds; check your own correction with the audit you gave the original.** *(W29.)*
+20. **Every device that removes values for extension also removes strings for hosting.** *(W30: the smart zero-query Q.)*
+21. **A greedy step that is correct in code can be unprovable: split it into independent randomness plus a counted repair.** *(W31.)*
+22. **Audit the quantity the argument needs, not the term you defined for it; write out every Markov step with its average.** *(W32: mass at partners vs `c(y, v)`; triples vs windows; the heavy-window average was exactly `N`.)*
+
+**Miss counts, W24-W32, both sides, as each recorded them.** **The reviewer: fifteen misses** by its own count, including the `1 + log r` parametrisation, "single-call", three wrong count arguments in W25, the precision middle, the radius, the `N/2` threshold, "killing is not required", self-exclusion's sum-versus-max, must-exclude by size, the cascade audit, the additive give-up claim, and the polynomial-in-`D*` confirmation. **Mine, comparable in number:** the lazy-hosting cross-history reading, a flat search score, "membership is Definition 9 at `w = 1`", the placement detour, two mis-stated W27 obstacles, the `N^{1/k}` exponent, the fan-in-3 "shrink" artefact, the width-1 detection side-claim, "projection: restrict", "forced exclusions only help", **the W31.1 (C1) arithmetic (a proof that did not close as committed)**, the capacity max error, the heavy-window Markov step, the parity-hub `N/4` over-count, and the "bounded degree" gloss (shared). **Two mechanisms of the reviewer's survived audit (the multiplicative recombination and the protected set), and both were counts over objects already measured.**
+
 **The calibration record, kept because it is the line's most reliable output.**
 
 > **My constructions are reliable; my impossibility claims are not -- including ones expressed as inequalities with both sides computed.**
@@ -153,6 +228,8 @@ This is where the line has arrived from every direction it has taken. **Five ind
 **Ten consecutive wrong impossibility claims**, every one a prediction that something would fail: four in W16 (the syntax/black-box "obstruction"; "the union bound cannot deliver claim (1)"; "a twenty-year-old open question's relativized form should not fall out easily"; the 16a prior of 25 against a correct ~45); three in W17 (the self-corrector as an extra obstruction; the i.o. structure as ill-defined; the hardness-notion mismatch "biting first"); three in W18 (the base-hardness margin; the `d ≥ ℓ` kill of the chained version; the refutation of the reviewer's fact (a)). **Lemma W17.1 belongs to the same species** -- an impossibility claim wearing a construction's clothes.
 
 Against that, the positive contributions held: every theorem in §3; refuting the reviewer's two-chain adversary by pairwise conjunctions (W16); dropping its circular `q^2` threshold (W16); catching its Fix-2 counting, its W12.1 validity step, its `N/12` constant, its non-injective shortcut, its Fact (3) `k`-factor (W9-W14); catching the `s_i` notational collision and the scale-condition symmetry (W18); and the SU05 Thm 4.10 citation correction above.
+
+**W33 amendment to the calibration record.** W24-W32 changed its shape. **Impossibility theorems that went through a full audit held** (W26.1, W28.1, W29.2, and W32.1 conditionally), and one needed an erratum before its proof closed (W31.1). **Impossibility FORECASTS that were not audited kept failing**: priors weighted toward "nothing extends" (27c at 52, 30b at 68), "products shrink at fan-in 3", the §1 capacity objection, and the heavy-window step. **The honest statement is no longer "my constructions are reliable and my impossibility claims are not".** It is: **audited statements hold on both sides; unaudited forecasts fail on both sides, and the reviewer's unaudited mechanisms fail in their middles at about the same rate as my unaudited objections.**
 
 **On priors.** The reviewer has been better calibrated than me on the "something else" bucket (W17: my 38 vs its 27, both my named candidates wrong). W18's deliberate correction in the opposite direction (66/32 against 60/38) paid, and **was not extended** -- one success is not a licence.
 
@@ -163,3 +240,27 @@ Against that, the positive contributions held: every theorem in §3; refuting th
 **Where it goes.** W20 opens **(D3)** as an attack: a history encoding whose "easiness" is NP-certifiable, constrained by W16.2 and W18.1. The honest prior, stated before that round opens: **the same wall is the likeliest destination**, since NP-certifiable easiness is a demand for a short certificate of a statement whose natural certificate is a circuit -- which is where SU05 Thm 4.10's equivalence queries, and RW26's Merlin, both sit. If W20 arrives there too, that is a sixth arrival and the right conclusion is that the wall is the problem, not the route.
 
 **What would change the picture.** A non-relativizing technique for (D2); or a hardness notion for (D3) whose failure certificate is genuinely short; or -- the thing nobody has -- progress on the `E^NP` rung itself.
+
+**PATH as of W33.**
+
+```
+door (C_1): E^NP ⊄ SIZE[2^{o(n)}]  ⟹  Avoid ∈ FP^NP        [Korten; minimal]
+   ^ climbed to E^{prMA}/1 by RW26, not by this line
+   |
+   +-- (D2)/(D3): walled at plain-vs-SVN (W16.2, W18.1, W20)
+   +-- (S2) NC^0_3 stretch: reshaped into a curve; algorithmic end barriered (W21-W23)
+   |
+   `-- Korten Problem 1 (black-box depth of the stretching reduction)
+          |  WEAKEST ARROW  v
+          |  black-box, deterministic, depth-1 lower bounds  --/-->  anything about FP^NP
+          |
+          +-- membership model: W26.1, q = Ω̃(√N) for poly fan-in        [lower bound; N vs √N open]
+          `-- Definition 9, depth 1:
+                 W28.1 (small rows) · W29.2 (hub + unary) · W30.1 · W31.1 (bounded multiplicity)
+                 W32.1: all fan-in 2, conditional on (H_casc)
+                 OPEN: forced chains (fan-in 2) · coarse slices at arity k = polylog N
+```
+
+**The weakest arrow is the one from the black-box sub-line to the door**, and it is weak three times over. (1) Black-box lower bounds constrain one **technique** (stretching by oracle calls with glue), not `FP^NP`. (2) By Flag H7 they die under randomisation at this stretch. (3) Korten's Problem 1 asks for depth `d` against `log_α β`; **W24-W32 are all at depth 1**, and even a complete depth-1 answer at polynomial fan-in would be one instance of it. **Every result in §3.4 sits below that arrow.**
+
+**The decision, which is the user's.** After W33 the line either (a) **attacks forced chains** directly (the fan-in-2 case's last open object, sharply stated, with a clean kill template), or (b) **returns to the door**, where §4's boundary and §5's (D2)/(D3) rows stand as W19-W20 left them. The reviewer will put the choice to the user with this page. **Nothing is merged, and w15-w33 are unpushed.**
