@@ -135,3 +135,34 @@ Templates, in order: **(1) positive control** -- a fan-in-1 reader per input, wh
 | **25a (amended)** / 25b / 25c | 20 / 55 / 25 | **13 / 62 / 25** |
 
 **Prediction scored in advance:** exhaustive > constant-P on split-reader and on validity-split; constant-A = exhaustive on validity-split but constant-A < exhaustive on split-reader; all three equal on the positive control.
+
+## §5B. Amendment -- set certification, and the q = 1 search, pre-registered before it runs
+
+*Appended after the reviewer's rulings on the first-moment argument and before any q = 1 computation. Everything in this section that is a derivation was done by hand, with no data; it is labelled as derived, and each derivation has its own check below.*
+
+### Accepted from the reviewer, re-derived
+
+**All-yes collapse (the reviewer's correction of my (b)-(d)).** In the membership model a "no" to "is `u ∈ range(C)`?" is a win: Q outputs `u`. So the adversary answers yes throughout, the transcript is all-yes, and Q's queries plus its output form a set `V(y)` of size `q + 1` **determined by `y` alone**. The adversary's task is static: one `C` with `V(y) ⊆ range(C)` and `y ∉ range(C′)`. **My "history dependence" was an artefact of lazy hosting**, and (c) is withdrawn: W14's selection obstruction is dissolved in this model, not reached. This is membership-model specific: in the Definition 9 DNF model a "no" is not a win.
+
+**Sharpened q = 0 constant (mine, from the reviewer's injective distribution).** Take `C` injective with a uniform `N`-subset as range. Then `Pr[v ∈ R] = 1/2` exactly, so certified hints `≤ 2N` **exactly**, for any glue and fan-in. The positive control reaches 8 = 2N at n = 2, **so the constant is tight.** Unavoidably invalid hints number `≤ N`, hence **at least `N` valid non-certifying hints** -- better than the uniform distribution's `0.46N`.
+
+### THE REDUCTION, derived -- and it makes the reviewer's specified search degenerate
+
+With glue of **fan-in `N`** (every C′-input may read all of `C`), the range of `C′` can be **any** set of `≤ N` hints, as a function of `C`. Totality at `q` depends on `C` only through `R = range(C)`, so a total template exists **iff** there is an assignment `y ↦ V(y)` (sets of size `≤ q+1`) with, for every `R` of size `≤ N`,
+
+  `|I| + |{y valid : V(y) ⊆ R}| ≤ N`,  where `I` = hints in every `T(R)` (invalid).
+
+**At q = 1 this is a graph problem: `4N` edges (multi-edges and loops allowed) on `2N` vertices, every `N`-set spanning `≤ N` of them.**
+
+**At n = 2 (N = 4) it has a solution by hand: `K_{4,4}`.** 16 edges on 8 vertices; a 4-set split `(a, 4−a)` spans `a(4−a) ≤ 4` edges. So **a total q = 1 depth-1 template exists at n = 2 with fan-in-N glue**: `V(y)` = the `y`-th edge, and `range(C′) = {y : V(y) ⊆ range(C)}`, padded. **The reviewer's search (arbitrary fan-in, n = 2) would find this, and it would mean nothing:** fan-in `N = 2ⁿ` glue is an exponential-size `C′`, outside Korten's poly-time reduction, and outside every template class W7-W14 bounded (all poly fan-in). **The black-box question must keep fan-in `k = poly(n)`.**
+
+**Derived sketch, NOT checked: at fan-in N, O(1) queries suffice for ALL N.** Take a random `s`-uniform hypergraph with `4N` edges on `2N` vertices. A fixed `N`-set contains `Bin(4N, ≈2^{−s})` edges; the tail bound `(e·μ/t)^t` at `t = N`, `μ = 4N·2^{−s}` gives `(e·2^{2−s})^N`; against `C(2N, N) ≤ 4^N` sets this closes at `s = 6` (`e/16 ≈ e^{−1.77}` < `e^{−1.39}`). **So with fan-in-N glue, 5 membership queries give a total depth-1 template.** If this holds, **the fan-in restriction is load-bearing for the whole black-box line**, not a technicality. I record it as a sketch because it is my impossibility-adjacent arithmetic, on a record of eleven errors of that kind.
+
+### What runs, in order (nothing run yet)
+
+- **(i) Verify `K_{4,4}` as an actual template** at n = 2 over all 4096 `C`, using the static set-certification check. *Prior: 95.*
+- **(ii) n = 3, fan-in N, q = 1:** search graphs with 32 edges on 16 vertices, every 8-set spanning `≤ 8` (equivalently, bisection width `≥ 16` when no hint is invalid). A random bisection cuts 17.07 edges in expectation, so this is tight. Hill-climb = evidence only. *Prior that one exists: 20.*
+- **(iii) Bounded fan-in, the real question, n = 2:** glue fan-in `k = 1` and `k = 2` (each C′-input picks `k` reads and a table), hill-climbing on the number of valid hints admitting a non-covered pair, exact totality check over 4096 `C`. **Evidence only, and at n = 2 even `k = 2` is half of all inputs, so a positive is weak evidence and a negative is weaker.** *Priors that a total q = 1 template is found: k = 1: 25; k = 2: 40.*
+- **(iv) The s = 6 hypergraph sketch** checked numerically at the smallest `N` where the union bound applies, or reported unchecked.
+
+**Lemma W25.1's novelty check against W7-W14 and Wilson's Theorem 12 runs before the page calls it new.**
