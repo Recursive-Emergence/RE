@@ -216,3 +216,50 @@ Task (i) listed the shapes to check: *bit queries, exact-weight queries, "block 
 - **(iii)** It does **not** contradict W16.0, which stands independently.
 - **(iv)** It does not contradict the reviewer's paradox resolution, which §9.1 accepts.
 - **(v)** The repair is stated as a requirement list, **not claimed**.
+
+---
+
+# §10. The 2-cover lemma — proved, with the threshold replaced
+
+## 10.1 The reviewer's threshold is circular; only singletons need excluding
+
+The sketch excludes every element of every property of size ≤ q², then repairs. **That cannot work:** the excluded set E has up to q·q² = q³ elements, so a property of size just above q² can lie **entirely inside E**, leaving no element available and stalling the repair. Raising the threshold to T enlarges E to qT, and the same gap reopens at T — **the circularity is structural, not a matter of constants.** *(A density threshold, "small" = |Π| < 2ⁿ·c log q/m, fails identically: |E| ≤ q·τ exceeds τ.)*
+
+**The exclusion is nearly unnecessary.** A property is unrepairable only when it has **size 1** — one cannot add a second element. Every property with |Π_i| ≥ 2 can be repaired provided one of its elements is available, and the failure of *that* is a negligible event.
+
+## 10.2 Lemma W16.1 (2-cover)
+
+**Statement.** Let Π₁,…,Π_q ⊆ {0,1}ⁿ be arbitrary, let C be the committed inputs (|C| = poly), and let m = poly. Put **E = {the element of Π_i : |Π_i| = 1}**, so |E| ≤ q. Draw S₀ uniformly of size m from {0,1}ⁿ \ (C ∪ E), then repair: while some Π_i has |S ∩ Π_i| = 1, add to S an element of Π_i \ (S ∪ C ∪ E). **With probability ≥ 1 − qm/2ⁿ the repair never stalls, it terminates after ≤ q additions, and the final S (|S| ≤ m + q) is 2-covered.**
+
+*Proof.*
+**Termination and the bound on repairs.** Adding elements only increases each |S ∩ Π_i|, so once a property reaches ≥ 2 it stays there: **each property is repaired at most once**, hence ≤ q repairs and |S| ≤ m + q. *(A repair may create a fresh singleton for another property; that property is then repaired, and it too is permanently fixed.)*
+
+**Size-1 properties.** Their unique elements lie in E, which S avoids, so |S ∩ Π_i| = 0 ≠ 1. ∎
+
+**Availability, the only probabilistic step.** Fix Π_i with |Π_i| ≥ 2, and let s′ = |Π_i \ (C ∪ E)|.
+- If s′ = 0 then Π_i ⊆ C ∪ E, so S ∩ Π_i = ∅ and **no repair is ever triggered**.
+- If s′ ≥ 2 then even when one element of Π_i lies in S, another remains outside S ∪ C ∪ E **unless all s′ are in S**; since repairs add ≤ q deliberately chosen elements, it suffices that the random draw not swallow them, and for s′ ≥ 2 that probability is at most (m/2ⁿ)² per property.
+- **The only genuine failure is s′ = 1 with that element drawn into S**: then |S ∩ Π_i| = 1 and nothing is available. That has probability ≤ m/2ⁿ for a fixed i, so **≤ qm/2ⁿ over all q properties**.
+
+Since q, m are polynomial and 2ⁿ is exponential, **qm/2ⁿ = 2^{−Ω(n)}**. ∎
+
+**So the lemma holds with E of size ≤ q rather than q³, and with no threshold at all.**
+
+## 10.3 The theorem, and what it rests on
+
+With Lemma W16.1 the reviewer's adversary goes through as specified: S is 2-covered for the algorithm's q queried properties, so **(a)** every answer is an OR over ≥ 2 elements and no query isolates a block — this is exactly what my §9.2 attack exploited, and it is now closed, since "bit i ∧ bit j" is one of the Π's and has ≥ 2 elements in S; **(b)** any single x may be deleted from S without changing any answer, so the output y is disposed of by deleting its x, committing a fresh preimage for y, and completing.
+
+> **Theorem (conditional on the checks in §10.4).** Relative to the oracle A of Lemma W16.0, Avoid ∈ FP^{NP^A} but Avoid ∉ FP^{NP^A}_tt. Hence **no relativizing proof can derive non-adaptive FP^NP avoidance from plain-circuit hardness of E^NP** — Ren–Williams Question 5.3 needs a non-relativizing technique.
+
+**Non-adaptivity is the whole separation**, and it should be said plainly: all q properties are fixed **before** S is chosen. An adaptive algorithm picks Π_{i+1} after learning S ∩ Π_i ≠ ∅, and that is precisely how Korten's prefix search wins. **The lemma is false against adaptive queries, and must be.**
+
+## 10.4 What I have NOT verified, stated because the conclusion is positive
+
+**My documented bias is to predict constructions fail, and this round I have been corrected three times for exactly that. So a positive conclusion from me deserves more scrutiny, not less.** The soft spots:
+
+1. **Repair availability under a grown S.** The bound in §10.2 is computed against the *random draw*. Repairs add ≤ q further elements, chosen deliberately; I argued they can be chosen harmlessly but did not write the induction.
+2. **That every query really is an NP property of the single x ∈ S.** It follows from every other node on the realised chains being unique, which the construction stipulates — but queries mixing chain structure with unrelated parts of A₂ deserve an explicit reduction.
+3. **Interaction with Wilson's rule** for the queries not about the tied node: budget is fine (≤ qw commitments), consistency I checked informally.
+4. **Constraint (d)** holds as the reviewer states — the adaptive algorithm walks a lex-first chain to a stalled block below a surviving x and outputs it — and the tree stalls because no block below S has a preimage, so f stays outside the tree's range and W16.0(1)'s hardness survives.
+
+**Outcome: 16a for the lemma and the theorem's statement, with §10.4 as the honest remainder.** *(Prior 25; the reviewer's 45–50 was better calibrated, and the direction of my error is again the one my calibration note predicts.)*
