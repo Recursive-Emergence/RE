@@ -69,3 +69,17 @@ W26's two lines bind first: **the obstruction may be the model's, not the proble
 **W27's question, restated for the reviewer's ruling:** can a W26.1-style count choose a hint `y` for which `F_y` contains a large **product subfamily** `∏_u B_u`, one closed under Wilson's true-answers? That is W10/W12's forced-value-plus-free-set architecture, with the hint chosen by precision counting.
 
 **Priors are not revised.** Half of 27c's stated reasoning leaned on the withdrawn (b)(i); what remains is the non-product wall, where the line has failed four times.
+
+## §5B. Amendment -- the reviewer's influence reformulation, audited before any run
+
+*The reviewer's ruling crossed §5A. The two agree on what not to do (condition `C` per hint). The reviewer then proposes a single-argument lift under ONE unconditioned distribution, with a truthful transcript `τ(C, y)`, and charges positional information through a window's **influence**, the total variation between the law of `τ` given the window's view and its unconditioned law: (Q1′) influence `≤ c·qwk/N`; (Q2′) `Pr[F_y] ≥ 2^{−O(q)}`, with `F_y` = "Q's output lies in `R`"; (Q3′) a `j = 2` analogue.*
+
+**Accepted: §2(b)(ii) charged the wrong quantity.** Under one unconditioned distribution nobody places pins, so `Pr[C extends P]` is not a term of the lift. **The kill-test ruling is also accepted:** the matching query is the balanced test, and the large-set query is the unbalanced control.
+
+**(Q1′) IS FALSE AS STATED, by a one-line example.** Definition 9 permits the width-1 query *"is `C(u) ∈ T`?"* = `OR_{a ∈ T} [α_u = a]`, with `|T| = N`. It is **balanced** and reads **one position** (if the variables are bits, a single bit of `C(u)` is simpler still). **Q knows the template**, so on hint `y` it can query the inputs of the windows able to output `y`. For a window whose view contains `u`, that query's answer is **determined** by the view: influence `1/2`, not `k/2N`. `k(n+1)` such queries learn the whole view. **So influence is not `O(qwk/N)` for every Q and window.** The balanced matching query passes only because it is **untargeted**, so **the matching-query kill test cannot test (Q1′)**. The kill test that does is a **targeted Q**, which reads the positions of the windows that output its hint.
+
+**What might survive: a ONE-SIDED bound.** Influence that **lowers** `Pr[F_y | view]` is harmless: learning view values tells Q strings that ARE in `R`, which it can avoid. Only influence that **raises** failure given the view hurts. Correctness ties raised failure to `y ∈ range(C′)`, so the harmful direction is exactly the template-exploitation question of W7-W14. **Unresolved; registered as the step to attack.**
+
+**A SECOND GAP: uniformity across hints.** The lift's final step, `4N·Pr[F] ≤ N·E[max_y Pr[F_y | view]]`, needs every `Pr[F_y]` comparable. W26.1 got this by **padding `V(y)` to size exactly `s`**, making `Pr[V(y) ⊆ R] = p_s` for all `y`. A truthful-transcript Q can have `Pr[F_y]` far above `2^{−(q+1)}` on a few hints, and a window can pick exactly those hints. **The lift needs a padding analogue:** a sub-event `E_y ⊆ F_y` with equalised probability whose view-conditional gain stays bounded, for example `F_y ∩ {Z_y ⊆ R}` for fixed extra strings `Z_y`. **Its independence from `F_y` is not free, and it is not yet shown.**
+
+**Priors are not revised.** The reviewer's case for 27a/27b rests on (Q1′). As stated, (Q1′) fails for targeted balanced width-1 queries; the one-sided version is open.
