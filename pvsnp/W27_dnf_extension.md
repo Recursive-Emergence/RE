@@ -115,3 +115,55 @@ W26's two lines bind first: **the obstruction may be the model's, not the proble
 **E_y audit (the reviewer's Route A repair, filed as Route A's residue).** (i) `E_y ⊆ {y ∈ range(C′)}` holds for `F_y` too, so `E_y`'s only added content is excluding detecting transcripts. (ii) It excludes **exact** detection only; near-detecting transcripts (`Pr[invalid | τ] = 1 − δ`) stay in, so the per-window bound must price suspicion. (iii) **(Q2'') is misstated:** on valid pairs a total Q is correct, so `E_y` never occurs there. `Pr[E_y]` lives on invalid `C` with valid-looking transcripts, and cheap detection drives it toward 0, which makes the count vacuous rather than contradicted.
 
 **Practice line for Route A's death (the reviewer's): PRICE A MECHANISM AGAINST THE ADVERSARY IT ACTUALLY FACES.** Influence was priced against untargeted queries; Q chooses its queries knowing the template.
+
+---
+
+# W27 Findings
+
+*Appended after the reviewer's closing rulings. Nothing above is revised; §5D's fan-in-3 claim is corrected here, not there.*
+
+## §6. Ceiling
+
+**Korten's Definition 9 model (width-`w` DNF queries), deterministic, depth 1, `n′ = n`.** **Nothing proved.** This round records two routes, the death of one, the limits of the other, and a correction to my own data. Nothing about P vs NP or `FP^NP`, and nothing randomised.
+
+## §7. Outcome against priors
+
+| code | mine / reviewer (reviewer's later moves) | outcome |
+|---|---|---|
+| 27a width-`w` version proved | 10 / 20 (15) | -- |
+| **27b** survives partially, gap named | 38 / 55 (50) | **the outcome: nothing extends W26.1 to `x`-dependent queries at the line's width; the gap is named in §10** |
+| 27c nothing | 52 / 25 (35) | -- |
+
+**The resolution is not the pre-registered one, in mechanism.** My §2(b) obstacles were both mis-stated: (i) was withdrawn after the W12 re-read (§5A), and (ii) charged pins that no single-distribution count places (§5B). **The route that died (Route A) died for a reason neither of us registered: targeted queries (§8), and then detection in one query (§9).**
+
+## §8. Route A: one unconditioned distribution, influence
+
+The reviewer's lift: one distribution over `C`, truthful transcripts, positional information charged through a window's **influence**. **Measured** (N = 16, 40,000 samples): untargeted matching query 0.039 against the prediction 0.031; large-set control 0.000; **targeted "`C(0) ∈ T`", `|T| = N`: 0.500.** A template-aware Q reads the windows that can output its hint, so **(Q1′) is false**, and the reviewer's own death criterion was met. **The repair event `E_y`** (transcripts that also occur on a valid pair, with output in `R`), audited in §5D: it excludes only exact detection; its lower bound lives entirely on invalid `C` with valid-looking transcripts. **Uniformity across hints** (W26.1's padding) has no analogue.
+
+## §9. Detection is one query at `w ≥ k` (mine; accepted)
+
+**"Is `y ∈ range(C′)`?" is a single DNF**: `OR` over windows `x′` and `y`-preimage tuples `t`, of `AND_i [α_{u_i} = t_i]`. Every term has **width `k`**. Definition 9 bounds width, not the number of terms, which is the right reading, since an NP^C query's term is its witness. **So at `w ≥ k`, the line's generic case, a template-aware Q detects invalidity in one query for ANY template, `E_y` is empty, and every counting route on invalid instances is vacuous.** *Reviewer's correction, accepted:* my side-claim that a window's `[g = y]` is decided by `≤ k` width-1 queries is false for random-like glue (one bit per query, about `k(n+1)` bits). It is moot at `w ≥ k`.
+
+## §10. Route B: count to choose `y`, adversary inside a product
+
+**Lemma (from W12 §1, restated for joint glue).** *If `∏_u B_u ⊆ F_y` with every `B_u` nonempty and every `v` in `B_u` for at least `L` inputs, then `qw ≥ L`* (Wilson's adversary inside the product; no bookkeeping).
+
+**Data** (heuristic search; every family for random fan-in 3 **independently validated** by enumerating each window's full product against the glue table):
+
+| template | N = 8 | N = 16 | N = 32 |
+|---|---|---|---|
+| hub / two-hub | 7 / 7 | -- | -- |
+| validity-split / split-reader / control | 6 / 4 / 4 | -- | -- |
+| random fan-in 2 (greedy) | 6, 5 | 11, 11 | 23, 24 |
+| random fan-in 3 (greedy, fixed) | **4, 4** | **8, 8** | not obtained |
+
+**CORRECTION to §5D, mine.** §5D reported random fan-in 3 at `L = 3` and concluded that "products shrink at fan-in 3". **That was an artefact of a weaker local search.** The corrected greedy finds validated products with **`L = N/2`** at N = 8 and 16. **My registered scaling prediction (`L/N` falls at fan-in 3) is not supported at these sizes.** The first-moment box bound (`s^{k−1} ≲ 4Nk ln 2N`, the reviewer's exponent correcting my `N^{1/k}`) is **non-binding** there (it allows `s ≤ 25.8` of 32 at N = 16). **So small `N` tests neither exponent, and the asymptotic shrinkage of products for random-like glue is an UNCHECKED upper-bound heuristic, not a finding.** (A first validation run said "invalid"; the cause was a big-endian/little-endian table-index mismatch in the validator, found and fixed before recording.)
+
+## §11. The named gap
+
+**Route A (counting) is vacuous at `w ≥ k`** by §9. **Route B's certificate (products)** gives `qw ≥ L` wherever a large product fits inside some `F_y`: `Θ(N)` for one-input glue (W12), and at small `N` also for random fan-in 2 and 3. **Whether products stay large asymptotically for random-like joint glue is open**; the only argument that they do not is an unchecked first moment. **Beyond products, the adversary needs non-product bookkeeping: W13/W14's wall.** *The DNF-model question at the line's scale is therefore whether random-like joint glue can be total, where neither products (unless they stay large) nor counting apply.*
+
+## §12. Errors and misses
+
+**Mine:** §2(b)(i) and (ii) mis-stated (withdrawn §5A, §5B); the `N^{1/k}` exponent (reviewer corrected to `N^{1/(k−1)}`); **§5D's "products shrink at fan-in 3"**, a search artefact reported as data; the `≤ k` width-1 detection side-claim; a greedy that could empty a set; a validator index-order mismatch. **Reviewer's:** the large-set kill test (uninformative); (Q1′) influence priced against untargeted queries; (Q2'') lower bound through valid pairs.
+**Practice lines:** the reviewer's, **PRICE A MECHANISM AGAINST THE ADVERSARY IT ACTUALLY FACES**. And mine, earned in this round: **A HEURISTIC SEARCH'S FAILURE TO FIND IS NOT A MEASUREMENT OF ABSENCE -- VALIDATE THE BEST FOUND, AND RERUN WITH A STRONGER SEARCH BEFORE REPORTING A TREND.**
