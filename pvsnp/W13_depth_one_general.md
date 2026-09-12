@@ -60,3 +60,82 @@ The max-over-v obstacle is not in the way of the proof; **it is the dichotomy it
 ---
 
 *Findings follow below, appended after the attack. Nothing above is revised retroactively.*
+
+---
+
+# Findings (written after the attack; priors above are unrevised)
+
+*Model: Korten Definition 9 / Wilson Theorem 12, DNF queries, **deterministic** back-mappings. Computations in the job scratch directory; `formal/` untouched.*
+
+## 0. Outcome against priors
+
+| code | prior (mine / reviewer) | outcome |
+|---|---|---|
+| **13a** proved in full generality | 25 / 35 | **not proved — and §2 shows the available method provably cannot prove it** |
+| **13b** a depth-1 template that is a total reduction | 15 / 15 | **not found — 805 templates fell, none resisted** |
+| **13c** obstruction named | **60** / 50 | **this is the outcome, but not the 13c that was specified** |
+
+**The specification asked for "the exact template family that resists". There isn't one — or at least I could not find one in a substantial search. The obstruction is at the level of the PROOF, not of the templates.** That is the round's finding and it is worth more than a named family would have been: it says the statement looks true and the method at hand cannot reach it.
+
+## 1. The reformulation (registered in §2b before the attack)
+
+Writing h_x(v) = G_x(forced elsewhere, v at u), we have **v ∈ Φ_u(y) ⟺ y ∈ {h_x(v) : x reads u}**, so
+
+  **v is certified by y ⟺ y ∈ Y_v := ⋂_{u free} { h_x(v) : x at u }.**
+
+A hint is **invalid** exactly when some free u has Φ_u(y) = everything — which means y ∈ range(C′) unconditionally, so Q never receives it either. Restricting to valid hints:
+
+> **13a ⟺ every depth-1 template admits a valid hint outside ∪_v Y_v. 13b ⟺ some template's every valid hint lies inside it.**
+
+**"Certification" is not an obstacle to the proof; it is the thing being proved.** That is why step (iv) cannot be discharged by averaging.
+
+## 2. Why averaging provably cannot finish — the exact arithmetic
+
+Each {h_x(v) : x at u} has size ≤ mult(u) ≤ 2k, so **|Y_v| ≤ 2k** for every v, and
+
+  **Σ_v |Y_v| ≤ 2k · 2^{n+1} = k · 2^{n+2}.**
+
+The adversary needs a hint outside ∪_v Y_v, a set of size up to k·2^{n+2} — against only **2^{n+2} hints in total**. **So for every k ≥ 1 the counting bound permits the union to cover the entire hint space, and no averaging argument over hints alone can produce a free hint.** The two freedoms left are the ones the ruling identified: enlarging U_free (each Y_v is an intersection of |U_free| sets, so more free inputs shrink it) and choosing forced values after y. **Neither is a counting argument, and I could not convert either into a selection.** That is the precise open step.
+
+*(Contrast with W12.1, where k = 1 made Σ_y max_v ≤ N·2^{n+1} and the average over valid hints gave M(y) ≤ 2N/3 outright. The method worked there because a single call per x makes the mass bound tight; at k ≥ 2 it is not.)*
+
+## 3. The search for a resisting template — none found
+
+**Structured templates** (exact witnesses; each reported configuration is a verified non-certifying valid hint):
+
+| template | n = 2 | n = 3 | n = 4 |
+|---|---|---|---|
+| succ: (C(x), C(x+1)₁) | found, \|Φ\| = 0 | found | found |
+| pair: (C(x), C(x⊕1)₁) | found, \|Φ\| = 0 | found | found |
+| hub: (C(x), C(0)₁) | found, \|Φ\| = 0 | found | found |
+| xorhub: (C(x), C(0)₁ ⊕ C(x)₁) | found, \|Φ\| = 0 | found | found |
+| twohub: (C(x), C(0)₁ ⊕ C(1)₁) | found, \|Φ\| = 0 | found, \|Φ\| = 0 | found, \|Φ\| = 0 |
+
+**Random arbitrary-glue templates.** C′(x) = G_x(C(a(x)), C(b(x))_{j(x)}) with G_x a random table — arbitrary glue, two inputs per x:
+
+| n | templates tested | resisted |
+|---|---|---|
+| 2 | 400 | **0** |
+| 3 | 400 | **0** |
+
+**805 templates, none resisted.** *(Witnesses are exact in the direction reported; absence of a resisting template across this sample is evidence, not proof, and the space of depth-1 templates is far larger than what was searched.)*
+
+## 4. Flags resolved — Flag A13 was wrong, and Flag Z13 earned its place
+
+**Flag A13 predicted the resisting family would be one where a few uncapped forced inputs are read by Θ(N) many x, each demanding an incompatible value. It is the opposite.** For the hub template C′(x) = (C(x), C(0)₁) with the hub forced to w, setting **w₁ ≠ c** falsifies the second coordinate for *every* x at once, so Φ_u = ∅ at every free input. **A high-multiplicity forced input is an adversary asset, not an obstruction** — one forced value discharges Θ(N) clauses. This is exactly W9's Flag P9 lesson recurring: high multiplicity helps the side that gets to *choose*.
+
+**Flag Z13 fired and did its job.** I registered the standing bias — twice I had predicted cross-input coupling would be harder than it is (W11 odd cycles, W12 differing σ) — and required myself to test before believing. I then predicted it a **third** time in Flag A13, tested first, and was wrong again. **Four instances now; the bias is real and the flag is what caught it.**
+
+## 5. Kill tests
+
+- **(i)** Definition 9 / Theorem 12 model only; no value queries.
+- **(ii)** Determinism throughout; the ceiling is restated below because no 13a was reached.
+- **(iii)** The successor template and a two-call template (hub) checked **by hand**, both in §4 and §1.
+- **(iv)** Constants with their comparison bounds: |Y_v| ≤ 2k against 2^{n+1}; Σ_v |Y_v| ≤ k·2^{n+2} against 2^{n+2} hints.
+- **(v)** **W12.1 is the k = 1 case** and the general method degrades exactly there — §2 says why, and the general argument does **not** beat W12.1 at k = 1, which is the consistency check passing.
+- **(vi)** Exact vs sampled labelled in §3, including which direction the sampling is sound in.
+- **(vii)** The open step is named precisely (§2) and **no resisting family is claimed, because none was found** — reporting "obstruction" without a template would have been the easy way out and it would have been false.
+
+## Ceiling
+
+**W13 proves nothing.** It does not settle Korten's Problem 1 at depth 1 even in the black-box model, and by Flag H7 nothing here survives randomisation. What it establishes is narrower and worth stating plainly: **the hint-averaging method that closed W8–W12 provably cannot close the general case** (§2), while **805 templates searched all fall to the adversary** (§3). The statement looks true; the tool that proved its special cases cannot reach it. **A new idea is needed, and it is not a new template family — it is a selection argument that uses the adversary's post-hint choice of forced values, which no round so far has had to exploit.**
