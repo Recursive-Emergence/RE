@@ -55,8 +55,13 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - **Withdrawn (Y8):** Y7's statements that the route "is NOT known to be relativization-barred" and is "the first door in the program with no known barrier against it". The barring oracle is not hypothetical; it is Impagliazzo–Rudich's (Wee, Theorem 3).
   - **The error:** "non-black-box" was conflated with "non-relativizing". LP23's code-reading step relativizes, because the decoder may query the oracle.
   - **Ceiling unchanged:** even total success here is conditional — it bears on `NP ⊄ ioBPP ⇒ OWF`, and `NP ⊄ ioBPP` is itself open and untouched by this branch.
-- **The state of the adversary line (the reviewer's statement):** every door is now closed with an exact reason — reduction routes (barred: GK24/SS22; deep: hiding is depth; bounded-adaptive: rests on (PL) → HMX's open problem), non-explicit routes (relativization-barred; no dichotomy shortcut, Lemma D; needs a non-relativizing non-algorithmic technique, none known). **That is the Gödelian intuition's adversary side ending exactly as its instance side did: on named obstructions with the tool each needs.**
-- **Y8 is named**, on the author's go only: Hirahara–Nanashima as a candidate second horn, and the oracle question.
+- **The adversary line is COMPLETE (the reviewer's statement).** Every regime has been examined and closed with its reason:
+  - **reduction routes** — barred (GK24/SS22 via Observation O); deep by hiding-is-depth; bounded-adaptive rests on (PL), which reduces to HMX's open problem;
+  - **non-explicit routes** — relativization-barred (Impagliazzo–Rudich; Wee Theorem 3), with no dichotomy shortcut (Lemma D);
+  - **the O(log n)-gap regime** — needs a K^t upper bound that only exponential time supplies, and its EXP^NP security transfer never reaches NP (Y9).
+  - **The one arrow untouched by the whole line is the PATH's weakest: `NP ⊄ BPP` unconditionally.**
+  - **That is the Gödelian intuition's adversary side ending exactly as its instance side did: on named obstructions with the tool each needs.**
+- **The line is closed. See §11 for the closing note.**
 
 ### (i) The R-endpoint: mild average-case hardness of K^t
 
@@ -101,6 +106,11 @@ Proved in these documents, with proofs in the reports (g5). None is about P vs N
   - **Ko's relativization barrier covers reduction routes only** (SS22 footnote 6; HIR23 l.668–673, which records that it was overcome via the PCP theorem).
   - **Lemma C7 (ours, proved):** a case split decidable in polynomial time composes the two horns into an explicit reduction, so the barriers reapply. Hence an admissible win-win needs a case split **not** decidable in poly time — which **LP23's formulation tolerates**, since it asks only that inverters exist, never that they be identified.
   - **The ingredient map:** arithmetization algebrizes (Aaronson–Wigderson) and is algorithmic; PCP/code-reading produce reductions; counting gives no implication from NP-hardness; cryptographic assumptions assume the conclusion. **No known ingredient is both non-relativizing and non-reduction-producing.**
+- **The O(log n)-gap regime (Y9), the last one where barriers were silent.**
+  - **Lemma Y9.1 (ours, proved, elementary):** the range of G_n has ≤ 2^{s(n)} elements and fewer than 2^{m+1} strings have K ≤ m, so for all but a 2^{−k+1} fraction of seeds, K(G_n(z)) ≥ s(n) − k.
+  - **Proposition Y9.2 (ours, proved):** since K^t(y) ≤ |y| + O(1) always, depth ≤ a·log n + k + O(1) = **O(log n)**. **The generator's outputs are shallow and lie inside the promise** — the squeeze is that the range is too big to be K-compressible while K^t is capped at n + O(1).
+  - **Why the regime closes anyway:** the technique needs K^t(G_n(z)) ≤ s(n) + O(log n), whose only proof is running an **EXP^NP-computable** generator, so it holds only for exponential t; counting is consistent with K^t = n + O(1), in which case R_{K^t} is not a distinguisher at all.
+  - **And decisively:** [28]'s guarantee is a security-to-hardness transfer ("EXP^NP ⊆ BPP^D for any distinguisher D for G"), and **neither it nor a polynomial-time variant yields a conclusion about NP**, which is what the target needs.
 
 ### (ii) The self rung: Res(2) ⊬_poly rfn_Res(2)
 
@@ -205,10 +215,11 @@ Nothing else is live. Only one of the following would reopen the question:
   - No reduction read is shaped this way. LP22 fails (2), and fails (3) by design.
   - **After Y2:** at thresholds s ≤ n − 2 − β log n, such a reduction, if many-one with tiny error or non-adaptive and honest, collapses NP into coAM (GK24/SS22, via Observation O). **So it must target the top threshold s = n − 2, or LP25's boundary, or be adaptive or non-explicit.**
   - **After Y3:** bounded-round adaptive reductions are open, pending approximate-count lowness for AM. Unbounded adaptivity is PSPACE-hard for K (ABKMR).
-  - **Conjecture: hiding is depth** (the reviewer's statement). "NP-hardness of K^t-type problems requires deep instances."
+  - **Conjecture: hiding is depth** (the reviewer's statement, **scope corrected after Y9**). "**NP-hardness instances whose YES side is K^t-compressible at the threshold are deep.**" The correction matters: [28]'s range elements are **shallow** (Proposition Y9.2), and they are shallow because they are not K^t-compressible at all for polynomial t — so they are not YES instances, and the conjecture never spoke about them.
     - Proved for many-one expanding reductions (GK24 + Observation O).
     - Conditional at both powerful ends (Proposition H for NEXP; Proposition H′ for PSPACE).
     - Observed in HIR23.
+    - **The ledger stands at four instances** (LP22; Proposition H; Proposition H′; HIR23). **Y9 removed a candidate rather than adding one.**
     - Open for adaptive reductions. After Y4: barred for few-bits-of-adaptivity reductions if (PL′) holds. **After Y5: (PL′) cannot supply its own condition (ii), so the barrier requires (PL). Secret domain samples would give it and are unavailable with public coins. After Y6: (PL) at two rounds reduces to HMX's open problem, so the barrier arm ends there. After Y7: the non-explicit route is not covered by the depth conjecture's reduction-based evidence at all. **After Y8: it is relativization-barred, so no door on this branch is barrier-free.**
     - Its truth would mean LP23's door, which needs non-deep NO instances, is closed to every hardness mechanism the field has, and the holy grail would require a genuinely new one.
 - **For (iv):** the **constant-bias lemma**, final statement (X11): For a conjunction C of m co-blocky constraints (equivalently NEQ^m ∘ (F, G) for arbitrary encodings F, G), |Adv(IP2, C)| ≥ c·4^n forces m ≥ n/2 − log₂(1/c) [proved: inclusion–exclusion / γ₂ ≤ 2^m with γ₂*(H) ≤ N^{1.5}; source HHH23 Prop 3.1 form]; m = 2^n suffices [proved: the row-wise construction, C = the −1 class]; the lemma asserts m ≥ 2^{Ω(n)}. The window n/2 ≲ m < 2^{Ω(n)} is open. The lower end is the end of the γ₂/discrepancy method — γ₂(NEQ^m) ≥ (2 − 2/k)^m, so 2^m is tight up to base — and moving it requires cancellation among the 2^m inclusion–exclusion terms, for which no source read has a statement; the upper-side method (Z1/Z2 via PSS covering) applies only near purity and fails at constant bias at X10's endpoint mismatch.
@@ -655,6 +666,22 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 > Y8 accepted as Y8c on the report; merge e16b9e7, push on your user's standing go; then the page amendment and §10 item 20. Scoring as you propose: yours the serious one (conflation, withdrew a correct flag, wrong headline on the page); mine the twentieth accepted-without-checking (accepted the withdrawal). Practice line adopted verbatim.
 
+### Additions from Y9, extracted by script
+
+**Counts added:**
+- **Mine**, and the same shape as Y8's: I put 45 on "the generator's outputs are deep", called it visible in the quoted step rather than guessed, and it was an unchecked inference. One line of counting refutes it. **Worse, I moved the reviewer's prior toward my error.**
+- **The reviewer's twenty-first:** accepting that reasoning and moving its prior to mine.
+
+**Practice line added (mine, adopted verbatim):** *when a flag's content is an inequality about a specific construction, do the counting before putting a prior on it.*
+
+**Recorded as proved (ours, elementary):** Lemma Y9.1 and Proposition Y9.2, and the scope correction they force on the depth conjecture (§6).
+
+**What saved it:** the reviewer's ruling that Flag Z9 had to become a proved statement about the specific generator rather than a reading.
+
+**Y9 (ruling):**
+
+> Y9 accepted as Y9b on the report; merge 2d707a4, push on your user's standing go; then the page update (§10 item 21; depth ledger corrected to four with Y9 recorded as a REMOVAL; §7 both misses — yours as you wrote it, mine the twenty-first accepted-and-moved; your practice line verbatim). Lemma Y9.1 and Proposition Y9.2 go in as proved, ours, elementary.
+
 ## 8. Corrections to earlier final-state pages
 
 - **R_program_final_state.md §1 (my overstatement).** It says a worst-case to two-sided average-case reduction for McK^tP[ζ] "would base one-way functions on NP ⊄ BPP, and hence prove P ≠ NP". The first half is right. The second does not follow: basing OWF on the *hypothesis* NP ⊄ BPP proves nothing unconditionally. What proves P ≠ NP along this route is establishing K^t's mild average-case hardness itself, as in §3(i) and in R2's own chain ("K^t mildly hard ⟺ OWF ⇒ NP ⊄ BPP ⇒ P ≠ NP"). The reduction would be a cryptographic milestone, not a separation.
@@ -663,7 +690,7 @@ No misses on either side. Priors held: X9c, with 65 on it from both sides.
 
 ## 9. State
 
-**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 ran (§10 item 17; Y5b). Y6 ran (§10 item 18; Y6b). Y7 ran (§10 item 19; Y7b, **corrected by Y8**). Y8 ran (§10 item 20; Y8c). Y9 (the O(log n)-gap regime) is named, on the author's go only.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
+**The circuit side (iv) paused for good after X11 (§10 item 12)**, per the reviewer's ruling: the next item there is a proof attempt on §6 (iv)'s lemma. **The author reopened (i) at the frontier:** Y1 was closed by the literature check, and Y1′ was run (§10 item 13). **Y2 ran (§10 item 14; Y2a-as-known). Y3 ran (§10 item 15; Y3b). Y4 ran (§10 item 16; Y4b, with the accounting check Y4b′). Y5 ran (§10 item 17; Y5b). Y6 ran (§10 item 18; Y6b). Y7 ran (§10 item 19; Y7b, **corrected by Y8**). Y8 ran (§10 item 20; Y8c). Y9 ran (§10 item 21; Y9b). **The line is closed — see §11.** Nothing further is drafted unless the author opens something.** Anything opened is an attempt on (i), (ii), (iii) or (iv), pre-registered as such. The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.
 
 ## 10. The attempt phase (X1–X2)
 
@@ -873,3 +900,35 @@ Nothing else.
 - **Arm (b1), the reversal (ours).** LP23's counting step relativizes: the failure set is determined by A's code **and** O, and a decoder **with oracle access to O** can enumerate and index it, giving K^O(x) ≤ log|F| + |A| + O(log n). Their constructions are black-box by their own account, so the whole equivalence relativizes. Hence, relative to the Impagliazzo–Rudich oracle, **NP is hard and MK^tP|Q is easy**, the implication is false there, and **every proof of it must be non-relativizing**.
 - **Arm (b2), moot:** the barring oracle is not hypothetical. Flag O dissolves — HN22's world was built for the errorless/error-prone question.
 - **The two suspicion checks are discharged** (§7): the relativized-K^t convention is sourced (ABKMR; HN22), and LP20's steps carry nothing non-relativizing.
+
+**21. Y9: the O(log n)-gap regime** (`Y9_logn_gap_preregistration.md`, `Y9_logn_gap_report.md`). Accepted as Y9b. **This item removes a candidate instance from the depth ledger.**
+- **The regime.** Gap O(log n) at the top threshold: the one place where the barriers are silent (they need ω(log n); Observation O needs s ≤ n − 2 − β log n) **and** strong reductions exist — SS22's Theorem 3, second part: every NEXP language reduces non-adaptively to O(log n)-approximating **K**.
+- **Flag Z9 refuted (ours, proved).** Lemma Y9.1 and Proposition Y9.2: the outputs of [28]'s generator are **shallow**, depth ≤ O(log n), and lie inside LP23's promise. Smallest case: a = 1, k = 4 — at most 1/8 of seeds have K ≤ n − log n − 4, and the rest have depth ≤ log n + 4 + O(1).
+- **The named step is a missing upper bound**, not depth: K^t(G_n(z)) ≤ s(n) + O(log n) has no proof but "run the generator", and the generator is EXP^NP-computable.
+- **And the class, as ruled:** [28]'s NO-side guarantee is a security-to-hardness transfer, not a hitting-set property against a circuit class — *"EXP^NP ⊆ BPP^D for any distinguisher D for G"* — and **neither it nor a polynomial-time variant reaches NP.**
+- **Flag R9 was not triggered:** nothing adapted, so no relativization check was owed.
+
+## 11. Closing note
+
+**The program is closed on this branch.** Two sides were pursued, and both ended the same way: on named obstructions, each with the tool it would need.
+
+**The instance side (X1–X11).** Descent from P vs NP to a single inequality about conjunctions of Equality constraints against the Hadamard matrix: the **constant-bias lemma**, with the window n/2 − log₂(1/c) ≤ m* ≤ 2^n proved and the lemma's claim (m* ≥ 2^{Ω(n)}) open. The lower end is the end of the γ₂/discrepancy method; moving it needs cancellation across the 2^m inclusion–exclusion terms, a Lindsey-type statement for conjunctions rather than rectangles. **No source read has a statement of that shape.**
+
+**The adversary side (Y1–Y9).** Every route to LP23's OWF-complete problem is closed with a reason:
+- **explicit reductions** — barred by GK24/SS22 through Observation O, and their instances are deep by construction (the depth ledger's four instances);
+- **bounded-round adaptive** — rests on (PL), which reduces to **HMX's open problem** (two-sided counting for post-selected distributions without secret samples);
+- **non-explicit** — **relativization-barred** (Impagliazzo–Rudich; Wee Theorem 3), with **no dichotomy shortcut** (Lemma D: every learning/compression second horn is Pessiland's negation, i.e. the goal);
+- **the O(log n)-gap regime** — needs an upper bound only exponential time supplies, and its security transfer never reaches NP.
+
+**The standing ceiling, unchanged throughout.** Everything here is conditional. The chain is `worst-case hardness of MK^tP[s]|Q^t_β` →[LP23 Thm 1.1]→ `OWF` →[theorem]→ `P ≠ NP`, and **the arrow this whole line never touched is `NP ⊄ BPP` itself.**
+
+**What would reopen each.**
+- *Instance side:* a bound on Σ_{S⊆[m]} (−1)^{|S|}⟨H, B_S⟩ exploiting cancellation across S.
+- *Adversary side, explicit:* a reduction with random NO instances that are not deep — no known mechanism produces them.
+- *Adversary side, adaptive:* canonical certified approximate counting, i.e. (PL); equivalently, progress on HMX's open problem.
+- *Adversary side, non-explicit:* a technique that is **both** non-relativizing and non-reduction-producing; the ingredient map found none.
+- *Unmapped:* algorithms-to-lower-bounds (Williams). Its ceiling is NEXP ⊄ P/poly, not P ≠ NP, and it was **not** examined here.
+
+**Calibration.** Both sides' misses are recorded per phase in §7, including the two serious ones on my side — conflating "non-black-box" with "non-relativizing" (Y7, corrected in Y8), and putting a prior on an unchecked inequality (Y9, corrected by counting). **Every correction is on the page next to the result it was wrong about.**
+
+**The formal record (`formal/`, `appendix_M_formal_system.md`) is unchanged since b88c18b.**
