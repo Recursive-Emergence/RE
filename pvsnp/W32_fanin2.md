@@ -40,3 +40,11 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §1A. Amendment -- my capacity objection over-counted: few inputs are exhausted at a good hint (before any computation)
+
+**§1 required unary forbidden mass below `θ·2N` at EVERY input. That was the wrong quantifier, and a max error in the pessimistic direction.** Count pairs instead: `Σ_y Σ_z (unary mass at z for y) = 2N·(#unary windows) ≤ 2N²`, so `#{(y, z) : mass ≥ θ·2N} ≤ N/θ`. By Markov, the hints at which more than `K` inputs are exhausted number at most `N/(θK)`. **Rebalanced good hints:** `4N − N (clean/ext) − 8N/3 (M_res ≥ 3N/4) − N/(θK) > 0` whenever `θK > 3`, e.g. **`θ = 1/2, K = 7`**. So at a good hint **at most 7 inputs have less than half their domain**, not all of them.
+
+**Consequences.** (a) The low-capacity inputs are `O(1)` per hint. Treat them as **additionally pre-pinned** (value chosen among their allowed values); that adds at most `7·D*` unary windows elsewhere, a bounded second round of the same count. (b) Every other input keeps capacity `≥ N`, so fine rows need only `D*·s < N/2`, and restriction is available for rows that fit. (c) **The kill template in capacity form cannot exist:** no template exhausts many inputs at a constant fraction of hints, by the pair count. **What remains of the crux is (Q2), near-full rows colliding at one `u′`.** Collision-based must-exclude with a coin over the maximal non-colliding choice costs each incidence a factor about `1/D_in` instead of `1/2`, so the constant is about `D*^{−O(D*)}` for `D* ≈ 20`, still `Ω(N)`.
+
+**Priors are not revised** (committed at c97502b). **§1's reason for pricing 32a low is half withdrawn**: the capacity obstacle dissolves by a pair count. The near-full-row collision cost is the half that stands.
