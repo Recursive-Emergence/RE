@@ -46,3 +46,45 @@
 **Where payment IS needed at arity 3:** a coarse row at one coordinate given the other two, e.g. `R_{v,b} = {c : g(v, b, c) = y}` with `|R_{v,b}| ≥ s`. Neutralising it: **exclude `b` at `u₂` (for the protected value `v`)**, or **restrict `R_{v,b}` at `u₃`**, or give up `v` at `u`. These are W31/W32-A's triples with the pair `(v, b)` in place of a value, so **the multiplicity of coarse `(v, b)` pairs replaces coarse-value multiplicity.** The protected set and the give-up counts lift if the super-heavy count bounds the number of coarse `(v, b)` pairs per window: at most `|E_w(y)|/s` per window, **as before**. **So the honest arity-3 statement is W32-A's machinery with (value) replaced by (value, partner value), and the constant loses a factor `2N`-free polynomial in `D*` per extra coordinate, if the super-heavy count is re-derived for `E_w(y) ⊆ [2N]³`.** Its average is `(2N)³/4N = 2N²` per `(y, w)`, not `N`, so **the threshold `M·s` must be re-scaled by `2N`, and that is the step to check.**
 
 **Revised B35:** STAR3 and PROJ3 (with split payment) as controls, exact at N = 8; **no random-slice test.** Plus the re-derived super-heavy count for arity 3.
+
+---
+
+# W35 Findings (one bounded round)
+
+*Appended after the reviewer's ruling (35b). Nothing above is revised.*
+
+## §4. Ceiling
+
+Definition 9, deterministic, depth 1, residual arity 3, at W34's dense branch (every input `≥ 1.4N` values, `M_res ≤ 0.713N`, no forced chains). **No theorem this round.** Nothing crosses the weakest arrow.
+
+## §5. Outcome against priors
+
+| code | mine (cold) / reviewer (cold) | reviewer revised after §3B | outcome |
+|---|---|---|---|
+| 35a arity-3 theorem, constant for fixed `D*` | 15 / 20 | 30 | -- |
+| **35b** payment fails at a named count | 60 / 55 | 45 | **the outcome: residue = capacity collisions among heavy strings' split payments** |
+| 35c nothing | 25 / 25 | 25 | -- |
+
+**Not the pre-registered count.** §1(b)'s "mass versus cover" was moot (§3B), and my later "window mass `2N²` against capacity `N`" priced the wrong object. The reviewer corrected it: a protected input need not host every string.
+
+## §6. The mechanism: string-to-input assignment (the reviewer's), audited
+
+For each protected `u` (strongly independent), choose a **hosted set `V_u`** with probability `p` per string. For `v ∈ V_u`, the coarse rows are keyed by a **single partner value**: `R_{v,b} = {c : g(v, b, c) = y}`, `|R_{v,b}| ≥ s`. **Excluding `b` at `u₂` neutralises the whole row at `u₃`**, and symmetrically. The payer's load per window is `|∪_{v ∈ V_u} B_v| ≤ p·Σ_v |B_v| ≤ p·|E_w(y)|/s`, about `p·16D*N` at average mass. With `p = Θ(1/D*)` this is within capacity, and **every string is hosted at about `p|P|` protected inputs, with no product over windows.** A payer serving `c` protected inputs scales `p` by `1/c`. **Arity 2 does not benefit**: there the key is `v` itself, so exclusion is a give-up. **Arity `≥ 4`**: keys are `(k − 2)`-tuples, and unary exclusion is a **hitting-set problem over tuple keys** (the next gap, not W35's).
+
+## §7. PROJ3 defeats assignment alone (exact, analytic)
+
+Every input `u` is position 0 of its own window `(u, u + 1, u + 2)` with glue `(a << 1) | (b₀ ⊕ c₀)`. For `v = y >> 1` and **every** `b`, the row at `u + 2` is `{c₀ = b₀ ⊕ y₀}`, of size `N`. So **`B_v` is the whole domain of `u + 1`**, and hosting `y >> 1` at any protected input would cost its payer everything. **`y >> 1` is in no `V_u`, at every hint.** This is **consistent with the reviewer's (hint, string) count** (`Σ_y |B_v| = 4N` per `(w, v)`): the count bounds how often a **given** string is heavy, while hosting at a hint needs the **maximum** over strings, and some string is heavy at every window at every hint. *(Sum versus max; the reviewer's seventeenth miss, in its words.)*
+
+**The hybrid (the fix).** Strings with normal `B_v` use assignment. Strings with `|B_v| ≈ 2N` use **§3A's split payment**: restrict one parity class at `u₃` and exclude the matching class at `u₂`, costing about `N` at each of two payers, within `1.275N`.
+
+## §8. Named residue
+
+**Capacity collisions among heavy strings' split payments at a shared payer.** At these constants a payer holds one split, so two heavy strings needing incompatible parity classes at one payer cannot both be paid, and the loser is given up at that protected input. **Multiplicity is bounded:** heavy strings (`|B_v| ≥ L`, `L = N`) per `(hint, window)` number at most `|E_w(y)|/(s·L)`, about `16D*` at average mass, union-bounded at heavy windows. **So the residue is a bounded-multiplicity assignment problem, not an unbounded one.** **A string this scheme cannot pay is not thereby unhostable in truth** (rows of size `N` leave half of the partner's domain), so the gap is again in the construction.
+
+## §9. Data
+
+Exact CSP at N = 9 (arity-3 ring, protected inputs 0/3/6, `S = 3`, hosted-set probability `p = 0.5` and `0.25`, 9 hints): STAR3 mostly 0 hosts; PROJ3 mostly invalid or 0; the mixed template is invalid at most hints and gives 3-5 hosts elsewhere. **Uninformative, recorded as such.** The mechanism needs `p·|P| ≫ 1`, while `|P| = 3` leaves some of 18 strings in no hosted set by chance, and payer overload invalidates hints. That regime is out of exact reach at arity 3. **The PROJ3 failure rests on §7's analysis, not on these numbers.**
+
+## §10. Practice line
+
+**A COUNT THAT BOUNDS HOW OFTEN EACH STRING IS BAD DOES NOT BOUND WHETHER SOME STRING IS BAD NOW.** Per-string budgets over hints and per-hint maxima over strings are different quantifiers. This is the third sum-versus-max failure of the line.
