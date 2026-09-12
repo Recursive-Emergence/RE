@@ -137,13 +137,15 @@ Three premises that both the reviewer and I had been arguing from were struck ag
 | hub plus unary | W29.2: `N/4 − h` | proved |
 | hubs plus arity-2 residual with small rows | W30.1 | proved (class) |
 | arity-2 with coarse rows, bounded coarse-triple multiplicity | W31.1 | proved (class) |
-| **all fan-in 2** | **W32.1: `c(D*)·N`** | **conditional on (H_casc)** |
+| **all fan-in 2** | **W32.1: `c(D*)·N`** | **proved, unconditional (W34, bacbed4); proof-of-shape constant** |
 | arity `k ≥ 3` with coarse slices | -- | **open**; any W31-style bound is vacuous at `k = polylog N` |
 | **polynomial fan-in, general glue (Korten Problem 1 at depth 1)** | -- | **open** |
 
 **The adversary's toolkit as it now stands.** Wilson's clean-pin adversary with an extendability invariant (W28); counting over hints to choose `y` (W25-W29); pre-pinning hubs against the hint (W29); the protected set, an independent set whose coarse incidences are paid by partners with capacity `c = 1` (W32-A); random load-oblivious give-ups, whose losses multiply per window (W32-A §12). **Both sides' costs matter:** every device that removes values for extension removes strings for hosting (W30).
 
-**THE open object of the black-box sub-line: FORCED CHAINS** (W32-A §13). An exhausted input with a single allowed value whose row at the next window has size `2N − 1`, forcing the next input, and so on, for `N/2` inputs at every hint. **This is consistent with every count on the page and exactly tight on the link budget.** The hint budget is spent (about `0.4N` good hints remain), and recursing on the chain breaks `|U_v| ≥ N − h − M_res`. **Such templates probably remain non-total** (range elements certify no non-range string), **so the gap is in the construction, not known to be in the truth.**
+~~THE open object: forced chains~~ -- *superseded by W34 below; the paragraph is kept as written at W33.* **THE open object of the black-box sub-line: FORCED CHAINS** (W32-A §13). An exhausted input with a single allowed value whose row at the next window has size `2N − 1`, forcing the next input, and so on, for `N/2` inputs at every hint. **This is consistent with every count on the page and exactly tight on the link budget.** The hint budget is spent (about `0.4N` good hints remain), and recursing on the chain breaks `|U_v| ≥ N − h − M_res`. **Such templates probably remain non-total** (range elements certify no non-range string), **so the gap is in the construction, not known to be in the truth.**
+
+**W34 update (bacbed4): FORCED CHAINS RETIRED.** A count over (hint, circuit) pairs (`Σ_y |F_y| ≥ 3N·(2N)^N`, uniform functions) gives at least `0.2N` hints of density `≥ 0.7 > e^{−1/2}`. Those hints are automatically non-certifying, and at the density-maximising hub branch every input keeps `≥ 1.4N` values, no chain is forced, and `M_res ≤ 0.713N`. **W32.1 is unconditional for fan-in 2.** **Open now:** arity `k` (the payer machinery only, since density removes exhaustion at every fan-in), the constant, randomisation, and depth `> 1`.
 
 ## §4. The boundary: plain circuits vs single-valued nondeterministic circuits
 
@@ -176,7 +178,7 @@ This is where the line has arrived from every direction it has taken. **Five ind
 | **(D1)** | approximate counting in `P^NP` | **NOT smaller than the door.** W5 correction: (D1) *implies* (C_1) and is not known to follow from it, since (C_1) is provably minimal. Instrument: SU05 Thm 3.6 / Cor 3.7, hypothesis = SVN hardness |
 | **(D2)** | = RW26 **Question 5.3**: weakest lower bound giving `Avoid ∈ FP^NP_tt` | open, and now **barriered**: W16.2 says any proof from plain-circuit hardness must be non-relativizing. The gap located in W15: the isolation-failure test is **coNP-type** (Π_1), and plain hardness is not known to fool coNP |
 | **(D3)** | a history-hardness notion whose failure is NP-certifiable | **NARROWED** by W20 (13cb4b7) -- split into two variants, one closed within the framework and one open; see below |
-| **Korten Problem 1** | black-box depth lower bound for the stretching reduction | open. At **depth 1** reduced to the dangerous-string residue (§3.1); glue-class-restricted form (NC^0/AC^0) is the sharpened target from W7. **W33:** at depth 1, Definition 9, fan-in 2 is closed **modulo forced chains** (W32.1); polynomial fan-in with coarse slices is open; the membership-model analogue has the lower bound `q = Ω̃(√N)` at poly fan-in (W26.1), truth `N` vs `√N` open. |
+| **Korten Problem 1** | black-box depth lower bound for the stretching reduction | open. At **depth 1** reduced to the dangerous-string residue (§3.1); glue-class-restricted form (NC^0/AC^0) is the sharpened target from W7. **W33:** at depth 1, Definition 9, fan-in 2 is closed (W32.1, unconditional after W34); polynomial fan-in with coarse slices is open; the membership-model analogue has the lower bound `q = Ω̃(√N)` at poly fan-in (W26.1), truth `N` vs `√N` open. |
 
 **(D3) after W20, in two variants that must be kept apart.** *Status: **narrowed**, not closed -- the word is chosen deliberately and the distinction is the ceiling.*
 
@@ -257,10 +259,10 @@ door (C_1): E^NP ⊄ SIZE[2^{o(n)}]  ⟹  Avoid ∈ FP^NP        [Korten; minima
           +-- membership model: W26.1, q = Ω̃(√N) for poly fan-in        [lower bound; N vs √N open]
           `-- Definition 9, depth 1:
                  W28.1 (small rows) · W29.2 (hub + unary) · W30.1 · W31.1 (bounded multiplicity)
-                 W32.1: all fan-in 2, conditional on (H_casc)
-                 OPEN: forced chains (fan-in 2) · coarse slices at arity k = polylog N
+                 W32.1: all fan-in 2, unconditional (W34 density count)
+                 OPEN: coarse slices at arity k (payment only) · the constant
 ```
 
 **The weakest arrow is the one from the black-box sub-line to the door**, and it is weak three times over. (1) Black-box lower bounds constrain one **technique** (stretching by oracle calls with glue), not `FP^NP`. (2) By Flag H7 they die under randomisation at this stretch. (3) Korten's Problem 1 asks for depth `d` against `log_α β`; **W24-W32 are all at depth 1**, and even a complete depth-1 answer at polynomial fan-in would be one instance of it. **Every result in §3.4 sits below that arrow.**
 
-**The decision, which is the user's.** After W33 the line either (a) **attacks forced chains** directly (the fan-in-2 case's last open object, sharply stated, with a clean kill template), or (b) **returns to the door**, where §4's boundary and §5's (D2)/(D3) rows stand as W19-W20 left them. The reviewer will put the choice to the user with this page. **Nothing is merged, and w15-w33 are unpushed.**
+**W34 note:** the reviewer chose (a) under the standing rule, subject to the user's override, and W34 closed it (fan-in 2 unconditional). The user's choice between further black-box rounds and the door stands. **The decision as written at W33:** After W33 the line either (a) **attacks forced chains** directly (the fan-in-2 case's last open object, sharply stated, with a clean kill template), or (b) **returns to the door**, where §4's boundary and §5's (D2)/(D3) rows stand as W19-W20 left them. The reviewer will put the choice to the user with this page. **Nothing is merged, and w15-w33 are unpushed.**
