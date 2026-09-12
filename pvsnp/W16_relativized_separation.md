@@ -169,3 +169,50 @@ Against the **2^{O(2^{εn}·εn)}** circuits of that size, the union bound gives
 ## Ceiling
 
 **W16 proves nothing unconditional and nothing about P vs NP.** It establishes one relativized lemma — plain hardness and SVN easiness can coexist — which says that a *relativizing* proof of Question 5.3 through the SVN route cannot exist, and nothing about whether Q5.3 is true. **The separation of (D2) from (C₁) is not established**: it needs an adversary against non-black-box one-round algorithms, and the only adversary available attacks the black-box model in which (C₁) itself fails.
+
+---
+
+# §9. The adversary, revisited: the paradox resolves, the two-chain construction is refuted
+
+## 9.1 My §2 obstruction was a misreading — third correction of the round
+
+The reviewer's resolution is right and I record it as such. **Wilson's adversary does defeat Korten's algorithm — but only by answering "true" everywhere and committing a preimage for every block at every level, after which f = tree(seed) has a small A₂-oracle circuit.** So at *that* oracle f is easy, (C₁)'s hypothesis fails, and there is no contradiction to resolve. **§2 concluded from the conflict that no adversary can exist; the correct conclusion is that the *unconstrained* adversary wins by destroying hardness, which is exactly what constraint (d) forbids ours from doing.** The live question is whether a constrained adversary exists.
+
+**Also accepted:** taking G_n(x) := A₂(x) at length n makes the instance description trivial, so "holding G's description" confers nothing and Wilson's model is restored while composition stays syntactic. **That dissolves my syntax objection cleanly.**
+
+**This is the third time this round I have called a construction dead and been wrong.** Recorded with the others.
+
+## 9.2 The two-chain adversary is broken, by a query shape the enumeration omits
+
+Task (i) listed the shapes to check: *bit queries, exact-weight queries, "block = candidate" queries, "prefix = π" queries.* **It omits pairwise conjunctions**, and those are fatal.
+
+**The query.** *"∃ a consistent chain from f down to (ℓ+1, p) whose block has bit i = 1 **and** bit j = 1."* This is NP — guess the chain, verify the commitments, read two bits — and there are only **(2n)² = poly** such queries, all issuable in the one round.
+
+**The attack, with exactly two chains carrying B and B′.**
+1. Single-bit queries give **B_t ∨ B′_t** for every t.
+2. The query "bit t = 0" gives ¬B_t ∨ ¬B′_t = **¬(B_t ∧ B′_t)**.
+3. From (1) and (2) the algorithm knows the **disagreement set D = {t : B_t ≠ B′_t}** exactly.
+4. Pick any **i ∈ D**. Exactly one of the two blocks has bit i = 1 — say B. Then *"bit i = 1 and bit j = 1"* is true **iff B_j = 1**, for every j. **B is recovered in full**, and B′ = B with the D-coordinates flipped.
+
+**So the algorithm names B, outputs it, and wins**, since B has no preimage by construction. **Committing preimages for B ∨ B′ and B ∧ B′ does not save it — those are precisely the quantities that reveal D.** The tie defeats *weight-based* separation, as intended; it does nothing against *conditioning*, because a coordinate where the chains disagree acts as a selector that a conjunctive NP query can condition on.
+
+**Why the tie is not the issue.** Both chains have equal minimum weight, so exact-weight queries stay OR-mixed — the reviewer's design works against that shape. **The failure is that two objects are separated by any coordinate on which they differ, and one round of pairwise queries suffices to find one and condition on it.**
+
+## 9.3 The repair, and what it would take
+
+**Branch into m ≫ 2 chains, not two.** With blocks B₁, …, B_m, the k-wise queries return the projections of the *set* {B₁,…,B_m} onto k coordinates. For m = 2 those projections determine each member (§9.2). **For larger m they need not**: reconstructing an individual member from its low-order projections becomes ambiguous, which is the property the two-chain case lacks.
+
+**What must then be shown, and I have not shown it:**
+- a choice of m and of the blocks such that **no member is determined** by all poly-many O(1)-wise projections — plausibly a random subset of a coset, so that every small projection looks generic;
+- that **every combination the algorithm can assemble** from those projections either lies in range(A₂) (adversary commits a preimage) or is not determined at all — the m = 2 case needed only OR and AND, the general case needs this closed under whatever poly-many k-wise queries yield;
+- that committing m preimages at the branching node stays within budget (it does: m ≪ N) and **keeps B₁,…,B_m preimage-free**, so f stays outside the tree's range and W16.0(1)'s hardness survives — constraint (d).
+
+**Until that is done the adversary is not established, and with it neither is the separation.** *(Outcome unchanged at 16c; the content of this section is that the specified adversary is refuted and the repair is identified, which is strictly more than "obstruction named".)*
+
+## 9.4 Kill tests for §9
+
+- **(i)** The refutation is exact, not sampled: the four steps are a decision procedure using (2n)² + O(n) NP queries in one round.
+- **(ii)** It respects the model — every query used is NP, none is coNP or weight-enumerating.
+- **(iii)** It does **not** contradict W16.0, which stands independently.
+- **(iv)** It does not contradict the reviewer's paradox resolution, which §9.1 accepts.
+- **(v)** The repair is stated as a requirement list, **not claimed**.
