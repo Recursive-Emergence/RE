@@ -58,3 +58,27 @@ Not reused: "odd cycles break the coupled device" (W11, mine); "differing σ bre
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+---
+
+## §6. AMENDMENT — revised outcome codes and priors (committed before the work)
+
+**The reviewer accepted §2(a) and restated the round.** It verified independently that L(x) = ∃y A₁(x,y) over a random sparse A₁ is hard for SVN A-circuits as well as plain ones — *"on x ∉ L an SVN circuit needs a 0-path, and a 0-path that queries ≤ s positions cannot exclude a witness among the 2ⁿ − s unqueried ones, so flipping one keeps the path and breaks single-valuedness"* — so the original oracle made the separation **false**, and **Flag J16 did its job**. My §2(b), (c), (d) are adopted.
+
+**The outcome codes have changed materially, so my priors are restated against the new ones.** The old codes asked for "the theorem with three checks"; the new ones put a prerequisite lemma first:
+
+> **Lemma W16.0.** There is an oracle A with (1) E^{NP^A} ⊄ SIZE^A[2^{εn}], (2) E^{NP^A‖} ⊆ SVN-SIZE^A[2^{√n}], (3) staging consistent.
+
+| code | outcome | reviewer | **mine** |
+|---|---|---|---|
+| **16a** W16.0 proved **and** the one-round adversary closed under (d) | 30 | **25** |
+| **16b** a relativizing non-adaptive algorithm avoiding both SVN hardness and certificates | 10 | **10** |
+| **16c** W16.0 proved but the adversary does not close, **or** W16.0 itself fails — naming which | 60 | **65** |
+
+**Within 16c I split further, so the outcome is falsifiable rather than a catch-all: 40 that W16.0 closes and the adversary stays open; 25 that W16.0 itself does not close this round.**
+
+**Why 16a stays low, and it is not the adversary.** Claim (2) is clean: exactly one marked location makes guess-and-verify **single-valued**, at size 2^{√n} = 2^{o(n)}, so SU05's hypothesis fails relative to A. **Claim (1) is the hard one.** The certificate at (M_i, x, s) encodes M_i^A(x) — the hard language's *own* bits — so plain-circuit hardness requires **every** plain A-circuit of size 2^{εn} to miss the mark. **A union bound cannot deliver that:** there are 2^{O(2^{εn}·εn)} circuits of that size against a mark hidden among only 2^{2εn} locations, so the per-circuit miss probability 1 − 2^{−εn} is worthless summed over them. It needs a **staged diagonalisation** in which the hard truth table and the certificate placements are chosen together, circuit by circuit, with each stage's reservations respected by later ones. **That is the step I expect to consume the round.**
+
+**Flag M16 (new).** Before attempting the diagonalisation, **check whether Lemma W16.0 is already known.** A relativized separation of plain from nondeterministic/single-valued circuit hardness is the kind of statement Wilson's *Relativized circuit complexity* (FOCS 1985 — already the source of Theorem 12 in this line) may contain outright. **If it is known, saying so is worth more than reproving it**, and the round's content becomes the adversary.
+
+**Flag N16 (new).** The certificates about G itself — "bits of its lexicographically first non-range string" — are **determined by G**, which the adversary is simultaneously building against the one-round algorithm. **The staging must therefore be checked for circularity**: G's certificates must lie beyond polynomial reach *and* be consistent with the adversary's later choices. If that circularity cannot be broken, it is a 16c obstruction distinct from claim (1)'s.
