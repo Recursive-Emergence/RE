@@ -38,3 +38,7 @@ W31.1's independent coin loses `β^{D_out}(1−β)^{D_in}`, exponential in degre
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §4A. Re-aim (after the priors commit 1196f48, before any computation)
+
+**The object registered above cannot be built.** An arity-2 residual has `N` windows, so `Σ_u deg(u) ≤ 2N`: degree `≈ D` at every input is impossible, and the kill-test template does not exist. **The §2 priors were set against that object and are superseded, not revised.** The middle band is residual **arity** (W32-B, later). **W32-A**, the fan-in-2 theorem, is re-registered in `pvsnp/W32_fanin2.md`.
