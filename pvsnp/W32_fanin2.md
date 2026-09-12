@@ -48,3 +48,14 @@
 **Consequences.** (a) The low-capacity inputs are `O(1)` per hint. Treat them as **additionally pre-pinned** (value chosen among their allowed values); that adds at most `7·D*` unary windows elsewhere, a bounded second round of the same count. (b) Every other input keeps capacity `≥ N`, so fine rows need only `D*·s < N/2`, and restriction is available for rows that fit. (c) **The kill template in capacity form cannot exist:** no template exhausts many inputs at a constant fraction of hints, by the pair count. **What remains of the crux is (Q2), near-full rows colliding at one `u′`.** Collision-based must-exclude with a coin over the maximal non-colliding choice costs each incidence a factor about `1/D_in` instead of `1/2`, so the constant is about `D*^{−O(D*)}` for `D* ≈ 20`, still `Ω(N)`.
 
 **Priors are not revised** (committed at c97502b). **§1's reason for pricing 32a low is half withdrawn**: the capacity obstacle dissolves by a pair count. The near-full-row collision cost is the half that stands.
+
+## §3A. B32 data -- the near-full collision template does not kill
+
+**Template (N = 16).** Value inputs 0-7 and row inputs 8-15. Row input `8 + j` receives two windows, from `u = j` and `u = j + 1 (mod 8)`, with **complementary half rows** (`(a << 1) | b₀` and `(a << 1) | (b₀ ⊕ 1)`). Every value input therefore has two out-edges carrying the **same** string `y >> 1`, and every row input has a colliding pair. **Rule:** at each row input restrict exactly one of its two rows and exclude the other, chosen either **ALTERNATING** (by `j` parity) or by a **COIN**. Exact CSP, all 64 hints:
+
+| rule | `min_v |hostable(v)|` |
+|---|---|
+| ALTERNATING | **8 = N/2 at every hint** |
+| COIN (two seeds per hint) | 0:1, 2:4, 3:4, 4:22, 5:20, 6:26, 7:24, 8:27 |
+
+**The collision template does not force exponential or concentrated loss.** A structured choice (restrict the row from the even-indexed neighbour) keeps every string hostable at half the inputs, and a coin reaches `N/2` often. In a ring of `m` value inputs, `m/2` can have both their out-edges restricted, which is the analysis behind the ALTERNATING row. **Evidence that (Q2) costs a constant per collision, consistent with §1A.**
