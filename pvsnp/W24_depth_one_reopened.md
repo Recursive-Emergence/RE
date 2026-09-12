@@ -131,6 +131,35 @@ Standing record: ten consecutive wrong impossibility claims; my constructions ho
 
 **(B5.10) Run order and kill test, fixed now.** **(A) first; (B)'s tail-mass only if time remains.** At `n = 3`: a deterministic `Q` that **queries membership "is `v ∈ range(C)`?" of its own candidate before outputting `v`**. **Positive control:** a t-cover free set under which the adversary hosts mid-run and **all `q` answers stay consistent**. **Negative control:** `t = 2` (single-deletion), where **the second mid-run host must break an answer**. *Modality: membership queries are NP-type and closer to Definition 9 than W14's value queries, but this is still a single-query-form simulation at `n = 3`, not the full DNF model; labelled as such.*
 
+## §5C. Pre-registration AMENDMENT 3 -- the construction order, U(y), and a dependency cycle -- committed BEFORE any run
+
+*Appended 2026-09-12. Revises nothing above, moves no prior. The (A)-branch harness `w24_deferral.py` has been WRITTEN but NOT RUN; no result of any kind has been seen.*
+
+**(C5.1) The construction order, as the reviewer set it -- "the deferral framing made exact".** (1) choose the hint `y` → (2) compute the dangerous set `D(y)`, `|D| ≤ k` → (3)/(4) host `D(y)` **forced-side, up front, before `Q` runs** -- "so they can flip no answer: there are no answers yet" → (5) build the **t-cover on the REMAINING free set** → (6) `Q` runs → (7) **free-side** hosts of `Q`'s candidates, mid-run. **This resolves my audit point 1 (B5.6)**: forced-side hosts (for `D`) and free-side hosts (for `Q`'s output) happen at different times, and the t-cover guards exactly the free-side ones because `D` is finalised first. Accepted.
+
+**(C5.2) `U(y)` IS W14's `E(y)` -- verified by definition, not assumed.** The reviewer defines `U(y)` as strings for which "every `C` that puts `v` in range also puts `y` in range, so hosting `v` breaks the hint's validity". That is: no `C` with `v ∈ range(C)` is admissible for `y`. **W14 §2, verbatim:** *"`E(y) = {v : no admissible C has v ∈ range(C)}`, where admissible means no x produces y."* **Identical.**
+
+**(C5.3) So half the reviewer's census is ALREADY in W14's record -- and it is the optimistic half.** W14 computed `E(y)` **exhaustively at `n = 3`** and found it **empty on every valid hint** for successor, hub, double projection and random glue; only the positive control `C′(x) = (C(x), 0)` was nonempty (16 of 32 hints). **But W14's computation left every input free** (a single pin per test). That is the **most permissive** case. **The construction pins forced values** -- to host `D(y)` and keep `y` valid -- so the **operative** `U(y)` under the construction can only be **larger**. **All-free `E(y) = ∅` is necessary for choice (1) to close, not sufficient.** The decisive census is under a **sparse** free set, and that is what will be run.
+
+**(C5.4) A DEPENDENCY CYCLE in the construction order -- my audit, verified from C5.1 itself.** The reviewer's escape for choice (1) is to make `Q`'s view t-invariant, hence "a function of the commitments only", and **then choose `y` after seeing which strings that function can reach**. But C5.1 makes the forced values **depend on `y`** (they host `D(y)`), and `Q`'s view depends on the forced values. So:
+
+> **`y → D(y) → forced values → t-cover → Q's view → choose y`.**
+
+**The escape needs `y` chosen last; the order needs `y` chosen first.** Breaking the cycle requires forced values that are **`y`-independent** -- i.e. hosting every string dangerous for **every** candidate hint up front, which **reintroduces the all-`y` quantifier** that made (B) exponential. **This cycle is W13's wall** -- "the adversary cannot use hint-averaging because `U(y)` and `Q`'s view of `y` are correlated" -- **made visible as an ordering constraint.** Verified structurally; whether it actually blocks is the round's question.
+
+**(C5.5) A forced-side cascade the order assumes away.** C5.1 treats `D(y)` as "fixed" before the cover is built. But hosting `D(y)` forced-side **changes forced values**, which can make other strings blocked at every free input -- **enlarging `D(y)`**. That is the forced-side twin of W16.1's Bad-closure cascade. Unaudited; the census will record it.
+
+**(C5.6) The reviewer's new residue, recorded: mid-run-dangerous strings.** A string whose allowed free inputs all lie in `Bad` or in already-committed inputs is unhostable mid-run. Its count is `#{v : |A(v,y)| ≤ |Bad| + 2k(q+1)}` -- **a polynomial threshold, not a cascade**, which the reviewer rightly calls a better question: under W13's mass bound, is it polynomial for a typical hint?
+
+**(C5.7) The information question, with my prior.** Reviewer's question: *does t-invariance make `v*(y)` a function of (forced values, cover) that is independent of `U(y)`'s identity?* **Reviewer's prior: 35. Mine: 25.** Down ten because C5.4's cycle means forced values -- and so `Q`'s view -- depend on `y` through `D(y)`. **That cycle is a verified structural consequence of the stated order**, which is why it moves ten points rather than the three or four an unaudited consequence would earn; what remains unaudited is whether the dependence is strong enough to matter.
+
+**(C5.8) Run order, revised and fixed now.**
+1. **Sparse-free-set census** (cheapest; can void point 2): for each valid hint, all-free `E(y)` versus, under a half-free set, the dangerous set `D_F(y)` and the unhostable set `U_F(y)`; the forced-side cascade (C5.5); and the mid-run-dangerous tail (C5.6).
+2. **The (A) kill test** (`w24_deferral.py`, robust vs naive).
+3. **Routing data per hint** -- whether `Q`'s output lands in the operative `U(y)`.
+
+**Priors on (A) unchanged** from B5.9 (mine 16/59/25; reviewer now 15/60/25).
+
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
