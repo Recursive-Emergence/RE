@@ -75,6 +75,26 @@ Standing record: ten consecutive wrong impossibility claims; my constructions ho
 - **(vi)** If the resolution is not the pre-registered one, say so in the same sentence as the finding.
 - **(vii)** Nothing from the (S2) rounds (W21-W23) cited as evidence; different object.
 
+## §5A. Pre-registration AMENDMENT -- the two premise audits, committed BEFORE any attack
+
+*Appended 2026-09-12 after re-deriving W13, W14 and W16.1 from their committed pages and BEFORE any construction or computation. **It revises none of §0-§5 and moves no prior.** It records the answers to the framing audit (Flag A24) that the reviewer ruled must be pre-registered before attacking.*
+
+**(A5.1) Premise (1) audited: the 2-cover structurally cannot absorb choice (4).** W16.1's fixpoint, verbatim: *"every property has 0 or ≥ 2 elements outside C ∪ E ∪ Bad"*, with *"a property with no free non-Bad element has S ∩ Π = ∅"*. W14's closing note, verbatim, gives the four choices with *"the fourth acts on the very variables the third sets"* -- **hosting is done by setting forced values**. The 2-cover selects **free** inputs. So it cannot host the dangerous strings (the 0 case). **The reviewer guessed it absorbs (2) and (4); it absorbs (2) only.** Reviewer accepted.
+
+**(A5.2) Premise (2) re-scoped: the operative quantity is the cascade, not `q`.** W16.1, verbatim: *"Each property marks at most once -- afterwards it has no free element -- so |Bad| ≤ q."* The argument charges each marking to a property currently at **exactly one** free element. So the operative bound is **the number of properties that ever reach exactly-one during the closure**, not the raw `q`. I first told the reviewer the literal `q` was exponential and W16.1 failed; **that was too strong, and is corrected here.** Reviewer accepted.
+
+**(A5.3) Audit (i) -- why does a dangerous string need a host? -- READING ADOPTED: (B).** W14 §2, verbatim: *"A template is a total reduction iff every valid hint excludes some string: `E(y) = {v : no admissible C has v ∈ range(C)}`, where admissible means no x produces y."* The `≤ k` count in §2(d) is *"at most ≈ k dangerous strings per hint"*, over **all** `v`. **So W14 is Q-INDEPENDENT**: a dangerous string breaks the hint's non-certifying property regardless of what any `Q` outputs. **As written, the quantifier over `v` is real.**
+
+**(A5.4) But (A) is available as a REFORMULATION -- and this is recorded as a hypothesis, not a reading.** The sub-line's **native** model is Q-dependent: **W8.1**, verbatim, *"there are an assignment α and a valid hint `y ∉ range(C′)` such that **Q's output** satisfies `y′ ∈ range(C)`."* W14 moved to the stronger Q-independent condition. The plausible reason is a **fixpoint**: protecting `Q`'s output changes commitments, which changes `Q`'s answers, which changes its output; protecting every string sidesteps it at the price of the all-`v` quantifier. **Under (A), properties index by (candidate `v`, hint `y`), `q` is polynomial, and `|Bad|` is polynomial by marking-once alone.**
+
+**(A5.5) Audit (ii) -- was W14's obstruction deletion-driven? -- NO.** The strings `delet` and `cascade` do **not occur** in W14's body. Its mechanisms, verbatim, are **rigidity** (Fact (3) repaired: *"at least 3N/4 of inputs carry ≤ 4k rigid x's"*), **neighbourhood disjointness** (Fact (2): *"poly(n) only when δ ≥ 1/2"*), the **mass bound** (§2(d)), and **forced-value coupling** (hosts *"each imposing ≤ 2k constraints back on (3)"*). **The deletion trick is W16's device and postdates W14.** By the reviewer's own kill test -- *"If W14's cascade was not deletion-driven, say so and the tool is idle"* -- **the reframing "the 2-cover makes the deletion trick close in one step" is IDLE for W14 as written.**
+
+**(A5.6) A new mechanism, disclosed and NOT priced.** Audits (i) and (ii) point in opposite directions. Under (B) there is no deletion to close. **Under (A) there is a deletion-shaped fixpoint** -- and W16.1's defining consequence is verbatim *"Deleting any single x ∈ S changes no answer"*, which is exactly the property that stops a local commitment change from propagating into a changed output. **So the 2-cover may be the tool that makes (A) work.** Named, unaudited, and priced at zero per §1 line 2 and the W20/W21/W23 record. **Open sub-question it raises:** whether protecting one output needs only *single*-deletion invariance, or several simultaneous commitment changes, which W16.1 does not provide.
+
+**(A5.7) What the attack will therefore run, fixed now.** **Both branches, positive control first on each** (Flag F24):
+- **(B)-branch:** W16.1's Bad-closure over all-`v` properties at `n = 3`; the **tail mass** `Σ_v [|A(v,y)| ≤ j]` as a function of `j`, to see whether it is geometric (cascade polynomial) or flattenable (cascade exponential).
+- **(A)-branch:** the fixpoint under Q-dependent indexing, with a **simulated deterministic `Q`**, checking whether single-deletion invariance suffices.
+
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
