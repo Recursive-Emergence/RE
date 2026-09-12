@@ -166,3 +166,83 @@ With glue of **fan-in `N`** (every C′-input may read all of `C`), the range of
 - **(iv) The s = 6 hypergraph sketch** checked numerically at the smallest `N` where the union bound applies, or reported unchecked.
 
 **Lemma W25.1's novelty check against W7-W14 and Wilson's Theorem 12 runs before the page calls it new.**
+
+---
+
+# W25 Findings
+
+*Appended after the work and after the reviewer accepted the record (25c, W25.1, W25.2, W25.3, boundary restated). Nothing above is revised. **Membership-query model on every line; deterministic back-mappings only (Flag H7); depth 1.***
+
+## §6. Outcome against priors
+
+| code (amended, §5A) | priors: §3 mine / reviewer; §5A supplementary | outcome |
+|---|---|---|
+| **25a** some unconditional count gives "at `n′ = n` no depth-1 template of any fan-in is total" | 17 / 20; 13 | **not reached -- and cannot be: at unbounded fan-in such templates EXIST (§9)** |
+| **25b** crux exhibited AND no count survives unconditionally | 58 / 55; 62 | **first clause yes, second clause false: a count survives at q = 0** |
+| **25c** neither | 25 / 25; 25 | **the outcome, with the obstruction renamed: the first moment is exact at q = 0 and must fail from q = 1, because totals exist at unbounded fan-in** |
+
+*Footnote, the original `1 + log r` wording:* ill-posed at the line's instance (§5A), not scored.
+
+**The designed kill tests landed as predicted, and the round's answer did not come from them.** The crux the round opened on -- does blocking reduce to a constant reader? -- was exhibited (§7) and then turned out not to matter for the count (§8). **What mattered was which resource the statement quantified over: fan-in.**
+
+## §7. The characterisations of blocking (n = 2, exhaustive, history-free)
+
+Blocked triples `(x, v, y)` under four definitions (§5A, plus the reviewer's constant-PP, whose predictions were registered before it ran):
+
+| template | exhaustive | constant-P | constant-A′ | constant-PP | status |
+|---|---|---|---|---|---|
+| positive control | 32 | 32 | 32 | 32 | all equal, as predicted |
+| hub | 8 | 8 | 8 | 8 | warm |
+| two-hub | 0 | 0 | 0 | 0 | warm |
+| **split-reader** | **32** | 16 | 16 | 16 | cold; **gap under every local definition** |
+| **validity-split** | **26** | 24 | 26 | 26 | cold; P's gap closed by propagation |
+
+"P-not-exhaustive" and "PP-not-exhaustive" are 0 in every row (soundness control). **Every advance prediction landed: mine (§5A) and the reviewer's four for constant-PP.** A definitional fix, made before any number: literal "constant on the admissible slice" is **vacuous** -- a blocked slice has no admissible completion -- so A′ is constancy after propagating the non-readers' constraints, which is the reviewer's constraint-set picture. The n = 3 rows were still running at commit time and are not reported.
+
+## §8. Lemma W25.1 and Finding W25.2
+
+**Finding W25.2 (set certification; the reviewer's correction of my first reading).** In the membership model a "no" to "is `u ∈ range(C)`?" is a win: Q outputs `u`. So the adversary answers yes throughout, and Q's `q` queries and its output form a set `V(y)` of size `≤ q + 1` **determined by `y` alone**. Totality is static: **for every valid `y`, every `C` with `V(y) ⊆ range(C)` has `y ∈ range(C′)`.** No pins, no histories. **My intermediate claim that the difficulty was cross-history selection (W14's obstruction) was an artefact of lazy hosting and is withdrawn.** *Membership-model specific: in Korten's Definition 9 DNF model a "no" is not a win, and this collapse does not happen.*
+
+**Lemma W25.1 (q = 0, any glue, any fan-in).** *Certified hints `≤ 2N`; this is tight (the positive control reaches `2N`); hence at least `N` valid hints are non-certifying, and no zero-query depth-1 back-mapping is total.*
+
+*Proof.* Draw `C` injective with uniformly random range `R`, `|R| = N` among `2N` strings, so `Pr[v ∈ R] = 1/2`. If `y` certifies `v`, then `{v ∈ R} ⊆ {y ∈ range(C′)}`, so `Pr[y ∈ range(C′)] ≥ 1/2`. Summing over certified `y`: `#certified/2 ≤ E|range(C′)| ≤ N`. A hint in `range(C′)` for **every** `C` numbers `≤ min_C |range(C′)| ≤ N`, so `≥ 3N` hints are valid. ∎ *(The uniform distribution gives `2.54N`; the injective one is exact. The first step of the argument is mine, the injective distribution is the reviewer's, and the reviewer audited the valid-hint step.)*
+
+**Novelty, checked against the committed pages.** W14 §3 defines q = 0 totality ("total iff every valid hint excludes some string"); W12.1 has the `k = 1` mass bound `Σ_y max_v ≤ N·2^{n+1}`. **W25.1 is the any-fan-in, exact-constant version: new to the line, small.** Wilson's Theorem 12 has no hint (a membership query is width 1, so `q ≥ N`), so there is no overlap.
+
+**Correction to W13 (the reviewer's request, carried).** W13 §2 wrote *"no averaging argument over hints alone can produce a free hint"*, and W14's kill test (v) relied on it. **Refuted as written**: W25.1 is an averaging argument over hints, weighted by probability, and it produces a free hint at q = 0 for every glue. **What W13 proved stands**: its specific bound (`|Y_v| ≤ 2k`, sparse free set) is vacuous. What survives of the sentence is §9's point: no argument blind to fan-in can go past q = 0.
+
+## §9. Finding W25.3 -- THE FAN-IN BOUND IS LOAD-BEARING
+
+**The reduction (derived before any run, §5B).** With glue of fan-in `N`, each C′-input may read all of `C`, so `range(C′)` can be any set of `≤ N` hints as a function of `range(C)`. **Totality at q then holds iff there is `y ↦ V(y)`, `|V(y)| ≤ q + 1`, with at most `N` sets `V(y)` inside every `N`-subset `R`** (subsets of size `< N` contain fewer).
+
+**n = 2, q = 1: `K_{4,4}`.** Its 16 edges on 8 vertices, one per hint; a 4-set split `(a, 4 − a)` spans `a(4 − a) ≤ 4` edges. **Verified as an actual template over all 4096 `C`: 0 valid hints left unhandled -- a total depth-1 template with one membership query.**
+
+**All N ≥ 16, q = 5: a random 6-uniform hypergraph.** Take `4N` random 6-subsets of the `2N` strings. A fixed 6-set lies in a fixed `N`-set with probability `C(N,6)/C(2N,6) ≤ 2^{−6}`, so an `N`-set contains `X ~ Bin(4N, ≤ 2^{−6})` edges, mean `λ ≤ N/16`. Chernoff: `Pr[X ≥ t] ≤ (eλ/t)^t` with `t = N + 1`. Union over `≤ C(2N, N)` sets, natural logs, recheckable:
+
+| N | ln C(2N,N) | ln tail | sum |
+|---|---|---|---|
+| 16 | 20.21 | −31.16 | **−10.95** |
+| 32 | 42.05 | −59.51 | −17.46 |
+| 64 | 86.07 | −116.23 | −30.16 |
+| 1024 | 1415.53 | −1817.90 | −402.38 |
+
+Asymptotically `ln C(2N,N) ≈ 1.386N` against `ln tail ≈ N(1 + ln(1/16)) ≈ −1.773N`. **So for every `N ≥ 16`, some 6-uniform hypergraph works, and with fan-in-N glue five membership queries give a total depth-1 template.**
+
+**Why nothing in the line breaks.** Fan-in-`N` glue is an **exponential-size** `C′`, outside Korten's poly-time reduction. **W13 line 41's "arbitrary glue with k = poly(n)" is exactly the hypothesis W25.3 shows cannot be dropped**, and W7-W14's four theorems all live inside it.
+
+**The boundary restated.** The first moment (W25.1) is blind to fan-in. **It is exact at q = 0 and must fail from q = 1, because at unbounded fan-in total templates exist at q = 1 (n = 2) and q = 5 (all N ≥ 16).** Any lower bound for poly fan-in has to use the fan-in.
+
+## §10. Searches reported as evidence only
+
+- **n = 3, fan-in N, q = 1** (graph form: 32 edges on 16 vertices, every 8-set spanning `≤ 8`): hill-climb for 240 s, best maximum **11**. None found; my prior on existence was 20. Consistent with the picture: pairs are too dense for halves, 6-sets are not.
+- **n = 2, bounded fan-in `k = 1, 2`, q = 1:** no total template found. **Method disclosure:** the pre-registered 0/1 score (#valid hints left unhandled) was **flat**, 16 from every start in 6 runs, so those runs are **uninformative**, not negative evidence. A graded rerun, with score `Σ_y min_pair #{C avoiding y, pair ⊆ range(C)}`, got stuck at 4032 (`k = 1`) and reached 2657-3085 (`k = 2`), with every hint still unhandled. **Weak evidence; at n = 2, `k = 2` already reads half of the inputs.** Priors 25 (`k = 1`) and 40 (`k = 2`) on a total being found: none found.
+
+## §11. Errors and misses, on the record
+
+**Mine.** (1) My cross-history-selection reading (§8) was an artefact of lazy hosting; the reviewer caught it. (2) My §0 (fan-in-`r`) statement rested on unread stretch bookkeeping; the audit retired it. (3) The flat 0/1 search score was not checked before registering; disclosed in §10.
+**The reviewer's** (four in W24-W25, recorded in its own words): the `1 + log r` parametrisation; the "single-call = one Avoid call" ruling (corrected from W8's definition); two false premises in the constant-PP cross-position argument (one excluded value per hint, and `r·2^{n′−n}` readers per input, are **averages**); and the q = 1 search specified at unbounded fan-in without pricing what fan-in buys.
+**Shared, and the round's practice line:** **PRICE EVERY RESOURCE A STATEMENT QUANTIFIES OVER BEFORE COUNTING UNDER IT.** Both of us treated W25.1's fan-in independence as generality; it was the reason the count could not pass q = 0.
+
+## §12. Closing
+
+**W25 proves nothing about P vs NP**, nothing about Avoid in `FP^NP`, and by Flag H7 nothing randomised. It records one small lemma (W25.1), one reformulation that retires lazy hosting in the membership model (W25.2), and one structural fact (W25.3): **at depth 1, black-box hardness lives entirely in the glue's fan-in bound.** Next, the reviewer's W26: the query-versus-fan-in tradeoff.
