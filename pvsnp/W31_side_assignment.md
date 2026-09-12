@@ -116,3 +116,7 @@
 ## §11. ERRATUM to Theorem W31.1's constant (found while auditing W32's recombination)
 
 **Step B's arithmetic was wrong.** Under (C1) as stated, `D_in·p_cap ≤ μ/8`, the loss is `D_in · 4N·p_cap ≤ Nμ/2`, **not** `Nμ/4`. Subtracted from Step A's `Nμ/2`, that leaves **zero**, so the §6 proof as written proves nothing. **Repair: strengthen (C1) to `D_in·p_cap ≤ μ/16`.** The loss is then `≤ Nμ/4`, and the conclusion `qw ≥ (Nμ/4 − M_res)/(D′ + 1)` stands. **Killing-chain control, recomputed:** `2β² ≤ β(1−β)²/16` holds at `β ≈ 0.029` (previously 0.055). A fair coin still fails. **The theorem's shape is unchanged; its stated condition was off by a factor of 2, and the proof did not close until corrected.** Mine, caught by re-deriving the step for W32 rather than re-reading it.
+
+## §12. Correction to §8's coverage gloss (found in W32-A)
+
+**"W31.1 covers coarse rows at bounded degree" is wrong.** W31.1's `D_in` and `D_out` count coarse **triples**, one per value with a large row, and a single window contributes up to `|E_w(y)|/s` of them. **Correct gloss: W31.1 covers coarse rows at bounded coarse-triple multiplicity.** The theorem statement (§6) was already right; only the gloss was wrong. A shared miss (I wrote it, the reviewer approved it). The multiplicity dependence is removed for fan-in 2 by W32-A's protected set.
