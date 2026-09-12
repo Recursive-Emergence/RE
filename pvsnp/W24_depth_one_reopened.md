@@ -220,6 +220,44 @@ Standing record: ten consecutive wrong impossibility claims; my constructions ho
 
 **(E5.7) Runs, fixed now.** `n = 3` (`z = 2`) as the harness check, then `n = 5` (`z = 2` and `z = 3`). For each: the certifying-hint fraction (predicted `2^{−(z+1)}`), `E_all` and `T(2)` on attack hints (the positive control), and `|U_t|` for `t = 0..3` under an **adversarial `Q`** querying `v₀ ⊕ e_a`, `v₀ ⊕ e_b`, `v₀` -- for both the tight and the rescue variant.
 
+## §5F. Pre-registration AMENDMENT 6 -- the hub mechanism, and a three-way cover test -- committed BEFORE the cover rule runs
+
+*Appended 2026-09-12. Revises nothing above, moves no prior.*
+
+**(F5.1) The hub trace -- a diagnostic of the §5B.10 kill test, already seen, testing no new hypothesis.** Naive placement lets `Q` certify on hints **`[2, 4, 6]`**; robust on **none**. On `y = 2`, verbatim from the run:
+
+```
+NAIVE  step 0: Q asks "is 0 in range?"  hostable at: [0..7]  -> TRUE, host at u=0 [first hostable]
+       step 1: Q asks "is 1 in range?"  hostable at: []      -> FALSE -> Q OUTPUTS 1 (certified)
+ROBUST step 0: Q asks "is 0 in range?"  hostable at: [0..7]  -> TRUE, host at u=1 [scores {0: 2, 1..7: 3}]
+       steps 1-3: 1, 2, 3 all hostable -> survived (budget exhausted)
+```
+
+**(F5.2) The mechanism.** Hub is `C′(x) = (C(x), C(0)₁)`: **every `x` reads `C(0)`'s low bit.** Committing `C(0) = 0` fixes that bit to 0. Hint `y = 2` encodes `(C(x) = 1, bit 0)`, so any `x` with `C(x) = 1` now produces `y`. **String 1 becomes unhostable at every input in one commitment.** Robust sees it (hosting at `u = 0` keeps only 2 of the next 3 candidates hostable) and hosts elsewhere.
+
+**(F5.3) Practice line (the reviewer's), recorded: A STATIC CENSUS AND A DYNAMIC GAME TEST DIFFERENT THINGS.** A template inert in one can discriminate in the other. Hub is inert statically -- input multiplicity creates no shared blocking -- and live dynamically, because a **commitment** to the high-multiplicity input sets a bit every `x` reads.
+
+**(F5.4) MY STRUCTURAL PREDICTION -- W16.1's invariant does not model a high-multiplicity commitment.** W16.1's arithmetic treats a commitment as a **deletion: it removes one element** from each property containing it. **The hub commitment took property(1) from 8 to 0 in a single step** -- it removed every element whose validity depends on the hub bit. So literal W16.1 misses this hazard for **two independent reasons**:
+
+1. **Arithmetic** -- single-deletion counting gives `8 → 7`, not `8 → 0`.
+2. **Threshold** -- W16.1 marks a property at **exactly one** free element, so a jump straight to **zero** is never caught, however the size is computed.
+
+**(F5.5) The cover rule, as three variants designed to separate those two causes.** Properties: for each remaining candidate string `w`, `P(w)` = the free inputs where `w` is hostable. At each TRUE answer, choose a host `u` for `v`:
+
+| variant | size after committing `u` | refuse `u` if some `P(w)` becomes | predicted on hub |
+|---|---|---|---|
+| **cover-literal** | `|P(w)| − [u ∈ P(w)]` (W16.1 single-deletion) | exactly 1 | **certifies on `[2, 4, 6]`** -- both causes miss |
+| **cover-recompute=1** | recomputed after a tentative commitment | exactly 1 | **certifies on `[2, 4, 6]`** -- threshold still misses `8 → 0` |
+| **cover-recompute≤1** | recomputed after a tentative commitment | 1 or 0 | **certifies on `[]`** -- catches the collapse |
+
+**If the table holds, W16.1's single-deletion invariant is not the right invariant for high-multiplicity templates**, and what lookahead is doing is precisely recomputing true sizes with a threshold that includes zero. By the reviewer's own criterion -- *"if cover loses hints robust holds, the lemma is not the right invariant"* -- that would be the finding. **If instead cover-literal certifies on `[]`, my F5.4 analysis is wrong** and the lemma is the right invariant.
+
+**(F5.6) Mask-share under all three placement rules, predicted.** On mask-share's attack hints **every host is forced** (E5.5), so **all three variants -- and naive and robust -- certify identically** there. Placement should matter only on hub-like templates, never on mask-share.
+
+**(F5.7) A precision point on the reviewer's draft proposition, to be resolved with data.** Draft: *"a lazy-hosting adversary with cover placement defeats every tested depth-1 template, including the designed mask-share family, **iff** `U_t(y)` stays empty for `t ≤ q`."* If E5.5 holds, `U_t` goes **nonempty** on mask-share's attack hints while the adversary still **defeats** the template by choosing another hint. So a per-hint "iff" would be false, and the statement needs **"∃ a valid hint on which `U_t(y)` stays empty"**. Recorded, not asserted.
+
+**Priors on (A) unchanged** (mine 16/59/25; reviewer now 18/57/25).
+
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
