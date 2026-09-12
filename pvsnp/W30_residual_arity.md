@@ -54,3 +54,64 @@
 | 32 | 5 | 3-4 | 15-20 < 62 | 5.2 |
 
 **The residual meets W28.1's hypothesis at every hub value tested**, whereas the un-pinned template has hub degree `N − 1` and W28.1 is vacuous. **So the combination closes for this template under (H_t), as §1(d) predicted: 30b's shape.** The bounds are small at these sizes only because the maximum random degree `D` is 3-5.
+
+---
+
+# W30 Findings
+
+*Appended after the reviewer accepted the side-choice corrections and approved this record. Nothing above is revised.*
+
+## §4. Ceiling
+
+**Korten's Definition 9 model, deterministic, depth 1, `n′ = n`.** Residual arity `≥ 2` after pre-pinning hubs. Not Korten's Problem 1; nothing randomised; nothing about P vs NP.
+
+## §5. Outcome against priors
+
+| code | mine / reviewer (reviewer later) | outcome |
+|---|---|---|
+| **30a** | 12 / 30 (25) | **achieved for a CLASS: residuals with `D_res·t_res < 2(N − h)`, a checkable hypothesis** (scored by the reviewer's rule that a checkable class hypothesis makes a class theorem) |
+| 30b | 68 / 50 (55) | the coarse regime's content, recorded as a reduction in §7, not as a theorem |
+| 30c | 20 / 20 | -- |
+
+**The resolution is not the pre-registered one in scoring:** I registered the `(H_t)` combination as 30b's shape. The reviewer's rule (checkable class hypothesis = class theorem) moves it to 30a. The coarse regime stayed open, as I registered.
+
+## §6. Theorem W30.1 (combination) and the negative result
+
+> **Theorem W30.1.** *Pre-pin hubs `H` to clean `a_H`. If the residual has `D_res·t_res < 2(N − h)`, every deterministic back-mapping correct on `y` has* **`qw ≥ (N − h − M_res)/(D′_res + 1)`**. *Proof: W29.1's hosting count, with extension from W28.1 on the residual.*
+
+**Evidence (C30):** hub plus random pair windows, residual `D = 3, t = 3` at N = 16 and `D = 5, t ≤ 4` at N = 32, meeting the hypothesis at every hub value tested. The un-pinned template is vacuous for W28.1.
+
+**Negative result: counting extension is impossible at arity 2.** The glue `(a << 1) | b₀` has a row forbidding half the partner's values at **every** hint; a count over rows is vacuous below `s = N`. **A30:** two such windows with complementary rows kill input 2 under clean pins at every hint tested (N = 8; hint 1 lost to a checker fill artefact, recorded). **So the adversary's invariant must be extendability, and the coarse regime needs a device.**
+
+## §7. The coarse regime reduces to a per-hint side choice with TWO hosting costs
+
+A coarse triple (window `w`, value `a` at `u`, row `R` at `u′`, with `|R| ≥ s`) is neutralised in one of two ways:
+- **EXCLUDE** `(u, a)`: string `a` becomes unhostable at `u`.
+- **RESTRICT** `R` at `u′`: every string in `R` becomes unhostable at `u′`, **and** `|R|` values of extension capacity are spent there.
+
+**Tested evidence** (exact CSP satisfiability, all hints). Q0 outputs `y >> 1` with no queries. **SMART-Q0** outputs the string excluded at the most inputs under the adversary's rule. QKILL pins the coarse values, then outputs `y >> 1`.
+
+| template | rule | Q0 | SMART-Q0 | QKILL |
+|---|---|---|---|---|
+| projection N = 8 / 32 | EXCL | Q wins at every hint, 0 pins | Q wins at every hint | Q wins, 0 pins |
+| projection | RESTR | adversary wins at half the hints | **Q wins at every hint** | at the good half Q needs `N` pins |
+| projection | **HALF** (restrict if `u′` even, else exclude) | -- | **adversary wins at every hint** | -- |
+| projection | NONE (extendability only) | adversary wins at every hint | adversary wins at every hint | Q needs `N/2` or `N` pins |
+| killing chain N = 8 | EXCL | adversary wins at 16/32 | 16/32 | 16/32 |
+| killing chain | RESTR | every hint invalid (kills input 2) | invalid | invalid |
+| killing chain | HALF | -- | every hint invalid (both rows restricted into input 2) | -- |
+| killing chain | NONE | adversary wins at 32/32 | 32/32 | Q wins at 16/32, 1 pin |
+
+**Readings.**
+- **No fixed rule of the three works for both templates.** Projections need a **balanced** choice. The killing chain needs exclusion, and HALF fails there only because a conflict-blind parity restricts both rows into input 2. **The choice must be conflict-aware on extension and spread on hosting.**
+- **NONE** (the extendability invariant alone) already prices the killing chain at `Ω(N)` against the natural exploiter. The side devices exist for hosting under an **adversarial choice of output**, which SMART-Q0 embodies.
+- The killing chain's losing hints under EXCL are **`M_res` strings of that template's own unary windows**: W29's term, not a failure of the side choice.
+
+## §8. Errors and misses
+
+**Mine:** "projection: restrict". I misremembered W10's device (it is the balanced, random-half regime, W12 §3) and priced it without checking; the smart zero-query Q refuted it. The `N^{1/k}` exponent and §5D's "shrink" belong to W27, not here. **Reviewer's (its tenth miss):** the self-exclusion count bounded the sum over strings rather than the maximum, so exclusion concentrated on `y >> 1` on its own positive control. Also its W31 draft omitted restriction's hosting cost, corrected before registration.
+**Practice line: EVERY DEVICE THAT REMOVES VALUES FOR EXTENSION ALSO REMOVES STRINGS FOR HOSTING -- TEST IT AGAINST THE Q THAT OUTPUTS THE MOST-REMOVED STRING.**
+
+## §9. Next: W31, the side assignment
+
+Per hint: coarse triples are edges, each taking one side. RESTRICT consumes extension capacity at `u′` and adds `R` to `Excl(u′)`; EXCLUDE adds `a` to `Excl(u)`. Hosting needs, for every `v`, `|{u : v ∉ Excl(u)}| > qw(D′ + 1) + pins`. Candidate (the reviewer's): greedy with a capacity check and random tie-breaking.
