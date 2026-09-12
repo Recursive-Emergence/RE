@@ -300,3 +300,96 @@ ROBUST step 0: Q asks "is 0 in range?"  hostable at: [0..7]  -> TRUE, host at u=
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+---
+
+# Findings
+
+*Appended 2026-09-12. Every result below comes from a run pre-registered in §5A-§5G and executed only after its amendment was committed.*
+
+**Process note, stated first.** Midway through the round the reviewer's session ref changed (`fd3658` to a new ref) and briefly failed to resolve, so one message was lost and resent. **The reviewer confirmed it is the same session, compacted, with context held in full**, and demonstrated it by summarising the round. **The reviewer has ruled: 24b accepted**, with the contents below. Nothing here is pushed.
+
+**Outcome: 24b, under reformulation (A) -- accepted.** The 2-cover does not close Korten's Problem 1 at depth 1 for arbitrary glue. It yields a one-line mechanism for **one-input** templates, and for **multi-read** templates the mechanism that works is a forced-bit invariant on the read structure -- which re-acquires the `δ ≥ 1/2` disjointness condition as the residue. **Flag D24 never fired.**
+
+## §6. How the route evolved, in three steps
+
+1. **Up-front hosting (B).** W14 is Q-independent (§5A.3), so every dangerous string must be hosted before `Q` runs. Its obstruction was rigidity, disjointness and forced-value coupling -- **not deletion** (§5A.5) -- so the reviewer's "close the deletion trick in one step" reframing was idle.
+2. **Lazy hosting (A).** The sub-line's native model is Q-dependent (W8.1). Hosting on demand dissolves the up-front dependency cycle (§5D.3) and reduces choice (1) to *"can `q` local commitments make `U(y)` nonempty?"* (§5D.4).
+3. **Validity-first.** On multi-read templates, commit each shared input's read bits **against** the hint before any hosting (§5G.9).
+
+## §7. What landed
+
+**(7.1) The three-way cover test matched every prediction** (§5F.5 → §5G.3). On hub: cover-literal `[2, 4, 6]`, cover-recompute=1 `[2, 4, 6]`, cover-recompute≤1 `[]`. **Both independent causes confirmed**: W16.1's single-deletion arithmetic misses the hub hazard, and fixing the arithmetic still misses it because the exactly-one threshold never sees a jump to zero.
+
+**(7.2) Validity-first gives `U_t = 0` on EVERY hint of both multi-read templates** -- the sharper of the two predictions registered at §5G.9:
+
+| template | naive | recompute≤1 | cover-witness | **validity-first** |
+|---|---|---|---|---|
+| hub: certifies / hints with `U > 0` | `[2,4,6]` / 15 | `[]` / 12 | `[]` / 12 | **`[]` / 0** |
+| two-hub: certifies / hints with `U > 0` | `[5,7]` / 14 | `[]` / 11 | `[]` / 11 | **`[]` / 0** |
+
+**The cover rules only protect `Q`'s query path; validity-first removes every served string.** That is the difference between surviving a particular `Q` and surviving any `Q`.
+
+**Two-hub was designed to separate cover-witness from recompute≤1** (§5G.8) -- a template on which no single commitment collapses a property but a second one can. **Validity-first made both irrelevant there**, driving `U_t` to 0 regardless of placement. That is itself a data point for §11: **on shared inputs the obstruction is priced by validity, not by placement.**
+
+**(7.3) Mask-share held to the hint** (§5E → §5G.1): attack-hint fractions exactly `2^{−(z+1)}`, `|U₂| = 2^z − 2` exactly, positive control clean -- confirming it is `(C,0)`-shaped and that **choice (1) is load-bearing**: the adversary escapes it only by choosing another hint.
+
+## §8. What failed -- my two wrong predictions
+
+- **E5.6, "the rescue input keeps `U` empty" -- wrong.** `U₃ = 2^z − 3`: the adversary's own hosting consumed the rescue input. One extra input buys one extra query.
+- **D5.7, "robust placement keeps `U` empty on hub" -- wrong.** `U > 0` on 12 hints while certifying on none: robust keeps `Q`'s path clear, not `U` empty.
+
+**Shared cause: I did not track the side effects of the adversary's own commitments.** (§5G.2)
+
+**The reviewer's sharper reading, accepted: the adversary's own commitments are `Q`'s resource.** RESCUE is not a rescue but a **budget** -- `v₀` is served iff its non-blocking inputs number `≤ q`, so one extra input buys exactly one extra query, precisely as Lemma W24.1 prices it. And on hub, "`Q`'s path is clear" and "`U` is empty" are different statements, of which **only the second is a lower bound**.
+
+> **Practice line (the reviewer's): A LOWER BOUND IS A STATEMENT ABOUT `U`, NOT ABOUT ONE `Q`'S PATH.** The count of served hints -- 12 robust, 15 naive, 16 for the control -- is the quantity, and it is adversary-dependent, which is why validity-first matters.
+
+## §9. Lemma W24.1 -- the reviewer's, audited
+
+> **Lemma W24.1 (one-input templates, membership-query model).** In `C′(x) = h_x(C(x))`, a string `v` *serves* hint `y` if `h_x(v) = y` at every uncommitted `x`. **A string serves at most one hint**, so at most `2^{n+1}` of the `2^{n+2}` hints certify, and the adversary always has a non-certifying valid hint.
+
+Audit (§5G.5): hostability is exactly `h_x(v) ≠ y` for valid hints; **the pigeonhole needs `2^n > 2q`** because two hints' runs have *different* commitment sets whose uncommitted parts meet in `≥ N − 2q` inputs (`2^n > 2(w/n)(q+1)` under Definition 9); `(C,0)` is tight at 16 of 32. **Not a new lower bound** -- W12.2 already holds `N/9` for one-input patterns in the DNF model -- **but a one-line mechanism**, and the reason the one-input case needs no disjointness condition: there is no read structure.
+
+## §10. The structural finding: W16.1 does not transfer to multi-read
+
+> **In a multi-read template a commitment is not a deletion of one element from each property; it deletes every witness inconsistent with the committed value.** On hub a single commitment took a property from 8 to 0. **W16.1's single-deletion hypothesis holds where a witness is a point -- the W16 oracle -- and fails where witnesses are partial assignments.**
+
+**W16's own kill test (v) -- "different model, does not transfer" -- came true inside the line.** (§5G.4, §7.1)
+
+## §11. The landing: `δ ≥ 1/2` reappears, now pricing validity
+
+§5D.6 recorded the reviewer's prediction that `δ ≥ 1/2` would **not** appear under lazy hosting, and that if it did, lazy hosting was missing something. **It reappeared, and the reason is now named**: lazy hosting removes the *hosting*-side coupling, but `y ∉ range(C′)` is universal over `x′` in both models, so the ***validity*-side forced bits on shared inputs** are the same universal requirement as under (B). Validity-first is exactly that forced-bit invariant (§7.2). For hub and two-hub the forced bits touch one or two inputs and are trivially disjoint from the hosts; **for general multi-read glue those forced neighbourhoods must be disjoint from the hosts' commitments -- W14 §2(c)'s `δ ≥ 1/2`.**
+
+> **So the residue is: a depth-1 lower bound under (A) for multi-read glue, conditional on `δ ≥ 1/2`, where the condition prices validity on the read structure rather than hosting.** Stated as a target, not proved.
+
+## §12. Scoring
+
+| code (A) | mine | reviewer | outcome |
+|---|---|---|---|
+| **24a(A)** | 16 | 18 | Did not fire. |
+| **24b(A)** | 59 | 57 | **The outcome** -- a named step fails for multi-read, and it is the validity-side disjointness. |
+| **24c(A)** | 25 | 25 | No. |
+
+§3's original priors (18/52/30) were on the (B)-framed codes; 24b was the modal outcome under both sets.
+
+## §13. Calibration
+
+**My structural predictions landed; my "no obstruction" predictions did not.** The three-way cover split and the sharper validity-first prediction were both structural, and both held exactly. The two failures (§8) both predicted that an adversary strategy would keep `U` empty, and both failed for the same reason.
+
+> **New line: track the side effects of your own commitments.** Both wrong predictions modelled the adversary as choosing *where* to host without accounting for what each host *removes* -- the rescue input it consumed, the served strings it created off `Q`'s path. This is the adversary-side twin of §10's finding: a commitment removes more than the one element it names.
+
+**Contamination was total and was handled.** I authored every primary this round names. Re-derivation, not recall, found that W14 is Q-independent (§5A.3) and not deletion-driven (§5A.5), and those two audits are what made the reformulation defensible.
+
+**The reviewer's misses, on the record as it asked.** (i) It guessed the 2-cover absorbs choices (2) **and** (4); it absorbs (2) only, since hosting is forced-side (§5A.1). (ii) Its reframing "the 2-cover makes the deletion trick close in one step" was idle, because W14 was not deletion-driven (§5A.5). (iii) "Choose `y` last" was incoherent -- `Q` reads `y` as its input (§5D.2). (iv) Mask-share as first specified had a type error, placing the hint `y` in a fibre of `C`-outputs (§5E.3). **Both of us reached for a mechanism before auditing its framing, and both of us were corrected by audit** -- which is the round's methodological result as much as §10 is its technical one.
+
+**Impossibility-claim record unchanged at ten.**
+
+## §14. What this leaves open
+
+1. **The closing question -- the served-hint count, exhaustive versus constant-reader -- was NOT run in W24, deliberately.** The reviewer's generalisation: a string `v` serves at most `readers(x)` hints via `x`, so certifying hints `≤ r·2^{n′+1}`, and **a depth-1 template with fan-in-`r` glue cannot be total at stretch `s > 1 + log r`** in the membership model -- a count that would **replace** `δ ≥ 1/2`. It rests on a **crux**: "blocked at `x`" requires *every* admissible completion with `C(x) = v` to put `y` in range, possibly through **different readers for different completions**, whereas the count assumes a **single constant reader** -- a sufficient condition, not a necessary one. **Running the count here on hub and two-hub would have shown me the numbers W25 pre-registers on those same templates**, so it opens W25 instead, with a designed **split-reader** template as the kill test.
+2. **The two-hub divergence at `n = 5`.** cover-witness agreed with recompute≤1 at `n = 3` on both templates; **the divergence predicted on a two-step collapse was not tested**, and cover-witness is itself a bounded two-step approximation.
+3. **Validity-first on one-input templates** -- predicted to change nothing; untested.
+4. **The general multi-read disjointness statement** of §11, as a theorem.
+5. **The Definition 9 DNF model.** Everything here is the membership-query model; the DNF run is the next modality.
+6. **Flag H7 still applies**: all of it is deterministic-only.
