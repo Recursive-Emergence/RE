@@ -51,3 +51,15 @@ together with `D_res·t_res < 2(N − h)` for extendability (step (ii) runs unch
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §3A. Amendment -- my own correction was loose; the lemma sharpened (before any computation)
+
+*The reviewer's ruling accepted §1 in full, including the `N/4` prediction for parity-hub. It crossed this self-audit, which withdraws that prediction.*
+
+**§1's `qw·D_res` term over-counts.** It counts windows that Q's pins make almost-full. A **unary** residual window is almost-full already; its forbidden set is fixed and **Q's pins cannot add rejections through it**. Q-created almost-full windows come only from residual windows of **arity ≥ 2**. Sharpened:
+
+> **Lemma W29.1 (sharpened candidate).** *If clean pre-pins `a_H` give `D_res·t_res < 2(N − h)`, then every back-mapping correct on `y` has* **`qw ≥ (N − h − M_res(a_H))/(D′_res + 1)`**, *where* `D′_res` = max over `u ∉ H` of the number of residual windows of arity `≥ 2` through `u`.
+
+**Both corrections are needed:** `M_res` (missing from the specification; the hub with its non-kill value breaks the uncorrected proof step) and `D′` (my over-count). **Parity-hub prediction REVISED:** every residual window is unary, so `D′_res = 0`, and the adversary chooses the hub value leaving the smaller live half (`N/2 − 1` inputs), so `M_res = N/2 − 1` and **`qw ≥ N/2`**. **The reviewer's original `≈ (N − 1)/2` was right; my `N/4` came from my over-count, not the phenomenon.** Matching exploiter: one query for the hub bit, pins on the `N/2` dead inputs, then output `y >> 1`, so `qw = N/2 + 1`. Hub and two-hub predictions unchanged (`M_res = 0` at the kill value; `(N − 1)`, `(N − 2)` with `D′ = 0`, strictly above the §1 figures).
+
+**Recorded sentence (the reviewer's request): `M_res` is W14's dangerous string made quantitative, and the adversary's choice of `a_H` is the forced-bit invariant on the read structure, minimising `M_res`.**
