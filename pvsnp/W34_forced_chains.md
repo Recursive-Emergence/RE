@@ -40,3 +40,26 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §4A. Amendment -- A34 rulings, the reviewer's density count, and a threshold that dissolves (Q1). DISCLOSURE: derived before these priors
+
+**A34 rulings recorded.** (1) The hybrid is withdrawn (the reviewer's sixteenth miss): almost-unary windows are unary-like. (2) Divergence closes starts that have a choice. **Convergent starts survive every existing count**, including §11's super-heavy one: one convergent start per hint suffices, and the template affords about two per hint.
+
+**The reviewer's density count, audited (Q3): HOLDS.** For every `C`, `|range(C′)| ≤ N`, so `Σ_y |F_y| = Σ_C (4N − |range(C′)|) ≥ 3N·(2N)^N`, where `F_y` is the set of circuits valid for `y`. A certifying hint (`F_y ⊆ {v ∉ range(C)}` for some `v`) has density `≤ (1 − 1/2N)^N < e^{−1/2} ≈ 0.6065` for every `N` (checked: 0.5967 at N = 8, increasing to the limit). Conditioning on hub values `a_H` has maximum branch density `≥` the average.
+
+**Mine: raise the density threshold above `e^{−1/2}`, and (Q1) disappears.** Let `δ = 0.7`. Then `Σ_y d_y ≥ 3N` and `Σ_y d_y ≤ #{d_y ≥ δ} + 4Nδ`, so **at least `(3 − 4δ)N = 0.2N` hints have `d_y ≥ 0.7`**. These are **automatically non-certifying** (`0.7 > 0.6065`). Choose `a_H` to maximise conditional density, so the branch density is `≥ 0.7`. At that branch:
+- **No exhaustion.** An input with `k` values appearing in valid completions forces density `≤ k/2N`, so **`k ≥ 1.4N`** at every input.
+- **No forced chains.** `L` jointly forced inputs give density `≤ (2N)^{1−L}`.
+- **`M_res` bounded by density**, the step the reviewer could not get at `δ = 1/8`. If unary residual windows forbid `v` at `M` inputs, then `F ⊆ {C(u) ≠ v at those inputs}`, whose density is `(1 − 1/2N)^M ≤ e^{−M/2N}`. So `e^{−M/2N} ≥ 0.7` and **`M_res ≤ 2N·ln(1/0.7) ≈ 0.713N`**. Hence `|U_v| ≥ N − h − 0.713N ≥ 0.187N` at `h ≤ N/10`.
+
+**So at a dense branch, (H_casc) is vacuous, W32's `M_res` count is replaced by a density bound, and the lightest-value choice is no longer needed.** The remaining W32 counts that range over hints (super-heavy windows, §11) must share the `0.2N` dense hints: their bad set is tunable to `≤ 0.1N` (larger `M`), leaving `≥ 0.1N` usable hints. **Capacity at payers improves** to `≥ 1.4N` minus fine mass.
+
+**What this does NOT yet verify.** (i) That W32's give-up and protected-set machinery needs nothing further from the lightest-value choice. (ii) That the super-heavy hint count and the density-dense hint set intersect as claimed: both are counts over hints, so a union bound suffices, but the constants must be written out. (iii) Q's pins: W28's hosting count is per hint and branch, so it should be unaffected. **Stop-rule C34 applies: this goes to the reviewer before writing.**
+
+**DISCLOSURE.** The `δ = 0.7` observation was derived while auditing the reviewer's message, **before** these re-registered priors, so the priors are contaminated by it.
+
+| code (re-registered, the reviewer's target) | reviewer | **mine (contaminated)** |
+|---|---|---|
+| 34a density count plus branch selection closes forced chains; W32.1 unconditional for fan-in 2 | 25 | **55** |
+| 34b density count recorded; selection fails at a named count | 50 | **35** |
+| 34c nothing | 25 | **10** |
