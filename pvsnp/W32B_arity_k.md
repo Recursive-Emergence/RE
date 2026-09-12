@@ -44,3 +44,7 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+## §4A. Amendment -- target restated after W32-A §12 (before any computation)
+
+**W32-A's survival factor is a product over a protected input's windows (`M^{−D*}`).** At arity `k` it runs over `k·D*` windows, giving `M^{−kD*}`. **The target is therefore a CONSTANT for fixed `(k, D*)`, not a polynomial loss.** At the line's scale (`k = polylog N`) such a bound is vacuous, so **the polynomial question is retired to the residue.** The §3 priors were set against the polynomial target and are superseded for scoring: **32B-a is now "a constant-for-fixed-`(k, D*)` theorem under slice hypotheses".** I record no revised number (the change makes 32B-a easier but less useful), and the round will be scored against both readings.
