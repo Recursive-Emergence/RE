@@ -48,3 +48,25 @@
 ## §4A. Amendment -- target restated after W32-A §12 (before any computation)
 
 **W32-A's survival factor is a product over a protected input's windows (`M^{−D*}`).** At arity `k` it runs over `k·D*` windows, giving `M^{−kD*}`. **The target is therefore a CONSTANT for fixed `(k, D*)`, not a polynomial loss.** At the line's scale (`k = polylog N`) such a bound is vacuous, so **the polynomial question is retired to the residue.** The §3 priors were set against the polynomial target and are superseded for scoring: **32B-a is now "a constant-for-fixed-`(k, D*)` theorem under slice hypotheses".** I record no revised number (the change makes 32B-a easier but less useful), and the round will be scored against both readings.
+
+---
+
+# W32-B Findings (one bounded round, as ruled)
+
+## §5. Framing (A32B)
+
+**Strong independence is necessary under pre-committed payment.** A window with two protected inputs `u₁, u₂` has one payer `u₃`, which must absorb the slices induced by **all** value pairs of `u₁` and `u₂`, a projection that can be the whole domain. Payments are fixed per hint before Q moves, so `u₂` cannot pay for `u₁` without losing strings itself. (Without pre-commitment, only one input is hosted at a time and strong independence would be sufficient, not necessary.) **Split payment:** the slice induced by a protected value is killed by a vertex cover in the other `k − 1` coordinates.
+
+## §6. Data (exact CSP, N = 9, arity-3 ring windows, protected inputs 0, 3, 6; min over strings of hosts at `q = 0`)
+
+| template | NONE (no pre-exclusions) | PROTECT (greedy cover of every nonempty slice; give up if a payer dies) |
+|---|---|---|
+| STAR3 (product `E_y`) | 9 at every hint | 3-6 |
+| PROJ3 (`(a << 1) | (b₀ ⊕ c₀)`) | 9 | **0 at every hint** |
+| RAND3 (random glue) | 9 | **0 at 8 of 9 hints** |
+
+**Readings.** (i) `q = 0` hosting is trivial for NONE, so that column is a weak test, recorded as such. (ii) **Paying for EVERY nonempty slice is destructive at arity 3.** Most values have nonempty slices (mass per value about `(2N)²/4N`), so covers eat the partners and give-ups follow. **RAND3 should not be paid at all:** its single-coordinate forbidden sets are small, so W28.1 covers it directly. **Payment must be restricted to coarse single-coordinate structure.** (iii) **PROJ3 reproduces W30's concentration at arity 3.** Covers for the protected inputs' windows at positions 1 and 2 exclude `y >> 1` at partners, and the position-0 slice forces a give-up of `y >> 1` at the protected input, so `y >> 1` is excluded at all 9 inputs.
+
+## §7. Outcome
+
+**32B-b under both readings: framing answered, gap named, no constant-for-fixed-`(k, D*)` theorem this round.** The gap: **an arity-`k` payment rule restricted to coarse single-coordinate structure, with concentration control across the `k − 1` payer coordinates**, W30-W32-A's machinery lifted one dimension. Its payoff at the line's scale is nil (the survival product `M^{−kD*}` is vacuous at `k = polylog N`), so, as ruled, **no further rounds inside W32-B.**
