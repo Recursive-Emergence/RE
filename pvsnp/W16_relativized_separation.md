@@ -114,3 +114,58 @@ Against the **2^{O(2^{εn}·εn)}** circuits of that size, the union bound gives
 **And my §7 pessimism was a second error, of inference rather than arithmetic.** I reasoned that because the plain-vs-SVN boundary is a twenty-year-old open question, its relativized form should not fall out easily. **That does not follow:** a relativized separation shows only that *relativizing techniques* cannot settle the question — it does not settle it. W16.0 being reachable is fully consistent with SU05's question standing open since 2005. **The reframing in §7 stands; the revised split I drew from it (30/35) does not, and I withdraw it.**
 
 **Two self-corrections in one round, both in the same direction — the construction is better than I claimed.** Together with the four cross-input-coupling misses of W9–W13, **my errors are not randomly distributed: they cluster on predicting that a construction will fail.** That is a calibration fact about me, not about the constructions, and it belongs on the record next to the results.
+
+---
+
+# Findings (written after the work; §3 and §6 priors are unrevised, §7's revision is withdrawn in §8)
+
+## 0. Outcome
+
+| code | prior (mine / reviewer) | outcome |
+|---|---|---|
+| **16a** W16.0 **and** the adversary | 25 / 30 | no |
+| **16b** a relativizing non-adaptive algorithm avoiding SVN hardness and certificates | 10 / 10 | no |
+| **16c** W16.0 proved but adversary open, **or** W16.0 fails — naming which | **65** / 60 | **this, and the first branch: W16.0 CLOSES, the adversary does not** |
+
+**My §6 within-16c split was 40 (W16.0 closes, adversary open) / 25 (W16.0 fails); §7 revised it to 30/35 and §8 withdrew that revision. The 40-branch is the outcome.**
+
+## 1. Lemma W16.0 — proved
+
+**Statement.** There is an oracle A with **(1)** E^{NP^A} ⊄ SIZE^A[2^{εn}], **(2)** E^{NP^A‖} ⊆ SVN-SIZE^A[2^{√n}], **(3)** the staging consistent.
+
+**Construction (the reviewer's).** For each machine M_i in an enumeration of E^{NP^A‖} and each input x, pick a random s ∈ {0,1}^{2εn} and place at (M_i, x, s) a *marked* block of 2^{√n} bits whose parity is M_i^A(x); all other locations carry unmarked blocks.
+
+**(2).** An SVN A-circuit guesses s, checks the mark, reads the block, outputs the parity. Exactly one location is marked, so the circuit is **single-valued**; its size is **2^{√n} = 2^{o(n)}**. Hence E^{NP^A‖} has SVN circuits of size 2^{o(n)} and **SU05's hypothesis — "requires exponential size SV-nondeterministic circuits" — fails relative to A**, which is the point of the whole construction. ∎
+
+**(1).** A plain A-circuit C of size 2^{εn} must be correct on **all 2ⁿ inputs**. For each x, C(x) queries ≤ 2^{εn} of the 2^{2εn} candidate locations, so it finds x's mark with probability ≤ **2^{−εn}**; failing that the parity is uniform and independent of C's view, so P[C(x) = T(x)] ≤ 1/2 + 2^{−εn}. Locations and contents are independent across x, so **P[C correct everywhere] ≤ (1/2 + 2^{−εn})^{2ⁿ} = 2^{−Ω(2ⁿ)}**, and the union over **2^{O(2^{εn}·εn)}** circuits is ≪ 1 for every ε < 1. **L ∈ E^A ⊆ E^{NP^A}**: scanning 2^{2εn} locations and reading a 2^{√n} block costs 2^{O(n)}. ∎ *(This corrects §6, which claimed the union bound could not deliver (1) — see §8.)*
+
+**(3), the staging, as an induction on length.** Define A in increasing order of length. Let M_i on inputs of length n query only lengths ≤ 2^{c_i n}, and place its certificates at length 2^{c_i n + 1} or beyond. Then **M_i^A(x) is determined by A strictly below its own certificate's length**, so the parity is well defined when written. Later machines M_j (j > i) may query M_i's certificates — harmless, since their own certificates sit higher still. ∎
+
+**A consistency check the specification does not make, and it matters.** The Avoid algorithm must still be able to **read f**. Korten's reduction needs the truth table only on **d = Θ(log|G|)** bits, where the block has size 2^{√d} = 2^{O(√log n)} and the mark sits among 2^{2εd} = poly(n) locations — **all polynomial**. The 2^{√n} block is unreadable only at the lengths where hardness is claimed. So the certificates are simultaneously useless to a poly-time algorithm at large lengths and readable at the short lengths the reduction needs. **The construction survives this; had it not, (1) and (2) would have been vacuous together.**
+
+**So Lemma W16.0 holds: a relativized separation of plain-circuit hardness from SVN hardness for E^{NP‖}.** By §7 this is the relativized form of a boundary posed independently by SU05 (2005), RW26 (Question 5.3, 2026) and DS26 (Informal Theorem 1.8) — **and it shows only that relativizing techniques cannot cross it, not that it cannot be crossed.**
+
+## 2. The adversary does not close, and here is exactly why
+
+**The obstruction is a conflict between what Korten's reduction needs and what Wilson's adversary requires.**
+
+- **Korten's reduction needs G's syntax.** It builds the tree C^{{0,1}^d} by **composing G with itself** (Korten survey, Definition 7 and Lemma 7). Composition is a syntactic operation on the circuit; oracle access to G's *function* does not suffice. So relative to A, Avoid must be posed for **A-oracle circuits**, with the algorithm holding G's description and the adversary's freedom confined to A's bits.
+- **But Wilson's adversary requires the opposite.** Theorem 12's bound qw ≥ N is proved against algorithms that treat the instance as a **black box**. If G were a pure oracle, that bound would apply to *Korten's* algorithm as well — it makes qw = poly(n) ≪ 2ⁿ = N queries — and **(C₁) would fail relative to A**, which is exactly what constraint (d) forbids.
+
+**So the adversary must defeat an algorithm that holds both G's description and the hard string f, while breaking only single-valuedness and never solvability. Wilson's argument does not apply to such an algorithm, and I could not construct a replacement.** That is the named obstruction, and it is sharper than constraint (d) as originally stated: **(d) says the adversary may not attack solvability; this says the adversary's only established tool attacks precisely the model in which solvability is guaranteed.**
+
+**What would be needed:** an adversary argument against **non-black-box** one-round algorithms — algorithms that may inspect the circuit — which is a strictly stronger demand than Wilson's model supports, and is the same "reads the structure" property that the win-win results rely on. **Recorded as the open step.**
+
+## 3. Kill tests
+
+- **(i)** Korten Definition 9's model used only where it applies, and §2 records precisely where it stops applying.
+- **(ii)** The relativized circuit lower bound was to be quoted from a primary. **It is not needed:** claim (1) is self-contained counting. The Wilson attribution I chased under Flag M16 is **opposite in polarity** (an oracle making E^NP *easy* for plain circuits — Korten's §6.2), so citing it would have been wrong. **Recorded as satisfied by not needing the citation, not by producing one.**
+- **(iii)** The three checks: "false" answers surviving completion — **not reached**, since the adversary did not close; the completion not making L easy — handled by the staging induction (§1(3)); Korten's adaptive algorithm succeeding relative to the final A — **yes**, it succeeds on every G given a hard truth table and (1) supplies one at every length, **provided the syntactic-access point of §2 is granted**.
+- **(iv)** Counts with their bounds: 2^{−εn} mark-finding against 2^{εn} queries among 2^{2εn} locations; 2^{−Ω(2ⁿ)} against 2^{O(2^{εn}·εn)} circuits; 2^{√n} SVN size against 2^{εn}.
+- **(v)** Consistent with W15: nothing here claims plain hardness suffices for non-adaptive Avoid; §1 shows the *opposite* is consistent relativizingly.
+- **(vi)** The obstruction is named (§2), and **the rest of the construction is not presented as the theorem.**
+- **Priors wrong said with the finding:** §8 (twice) and §0.
+
+## Ceiling
+
+**W16 proves nothing unconditional and nothing about P vs NP.** It establishes one relativized lemma — plain hardness and SVN easiness can coexist — which says that a *relativizing* proof of Question 5.3 through the SVN route cannot exist, and nothing about whether Q5.3 is true. **The separation of (D2) from (C₁) is not established**: it needs an adversary against non-black-box one-round algorithms, and the only adversary available attacks the black-box model in which (C₁) itself fails.
