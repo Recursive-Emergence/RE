@@ -37,3 +37,45 @@
 ---
 
 *Findings follow below, appended after the work. Nothing above is revised retroactively.*
+
+---
+
+# W37 Findings
+
+*Appended after the reviewer's ruling (37c). Nothing above is revised.*
+
+## §4. Ceiling
+
+**Nothing proved.** A reading round on (D3-door) = (CERT). No statement about `FP^NP`, `E^NP`, or P vs NP. The door is unmoved.
+
+## §5. Outcome against priors
+
+| code | mine / reviewer | outcome |
+|---|---|---|
+| 37a coin or read reduction | 3 / 5 | -- |
+| 37b non-enumerative, seventh arrival | 27 / 70 | -- |
+| **37c** something else, or a mis-reading of the budget | **70** / 25 | **the outcome: the reads framing mis-read (CERT)'s access model; W20's sixth arrival restated, plus one new sentence (§8)** |
+
+## §6. The miss that produced the round (the reviewer's nineteenth, in its words)
+
+The specification re-derived W20 §7 **from memory instead of from the page** and got its quantifier wrong. W20 §7, verbatim: *"(CERT) A deterministic algorithm that, **given the circuit** `z ↦ V^C(x, z)` of size `S = poly(k, r, log t)` on `m = polylog(t)` input bits, decides whether `Pr_z[accept] = 1` or `Pr_z[accept] ≤ 1/2`, in time `poly(S)`."* **The estimator is white-box**, so a fooling argument over unread proof positions does not apply. W20 §8's counting (*"any position never queried under any seed can be set adversarially by the prover. Hence ... `r ≥ log(proof length) − log q`"*) is **PCP soundness against the verifier's coins**, not a bound on an estimator.
+
+## §7. The numbers (Q1), from RW26 §3 and Theorem 2.3
+
+- **PCP verifier:** *"Arthur samples randomness `z ← O(log t(n))` (for the PCP verifier)"*.
+- **Self-corrector:** *"`z_Corr ← {0,1}^{polylog(t(n))}` (for the Low-Degree Self-Corrector)"*. Theorem 2.3's `Corr` *"runs in time `poly(∆, log |F|, m)` and outputs `P(x)` with probability at least 2/3"*, and *"the correct probability can be boosted to `1 − 1/poly(t(n))` by repetition"*. **Decomposition: `polylog(t) = (m·log|F|` coins per call, one random line`) × O(log t)` repetitions `× (r′(n) + 1)` evaluated bits** (the prefix bits and the output bit).
+- **Both confirm W20 §7 exactly.** (Q3): the sources of white-box (CERT) are W20 §9's two, both closed (W18.1; Korten dominance). **Sixth arrival restated, not a seventh**; the "two doors are one" attribution to W4 §2 (2026-09-11) stands.
+
+## §8. The finding (Q4)
+
+RW26's YES case: *"Since `Π_x = (w̃_x, Π′_x)` for some polynomial `w̃_x` of total degree at most `m|H|`, the Low-Degree Self-Corrector always returns the correct value ... with probability 1"*, and *"`Pr_z[V^C(x, z) accepts] = 1`"*. **Perfect completeness plus exact low-degreeness of the honest proof means Arthur's coins matter only against a cheating `C`.** An NP-oracle machine can check both exact properties deterministically: "`C` restricted to every line has degree `≤ m|H|`" and "`∀z V^C(x, z)` accepts" are each coNP. After those checks, decoding is direct evaluation. **So each reconstruction query becomes a `Σ₂` query:**
+
+> **`∃C` [exactly low-degree on every line ∧ `∀z V^C(x, z)` accepts ∧ prefix condition].**
+
+> **THE GAP BETWEEN THE Σ₂ RECONSTRUCTION AND THE DOOR IS EXACTLY: derandomise a universal quantifier over `polylog(t)` coins against an existentially chosen size-`S` circuit.** That is white-box CAPP for the family, dominated by the door. **A `Σ₂`-versus-NP boundary object, not plain-versus-SVN.**
+
+*Precision note (mine, not re-derived):* a `Σ₂`-oracle reconstruction yields a lower bound for exponential time with a `Σ₂` oracle, a class above the known `S₂E ⊆ Σ₂E` rung (CHR24, Li24). The reviewer calls this "the known `Σ₂E` rung". **Which class exactly the `Σ₂` win-win lands in is not re-derived here**; the finding is the gap statement, which does not depend on it.
+
+## §9. Practice line
+
+**RE-DERIVE A CLOSED STATEMENT FROM ITS PAGE, NOT FROM MEMORY: its quantifier is the part memory drops** (white-box "given the circuit" became "reads of the proof").
