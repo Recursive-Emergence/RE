@@ -70,6 +70,17 @@
     `Classical.choice` except `J0_tied`, which inherits it from `J0` (X0's
     classical repair, §31), not from the tie.
 
+    UPDATED (branch ladder-theorem, 2026-11-21). Lean 4.15.0 (commit
+    11651562caae), bare toolchain. Exit 0, zero errors, zero warnings, no
+    `sorry`. §38 adds the ladder theorem (Theorem 8 (ii)'s iterability) and its
+    control; `Layer` is unchanged and nothing before §38 was edited. The new
+    lines in the audit above are regenerated from Lean. Every new declaration
+    is axiom-free except `ladder_no_omniscient_stage`, which inherits
+    `propext` from `no_omniscient_layer`. Note for reproduction: the file does
+    NOT compile on Lean 4.34.1 (instance-synthesis errors, the first at the
+    §4 witnesses, in code this branch does not touch); use the toolchain named
+    here.
+
     REPRODUCTION HISTORY. The peer reviewer reproduced three commits
     independently, each byte-exact from `git show`, in a separate directory,
     each matching the audit line for line — three machine runs, not readings.
@@ -186,6 +197,14 @@
       'RExiv.cor10_1_under_tied' depends on axioms: [propext, Quot.sound]
       'RExiv.cor10_2_under_tied' depends on axioms: [propext, Quot.sound]
       'RExiv.J0_tied' depends on axioms: [propext, Classical.choice, Quot.sound]
+      'RExv.diagFn_spec' does not depend on any axioms
+      'RExv.diagExt_decides' does not depend on any axioms
+      'RExv.diagExt_strict' does not depend on any axioms
+      'RExv.ladder_never_ends' does not depend on any axioms
+      'RExv.ladder_fires_on_Lid' does not depend on any axioms
+      'RExv.ladder_no_omniscient_stage' depends on axioms: [propext]
+      'RExv.allFns_omniscient' does not depend on any axioms
+      'RExv.allFns_no_round_trip' does not depend on any axioms
 
     The six frame definitions report no axioms. `Classical.choice` elsewhere
     enters through declared representation choices (item 15 onward), never the
@@ -5236,3 +5255,179 @@ end RExiv
     It is still not manuscript text. Scope unchanged: `Tied` cannot be stated
     on `Lpar` or `Lopc`, so Corollaries 10.3 and 10.4 were not re-examined. -/
 
+
+
+/-! ## 38. The ladder theorem — Theorem 8 (ii)'s "without end", proved
+
+    Theorem 8 (ii) says the diagonal extension is iterable "without end" and
+    proves it by sketch. Theorem 11 (`diagonal_self_application`) proved one
+    rung. This section proves the ladder:
+
+      · `diagExt L` adjoins to any layer one method deciding L's own diagonal
+        predicate `D_L L`, keeps every old method's behaviour on old
+        structures, and is again a `Layer` — `decode_encode` holds, so the new
+        stage self-encodes and Theorem 11 applies to it in turn.
+      · `ladder L n` iterates it. `ladder_never_ends`: at every stage n, no
+        method of stage n decides stage n's diagonal, and stage n+1 decides it.
+        No stage is omniscient (`ladder_no_omniscient_stage`).
+      · CONTROL (Theorem 8 (iii)): a system without codes can be omniscient
+        (`allFns_omniscient`), and it admits no round trip
+        (`allFns_no_round_trip`). Nothing to diagonalize against, so the
+        ladder stops.
+
+    WHAT THIS IS AND IS NOT. The preservation hypothesis — that each stage
+    again self-encodes — is discharged here by CONSTRUCTION: `diagExt` takes
+    `Option` of the old representation space, so the new method gets the fresh
+    code `none`. That shows the hypothesis is consistent at the abstract level;
+    it does not show that any natural layer supplies the fresh code and the
+    round trip from its own medium, which is Problem 21 and is where the content
+    lives. Only the finite stages are built: the limit stage (Turing's ordinal
+    logics at ω and beyond) is not. The construction is Lawvere-shaped and
+    borrowed; RE's own contribution, the threshold filter (A5), is not
+    formalized here. It contributes nothing toward P vs NP: diagonal arguments
+    relativize (Baker–Gill–Solovay 1975). -/
+
+namespace RExv
+open RE
+
+/-- `diagFn` computes the diagonal predicate `D_L` (§15). -/
+theorem diagFn_spec (L : Layer) (y : L.Rep) : diagFn L y = true ↔ D_L L y := by
+  unfold diagFn D_L
+  cases hd : L.decode y with
+  | none =>
+      constructor
+      · intro _ m' h
+        cases h
+      · intro _
+        show true = true
+        rfl
+  | some m0 =>
+      constructor
+      · intro h m' hm
+        have h' : (!L.run m0 y) = true := h
+        have hme : m0 = m' := Option.some.inj hm
+        subst hme
+        cases hr : L.run m0 y with
+        | false => rfl
+        | true => rw [hr] at h'; exact Bool.noConfusion h'
+      · intro h
+        have hf : L.run m0 y = false := h m0 rfl
+        show (!L.run m0 y) = true
+        rw [hf]
+        rfl
+
+/-- One rung: adjoin a method deciding `D_L L`, under the fresh code `none`.
+    Cost of the new method is set to 0; Theorem 11 is cost-free, so nothing
+    below depends on it. -/
+def diagExt (L : Layer) : Layer where
+  Rep := Option L.Rep
+  Method := Option L.Method
+  run := fun m x =>
+    match m, x with
+    | some m, some x => L.run m x
+    | none, some x => diagFn L x
+    | _, none => false
+  encode := fun m =>
+    match m with
+    | none => none
+    | some m => some (L.encode m)
+  decode := fun x =>
+    match x with
+    | none => some none
+    | some y => (L.decode y).map some
+  decode_encode := by
+    intro m
+    cases m with
+    | none => rfl
+    | some m =>
+        show Option.map some (L.decode (L.encode m)) = some (some m)
+        rw [L.decode_encode m]
+        rfl
+  cost := fun m =>
+    match m with
+    | none => 0
+    | some m => L.cost m
+  budget := L.budget
+
+/-- Conservativity: every old method behaves as before on old structures. -/
+theorem diagExt_conservative (L : Layer) (m : L.Method) (y : L.Rep) :
+    (diagExt L).run (some m) (some y) = L.run m y := rfl
+
+/-- The new stage decides the old stage's diagonal predicate. -/
+theorem diagExt_decides (L : Layer) :
+    ∃ m : (diagExt L).Method,
+      ∀ y : L.Rep, (diagExt L).run m (some y) = true ↔ D_L L y :=
+  ⟨none, fun y => diagFn_spec L y⟩
+
+/-- One rung is strict: the old stage cannot decide what the new one can. -/
+theorem diagExt_strict (L : Layer) :
+    (¬ ∃ m : L.Method, ∀ y, L.run m y = true ↔ D_L L y) ∧
+    (∃ m : (diagExt L).Method,
+      ∀ y : L.Rep, (diagExt L).run m (some y) = true ↔ D_L L y) :=
+  ⟨fun ⟨m, hm⟩ => diagonal_self_application L m hm, diagExt_decides L⟩
+
+/-- The ladder: iterate the diagonal extension. -/
+def ladder (L : Layer) : Nat → Layer
+  | 0 => L
+  | n + 1 => diagExt (ladder L n)
+
+theorem ladder_succ (L : Layer) (n : Nat) :
+    ladder L (n + 1) = diagExt (ladder L n) := rfl
+
+/-- THE LADDER THEOREM. At every stage, the stage's own diagonal predicate is
+    undecidable by its methods and decided by the next stage. -/
+theorem ladder_never_ends (L : Layer) (n : Nat) :
+    (¬ ∃ m : (ladder L n).Method,
+        ∀ y, (ladder L n).run m y = true ↔ D_L (ladder L n) y) ∧
+    (∃ m : (ladder L (n + 1)).Method,
+        ∀ y : (ladder L n).Rep,
+          (ladder L (n + 1)).run m (some y) = true ↔ D_L (ladder L n) y) :=
+  diagExt_strict (ladder L n)
+
+/-- Non-vacuity: layers exist (`Lid`, §4), and the theorem fires on the ladder
+    built over one, here at stage 3. -/
+theorem ladder_fires_on_Lid :
+    (¬ ∃ m : (ladder Lid 3).Method,
+        ∀ y, (ladder Lid 3).run m y = true ↔ D_L (ladder Lid 3) y) ∧
+    (∃ m : (ladder Lid 4).Method,
+        ∀ y : (ladder Lid 3).Rep,
+          (ladder Lid 4).run m (some y) = true ↔ D_L (ladder Lid 3) y) :=
+  ladder_never_ends Lid 3
+
+/-- No stage of the ladder is omniscient (Theorem 12 at every stage). -/
+theorem ladder_no_omniscient_stage (L : Layer) (n : Nat) :
+    ¬ (∀ f : (ladder L n).Rep → Bool,
+        ∃ m : (ladder L n).Method, ∀ x, (ladder L n).run m x = f x) :=
+  no_omniscient_layer (ladder L n)
+
+/-! ### 38.1 Control: without codes the ladder stops (Theorem 8 (iii)) -/
+
+/-- Methods are all Boolean functions on `Bool`, with no codes. -/
+def allFnsRun (m : Bool → Bool) (x : Bool) : Bool := m x
+
+/-- Without self-encoding, omniscience is possible. -/
+theorem allFns_omniscient :
+    ∀ f : Bool → Bool, ∃ m : Bool → Bool, ∀ x, allFnsRun m x = f x :=
+  fun f => ⟨f, fun _ => rfl⟩
+
+/-- And this system admits no round trip: four methods, two codes. So it is
+    not a `Layer`, and Theorem 11 has nothing to act on. -/
+theorem allFns_no_round_trip :
+    ¬ ∃ (enc : (Bool → Bool) → Bool) (dec : Bool → Option (Bool → Bool)),
+        ∀ m, dec (enc m) = some m := by
+  intro ⟨enc, dec, hd⟩
+  have inj : ∀ a b, enc a = enc b → a = b := by
+    intro a b h
+    have ha := hd a
+    rw [h, hd b] at ha
+    exact (Option.some.inj ha).symm
+  have key : ∀ x y z : Bool, x = y ∨ y = z ∨ x = z := by decide
+  rcases key (enc (fun _ => true)) (enc (fun _ => false)) (enc id) with h | h | h
+  · have e := congrFun (inj _ _ h) true
+    exact Bool.noConfusion e
+  · have e := congrFun (inj _ _ h) true
+    exact Bool.noConfusion e
+  · have e := congrFun (inj _ _ h) false
+    exact Bool.noConfusion e
+
+end RExv
